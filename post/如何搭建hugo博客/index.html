@@ -19,7 +19,7 @@
 <meta name="author" content="MinghaoChen" /><meta name="description" content=" 安装git 安装brew 安装Hugo，建立博客
 1  hugo new site myblog   下载主题
 1 2  cd myblog git clone https://github.com/olOwOlo/hugo-theme-even themes/even   本地启动
-1  hugo server -t even —buildDrafts    创建一个文章
+1  hugo server -t even --buildDrafts    创建一个文章
 1  hugo new post/new.md   部署到github
 1 2 3 4 5 6 7  hugo --theme=even --baseUrl=“https://minghaochen.github.io/“ --buildDrafts cd public/ git init git add . git commit -m “first commit” git remote add origin https://github.com/minghaochen/minghaochen.github.io.git git push -u origin master   本地写完新博客后更新到github上
 1 2 3 4 5  cd public/ git add . git commit -m &amp;#34;update&amp;#34; git pull git push origin master   " /><meta name="keywords" content="hugo" />
@@ -77,7 +77,7 @@ git clone https://github.com/olOwOlo/hugo-theme-even themes/even
 1
 
 
-hugo server -t even —buildDrafts 
+hugo server -t even --buildDrafts 
 
 
 
@@ -169,7 +169,7 @@ git clone https://github.com/olOwOlo/hugo-theme-even themes/even
 1
 
 
-hugo server -t even —buildDrafts 
+hugo server -t even --buildDrafts 
 
 
 
@@ -227,7 +227,7 @@ git push origin master
 
 <meta itemprop="datePublished" content="2019-07-22T09:27:29&#43;08:00" />
 <meta itemprop="dateModified" content="2019-07-22T09:27:29&#43;08:00" />
-<meta itemprop="wordCount" content="202">
+<meta itemprop="wordCount" content="191">
 
 
 
@@ -266,7 +266,7 @@ git clone https://github.com/olOwOlo/hugo-theme-even themes/even
 1
 
 
-hugo server -t even —buildDrafts 
+hugo server -t even --buildDrafts 
 
 
 
@@ -427,7 +427,7 @@ git clone https://github.com/olOwOlo/hugo-theme-even themes/even</pre></td></tr>
 <pre class="chroma"><span class="lnt">1
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">hugo server -t even —buildDrafts </pre></td></tr></table>
+<pre class="chroma">hugo server -t even --buildDrafts </pre></td></tr></table>
 </div>
 </div></li>
 
@@ -501,7 +501,11 @@ git push origin master</pre></td></tr></table>
 </div><footer class="post-footer">
       
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E8%BF%9E%E8%AF%BB/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">美音发音技巧——连读</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
         
       </nav>
     </footer>
