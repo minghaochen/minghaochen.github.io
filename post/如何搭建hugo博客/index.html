@@ -22,7 +22,7 @@
 1  hugo server -t even --buildDrafts    创建一个文章
 1  hugo new post/new.md   部署到github
 1 2 3 4 5 6 7  hugo --theme=even --baseUrl=“https://minghaochen.github.io/“ --buildDrafts cd public/ git init git add . git commit -m “first commit” git remote add origin https://github.com/minghaochen/minghaochen.github.io.git git push -u origin master   本地写完新博客后更新到github上
-1 2 3 4 5  cd public/ git add . git commit -m &amp;#34;update&amp;#34; git pull git push origin master   " /><meta name="keywords" content="hugo" />
+1 2 3 4  cd public/ git add -A git commit -m &amp;#34;update&amp;#34; git push origin master   " /><meta name="keywords" content="hugo" />
 
 
 
@@ -120,13 +120,11 @@ git push -u origin master
 2
 3
 4
-5
 
 
 cd public/
-git add .
+git add -A
 git commit -m &#34;update&#34;
-git pull
 git push origin master
 
 
@@ -212,13 +210,11 @@ git push -u origin master
 2
 3
 4
-5
 
 
 cd public/
-git add .
+git add -A
 git commit -m &#34;update&#34;
-git pull
 git push origin master
 
 
@@ -227,11 +223,11 @@ git push origin master
 
 <meta itemprop="datePublished" content="2019-07-22T09:27:29&#43;08:00" />
 <meta itemprop="dateModified" content="2019-07-22T09:27:29&#43;08:00" />
-<meta itemprop="wordCount" content="191">
+<meta itemprop="wordCount" content="188">
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="hugo," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="如何搭建hugo博客"/>
 <meta name="twitter:description" content="
@@ -309,13 +305,11 @@ git push -u origin master
 2
 3
 4
-5
 
 
 cd public/
-git add .
+git add -A
 git commit -m &#34;update&#34;
-git pull
 git push origin master
 
 
@@ -470,13 +464,11 @@ git push -u origin master</pre></td></tr></table>
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
-</span><span class="lnt">5
 </span></pre></td>
 <td class="lntd">
 <pre class="chroma">cd public/
-git add .
+git add -A
 git commit -m &#34;update&#34;
-git pull
 git push origin master</pre></td></tr></table>
 </div>
 </div></li>
@@ -490,16 +482,18 @@ git push origin master</pre></td></tr></table>
   <div class="qr-code">
     
     <label class="qr-code-image" for="reward">
-        <img class="image" src="/path/to/your/wechat-qr-code.png">
+        <img class="image" src="/images/wechat-qr-code.jpg">
         <span>wechat</span>
       </label>
     <label class="qr-code-image" for="reward">
-        <img class="image" src="/path/to/your/alipay-qr-code.png">
+        <img class="image" src="/images/alipay-qr-code.jpg">
         <span>alipay</span>
       </label>
   </div>
 </div><footer class="post-footer">
-      
+      <div class="post-tags">
+          <a href="/tags/hugo/">hugo</a>
+          </div>
       <nav class="post-nav">
         <a class="prev" href="/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E8%BF%9E%E8%AF%BB/">
             <i class="iconfont icon-left"></i>

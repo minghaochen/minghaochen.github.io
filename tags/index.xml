@@ -7,9 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
+    <lastBuildDate>Mon, 22 Jul 2019 19:58:54 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>pronunciation</title>
+      <link>https://minghaochen.github.io/tags/pronunciation/</link>
+      <pubDate>Mon, 22 Jul 2019 19:58:54 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/tags/pronunciation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hugo</title>
+      <link>https://minghaochen.github.io/tags/hugo/</link>
+      <pubDate>Mon, 22 Jul 2019 09:27:29 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/tags/hugo/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>
