@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://minghaochen.github.io/sitemap.xml
