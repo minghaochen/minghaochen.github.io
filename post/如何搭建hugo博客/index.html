@@ -21,7 +21,8 @@
 1 2  cd myblog git clone https://github.com/olOwOlo/hugo-theme-even themes/even   本地启动
 1  hugo server -t even —buildDrafts    创建一个文章
 1  hugo new post/new.md   部署到github
-1 2 3 4 5 6 7  hugo —theme=even —baseUrl=“https://minghaochen.github.io/“ —buildDrafts cd public/ git init git add . git commit -m “update” git remote add origin https://github.com/minghaochen/minghaochen.github.io.git git push -u origin master   " /><meta name="keywords" content="hugo" />
+1 2 3 4 5 6 7  hugo —-theme=even —-baseUrl=“https://minghaochen.github.io/“ —-buildDrafts cd public/ git init git add * git commit -m “update” git remote add origin https://github.com/minghaochen/minghaochen.github.io.git git push -u origin master   本地写完新博客后更新到github上
+1 2 3 4 5  cd public/ git add * git commit -m &amp;#34;update&amp;#34; git pull git push origin master   " /><meta name="keywords" content="hugo" />
 
 
 
@@ -102,13 +103,31 @@ hugo new post/new.md
 7
 
 
-hugo —theme=even —baseUrl=“https://minghaochen.github.io/“ —buildDrafts
+hugo —-theme=even —-baseUrl=“https://minghaochen.github.io/“ —-buildDrafts
 cd public/
 git init
-git add .
+git add *
 git commit -m “update”
 git remote add origin https://github.com/minghaochen/minghaochen.github.io.git
 git push -u origin master
+
+
+
+本地写完新博客后更新到github上
+
+
+1
+2
+3
+4
+5
+
+
+cd public/
+git add *
+git commit -m &#34;update&#34;
+git pull
+git push origin master
 
 
 " />
@@ -176,13 +195,31 @@ hugo new post/new.md
 7
 
 
-hugo —theme=even —baseUrl=“https://minghaochen.github.io/“ —buildDrafts
+hugo —-theme=even —-baseUrl=“https://minghaochen.github.io/“ —-buildDrafts
 cd public/
 git init
-git add .
+git add *
 git commit -m “update”
 git remote add origin https://github.com/minghaochen/minghaochen.github.io.git
 git push -u origin master
+
+
+
+本地写完新博客后更新到github上
+
+
+1
+2
+3
+4
+5
+
+
+cd public/
+git add *
+git commit -m &#34;update&#34;
+git pull
+git push origin master
 
 
 ">
@@ -190,7 +227,7 @@ git push -u origin master
 
 <meta itemprop="datePublished" content="2019-07-22T09:27:29&#43;08:00" />
 <meta itemprop="dateModified" content="2019-07-22T09:27:29&#43;08:00" />
-<meta itemprop="wordCount" content="179">
+<meta itemprop="wordCount" content="220">
 
 
 
@@ -255,13 +292,31 @@ hugo new post/new.md
 7
 
 
-hugo —theme=even —baseUrl=“https://minghaochen.github.io/“ —buildDrafts
+hugo —-theme=even —-baseUrl=“https://minghaochen.github.io/“ —-buildDrafts
 cd public/
 git init
-git add .
+git add *
 git commit -m “update”
 git remote add origin https://github.com/minghaochen/minghaochen.github.io.git
 git push -u origin master
+
+
+
+本地写完新博客后更新到github上
+
+
+1
+2
+3
+4
+5
+
+
+cd public/
+git add *
+git commit -m &#34;update&#34;
+git pull
+git push origin master
 
 
 "/>
@@ -289,9 +344,7 @@ git push -u origin master
 </div>
 <nav id="mobile-menu" class="mobile-menu slideout-menu">
   <ul class="mobile-menu-list">
-    <a href="/about/">
-        <li class="mobile-menu-item">Home</li>
-      </a><a href="/post/">
+    <a href="/post/">
         <li class="mobile-menu-item">Archives</li>
       </a><a href="/tags/">
         <li class="mobile-menu-item">Tags</li>
@@ -311,8 +364,6 @@ git push -u origin master
 <nav class="site-navbar">
   <ul id="menu" class="menu">
     <li class="menu-item">
-        <a class="menu-item-link" href="/about/">Home</a>
-      </li><li class="menu-item">
         <a class="menu-item-link" href="/post/">Archives</a>
       </li><li class="menu-item">
         <a class="menu-item-link" href="/tags/">Tags</a>
@@ -402,13 +453,31 @@ git clone https://github.com/olOwOlo/hugo-theme-even themes/even</pre></td></tr>
 </span><span class="lnt">7
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">hugo —theme=even —baseUrl=“https://minghaochen.github.io/“ —buildDrafts
+<pre class="chroma">hugo —-theme=even —-baseUrl=“https://minghaochen.github.io/“ —-buildDrafts
 cd public/
 git init
-git add .
+git add *
 git commit -m “update”
 git remote add origin https://github.com/minghaochen/minghaochen.github.io.git
 git push -u origin master</pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>本地写完新博客后更新到github上</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">cd public/
+git add *
+git commit -m &#34;update&#34;
+git pull
+git push origin master</pre></td></tr></table>
 </div>
 </div></li>
 </ol>
