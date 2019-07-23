@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>TwinCAT3 on MH&#39;s Blog</title>
+    <link>https://minghaochen.github,io/tags/twincat3/</link>
+    <description>Recent content in TwinCAT3 on MH&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>MinghaoChen</copyright>
+    <lastBuildDate>Tue, 23 Jul 2019 19:35:03 +0800</lastBuildDate>
+    
+	<atom:link href="https://minghaochen.github,io/tags/twincat3/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>TwinCAT3 with Matlab-simulink 配置及使用</title>
+      <link>https://minghaochen.github,io/post/twincat3-with-matlab-simulink/</link>
+      <pubDate>Tue, 23 Jul 2019 19:35:03 +0800</pubDate>
+      
+      <guid>https://minghaochen.github,io/post/twincat3-with-matlab-simulink/</guid>
+      <description>这几天忙项目的事，需要用到TwinCAT3这个平台，这是倍福（backoff）公司的一个产品，基于PC的控制软件，并且可以用来编译matla</description>
+    </item>
+    
+  </channel>
+</rss>
