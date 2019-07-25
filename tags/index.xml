@@ -2,49 +2,49 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on MH&#39;s Blog</title>
-    <link>https://minghaochen.github,io/tags/</link>
+    <link>https://minghaochen.github.io/tags/</link>
     <description>Recent content in Tags on MH&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
     <lastBuildDate>Tue, 23 Jul 2019 19:35:03 +0800</lastBuildDate>
     
-	<atom:link href="https://minghaochen.github,io/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://minghaochen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Matlab</title>
-      <link>https://minghaochen.github,io/tags/matlab/</link>
+      <link>https://minghaochen.github.io/tags/matlab/</link>
       <pubDate>Tue, 23 Jul 2019 19:35:03 +0800</pubDate>
       
-      <guid>https://minghaochen.github,io/tags/matlab/</guid>
+      <guid>https://minghaochen.github.io/tags/matlab/</guid>
       <description></description>
     </item>
     
     <item>
       <title>TwinCAT3</title>
-      <link>https://minghaochen.github,io/tags/twincat3/</link>
+      <link>https://minghaochen.github.io/tags/twincat3/</link>
       <pubDate>Tue, 23 Jul 2019 19:35:03 +0800</pubDate>
       
-      <guid>https://minghaochen.github,io/tags/twincat3/</guid>
+      <guid>https://minghaochen.github.io/tags/twincat3/</guid>
       <description></description>
     </item>
     
     <item>
       <title>pronunciation</title>
-      <link>https://minghaochen.github,io/tags/pronunciation/</link>
+      <link>https://minghaochen.github.io/tags/pronunciation/</link>
       <pubDate>Mon, 22 Jul 2019 19:58:54 +0800</pubDate>
       
-      <guid>https://minghaochen.github,io/tags/pronunciation/</guid>
+      <guid>https://minghaochen.github.io/tags/pronunciation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>hugo</title>
-      <link>https://minghaochen.github,io/tags/hugo/</link>
+      <link>https://minghaochen.github.io/tags/hugo/</link>
       <pubDate>Mon, 22 Jul 2019 09:27:29 +0800</pubDate>
       
-      <guid>https://minghaochen.github,io/tags/hugo/</guid>
+      <guid>https://minghaochen.github.io/tags/hugo/</guid>
       <description></description>
     </item>
     
