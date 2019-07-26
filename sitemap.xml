@@ -10,7 +10,44 @@
   
   <url>
     <loc>https://minghaochen.github.io/categories/</loc>
-    <lastmod>2019-07-25T15:27:09+08:00</lastmod>
+    <lastmod>2019-07-26T14:38:14+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/</loc>
+    <lastmod>2019-07-26T14:38:14+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/post/</loc>
+    <lastmod>2019-07-26T14:38:14+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/tags/</loc>
+    <lastmod>2019-07-26T14:38:14+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/</loc>
+    <lastmod>2019-07-26T14:38:14+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2019-07-26T14:38:14+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2019-07-26T14:38:14+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -22,18 +59,6 @@
   </url>
   
   <url>
-    <loc>https://minghaochen.github.io/</loc>
-    <lastmod>2019-07-25T15:27:09+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://minghaochen.github.io/post/</loc>
-    <lastmod>2019-07-25T15:27:09+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://minghaochen.github.io/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/</loc>
     <lastmod>2019-07-25T15:27:09+08:00</lastmod>
     <priority>0</priority>
@@ -41,12 +66,6 @@
   
   <url>
     <loc>https://minghaochen.github.io/tags/matlab/</loc>
-    <lastmod>2019-07-23T19:35:03+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://minghaochen.github.io/tags/</loc>
     <lastmod>2019-07-23T19:35:03+08:00</lastmod>
     <priority>0</priority>
   </url>
