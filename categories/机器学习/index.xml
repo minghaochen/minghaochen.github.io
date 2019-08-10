@@ -1,16 +1,215 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>‘机器学习’ on MH&#39;s Blog</title>
+    <title>机器学习 on MH&#39;s Blog</title>
     <link>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
-    <description>Recent content in ‘机器学习’ on MH&#39;s Blog</description>
+    <description>Recent content in 机器学习 on MH&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
-    <lastBuildDate>Mon, 05 Aug 2019 11:22:25 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 09 Aug 2019 21:40:19 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>「机器学习」主成分分析PCA</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/</link>
+      <pubDate>Fri, 09 Aug 2019 21:40:19 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/</guid>
+      <description>&lt;h1 id=&#34;为什么要降维&#34;&gt;为什么要降维&lt;/h1&gt;
+
+&lt;p&gt;要说到降维的目的，主要是用来解决过拟合这一问题的，降维的方式主要有三种&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;直接降维—特征选择&lt;/li&gt;
+&lt;li&gt;线性降维—PCA(今日份猪脚)，MDS多维尺度法&lt;/li&gt;
+&lt;li&gt;非线性降维—流形学习ISOMAP，LLE(Locally Linear Embedding)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;数据矩阵描述&#34;&gt;数据矩阵描述&lt;/h1&gt;
+
+&lt;p&gt;数据：$X=(x_1,x_2,&amp;hellip;,x_N)^T_{N \times P }, x_i \in \mathbb{R}^P $，为了便于后续推导我们将均值和方差表示为矩阵形式，思路就是&lt;strong&gt;把连加符号改写成矩阵乘积的形式&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;采样均值为：
+$$
+\bar{x} = \frac{1}{N}\sum_{i=1}^N x_i = \frac{1}{N}(x_1,x_2,&amp;hellip;,x_N)\mathbb{1}_{N} = \frac{1}{N}X^T\mathbb{1}_N
+$$
+采样方差为
+$$
+S = \frac{1}{N}\sum_{i=1}^N (x_i-\bar{x}) (x_i-\bar{x})^T = \frac{1}{N}X^THH^TX =  \frac{1}{N}X^THX
+$$
+其中 $H = I_N - \frac{1}{N}\mathbb{1}_N\mathbb{1}_N^T$ 为中心矩阵，作用可以理解为&lt;strong&gt;去均值&lt;/strong&gt;，这里可以中心均镇的转置等于本身，中心矩阵的平方 $HH^T$ 等于中心矩阵 $H$ 本身。&lt;/p&gt;
+
+&lt;h1 id=&#34;pca的主要思想&#34;&gt;PCA的主要思想&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一个中心：原始特征空间的重构&lt;/li&gt;
+&lt;li&gt;两个基本点： 1. 最大投影方差 2. 最小重构代价&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;首先将数据进行中心化，即 $x_i - \bar{x}$&lt;/p&gt;
+
+&lt;h2 id=&#34;最大投影方差角度&#34;&gt;最大投影方差角度&lt;/h2&gt;
+
+&lt;p&gt;假设有单位投影向量 $u_1,||u_1||_2 = 1$，向量 $x_i - \bar{x}$ 在 $u_1$ 上的投影为 $(x_i - \bar{x})^Tu_1$ 且均值为0，那么目标函数最大化投影方差可以直接表示为
+$$
+\max J=\frac{1}{N} \sum_{i=1}^N((x_i - \bar{x})^Tu_1)^2 = u_1^T\cdot S\cdot u_1  \quad s.t. u_1^Tu_1 = 1
+$$
+这是一个等式约束的最优化问题，直接拉格朗日乘子法写开&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{array}{l} \mathcal{L}\left(u_{1}, \lambda\right)=u_{1}^{T} S u_{1}+\lambda\left(1-u_{1}^{T} u\right)\\ {\frac{\partial \mathcal{L}}{\partial u_{1}}=2 S \cdot u_{1}-\lambda \cdot 2 u_{1}=0}\end{array}
+$$&lt;/div&gt;
+
+&lt;p&gt;即
+$$
+Su_1 = \lambda u_1
+$$
+转化成&lt;strong&gt;特征值分解&lt;/strong&gt;的问题，所谓的主成分也就是特征向量矩阵，用最大的 $q$ 个特征值对应的特征向量来重构数据矩阵就是特征空间的重构。&lt;/p&gt;
+
+&lt;h2 id=&#34;最小重构代价角度&#34;&gt;最小重构代价角度&lt;/h2&gt;
+
+&lt;p&gt;何谓重构代价？我们先来看下在重构空间中原始数据的表示为
+$$
+x_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &amp;hellip; + (x_i^Tu_p)\cdot u_p = \sum_{k=1}^p (x_i^T\cdot u_k) \cdot u_k
+$$
+$x_i^Tu_k$ 可以理解成各个投影，$u_k$ 为投影方向。
+如果将特征进行压缩，用 $q$ 个特征来表示原始特征空间，则
+$$
+\hat{x}_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &amp;hellip; + (x_i^Tu_q)\cdot u_q = \sum_{k=1}^q (x_i^T\cdot u_k) \cdot u_k
+$$
+上面两个式子均假设 $x_i$ 中心化过了。那么重构代价很直观的理解就是 $x_i - \hat{x}_i$，目标函数就能表示为
+$$
+\min J = \sum_{i=1}^N ||x_i - \hat{x}_i ||^2=\sum_{k=q+1}^p u_k^T \cdot S \cdot u_k \quad s.t. u_k^T\cdot u_k =1
+$$
+由于 $u_k$ 之间是无关的，所以这个优化问题可以拆成单个的优化问题逐一求解。也就转化成&lt;strong&gt;特征值求解&lt;/strong&gt;问题，即求得最小 $p-q$ 个特征值所对应的特征向量。&lt;/p&gt;
+
+&lt;h2 id=&#34;svd角度&#34;&gt;SVD角度&lt;/h2&gt;
+
+&lt;p&gt;前面的两个基本点相当于都是从&lt;strong&gt;方差矩阵 $S$ 进行特征值分解&lt;/strong&gt;来获得主成分的。下面来看看如果直接对数据矩阵进行奇异值分解，两者之间会有什么样的联系。&lt;/p&gt;
+
+&lt;p&gt;对中心化后的数据进行SVD分解：
+$$
+HX = U \Sigma V^T
+$$
+原来的方差矩阵可以表示为
+$$
+S = X^THX=X^TH^THX = V\Sigma U^TU\Sigma V^T=V\Sigma^2V^T
+$$
+也就是说&lt;strong&gt;对 $HX$ 进行奇异值分解得到的 $V$ 矩阵就是对方差矩阵进行特征值分解得到的特征矩阵，奇异值分解得到到奇异值矩阵的平方就是特征值分解得到的特征值矩阵。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;构造矩阵
+$$T =HXX^TH=U\Sigma V^TV\Sigma U^T=U\Sigma^2U^T$$
+可以看出 $T$ 和 $S$ 具有&lt;strong&gt;相同的特征值。&lt;/strong&gt;
+要获得重构空间的坐标有两个思路：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;内积求投影：$HX\cdot V$&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;对矩阵 $T$ 进行特征分解：
+$$
+TU\Sigma = U\Sigma^2U^TU\Sigma= U\Sigma^3 = \Sigma^2\cdot U\Sigma
+$$
+$$
+HX \cdot V=U \Sigma V^T V= U \Sigma
+$$&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;因此在遇到原始数据特征空间较高时($P$ 大于 $N$)，可以采用 $T$ 矩阵进行特征分解直接获得坐标，也称为主坐标分解(PCoA)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;概率主成分分析-p-pca&#34;&gt;概率主成分分析(P-PCA)&lt;/h2&gt;
+
+&lt;p&gt;从概率的角度来看则是将观测数据 $x \in \mathcal{R}^p$ 作为观测变量(observed variable)，重构特征空间 $z \in \mathcal{R}^q$ 作为隐变量(latent variable)，我们降维的过程则相当于从观测变量去求得隐变量的过程
+&lt;strong&gt;假设&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{equation}
+\begin{aligned}
+z &amp;\in \mathcal{N}(0,I_q)\\
+x &amp;= Wz + \mu + \epsilon\\
+\epsilon &amp;\in \mathcal{N}(0,\sigma^2 I_p)
+\end{aligned}
+\end{equation}
+$$&lt;/div&gt;
+
+&lt;p&gt;且 $z$ 和 $\epsilon$ 相互独立。这是一个线性高斯模型，相当于我们有了 $z, x|z, x$ 要求 $z|x$。&lt;/p&gt;
+
+&lt;p&gt;第一步就是Inference求后验 $z|x$ (通过构造 $x,z$ 的联合概率求条件概率)&lt;/p&gt;
+
+&lt;p&gt;第二步就是Learning参数 $W, \mu, \sigma$（比如采用EM算法）&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;P-PCA与GMM的区别&lt;/strong&gt;：P-PCA的隐变量是连续的，而GMM的隐变量是离散的。&lt;/p&gt;
+
+&lt;h2 id=&#34;matlab-实现&#34;&gt;Matlab 实现&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;% Data 两个特征线性关系加点噪声
+X1 = [1,2,3,4,5,6]&amp;#39;;
+X2 = [X1] + rand(6,1);
+X = [X1,X2];
+plot(X1,X2)
+N = size(X,1);
+
+% 矩阵描述
+x_bar = 1/N*X&amp;#39;*ones(N,1);
+H = eye(N) - 1/N*ones(N,1)*ones(N,1)&amp;#39;;
+S = 1/N*X&amp;#39;*H*X;
+
+% 根据采样方差特征值分解
+[G,K] = eig(S);
+
+% 根据中心化的数据进行奇异值分解
+[U,Sigma,V] = svd(H*X);
+
+% 方差矩阵的特征值与奇异值分解的奇异值的关系
+Sigma.^2/N
+K
+% 观察V矩阵和G矩阵的关系
+G
+V
+
+% 主坐标分析
+T = H*X*X&amp;#39;*H&amp;#39;;
+[G2,K2] = eig(T);
+% 观察非零特征值对应特征向量也就是主坐标与HXV的关系
+H*X*V&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>「机器学习」特征工程</title>
