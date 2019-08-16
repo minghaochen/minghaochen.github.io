@@ -7,10 +7,131 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
-    <lastBuildDate>Wed, 14 Aug 2019 20:05:08 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 15 Aug 2019 20:59:29 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>核函数与再生核希尔伯特空间</title>
+      <link>https://minghaochen.github.io/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</link>
+      <pubDate>Thu, 15 Aug 2019 20:59:29 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</guid>
+      <description>&lt;p&gt;说到核方法，很多人第一反应就是SVM，其实不然，其应用很广，但核心思想均是&lt;strong&gt;用在原始空间计算核函数的值来避免直接求解高维特征空间的内积&lt;/strong&gt;；说到核函数往往还会带上一个吓人的概念“再生核希尔伯特空间”，先揭秘一下什么是希尔伯特空间，希尔伯特空间其实就是&lt;strong&gt;函数空间&lt;/strong&gt;(或者可以把函数理解为无限维的向量)，函数空间里任意一个元素都表示一个函数，而再加上“再生核”这个限定词相当于就是特定的函数空间，就是具有再生性的函数空间，那什么是再生性听我慢慢道来。&lt;/p&gt;
+
+&lt;p&gt;假设有原始空间样本 $x_i \in \mathbb{R}^p, i=1,&amp;hellip;,N$，通常为了&lt;strong&gt;在高维空间寻找线性关系&lt;/strong&gt;我们会将其通过函数映射 $\phi(\cdot)$ 到高维空间 $\phi(x_i) \in \mathbb{R}^n$，但是这样也意味着如果原始空间求内积 $&amp;lt;x_i,x_j&amp;gt;$ 对应到特征空间为 $&amp;lt;\phi(x_i),\phi(x_j)&amp;gt;$，直接求解高维空间的内积计算量是很大的，同时我们可能并不知道这个映射函数 $\phi(\cdot)$ 怎么选择才是合适的。核函数则提供了另一种求解的思路。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;核函数的定义&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;$$
+\kappa(\cdot,\cdot):\mathbb{R}^p \times \mathbb{R}^p \rightarrow \mathbb{R}
+$$&lt;/p&gt;
+
+&lt;p&gt;则特征空间的内积可以表示为&lt;/p&gt;
+
+&lt;p&gt;$$
+&amp;lt;\phi(x_i),\phi(x_j)&amp;gt; = \kappa(x_i,x_j)
+$$&lt;/p&gt;
+
+&lt;p&gt;此外，特征空间的距离和角度也可以用核函数来表示。&lt;/p&gt;
+
+&lt;p&gt;同时有 Mercer 定理告诉我们怎么样的函数能称为核函数&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;任何正半定函数均可以作为核函数，即由 $\kappa(\cdot,\cdot)$ 构成的核矩阵 $K$ 是正半定的：$a^TKa\ge 0$，其中 $K_{ij} = \kappa(x_i,x_j)$&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;这也就说明了只要我们构造出一个正定核(往往是应用现成的)，那么就不需要显式地定义特征空间和映射函数，并且能够利用已有的线性方法来解决非线性问题&lt;/strong&gt;。&lt;strong&gt;同时，核函数还可以理解为用来衡量两个向量的相似度(因为内积可以一定程度反应两个样本之间的相似度)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;因为核函数可以总结为：&lt;strong&gt;映射、内积、相似度&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;再生核希尔伯特空间的定义&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;有了核函数，那么就会至少有一个与之对应的再生核希尔伯特空间 $\mathcal{H}$，它满足&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;固定任意 $x_0$，则 $\kappa(\cdot,x_0):\mathbb{R^p} \rightarrow \mathbb{R}$ (这是个函数！) 属于 $\mathcal{H}$ (这是个函数空间！)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;再生性：&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+&lt;\kappa(\cdot,x),f&gt; &amp;= f(x),f \in \mathcal{H} \\
+&lt;\kappa(\cdot,x),\kappa(\cdot,z)&gt; &amp;= \kappa(x,z) = \kappa(z,x)
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;给定核函数如何确定映射以及对应的希尔伯特空间？&lt;/p&gt;
+
+&lt;p&gt;定义再生核map $\Phi:\mathbb{R}^p \rightarrow \mathbb{R}^{\mathbb{R}^p}$ 且 $\Phi(z)=\kappa(\cdot,z)$，相当于将 $z\in \mathbb{R}^p$ 映射成一个函数 $\kappa(\cdot,z):\mathbb{R}^p \rightarrow \mathbb{R}$，则&lt;/p&gt;
+
+&lt;p&gt;$$
+\kappa(x,z) = &amp;lt;\kappa(\cdot,x),\kappa(\cdot,z)&amp;gt;=&amp;lt;\Phi(x),\Phi(z)&amp;gt;
+$$&lt;/p&gt;
+
+&lt;p&gt;即通过核函数可以找到对应的映射，而对应的希尔伯特空间可以表示为由 $\Phi(\cdot)$ 组成的向量空间。&lt;/p&gt;
+
+&lt;p&gt;给定映射关系如何确定核函数？&lt;/p&gt;
+
+&lt;p&gt;直接令 $\kappa(x,z) = &amp;lt;\Phi(x),\Phi(z)&amp;gt;$，然后验证 Mercer 定理即可。&lt;/p&gt;
+
+&lt;h2 id=&#34;各种空间的定义补充&#34;&gt;各种空间的定义补充&lt;/h2&gt;
+
+&lt;p&gt;各种空间之间的关系其实有点&lt;strong&gt;从抽象到具体的过程&lt;/strong&gt;。我们给空间&lt;strong&gt;赋予一些属性或者制定一些规则&lt;/strong&gt;就能得到特定的空间。&lt;/p&gt;
+
+&lt;p&gt;比如大家熟悉的&lt;strong&gt;向量空间&lt;/strong&gt;，那就是满足加减法和数乘的空间，很好理解，空间内任意元素都可以用一组基通过加减和数乘(线性组合)表示。&lt;/p&gt;
+
+&lt;p&gt;比如赋予距离的空间称为&lt;strong&gt;度量空间&lt;/strong&gt;，定义距离时需要遵守三条公理：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;非负性，同一性：距离都是非负的，自己到自己的距离当然是 0 了&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;对称性：你走向我的距离等于我走向你的距离&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;三角不等式：你从 A 走到 B 在走到 C 的距离肯定大于等于直接从 A 到 C 的距离&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;比如赋予范数的空间称为&lt;strong&gt;赋范空间&lt;/strong&gt;，范数可以理解为一个元素到 0 的距离，同时它比距离的定义&lt;strong&gt;更具体了一步&lt;/strong&gt;，因为它还需要额外满足&lt;/p&gt;
+
+&lt;p&gt;$$
+||ax|| = |a| \times||x||
+$$&lt;/p&gt;
+
+&lt;p&gt;那么我们在定义了范数后自然能用范数来定义距离了，比如 $d(x,y) = ||x-y||$，但是不能用距离来定义范数哦，因为&lt;strong&gt;波霸奶茶是奶茶，但不是所有奶茶都叫波霸奶茶&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;有了范数来定义距离了有时候还不够，我们有时候会需要&lt;strong&gt;角度&lt;/strong&gt;信息，这时候就&lt;strong&gt;再给波霸奶茶加点料&lt;/strong&gt;，于是赋予了内积的向量空间称为&lt;strong&gt;内积空间&lt;/strong&gt;，定义内积需要遵守三条公理：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;对称性&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;第一元素线性：
+$$&amp;lt;ax,y&amp;gt;=a&amp;lt;x,y&amp;gt;,&amp;lt;x+y,z&amp;gt;=&amp;lt;x,z&amp;gt;+&amp;lt;y,z&amp;gt;$$ 这不就是向量空间的数乘和加减运算嘛&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;正定性&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;那么定义了内积后自然也能用&lt;strong&gt;加了仙草的波霸奶茶来定义波霸奶茶&lt;/strong&gt;(用内积来定义范数)，比如&lt;/p&gt;
+
+&lt;p&gt;$$||x||=\sqrt{&amp;lt;x,x&amp;gt;}$$&lt;/p&gt;
+
+&lt;p&gt;还有个比较难以描述的&lt;strong&gt;完备空间&lt;/strong&gt;，可以理解为极限操作不会跑出自己的空间就称为完备的，&lt;strong&gt;奶茶只要三分糖，太甜了就超出能承受的甜度极限了呗&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;有了这么一步步的具体化后，&lt;strong&gt;希尔伯特空间&lt;/strong&gt;就可以出来了，它就是&lt;strong&gt;一杯三分糖的加了仙草的波霸奶茶&lt;/strong&gt;，呸，它就是&lt;strong&gt;一个完备的内积空间&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;总结来说：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;赋范线性空间就是赋予了范数的向量空间，也是度量空间（具有线性结构的度量空间）&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;内积空间是赋范线性空间&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;希尔伯特空间就是完备的内积空间，同时需要注意的是希尔伯特空间中的元素一般是函数，一个函数可以视为一个无穷维的向量。如果大家熟悉傅里叶变换或者泰勒展开，便能自然的想到这个空间的基底是什么。没错，也是一组无限多的函数。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;</description>
+    </item>
     
     <item>
       <title>「机器学习」支持向量机SVM</title>

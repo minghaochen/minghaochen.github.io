@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2019-08-14T20:05:08&#43;08:00"/>
+<meta property="og:updated_time" content="2019-08-15T20:59:29&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -113,6 +113,139 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/">核函数与再生核希尔伯特空间</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-08-15 </span>
+      <div class="post-category">
+          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>说到核方法，很多人第一反应就是SVM，其实不然，其应用很广，但核心思想均是<strong>用在原始空间计算核函数的值来避免直接求解高维特征空间的内积</strong>；说到核函数往往还会带上一个吓人的概念“再生核希尔伯特空间”，先揭秘一下什么是希尔伯特空间，希尔伯特空间其实就是<strong>函数空间</strong>(或者可以把函数理解为无限维的向量)，函数空间里任意一个元素都表示一个函数，而再加上“再生核”这个限定词相当于就是特定的函数空间，就是具有再生性的函数空间，那什么是再生性听我慢慢道来。</p>
+
+<p>假设有原始空间样本 $x_i \in \mathbb{R}^p, i=1,&hellip;,N$，通常为了<strong>在高维空间寻找线性关系</strong>我们会将其通过函数映射 $\phi(\cdot)$ 到高维空间 $\phi(x_i) \in \mathbb{R}^n$，但是这样也意味着如果原始空间求内积 $&lt;x_i,x_j&gt;$ 对应到特征空间为 $&lt;\phi(x_i),\phi(x_j)&gt;$，直接求解高维空间的内积计算量是很大的，同时我们可能并不知道这个映射函数 $\phi(\cdot)$ 怎么选择才是合适的。核函数则提供了另一种求解的思路。</p>
+
+<p><strong>核函数的定义</strong></p>
+
+<p>$$
+\kappa(\cdot,\cdot):\mathbb{R}^p \times \mathbb{R}^p \rightarrow \mathbb{R}
+$$</p>
+
+<p>则特征空间的内积可以表示为</p>
+
+<p>$$
+&lt;\phi(x_i),\phi(x_j)&gt; = \kappa(x_i,x_j)
+$$</p>
+
+<p>此外，特征空间的距离和角度也可以用核函数来表示。</p>
+
+<p>同时有 Mercer 定理告诉我们怎么样的函数能称为核函数</p>
+
+<blockquote>
+<p>任何正半定函数均可以作为核函数，即由 $\kappa(\cdot,\cdot)$ 构成的核矩阵 $K$ 是正半定的：$a^TKa\ge 0$，其中 $K_{ij} = \kappa(x_i,x_j)$</p>
+</blockquote>
+
+<p><strong>这也就说明了只要我们构造出一个正定核(往往是应用现成的)，那么就不需要显式地定义特征空间和映射函数，并且能够利用已有的线性方法来解决非线性问题</strong>。<strong>同时，核函数还可以理解为用来衡量两个向量的相似度(因为内积可以一定程度反应两个样本之间的相似度)</strong></p>
+
+<p>因为核函数可以总结为：<strong>映射、内积、相似度</strong></p>
+
+<p><strong>再生核希尔伯特空间的定义</strong></p>
+
+<p>有了核函数，那么就会至少有一个与之对应的再生核希尔伯特空间 $\mathcal{H}$，它满足</p>
+
+<ol>
+<li><p>固定任意 $x_0$，则 $\kappa(\cdot,x_0):\mathbb{R^p} \rightarrow \mathbb{R}$ (这是个函数！) 属于 $\mathcal{H}$ (这是个函数空间！)</p></li>
+
+<li><p>再生性：</p></li>
+</ol>
+
+<div>$$
+\begin{aligned}
+<\kappa(\cdot,x),f> &= f(x),f \in \mathcal{H} \\
+<\kappa(\cdot,x),\kappa(\cdot,z)> &= \kappa(x,z) = \kappa(z,x)
+\end{aligned}
+$$</div>
+
+<p>给定核函数如何确定映射以及对应的希尔伯特空间？</p>
+
+<p>定义再生核map $\Phi:\mathbb{R}^p \rightarrow \mathbb{R}^{\mathbb{R}^p}$ 且 $\Phi(z)=\kappa(\cdot,z)$，相当于将 $z\in \mathbb{R}^p$ 映射成一个函数 $\kappa(\cdot,z):\mathbb{R}^p \rightarrow \mathbb{R}$，则</p>
+
+<p>$$
+\kappa(x,z) = &lt;\kappa(\cdot,x),\kappa(\cdot,z)&gt;=&lt;\Phi(x),\Phi(z)&gt;
+$$</p>
+
+<p>即通过核函数可以找到对应的映射，而对应的希尔伯特空间可以表示为由 $\Phi(\cdot)$ 组成的向量空间。</p>
+
+<p>给定映射关系如何确定核函数？</p>
+
+<p>直接令 $\kappa(x,z) = &lt;\Phi(x),\Phi(z)&gt;$，然后验证 Mercer 定理即可。</p>
+
+<h2 id="各种空间的定义补充">各种空间的定义补充</h2>
+
+<p>各种空间之间的关系其实有点<strong>从抽象到具体的过程</strong>。我们给空间<strong>赋予一些属性或者制定一些规则</strong>就能得到特定的空间。</p>
+
+<p>比如大家熟悉的<strong>向量空间</strong>，那就是满足加减法和数乘的空间，很好理解，空间内任意元素都可以用一组基通过加减和数乘(线性组合)表示。</p>
+
+<p>比如赋予距离的空间称为<strong>度量空间</strong>，定义距离时需要遵守三条公理：</p>
+
+<ol>
+<li><p>非负性，同一性：距离都是非负的，自己到自己的距离当然是 0 了</p></li>
+
+<li><p>对称性：你走向我的距离等于我走向你的距离</p></li>
+
+<li><p>三角不等式：你从 A 走到 B 在走到 C 的距离肯定大于等于直接从 A 到 C 的距离</p></li>
+</ol>
+
+<p>比如赋予范数的空间称为<strong>赋范空间</strong>，范数可以理解为一个元素到 0 的距离，同时它比距离的定义<strong>更具体了一步</strong>，因为它还需要额外满足</p>
+
+<p>$$
+||ax|| = |a| \times||x||
+$$</p>
+
+<p>那么我们在定义了范数后自然能用范数来定义距离了，比如 $d(x,y) = ||x-y||$，但是不能用距离来定义范数哦，因为<strong>波霸奶茶是奶茶，但不是所有奶茶都叫波霸奶茶</strong></p>
+
+<p>有了范数来定义距离了有时候还不够，我们有时候会需要<strong>角度</strong>信息，这时候就<strong>再给波霸奶茶加点料</strong>，于是赋予了内积的向量空间称为<strong>内积空间</strong>，定义内积需要遵守三条公理：</p>
+
+<ol>
+<li><p>对称性</p></li>
+
+<li><p>第一元素线性：
+$$&lt;ax,y&gt;=a&lt;x,y&gt;,&lt;x+y,z&gt;=&lt;x,z&gt;+&lt;y,z&gt;$$ 这不就是向量空间的数乘和加减运算嘛</p></li>
+
+<li><p>正定性</p></li>
+</ol>
+
+<p>那么定义了内积后自然也能用<strong>加了仙草的波霸奶茶来定义波霸奶茶</strong>(用内积来定义范数)，比如</p>
+
+<p>$$||x||=\sqrt{&lt;x,x&gt;}$$</p>
+
+<p>还有个比较难以描述的<strong>完备空间</strong>，可以理解为极限操作不会跑出自己的空间就称为完备的，<strong>奶茶只要三分糖，太甜了就超出能承受的甜度极限了呗</strong>。</p>
+
+<p>有了这么一步步的具体化后，<strong>希尔伯特空间</strong>就可以出来了，它就是<strong>一杯三分糖的加了仙草的波霸奶茶</strong>，呸，它就是<strong>一个完备的内积空间</strong></p>
+
+<blockquote>
+<p>总结来说：</p>
+
+<ol>
+<li><p>赋范线性空间就是赋予了范数的向量空间，也是度量空间（具有线性结构的度量空间）</p></li>
+
+<li><p>内积空间是赋范线性空间</p></li>
+
+<li><p>希尔伯特空间就是完备的内积空间，同时需要注意的是希尔伯特空间中的元素一般是函数，一个函数可以视为一个无穷维的向量。如果大家熟悉傅里叶变换或者泰勒展开，便能自然的想到这个空间的基底是什么。没错，也是一组无限多的函数。</p></li>
+</ol>
+</blockquote>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/">「机器学习」支持向量机SVM</a></h1>
@@ -502,217 +635,6 @@ $\nabla_x f_0(x^*) + \sum_{i=1}^k \lambda_i^* \nabla_x f_i(x^*) + \sum_{j=1}^l v
     </div>
     <div class="read-more">
       <a href="/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/" class="read-more-link">Read more..</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/">「机器学习」主成分分析PCA</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-08-09 </span>
-      <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <h1 id="为什么要降维">为什么要降维</h1>
-
-<p>要说到降维的目的，主要是用来解决过拟合这一问题的，降维的方式主要有三种</p>
-
-<ul>
-<li>直接降维—特征选择</li>
-<li>线性降维—PCA(今日份猪脚)，MDS多维尺度法</li>
-<li>非线性降维—流形学习ISOMAP，LLE(Locally Linear Embedding)</li>
-</ul>
-
-<h1 id="数据矩阵描述">数据矩阵描述</h1>
-
-<p>数据：$X=(x_1,x_2,&hellip;,x_N)^T_{N \times P }, x_i \in \mathbb{R}^P $，为了便于后续推导我们将均值和方差表示为矩阵形式，思路就是<strong>把连加符号改写成矩阵乘积的形式</strong>。</p>
-
-<p>采样均值为：
-$$
-\bar{x} = \frac{1}{N}\sum_{i=1}^N x_i = \frac{1}{N}(x_1,x_2,&hellip;,x_N)\mathbb{1}_{N} = \frac{1}{N}X^T\mathbb{1}_N
-$$
-采样方差为
-$$
-S = \frac{1}{N}\sum_{i=1}^N (x_i-\bar{x}) (x_i-\bar{x})^T = \frac{1}{N}X^THH^TX =  \frac{1}{N}X^THX
-$$
-其中 $H = I_N - \frac{1}{N}\mathbb{1}_N\mathbb{1}_N^T$ 为中心矩阵，作用可以理解为<strong>去均值</strong>，这里可以中心均镇的转置等于本身，中心矩阵的平方 $HH^T$ 等于中心矩阵 $H$ 本身。</p>
-
-<h1 id="pca的主要思想">PCA的主要思想</h1>
-
-<ul>
-<li>一个中心：原始特征空间的重构</li>
-<li>两个基本点： 1. 最大投影方差 2. 最小重构代价</li>
-</ul>
-
-<p>首先将数据进行中心化，即 $x_i - \bar{x}$</p>
-
-<h2 id="最大投影方差角度">最大投影方差角度</h2>
-
-<p>假设有单位投影向量 $u_1,||u_1||_2 = 1$，向量 $x_i - \bar{x}$ 在 $u_1$ 上的投影为 $(x_i - \bar{x})^Tu_1$ 且均值为0，那么目标函数最大化投影方差可以直接表示为
-$$
-\max J=\frac{1}{N} \sum_{i=1}^N((x_i - \bar{x})^Tu_1)^2 = u_1^T\cdot S\cdot u_1  \quad s.t. u_1^Tu_1 = 1
-$$
-这是一个等式约束的最优化问题，直接拉格朗日乘子法写开</p>
-
-<div>$$
-\begin{array}{l} \mathcal{L}\left(u_{1}, \lambda\right)=u_{1}^{T} S u_{1}+\lambda\left(1-u_{1}^{T} u\right)\\ {\frac{\partial \mathcal{L}}{\partial u_{1}}=2 S \cdot u_{1}-\lambda \cdot 2 u_{1}=0}\end{array}
-$$</div>
-
-<p>即
-$$
-Su_1 = \lambda u_1
-$$
-转化成<strong>特征值分解</strong>的问题，所谓的主成分也就是特征向量矩阵，用最大的 $q$ 个特征值对应的特征向量来重构数据矩阵就是特征空间的重构。</p>
-
-<h2 id="最小重构代价角度">最小重构代价角度</h2>
-
-<p>何谓重构代价？我们先来看下在重构空间中原始数据的表示为
-$$
-x_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_p)\cdot u_p = \sum_{k=1}^p (x_i^T\cdot u_k) \cdot u_k
-$$
-$x_i^Tu_k$ 可以理解成各个投影，$u_k$ 为投影方向。
-如果将特征进行压缩，用 $q$ 个特征来表示原始特征空间，则
-$$
-\hat{x}_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_q)\cdot u_q = \sum_{k=1}^q (x_i^T\cdot u_k) \cdot u_k
-$$
-上面两个式子均假设 $x_i$ 中心化过了。那么重构代价很直观的理解就是 $x_i - \hat{x}_i$，目标函数就能表示为
-$$
-\min J = \sum_{i=1}^N ||x_i - \hat{x}_i ||^2=\sum_{k=q+1}^p u_k^T \cdot S \cdot u_k \quad s.t. u_k^T\cdot u_k =1
-$$
-由于 $u_k$ 之间是无关的，所以这个优化问题可以拆成单个的优化问题逐一求解。也就转化成<strong>特征值求解</strong>问题，即求得最小 $p-q$ 个特征值所对应的特征向量。</p>
-
-<h2 id="svd角度">SVD角度</h2>
-
-<p>前面的两个基本点相当于都是从<strong>方差矩阵 $S$ 进行特征值分解</strong>来获得主成分的。下面来看看如果直接对数据矩阵进行奇异值分解，两者之间会有什么样的联系。</p>
-
-<p>对中心化后的数据进行SVD分解：
-$$
-HX = U \Sigma V^T
-$$
-原来的方差矩阵可以表示为
-$$
-S = X^THX=X^TH^THX = V\Sigma U^TU\Sigma V^T=V\Sigma^2V^T
-$$
-也就是说<strong>对 $HX$ 进行奇异值分解得到的 $V$ 矩阵就是对方差矩阵进行特征值分解得到的特征矩阵，奇异值分解得到到奇异值矩阵的平方就是特征值分解得到的特征值矩阵。</strong></p>
-
-<p>构造矩阵
-$$T =HXX^TH=U\Sigma V^TV\Sigma U^T=U\Sigma^2U^T$$
-可以看出 $T$ 和 $S$ 具有<strong>相同的特征值。</strong>
-要获得重构空间的坐标有两个思路：</p>
-
-<ol>
-<li><p>内积求投影：$HX\cdot V$</p></li>
-
-<li><p>对矩阵 $T$ 进行特征分解：
-$$
-TU\Sigma = U\Sigma^2U^TU\Sigma= U\Sigma^3 = \Sigma^2\cdot U\Sigma
-$$
-$$
-HX \cdot V=U \Sigma V^T V= U \Sigma
-$$</p></li>
-</ol>
-
-<p><strong>因此在遇到原始数据特征空间较高时($P$ 大于 $N$)，可以采用 $T$ 矩阵进行特征分解直接获得坐标，也称为主坐标分解(PCoA)</strong></p>
-
-<h2 id="概率主成分分析-p-pca">概率主成分分析(P-PCA)</h2>
-
-<p>从概率的角度来看则是将观测数据 $x \in \mathcal{R}^p$ 作为观测变量(observed variable)，重构特征空间 $z \in \mathcal{R}^q$ 作为隐变量(latent variable)，我们降维的过程则相当于从观测变量去求得隐变量的过程
-<strong>假设</strong></p>
-
-<div>$$
-\begin{equation}
-\begin{aligned}
-z &\in \mathcal{N}(0,I_q)\\
-x &= Wz + \mu + \epsilon\\
-\epsilon &\in \mathcal{N}(0,\sigma^2 I_p)
-\end{aligned}
-\end{equation}
-$$</div>
-
-<p>且 $z$ 和 $\epsilon$ 相互独立。这是一个线性高斯模型，相当于我们有了 $z, x|z, x$ 要求 $z|x$。</p>
-
-<p>第一步就是Inference求后验 $z|x$ (通过构造 $x,z$ 的联合概率求条件概率)</p>
-
-<p>第二步就是Learning参数 $W, \mu, \sigma$（比如采用EM算法）</p>
-
-<p><strong>P-PCA与GMM的区别</strong>：P-PCA的隐变量是连续的，而GMM的隐变量是离散的。</p>
-
-<h2 id="matlab-实现">Matlab 实现</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">% Data 两个特征线性关系加点噪声
-X1 = [1,2,3,4,5,6]&#39;;
-X2 = [X1] + rand(6,1);
-X = [X1,X2];
-plot(X1,X2)
-N = size(X,1);
-
-% 矩阵描述
-x_bar = 1/N*X&#39;*ones(N,1);
-H = eye(N) - 1/N*ones(N,1)*ones(N,1)&#39;;
-S = 1/N*X&#39;*H*X;
-
-% 根据采样方差特征值分解
-[G,K] = eig(S);
-
-% 根据中心化的数据进行奇异值分解
-[U,Sigma,V] = svd(H*X);
-
-% 方差矩阵的特征值与奇异值分解的奇异值的关系
-Sigma.^2/N
-K
-% 观察V矩阵和G矩阵的关系
-G
-V
-
-% 主坐标分析
-T = H*X*X&#39;*H&#39;;
-[G2,K2] = eig(T);
-% 观察非零特征值对应特征向量也就是主坐标与HXV的关系
-H*X*V</pre></td></tr></table>
-</div>
-</div>
-    </div>
-    <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/" class="read-more-link">Read more..</a>
     </div>
   </div>
 </article>
