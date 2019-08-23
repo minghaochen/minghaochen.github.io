@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
-    <lastBuildDate>Sat, 17 Aug 2019 08:27:25 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 23 Aug 2019 09:44:21 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -19,6 +19,105 @@
       
       <guid>https://minghaochen.github.io/about/</guid>
       <description>  I&amp;#39;m a PhD student from Zhejiang University, China. Love bodybuilding, food and travel. Now I focus on Model Predictive Control and System Identification.   </description>
+    </item>
+    
+    <item>
+      <title>美音发音技巧——末尾s的发音</title>
+      <link>https://minghaochen.github.io/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/</link>
+      <pubDate>Fri, 23 Aug 2019 09:44:21 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/</guid>
+      <description>&lt;p&gt;不知道你会不会傻傻分不清楚&lt;/p&gt;
+
+&lt;p&gt;likes  /s/ 还是 /z/？&lt;/p&gt;
+
+&lt;p&gt;lives /s/ 还是 /z/？&lt;/p&gt;
+
+&lt;p&gt;首先说说 /s/ 和 /z/ 的发音，需要注意的是这个 /z/ 的发音其实和 /s/ 是一样的！只是在 /s/ 的基础上加上了声带的震动， &lt;strong&gt;不是中文拼音里的 z，是中文拼音里的 z，是中文拼音里的 z&lt;/strong&gt;！！！ 重要的事情说三遍，很多小伙伴很可能都是按照拼音的 ‘zi’ 来发音(包括我之前也是)那就要好好改改咯。&lt;/p&gt;
+
+&lt;p&gt;知道了怎么发音我们再来看几个单词，你试着读读看？&lt;/p&gt;
+
+&lt;p&gt;Set 1: likes/books/laughs/mats&lt;/p&gt;
+
+&lt;p&gt;Set 2: lives/feels/cares&lt;/p&gt;
+
+&lt;p&gt;Set 3: is/has/was/these/because&lt;/p&gt;
+
+&lt;p&gt;答案揭晓：&lt;strong&gt;第一组都发 /s/，第二组都发 /z/，第三组都发 /z/&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;不知道你发对了没有还是 /s/ 和 /z/ 胡乱发一通，搞不清楚也没关系，我们先来找找规律，第一组 s 前都是什么？对！是以&lt;strong&gt;清辅音&lt;/strong&gt; 结尾的；第二组呢？是以&lt;strong&gt;浊辅音&lt;/strong&gt;结尾的，第三组则是&lt;strong&gt;元音&lt;/strong&gt;结尾的。&lt;/p&gt;
+
+&lt;p&gt;那你就记住：&lt;strong&gt;/s/ 是清辅音，那就接在清辅音后面，/z/ 是浊辅音那就接在浊辅音后面，元音后面通常跟 /z/&lt;/strong&gt;，OK，再试试把上面三组单词读一遍感受一下。&lt;/p&gt;
+
+&lt;p&gt;问题又来了，有的小伙伴会问什么是清辅音，什么是浊辅音，这个很好判断，你摸着你的声带，发音时感受到声带的就是浊辅音，比如/b/,/d/,/g/,/v/,/z/，不震动的就是清辅音，比如/p/,/t/,/k/,/f/,/s/。&lt;/p&gt;
+
+&lt;p&gt;还有一个关于浊辅音和清辅音的技巧就是：&lt;strong&gt;浊辅音前的元音发音更“长”一点&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;不信你对比一下以下几组单词： back 和 bag; safe 和save; pick 和 pig; lock 和 log; cup 和 cub&lt;/p&gt;
+
+&lt;p&gt;是不是发音每组单词中后面那个单词的元音都拉得比较长呢，那就对了！&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>「机器学习」EM算法</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Thu, 22 Aug 2019 09:43:39 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/</guid>
+      <description>&lt;p&gt;期望最大(EM)算法想必大家都听过这名字，我也是，大概两年前就学过用过这个算法，但是到后来只记得EM这个名字，把算法的原理都给忘光光了，这几天重新捡起来，总结一下，也希望对想了解这个算法的人有点启发。我们还是按照为什么、是什么、怎么用的逻辑来梳理一下。&lt;/p&gt;
+
+&lt;h2 id=&#34;为什么要用em算法&#34;&gt;为什么要用EM算法？&lt;/h2&gt;
+
+&lt;p&gt;会看到这篇博客的大家想必都知道，EM算法是用来&lt;strong&gt;估计参数&lt;/strong&gt;的，并且是以&lt;strong&gt;迭代&lt;/strong&gt;的方式进行。看到估计参数这个字眼，你脑子里首先会想到什么方法？毫无疑问就是极大似然法吧，再帮大家回忆一下极大似然法的思想：&lt;strong&gt;什么参数对应的事件发生的概率最大，我们就认为这个参数就是未知参数的估计值&lt;/strong&gt;。通俗一点讲就是你知道了事件的观测值 $y_1,&amp;hellip;,y_n$，然后要寻找能够让事件发生的可能性 $p(y_1,&amp;hellip;,y_n|\theta)$ 最大的参数 $\hat{\theta}$，也就是&lt;/p&gt;
+
+&lt;div&gt;$$
+\hat{\theta}=\arg\max_{\theta} p(y_1,...,y_n|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;或者通常为了计算方便采用对数的形式&lt;/p&gt;
+
+&lt;div&gt;$$
+\hat{\theta}=\arg\max_{\theta} \log p(y_1,...,y_n|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;其中 $\log p(y_1,&amp;hellip;,y_n|\theta)$ 就称为对数似然函数，常常假设事件之间相互独立，那也就能进一步把联合概率写成独立概率乘积的形式：&lt;/p&gt;
+
+&lt;div&gt;$$
+\hat{\theta}=\arg\max_{\theta} \log \prod_{i=1}^n p(y_i|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;这样一个无约束的优化问题利用极值条件(导数为0)也就能得到待估计参数的解析解了。&lt;/p&gt;
+
+&lt;p&gt;回到我们的问题&lt;strong&gt;为什么要用EM算法&lt;/strong&gt;，那肯定是因为极大似然法不管用了呗，也就是当有&lt;strong&gt;隐变量(latent variable)&lt;/strong&gt;存在的时候，原来的对数似然函数变为&lt;/p&gt;
+
+&lt;div&gt;$$
+\log p(Y|\theta) = \log \sum_{Z} p(Y|Z,\theta)p(Z,\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;相当于求完全数据 $Y,Z$ 的联合分布 $p(Y,Z|\theta)$ (把隐变量积分掉)的和，但是由于里面包含隐变量，直接用极大似然求解是不行滴。但是如果能够估计出隐变量 $Z$，那这个问题又回到了原来的极大似然估计。这样也就自然地与EM算法的思想挂上勾了：&lt;strong&gt;估计隐变量(E步)，再估计参数(M步)，不断迭代&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;现在可以回答第一个问题了：为什么要用EM算法？&lt;strong&gt;EM算法是用来解决含有隐变量的参数估计问题的。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;什么是em算法&#34;&gt;什么是EM算法？&lt;/h2&gt;
+
+&lt;p&gt;那么这个所谓的迭代算法是怎么迭代的呢？我们还是先回到对数似然函数，可以将其表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\log p(y|\theta) &amp;= \log p(y,z|\theta) - \log p(z|y,\theta)\\
+&amp;=\log \frac{p(y,z|\theta)}{q(z)}-\log \frac{p(z|y,\theta)}{q(z)}
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;第一行公式根据条件概率公式可得，第二行公式相当于减去一个 $\log q(z)$ 再加上一个 $\log q(z)$ 恒等变换。&lt;/p&gt;
+
+&lt;p&gt;然后这里有个技巧&lt;strong&gt;同时对两侧对$Z$积分&lt;/strong&gt;，因为我们想把隐变量消去，积分的思想还是很自然的。&lt;/p&gt;
+
+&lt;p&gt;左边积分还是它本身：&lt;/p&gt;
+
+&lt;div&gt;$$
+\int_z q(z) \log p(y|\theta) dz = \log p(y|\theta) \int_z q(z) dz = \log p(y|\theta)
+$$&lt;/div&gt;</description>
     </item>
     
     <item>

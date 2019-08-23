@@ -7,10 +7,72 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
-    <lastBuildDate>Sat, 17 Aug 2019 08:27:25 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 22 Aug 2019 09:43:39 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>「机器学习」EM算法</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Thu, 22 Aug 2019 09:43:39 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/</guid>
+      <description>&lt;p&gt;期望最大(EM)算法想必大家都听过这名字，我也是，大概两年前就学过用过这个算法，但是到后来只记得EM这个名字，把算法的原理都给忘光光了，这几天重新捡起来，总结一下，也希望对想了解这个算法的人有点启发。我们还是按照为什么、是什么、怎么用的逻辑来梳理一下。&lt;/p&gt;
+
+&lt;h2 id=&#34;为什么要用em算法&#34;&gt;为什么要用EM算法？&lt;/h2&gt;
+
+&lt;p&gt;会看到这篇博客的大家想必都知道，EM算法是用来&lt;strong&gt;估计参数&lt;/strong&gt;的，并且是以&lt;strong&gt;迭代&lt;/strong&gt;的方式进行。看到估计参数这个字眼，你脑子里首先会想到什么方法？毫无疑问就是极大似然法吧，再帮大家回忆一下极大似然法的思想：&lt;strong&gt;什么参数对应的事件发生的概率最大，我们就认为这个参数就是未知参数的估计值&lt;/strong&gt;。通俗一点讲就是你知道了事件的观测值 $y_1,&amp;hellip;,y_n$，然后要寻找能够让事件发生的可能性 $p(y_1,&amp;hellip;,y_n|\theta)$ 最大的参数 $\hat{\theta}$，也就是&lt;/p&gt;
+
+&lt;div&gt;$$
+\hat{\theta}=\arg\max_{\theta} p(y_1,...,y_n|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;或者通常为了计算方便采用对数的形式&lt;/p&gt;
+
+&lt;div&gt;$$
+\hat{\theta}=\arg\max_{\theta} \log p(y_1,...,y_n|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;其中 $\log p(y_1,&amp;hellip;,y_n|\theta)$ 就称为对数似然函数，常常假设事件之间相互独立，那也就能进一步把联合概率写成独立概率乘积的形式：&lt;/p&gt;
+
+&lt;div&gt;$$
+\hat{\theta}=\arg\max_{\theta} \log \prod_{i=1}^n p(y_i|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;这样一个无约束的优化问题利用极值条件(导数为0)也就能得到待估计参数的解析解了。&lt;/p&gt;
+
+&lt;p&gt;回到我们的问题&lt;strong&gt;为什么要用EM算法&lt;/strong&gt;，那肯定是因为极大似然法不管用了呗，也就是当有&lt;strong&gt;隐变量(latent variable)&lt;/strong&gt;存在的时候，原来的对数似然函数变为&lt;/p&gt;
+
+&lt;div&gt;$$
+\log p(Y|\theta) = \log \sum_{Z} p(Y|Z,\theta)p(Z,\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;相当于求完全数据 $Y,Z$ 的联合分布 $p(Y,Z|\theta)$ (把隐变量积分掉)的和，但是由于里面包含隐变量，直接用极大似然求解是不行滴。但是如果能够估计出隐变量 $Z$，那这个问题又回到了原来的极大似然估计。这样也就自然地与EM算法的思想挂上勾了：&lt;strong&gt;估计隐变量(E步)，再估计参数(M步)，不断迭代&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;现在可以回答第一个问题了：为什么要用EM算法？&lt;strong&gt;EM算法是用来解决含有隐变量的参数估计问题的。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;什么是em算法&#34;&gt;什么是EM算法？&lt;/h2&gt;
+
+&lt;p&gt;那么这个所谓的迭代算法是怎么迭代的呢？我们还是先回到对数似然函数，可以将其表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\log p(y|\theta) &amp;= \log p(y,z|\theta) - \log p(z|y,\theta)\\
+&amp;=\log \frac{p(y,z|\theta)}{q(z)}-\log \frac{p(z|y,\theta)}{q(z)}
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;第一行公式根据条件概率公式可得，第二行公式相当于减去一个 $\log q(z)$ 再加上一个 $\log q(z)$ 恒等变换。&lt;/p&gt;
+
+&lt;p&gt;然后这里有个技巧&lt;strong&gt;同时对两侧对$Z$积分&lt;/strong&gt;，因为我们想把隐变量消去，积分的思想还是很自然的。&lt;/p&gt;
+
+&lt;p&gt;左边积分还是它本身：&lt;/p&gt;
+
+&lt;div&gt;$$
+\int_z q(z) \log p(y|\theta) dz = \log p(y|\theta) \int_z q(z) dz = \log p(y|\theta)
+$$&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>「机器学习」指数族分布</title>
