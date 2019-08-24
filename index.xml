@@ -64,26 +64,28 @@
       <pubDate>Thu, 22 Aug 2019 09:43:39 +0800</pubDate>
       
       <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/</guid>
-      <description>&lt;p&gt;期望最大(EM)算法想必大家都听过这名字，我也是，大概两年前就学过用过这个算法，但是到后来只记得EM这个名字，把算法的原理都给忘光光了，这几天重新捡起来，总结一下，也希望对想了解这个算法的人有点启发。我们还是按照为什么、是什么、怎么用的逻辑来梳理一下。&lt;/p&gt;
+      <description>&lt;p&gt;期望最大(EM)算法的大名想必大家都听过，说来惭愧，大概两年前就学过用过这个算法，但是到后来只记得EM这个名字，把算法的原理都给忘光光了，这几天重新捡起来，总结一下，也希望对想了解这个算法的人有点启发。&lt;/p&gt;
+
+&lt;p&gt;对我EM算法我总结为三点：&lt;strong&gt;为什么&lt;/strong&gt;、&lt;strong&gt;是什么&lt;/strong&gt;、&lt;strong&gt;怎么用&lt;/strong&gt;。&lt;/p&gt;
 
 &lt;h2 id=&#34;为什么要用em算法&#34;&gt;为什么要用EM算法？&lt;/h2&gt;
 
-&lt;p&gt;会看到这篇博客的大家想必都知道，EM算法是用来&lt;strong&gt;估计参数&lt;/strong&gt;的，并且是以&lt;strong&gt;迭代&lt;/strong&gt;的方式进行。看到估计参数这个字眼，你脑子里首先会想到什么方法？毫无疑问就是极大似然法吧，再帮大家回忆一下极大似然法的思想：&lt;strong&gt;什么参数对应的事件发生的概率最大，我们就认为这个参数就是未知参数的估计值&lt;/strong&gt;。通俗一点讲就是你知道了事件的观测值 $y_1,&amp;hellip;,y_n$，然后要寻找能够让事件发生的可能性 $p(y_1,&amp;hellip;,y_n|\theta)$ 最大的参数 $\hat{\theta}$，也就是&lt;/p&gt;
+&lt;p&gt;会看到这篇博客的大家想必都知道，EM算法是用来&lt;strong&gt;估计参数&lt;/strong&gt;的，并且是以&lt;strong&gt;迭代&lt;/strong&gt;的方式进行。看到估计参数这个字眼，你脑子里首先会想到什么方法？毫无疑问就是极大似然法吧，再帮大家回忆一下极大似然法的思想：&lt;strong&gt;什么参数对应的事件发生的概率最大，我们就认为这个参数就是未知参数的估计值&lt;/strong&gt;。通俗一点讲就是你知道了事件的观测值 $y_1,&amp;hellip;,y_N$，然后要寻找能够让事件发生的可能性 $p(y_1,&amp;hellip;,y_N|\theta)$ 最大的参数 $\hat{\theta}$，也就是&lt;/p&gt;
 
 &lt;div&gt;$$
-\hat{\theta}=\arg\max_{\theta} p(y_1,...,y_n|\theta)
+\hat{\theta}=\arg\max_{\theta} p(y_1,...,y_N|\theta)
 $$&lt;/div&gt;
 
 &lt;p&gt;或者通常为了计算方便采用对数的形式&lt;/p&gt;
 
 &lt;div&gt;$$
-\hat{\theta}=\arg\max_{\theta} \log p(y_1,...,y_n|\theta)
+\hat{\theta}=\arg\max_{\theta} \log p(y_1,...,y_N|\theta)
 $$&lt;/div&gt;
 
-&lt;p&gt;其中 $\log p(y_1,&amp;hellip;,y_n|\theta)$ 就称为对数似然函数，常常假设事件之间相互独立，那也就能进一步把联合概率写成独立概率乘积的形式：&lt;/p&gt;
+&lt;p&gt;其中 $\log p(y_1,&amp;hellip;,y_N|\theta)$ 就称为对数似然函数，常常假设事件之间相互独立，那也就能进一步把联合概率写成独立概率乘积的形式：&lt;/p&gt;
 
 &lt;div&gt;$$
-\hat{\theta}=\arg\max_{\theta} \log \prod_{i=1}^n p(y_i|\theta)
+\hat{\theta}=\arg\max_{\theta} \log \prod_{i=1}^N p(y_i|\theta)
 $$&lt;/div&gt;
 
 &lt;p&gt;这样一个无约束的优化问题利用极值条件(导数为0)也就能得到待估计参数的解析解了。&lt;/p&gt;
@@ -104,20 +106,274 @@ $$&lt;/div&gt;
 
 &lt;div&gt;$$
 \begin{aligned}
-\log p(y|\theta) &amp;= \log p(y,z|\theta) - \log p(z|y,\theta)\\
-&amp;=\log \frac{p(y,z|\theta)}{q(z)}-\log \frac{p(z|y,\theta)}{q(z)}
+\log p(Y|\theta) &amp;= \log p(Y,Z|\theta) - \log p(Z|Y,\theta)\\
+&amp;=\log \frac{p(Y,Z|\theta)}{q(Z)}-\log \frac{p(Z|Y,\theta)}{q(Z)}
 \end{aligned}
 $$&lt;/div&gt;
 
-&lt;p&gt;第一行公式根据条件概率公式可得，第二行公式相当于减去一个 $\log q(z)$ 再加上一个 $\log q(z)$ 恒等变换。&lt;/p&gt;
+&lt;p&gt;第一行公式(完整数据减去后验)根据条件概率公式可得，第二行公式相当于减去一个 $\log q(Z)$ 再加上一个 $\log q(Z)$ 恒等变换。这里假设 $q(Z)$ 是 $Z$ 的一个概率分布 ($\int_Z q(Z) dZ = 1$)。&lt;/p&gt;
 
-&lt;p&gt;然后这里有个技巧&lt;strong&gt;同时对两侧对$Z$积分&lt;/strong&gt;，因为我们想把隐变量消去，积分的思想还是很自然的。&lt;/p&gt;
+&lt;p&gt;然后&lt;strong&gt;同时对两侧对$q(Z)$求期望&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;左边积分还是它本身：&lt;/p&gt;
 
 &lt;div&gt;$$
-\int_z q(z) \log p(y|\theta) dz = \log p(y|\theta) \int_z q(z) dz = \log p(y|\theta)
-$$&lt;/div&gt;</description>
+\int_Z q(Z) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z q(Z) dZ = \log p(Y|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;右边积分则是&lt;/p&gt;
+
+&lt;div&gt;$$
+\int_z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ - \int_Z q(Z) \log \frac{p(Z|Y,\theta)}{q(Z)}
+$$&lt;/div&gt;
+
+&lt;p&gt;左边等于右边即&lt;/p&gt;
+
+&lt;div&gt;$$
+\log p(Y|\theta) = \text{ELBO} + \text{KL}(q(Z)||p(Z|Y,\theta))
+$$&lt;/div&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;KL divergence的概念&lt;/p&gt;
+
+&lt;div&gt;$$
+D_{\mathrm{KL}}(P \| Q)=-\sum_{i} P(i) \ln \frac{Q(i)}{P(i)} \ge 0
+$$&lt;/div&gt;
+
+&lt;p&gt;由吉布斯不等式可知，当且仅当 $P = Q$ 时 $D_{KL}(P||Q)$为零。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;因为相对熵大于等于0的性质，所以 ELBO 为 $\log p(Y|\theta)$ 提供了下界，所以EM算法的想法就是想让ELBO不断变大从而让对数似然变大&lt;/strong&gt;，并且只有当 $q(Z) = p(Z|Y,\theta^{(t)})$ 时ELBO等于对数似然， 即&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\theta^{(t+1)} = \hat{\theta} &amp;= \arg \max_{\theta} \text{ELBO}\\
+&amp;= \arg \max_{\theta} \int_Z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ\\
+&amp;= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Y,Z|\theta)}{p(Z|Y,\theta^{(t)})} dZ\\
+&amp;= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) [\log p(Y,Z|\theta) - \log p(Z|Y,\theta^{(t)})] dZ\\
+&amp;= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)  dZ
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;这也就解释了EM算法是怎么来的啦，&lt;strong&gt;当 $q(Z)$ 等于后验 $p(Z|Y,\theta^{{t}})$ 时，ELBO 等于log likelihood，先固定 $\theta^{(t)}$ 得到后验，然后求 ELBO (关于后验的期望)，滑动 $\theta$ 得到期望的最大值，最大期望对应的 $\theta$ 就是 $\theta^{(t+1)}$&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;从思路上是能说通了，你可能会疑惑为什么这么迭代求解就能得到最优解呢？或者说 $\theta_{t}$ 到最后会收敛吗？我们回到最初的目标最大化对数似然 $\log p(Y|\theta)$，那如果我们每次迭代求解都能使得对应的对数似然函数的值增加，最后是不是也就说明能向似然函数的最大值靠近了呢，也就是我们希望看到的结果是&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    \log p(Y|\theta^{(t)}) \le \log p(Y|\theta^{(t+1)})
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;事实也说明了这是成立的，我们再回到对数似然函数的表达式&lt;/p&gt;
+
+&lt;div&gt;
+$$
+\log p(Y|\theta) = \log p(Y,Z|\theta) - \log p(Z|Y,\theta)
+$$
+&lt;/div&gt;
+
+&lt;p&gt;两边求关于后验 $p(Z|Y,\theta^{(t)})$ 的期望，也就是求积分&lt;/p&gt;
+
+&lt;p&gt;左边积分还是它本身：&lt;/p&gt;
+
+&lt;div&gt;$$
+\int_Z p(Z|Y,\theta^{(t)}) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z p(Z|Y,\theta^{(t)}) dZ=\log p(Y|\theta) 
+$$&lt;/div&gt;
+
+&lt;p&gt;右边积分则是：&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    Q(\theta,\theta^{(t)}) - H(\theta,\theta^{(t)})
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;其中，$Q(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta) dZ, H(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Z|Y,\theta) dZ$&lt;/p&gt;
+
+&lt;p&gt;那要使得迭代收敛需要满足的条件就变为了&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    Q(\theta^{(t)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t+1)},\theta^{(t)})
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;因为 $Q(\theta,\theta^{(t)})$ 对应的就是EM的迭代公式，那根据最大化问题可以得到 $Q(\theta,\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那也就有 $Q(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那再根据&lt;strong&gt;放缩&lt;/strong&gt;的思想，只要我们能证明 $H(\theta^{(t)},\theta^{(t)}) \ge H(\theta^{(t+1)},\theta^{(t)})$，那一切就都顺理成章了。&lt;/p&gt;
+
+&lt;p&gt;直接对这两项作差&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Z|Y,\theta^{(t+1)})}{p(Z|Y,\theta^{(t)})} dZ
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;看出点什么没有，不然再回到上面 KL 散度的定义看看，这结果不就是 $-D_{\text{KL}}(p(Z|Y,\theta^{(t)})||p(Z|Y,\theta^{(t+1)}))$，根据散度大于等于0的性质，可以得到 $H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le 0$，这也就得证了&lt;strong&gt;EM迭代求解每次得到的似然函数值总是非减的( $\theta^{(t)}$ 会逐渐收敛)，那最终也就会取到最大似然咯，需要注意这并不能保证找到全局最优解的。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;怎么用em算法&#34;&gt;怎么用EM算法？&lt;/h2&gt;
+
+&lt;p&gt;看到这里的话想必你对算法的原理也有了大概的认识，但是大家最关心的应该是在认识原理后如何去应用，这里根据李航老师的《统计学习方法》里的例子介绍一下算法的应用和实现。&lt;/p&gt;
+
+&lt;p&gt;三硬币模型：有A，B，C三枚硬币，它们正面向上的概率分别为 $a,b,c$，进行如下试验：先掷硬币 A，如果正面则再掷 B，如果反面则掷 C，掷硬币的结果正面记为1反面为0，独立重复10次试验，结果为1，1，0，1，0，0，1，0，1，1。我们只知道最终掷硬币的结果并不能观测掷硬币的过程，那么如何估计三枚硬币正面向上的概率呢？&lt;/p&gt;
+
+&lt;p&gt;这个例子里观测变量 $y_i$ 也就是掷硬币的结果0或1，要估计的参数为概率 $\theta=(a,b,c)$，由于我们不知道掷A的结果导致这一问题不能直接采用极大似然来估计，因此我们引入隐变量 $z$ 来表示掷 A的结果。&lt;/p&gt;
+
+&lt;p&gt;观测数据 $y_1,&amp;hellip;,y_N$
+由以下模型生成&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    p(y|\theta) = ab^{y}(1-b)^{(1-{y})} + (1-a)c^{y}(1-c)^{(1-{y})}
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;隐变量 $z_i = 1$ 表示第 $i$ 个观测来自掷硬币B的结果，$z_i = 0$ 表示第 $i$ 个观测来自掷硬币C的结果。&lt;/p&gt;
+
+&lt;p&gt;于是可以写出完全数据的似然函数：&lt;/p&gt;
+
+&lt;div&gt;$$
+    \begin{aligned}
+p(Y,Z|\theta) &amp;= \prod_{i=1}^N p(y_i,z_i
+|\theta)\\
+&amp;=\prod_{i=1}^N [ab^{y_i}(1-b)^{(1-{y_i})}]^{z_i} \cdot [(1-a)c^{y_i}(1-c)^{(1-{y_i})}]^{1-z_i}
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;那么，完全数据的对数似然函数为&lt;/p&gt;
+
+&lt;div&gt;$$
+\log p(Y,Z|\theta) = \sum_{i=1}^N  z_i (\log a + y_i \log b + (1-y_i) \log(1-b)) + (1-z_i) (\log(1-a) + y_i \log c + (1-y_i) \log(1-c)) 
+$$&lt;/div&gt;
+
+&lt;p&gt;按照我上面说的&lt;strong&gt;先固定 $\theta^{(t)}$ 计算后验：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    \begin{aligned}
+    p(z_i=1|y_i,\theta^{(t)}) &amp;= \frac{p(z=1,y_i|\theta^{(t)})}{p(z_i=1,y_i|\theta^{(t)}) + p(z_i=0,y_i|\theta^{(t)})}\\
+    &amp;=\frac{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)})}{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)}) + p(y_i|z=0,\theta^{(t)}) p(z=0|\theta^{(t)})}\\
+    &amp;=\frac{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)}}{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)} + (1-a^{(t)})(c^{(t)})^{y_i}(1-c^{(t)})^{(1-y_i)}}\\
+    p(z_i=0|y_i,\theta^{(t)}) &amp;= 1- p(z_i=1|y_i,\theta^{(t)}) 
+    \end{aligned}
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;有了隐变量的后验分布后，在对完全数据的对数似然函数求最大期望&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    \begin{aligned}
+    \theta^{(t+1)} &amp;= \arg \max_{\theta} Q(\theta)\\ 
+    &amp;= \arg \max_{\theta} \sum_{Z} p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)\\
+    &amp;= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \log p(y_i,z_i=1|\theta) + p(z_i=0|y_i,\theta^{(t)}) \log p(y_i,z_i=0|\theta)\\
+    &amp;= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) [\log a + y_i \log b + (1-y_i)\log (1-b)] \\ &amp; + p(z_i=0|y_i,\theta^{(t)})[ \log (1-a) + y_i \log c + (1-y_i) \log (1-c)]
+    \end{aligned}
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;又回到这个极大似然的问题，现在相当于隐变量已知咯，那直接按照传统的套路利用极值条件求导获得待参数的解析解。&lt;/p&gt;
+
+&lt;p&gt;对于参数 $a$，令 $\partial Q(\theta)/ \partial a = 0$&lt;/p&gt;
+
+&lt;div&gt;$$
+\frac{\partial L}{\partial a} = \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \frac{1}{a} - p(z_i=0|y_i,\theta^{(t)}) (-\frac{1}{1-a})=0
+$$&lt;/div&gt;
+
+&lt;p&gt;可得&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    a^{(t+1)} = \frac{1}{N} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) 
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;同理可得&lt;/p&gt;
+
+&lt;div&gt;$$
+b^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) }}
+$$&lt;/div&gt;
+
+&lt;div&gt;$$
+c^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) }}
+$$&lt;/div&gt;
+
+&lt;h3 id=&#34;matlab-实现em算法&#34;&gt;matlab 实现EM算法&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;% 给定观测结果
+y = [1;1;0;1;0;0;1;0;1;1];
+N = length(y);
+% 先随便假设个初始参数 
+a_old = 0.4;
+b_old = 0.6;
+c_old = 0.7;
+theta0 = [a_old;b_old;c_old];
+% 隐变量z=1的后验概率的初始值
+p_z  = zeros(N,1);
+% 用于存储更新后的参数
+a_new = 0.0;
+b_new = 0.0;
+c_new = 0.0;
+theta = [a_new;b_new;c_new];
+% 给EM算法的迭代设置个终止条件
+epsilon = 0.01;
+% 迭代更新参数
+while norm(theta - theta0) &amp;gt; epsilon
+% E步，计算隐变量的后验
+	for i = 1:N
+		p_z(i) = (a_old*b_old^y(i)*(1-b_old)^(1-y(i)))/((a_old*(b_old)^y(i)*(1-b_old)^(1-y(i))) + ((1-a_old)*c_old^y(i)*(1-c_old)^(1-y(i))));
+	end
+	theta0 = [a_old;b_old;c_old];
+% M步，极大似然更新待估计参数 
+	a_new = 1/N*sum(p_z);
+	b_new = p_z&amp;#39;*y/sum(p_z);
+	c_new = (1-p_z)&amp;#39;*y/sum(1-p_z);
+	theta = [a_new;b_new;c_new];
+	a_old = a_new;
+	b_old = b_new;
+	c_old = c_new;
+end&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id=&#34;本文小结&#34;&gt;本文小结&lt;/h2&gt;
+
+&lt;p&gt;首先从为什么需要用EM算法说起：&lt;strong&gt;含有隐变量的参数估计问题&lt;/strong&gt;，然后从&lt;strong&gt;最大化ELBO的角度&lt;/strong&gt;推导了EM算法迭代公式的由来并证明了算法的收敛性，最后以三硬币模型为例介绍了EM算法的使用以及matlab实现。&lt;/p&gt;</description>
     </item>
     
     <item>
