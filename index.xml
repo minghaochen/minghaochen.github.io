@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
-    <lastBuildDate>Sun, 25 Aug 2019 13:40:23 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 28 Aug 2019 20:52:52 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -19,6 +19,297 @@
       
       <guid>https://minghaochen.github.io/about/</guid>
       <description>  I&amp;#39;m a PhD student from Zhejiang University, China. Love bodybuilding, food and travel. Now I focus on Model Predictive Control and System Identification.   </description>
+    </item>
+    
+    <item>
+      <title>「机器学习」变分推断</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/</link>
+      <pubDate>Wed, 28 Aug 2019 20:52:52 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/</guid>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;之前一直对“变分推断”这个词有一种恐惧的心理，听着就有点难懂，加上没学过泛函分析这块内容，潜意识里也很抵触&amp;rdquo;变分&amp;rdquo;，导致之前经常有选择性地忽略这一块知识点。如果你也一样和我有这样的心理，那么首先恭喜你称为了我的有缘人，其次再恭喜你看到了这篇博客，我尽可能从外行的角度通俗易懂地把&amp;rdquo;变分推断&amp;rdquo;展示出来，希望对有缘人有所启发。&lt;/p&gt;
+
+&lt;p&gt;我还是从&lt;strong&gt;为什么、是什么、怎么做&lt;/strong&gt;三方面进行阐述。&lt;/p&gt;
+
+&lt;h2 id=&#34;为什么要用变分推断&#34;&gt;为什么要用变分推断&lt;/h2&gt;
+
+&lt;p&gt;一个算法的出现总是有问题驱动的，了解算法要解决的问题能帮助我们更好了解算法的用途。我们知道从贝叶斯角度来看待机器学习问题可以分为两个步骤：&lt;strong&gt;推断&lt;/strong&gt;和&lt;strong&gt;决策&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;说的通俗点&lt;strong&gt;推测&lt;/strong&gt;就是先求参数的后验&lt;/p&gt;
+
+&lt;p&gt;$$p(\theta|X)$$&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;决策&lt;/strong&gt;就是根据后验对测试数据进行预测&lt;/p&gt;
+
+&lt;div&gt;$$
+p(x_{new}|X) = \int_{\theta} p(x_{new}|\theta) p (\theta|X) d \theta = E_{\theta|X}[p(x_{new}|\theta)]
+$$&lt;/div&gt;
+
+&lt;p&gt;也就相当于测试数据关于后验的期望。&lt;/p&gt;
+
+&lt;p&gt;但问题就在于这个后验的计算通常是非常困难的，对于不能&lt;strong&gt;精确推断&lt;/strong&gt; (直接计算)的后验分布，很朴素的想法就是&lt;strong&gt;近似推断&lt;/strong&gt;，比如今天要讲的变分推断就属于&lt;strong&gt;确定性近似&lt;/strong&gt;的一种方法；以及接下来还会再讲的&lt;strong&gt;随机近似&lt;/strong&gt;，比如 MCMC。&lt;/p&gt;
+
+&lt;p&gt;第一个问题也就得到回答了，为什么要用变分推断？&lt;strong&gt;因为要计算后验分布的近似分布&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h2 id=&#34;变分推断是什么&#34;&gt;变分推断是什么&lt;/h2&gt;
+
+&lt;p&gt;知道了为什么要用变分推断后，其实变分推断做的是什么也就顺理成章了，很朴素的想法就是用简单好搞的分布来逼近难求的后验分布。那怎么评价两个分布有多接近呢？那就看看这两个分布的 KL 散度 (这是非负的)，当 KL 散度为 0 时代表两个分布是一样的，因此变分推断要做的就是优化一个分布 $q(Z)$ 使得其与后验分布 $p(Z|X)$ 的 KL 散度最小化 (其中 $X$ 是观测数据，$Z$ 包含隐变量和参数)，用优化命题的形式来描述就是&lt;/p&gt;
+
+&lt;div&gt;$$
+q^{*}(Z) = \arg \min_{q(Z)} \text{KL}(q(Z)||p(Z|X))
+$$&lt;/div&gt;
+
+&lt;p&gt;但是 $p(Z|X)$ 本身就不知道的，这种直接求解的方式显然是行不通的，因此需要找个间接求解的方法。&lt;/p&gt;
+
+&lt;p&gt;根据贝叶斯公式有&lt;/p&gt;
+
+&lt;div&gt;$$
+p(X) = \frac{p(X,Z)}{p(Z|X)} 
+$$&lt;/div&gt;
+
+&lt;p&gt;两边取对数&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+\ln p(X) = ln (p(X,Z)) - ln (p(Z|X))
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;在推导 EM 算法时我们也是这么做的，先对上式右边加减一个关于 $Z$ 的分布 $q(Z)$，然后左边两边同时关于 $q(Z)$ 求期望。左边求期望还是等于本身 $\ln p(X)$，因此&lt;/p&gt;
+
+&lt;div&gt;$$
+    \begin{aligned}
+\ln p(X) &amp;= \int_Z q(Z)\ln (\frac{p(X,Z)}{q(Z)}） dZ - \int_Zq(Z) \ln(\frac{p(Z|X)}{q(Z)}) dZ\\
+&amp;=\text{ELBO} + \text{KL}(q(Z)||p(Z|X))
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;为什么叫 ELBO？通常 $p(X)$ 称为 evidence，而 KL 散度是非负的，所以有&lt;/p&gt;
+
+&lt;div&gt;$$
+\ln p(X) \ge \int_Z q(Z)\ln (\frac{p(X,Z)}{q(Z)}） dZ 
+$$&lt;/div&gt;
+
+&lt;p&gt;因此不等式右边这项也就称为 evidence 的 lower bound (ELBO) 了。&lt;/p&gt;
+
+&lt;p&gt;我们之前想求的 KL 散度又出现了！虽然搞不定它，但是我们可以搞旁边的 ELBO 啊，刚才最小化 KL 散度不就转化为最大化 ELBO 了！再用优化命题的形式描述就是&lt;/p&gt;
+
+&lt;div&gt;$$
+q(Z) = \arg \max_{q(Z)} \int_Z q(Z)\ln (p(X,Z)) dZ - \int_Z q(Z)\ln (q(Z)）dZ
+$$&lt;/div&gt;
+
+&lt;p&gt;因为 $q(Z)$ 是前面假设出来的关于 $Z$ 的分布，对这个分布还没有做任何假设，为了进一步推导便于求解，这里引入&lt;strong&gt;平均场理论&lt;/strong&gt;，将 $q(Z)$ 划分为 $M$ 个相互独立的部分，即&lt;/p&gt;
+
+&lt;div&gt;$$
+q(Z) = \prod_{i=1}^M q_i(Z_i)
+$$&lt;/div&gt;
+
+&lt;p&gt;采用如下的符号定义&lt;/p&gt;
+
+&lt;div&gt;$$
+Z = \{Z_j,\bar{Z_j}\},\bar{Z_j} = Z \backslash Z_j
+$$&lt;/div&gt;
+
+&lt;p&gt;然后代入 ELBO 进行化简，我们一项一项来看&lt;/p&gt;
+
+&lt;p&gt;第一项为：&lt;/p&gt;
+
+&lt;div&gt;$$
+    \begin{aligned}
+    &amp;\int_Z q(Z)\ln (p(X,Z)) dZ\\
+=&amp;\int_{Z_1}...\int_{Z_M} \prod_{i=1}^M q_i(Z_i) \ln (p(X,Z)) dZ_1...dZ_M\\
+=&amp;\int_{Z_j}q_j(Z_j)[\int_{\bar{Z_j}}\prod_{i \not=j}^M q_i(Z_i) \ln(p(X,Z)) d \bar{Z_j}] d Z_j\\
+=&amp;\int_{Z_j}q_j(Z_j)E_{q(\bar{Z_j})} [\ln (p(X,Z))] d Z_j
+    \end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;第二项为：&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+&amp;\int_Z q(Z)\ln (q(Z)）dZ\\
+=&amp;\int_{Z_1}...\int_{Z_M} \prod_{i=1}^M q_i(Z_i) \sum_{i=1}^M \ln (q_i(Z_i)) dZ_1...dZ_M\\
+=&amp;\sum_{i=1}^M\int_{Z_i} q_i(Z_i)\ln(q_i(Z_i))dZ_i\\
+=&amp;\int_{Z_j} q_j(Z_j)\ln(q_j(Z_j))dZ_j + C
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;为了统一描述，定义&lt;/p&gt;
+
+&lt;div&gt;$$
+    \tilde{p}(X,Z_j) = E_{q(\bar{Z_j})} [\ln (p(X,Z))]
+$$&lt;/div&gt;
+
+&lt;p&gt;因此 ELBO 可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+    \begin{aligned}
+\text{ELBO} &amp;= \int_{Z_j}q_j(Z_j)E_{q(\bar{Z_j})} [\ln (p(X,Z))] d Z_j - \int_{Z_j} q_j(Z_j)\ln(q_j(Z_j))dZ_j - C\\
+&amp;=\int_{Z_j} q_j(Z_j)\ln\frac{\tilde{p}(X,Z_j)}{q_j(Z_j)}dZ_j - C\\
+&amp;=-\text{KL}(q_j(Z_j)||\tilde{p}(X,Z_j)) - C
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;也就是将 ELBO 转化成另外一个 KL 散度，ELBO取最大值时对应 KL 散度取等号，即&lt;/p&gt;
+
+&lt;div&gt;$$
+q_j^{*}(Z_j) = \tilde{p}(X,Z_j)
+$$&lt;/div&gt;
+
+&lt;p&gt;将 $\tilde{p}(X,Z_j)$ 的定义代入得&lt;/p&gt;
+
+&lt;div&gt;$$
+\ln (q_j^{*}(Z_j)) = E_{q(\bar{Z_j})} [\ln (p(X,Z))]
+$$&lt;/div&gt;
+
+&lt;p&gt;通俗来说就是用对数联合概率分布关于&lt;strong&gt;利用除了 $Z_j$ 以外的其他分布&lt;/strong&gt;的期望来更新 $Z_j$ 的分布。这是一个迭代的过程：&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\ln(q_1^{*}(Z_1)) &amp;= \int_{Z_2} \int_{Z_3}... \int_{Z_M} q_2({Z_2})...q_M(z_M)\ln (p(X,Z)) dZ_2d Z_3 ... dZ_M\\
+\ln(q_2^{*}(Z_2)) &amp;= \int_{Z_1^*} \int_{Z_3}... \int_{Z_M} q_1^*({Z_1}) q_2({Z_3})...q_M(z_M) \ln (p(X,Z)) dZ_1^* dZ_3 ... dZ_M\\
+&amp;...\\
+\ln(q_M^{*}(Z_M)) &amp;= \int_{Z_1^*} \int_{Z_2^*}... \int_{Z_{M-1}} q_1^*({Z_1})...q_{M-1}^*(z_{M-1}) \ln (p(X,Z)) dZ_1^* dZ_2^* ... dZ_{M-1}^*
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;迭代收敛得到的分布 $q(Z)$ 就是要求的后验分布的 $p(Z|X)$ 的近似分布了。&lt;/p&gt;
+
+&lt;h2 id=&#34;变分推断怎么用&#34;&gt;变分推断怎么用&lt;/h2&gt;
+
+&lt;p&gt;知道了变分推断是怎么一回事后，更多人想要知道具体使用时是怎么用的，这里用一个一元高斯分布的例子进行说明，该例子选自《徐亦达机器学习》系列。结合 matlab 代码跟我一起来实现一下变分推断吧&lt;/p&gt;
+
+&lt;p&gt;首先假设你有个数据集 $D =$ {$x_1,&amp;hellip;,x_N$} 来自一个高斯分布 $\mathcal{N}(0,1)$，这个均值和方差我们是不知道的，也就是等下要从数据中去学习的 $p(\mu,\tau|D)$，其中 $\tau=1/\sigma^2$。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;N = 100;
+mu_0 = 0; 
+sigma_0 = 1;
+D = mu_0 + sigma_0* randn(N,1);&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;根据贝叶斯公式我们有&lt;/p&gt;
+
+&lt;div&gt;$$
+p(\mu,\tau|D) \propto p(D|\mu,\tau)p(\mu|\tau)p(\tau)
+$$&lt;/div&gt;
+
+&lt;p&gt;因此要学习参数的分布，需要先对参数假定一个先验，因为 $\tau$ 大于 0 的性质，假设其为 Gamma 分布 $Gamma(\tau|a_0,b_0)$，$p(\mu|\tau)$ 为高斯分布 $\mathcal{N}(\mu_0,(\lambda_0 \tau)^{-1})$，由于共轭性可以直接得到后验分布的解析形式&lt;/p&gt;
+
+&lt;div&gt;$$
+p(\mu,\tau|D) = \mathcal{N}(\mu_n,(\lambda_n\tau)^{-1})Gamma(\tau|a_n,b_n)
+$$&lt;/div&gt;
+
+&lt;p&gt;且参数 $\mu_n,\lambda_n,a_n,b_n$ 直接可以得到&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;% 先验分布里的参数
+lambda_0 = 1;
+a_0 = 1.5;
+b_0 = 1;
+
+% 后验分布的参数 
+mu_n = (lambda_0 * mu_0 + N * mean(D) )/ (lambda_0 + N);
+lambda_n = lambda_0 + N;
+a_n = a_0 + N/2;
+b_n = b_0 + 1/2 * sum((X - mean(X)).^2) + (lambda_0*n * (mean(X) - mu_0)^2)/(2*(lambda_0 + N));&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;但是我们要假装不知道这个共轭分布能直接这么得到，用变分推断来求求看，首先假设 $q(Z)$ 由独立的两部分组成，在这里就是&lt;/p&gt;
+
+&lt;div&gt;$$
+q(\mu,\tau) = q_{\mu}(\mu)q_{\tau}(\tau)
+$$&lt;/div&gt;
+
+&lt;p&gt;根据之前推导得到的变分推断的迭代公式对应为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\ln(q_{\mu}^{*}(\mu)) &amp;= \int_{\tau} q_{\tau}(\tau) \ln (p(X,Z)) d \tau\\
+\ln(q_{\tau}^{*}(\tau)) &amp;= \int_{\mu^*}  q_{\mu}^*(\mu) \ln (p(X,Z)) d \mu^*
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;化简为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned} \ln \left(q_{\mu}^{*}(\mu)\right) &amp;=-\frac{E_{q_{\tau}}[\tau]}{2}\left[\sum_{i=1}^{N}\left(x_{i}-\mu\right)^{2}+\lambda_{0}\left(\mu-\mu_{0}\right)^{2}\right]+\text { const } \\ &amp;=-\frac{E_{q_{\tau}}[\tau]\left(n+\lambda_{0}\right)}{2}\left(\mu-\frac{\left(N \overline{x}+\lambda_{0} \mu_{0}\right)}{\left(N+\lambda_{0}\right)}\right)^{2}+\text { const } \\ &amp;=\mathcal{N}\left(\frac{N \overline{x}+\lambda_{0} \mu_{0}}{N+\lambda_{0}}, E_{q_{\tau}}[\tau]\left(N+\lambda_{0}\right)\right) \end{aligned}
+$$&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;E_tau = a_current/b_current; % Gamma分布的均值
+mu_current       = (lambda_0 * mu_0 + N * mean(X))/(lambda_0 + N);
+lambda_current   = (lambda_0 + N) * E_tau;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div&gt;
+$$
+\ln {q^*_{\tau}(\tau)}=(\underbrace{\frac{N}{2}+a_{0}-1}_{a_{n}}) \ln (\tau)-\tau(\underbrace{b_{0}+\frac{1}{2} E_{q_{\mu}^*(\mu)}\left[\sum_{i=1}^{N}\left(x_{i}-\mu\right)^{2}+\lambda_{0}\left(\mu-\mu_{0}\right)^{2}\right]}_{b_{n}})+\text { const }
+$$
+&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;a_current  = a_0 + N/2;
+% E[mu^2] = var(mu) + (E[mu])^2
+E_mu_square = inv(lambda_0) + mu_prev^2;
+% E[mu]
+E_mu = mu_prev;
+%sum [(x_i - mu)^2]
+first = sum( X.^2 - 2 * X .* repmat(E_mu,size(X)) + repmat(E_mu_square, size(X)));
+%lambda_0 (mu - mu_0)^2
+second = lambda_0 *(E_mu_square - 2*mu_0*E_mu + mu_0^2);
+b_current = b_0 + (first + second)/2;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;根据两个分布不断迭代就能得到最终两个分布各自的参数，然后两个分布的乘积就是要求的后验分布的近似分布了。&lt;/p&gt;
+
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e3%80%8c%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e3%80%8d%e5%8f%98%e5%88%86%e6%8e%a8%e6%96%ad/Variational.jpg&#34;/&gt; 
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;当我们遇到难搞的后验分布时，可以用容易表达和求解的分布来近似，常规的变分推断基于&lt;strong&gt;平均场理论&lt;/strong&gt;，假设近似分布由独立的几部分组成，通过最大化 ELBO 我们可以得到近似分布各个独立部分的迭代求解式，可以理解为积分(求期望)掉 $Z_j$ 外的其他部分得到 $Z_j$ 的更新，类似坐标上升法的思想，先固定其它然后求其中一项。&lt;/p&gt;
+
+&lt;p&gt;基于平均场理论的变分推断假设(要求各部分独立)还是比较强的，比如上面的例子中 $\mu$ 和 $\tau$ 其实并不是独立的，$p(\mu/\tau)$ 是个高斯分布；其次这种递推求解的方式中还是涉及了许多的积分，计算量大。因此改进的方法还有&lt;strong&gt;随机梯度变分推断&lt;/strong&gt;，感兴趣的可以看看shuhuai大神的讲解。&lt;/p&gt;</description>
     </item>
     
     <item>
