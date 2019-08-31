@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
-    <lastBuildDate>Wed, 28 Aug 2019 20:52:52 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 31 Aug 2019 09:54:53 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -19,6 +19,440 @@
       
       <guid>https://minghaochen.github.io/about/</guid>
       <description>  I&amp;#39;m a PhD student from Zhejiang University, China. Love bodybuilding, food and travel. Now I focus on Model Predictive Control and System Identification.   </description>
+    </item>
+    
+    <item>
+      <title>概率基础「高斯分布」</title>
+      <link>https://minghaochen.github.io/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</link>
+      <pubDate>Sat, 31 Aug 2019 09:54:53 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</guid>
+      <description>&lt;p&gt;今天补充一些&lt;strong&gt;有关均值方差的公式&lt;/strong&gt;和&lt;strong&gt;高斯分布&lt;/strong&gt;的一些性质。&lt;/p&gt;
+
+&lt;h2 id=&#34;some-formulas-of-mean-and-variance&#34;&gt;Some Formulas of Mean and Variance&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;定理一&lt;/strong&gt;：
+We consider two random variables $X$ and $Y$&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+E(X+Y) &amp;= E(X) + E(Y)\\
+V(X\pm Y) &amp;= V(X) \pm 2Cov(X,Y)+V(Y)\\
+Cov(X,Y)&amp;=E(XY)-E(X)E(Y)
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;定理二&lt;/strong&gt;：
+When $X$ is indenpendent of $Y$&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+E(XY) &amp;= E(X)E(Y)\\
+V(X \pm Y) &amp;= V(X) + V(Y)\\
+Cov(X,Y)&amp;=0
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;定理三&lt;/strong&gt;：
+For $n$ random variables $X_1,&amp;hellip;,X_n$&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned} 
+E(\sum_{i}a_iX_i) &amp;= \sum_{i}a_i\mu_i\\
+V(\sum_{i}a_iX_i) &amp;= \sum_{i}\sum_{j}a_ia_jCov(X_i,X_j)
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;where $E(X_i)=\mu_i$ and $a_i$ is a constant value. When $X_1,&amp;hellip;,X_n$ are mutually independent, we have the following:&lt;/p&gt;
+
+&lt;div&gt;$$
+V(\sum_{i}a_iX_i) = \sum_{i}a_i^2V(X_i)
+$$&lt;/div&gt;
+
+&lt;h2 id=&#34;transformation-of-variables&#34;&gt;Transformation of Variables&lt;/h2&gt;
+
+&lt;p&gt;When a distribution of $X$ is known, we can find a distribution of $Y$ using the transformation of variables, where $Y$ is a function of $X$.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;定理四&lt;/strong&gt;：
+Distribution of $Y = \phi^{(-1)}(X)$: Let $f_x(x)$ be the pdf of $X$ and $X=\phi(Y)$ be a one-to-one transformation, then the pdf of $Y$ is given by&lt;/p&gt;
+
+&lt;div&gt;$$
+f_y(y) = |\phi&#39;(y)|f_x(\phi(y))
+$$&lt;/div&gt;
+
+&lt;p&gt;Example: $X\sim N(0,1),Y = \mu + \sigma X$&lt;/p&gt;
+
+&lt;p&gt;Since we have&lt;/p&gt;
+
+&lt;p&gt;$$
+X = \phi(Y) = \frac{Y-\mu}{\sigma},f_x(x)=\frac{1}{\sqrt{2\pi}}exp(-\frac{1}{2}x^2)
+$$&lt;/p&gt;
+
+&lt;p&gt;then $\phi&amp;rsquo;(y)=1/\sigma$&lt;/p&gt;
+
+&lt;div&gt;$$
+f_y(y) = \frac{1}{\sqrt{2\pi}|\sigma|}exp(-\frac{(y-\mu)^2}{2\sigma^2})
+$$&lt;/div&gt;
+
+&lt;p&gt;which indicates the normal distribution with mean $\mu$ and variance $\sigma^2$, denoted by $N(\mu,\sigma^2)$.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Multivariate Case&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Let $f_x(x_1,&amp;hellip;,x_n)$ be a joint pdf of $(X_1,&amp;hellip;,X_n)$, and a one-to-one transformation from ($X_1,&amp;hellip;,X_n$) to ($Y_1,&amp;hellip;,Y_n$) is given by&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+X_1 &amp;=\phi_1(Y_1,...,Y_n)\\
+&amp;...\\
+X_n &amp;=\phi_n(Y_1,...,Y_n)
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;then we obtain a joint pdf of $Y_1,&amp;hellip;,Y_n$&lt;/p&gt;
+
+&lt;div&gt;$$
+f_y(y_1,...,y_n) = |J|f_x(\phi_1(y_1,...,y_n),...,\phi_n(y_1,...,y_n))
+$$&lt;/div&gt;
+
+&lt;p&gt;where $J$ is the Jacobian of the transformation.&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+J=\left|\begin{array}{cccc}{\frac{\partial x_{1}}{\partial y_{1}}} &amp; {\frac{\partial x_{1}}{\partial y_{2}}} &amp; {\cdots} &amp; {\frac{\partial x_{1}}{\partial y_{n}}} \\ {\frac{\partial x_{2}}{\partial y_{1}}} &amp; {\frac{\partial x_{2}}{\partial y_{2}}} &amp; {\cdots} &amp; {\frac{\partial x_{2}}{\partial y_{n}}} \\ {\vdots} &amp; {\vdots} &amp; {\ddots} &amp; {\vdots} \\ {\frac{\partial x_{n}}{\partial y_{1}}} &amp; {\frac{\partial x_{n}}{\partial y_{2}}} &amp; {\cdots} &amp; {\frac{\partial x_{n}}{\partial y_{n}}}\end{array}\right|
+$$
+&lt;/div&gt;
+
+&lt;h1 id=&#34;gaussian-distribution&#34;&gt;Gaussian Distribution&lt;/h1&gt;
+
+&lt;h2 id=&#34;极大似然估计&#34;&gt;极大似然估计&lt;/h2&gt;
+
+&lt;p&gt;说起高斯分布大家都很熟悉了，假设一个 $p$ 维变量 $x \in R^p$ 满足高斯分布 $N(\mu,\Sigma)$，则其概率密度函数可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+p(x)=\frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}} exp(-\frac{1}{2}(x-\mu)^T \Sigma^{-1}(x-\mu))
+$$&lt;/div&gt;
+
+&lt;p&gt;当有样本数据 $X_{N \times p}=(x_1,&amp;hellip;,x_N)^T$ 时，我们能通过极大似然法估计高斯分布的均值和方差，即&lt;/p&gt;
+
+&lt;div&gt;$$
+\theta_{MLE}=\arg\max_{\theta}p(X|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;假设 $x_i$ 服从独立同分布 (i.i.d)，则&lt;/p&gt;
+
+&lt;div&gt;$$
+\log p(X|\theta) = \sum_{i=1}^N \log p(x_i|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;为了便于计算假设 $p=1$ 且真实高斯分布为 $N(\mu,\sigma^2)$，通过极值条件 (令导数为0) 可以得到&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\mu_{MLE}&amp;=\frac{1}{N}\sum_{i=1}^Nx_i\\
+\sigma^2_{MLE}&amp;=\frac{1}{N}\sum_{i=1}^N(x_i-\mu_{MLE})^2
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;其中,&lt;/p&gt;
+
+&lt;p&gt;均值是无偏估计 $E(\mu_{MLE}) = \mu$&lt;/p&gt;
+
+&lt;p&gt;方差是有偏估计 $E(\sigma_{MLE}^2)=\frac{N-1}{N}\sigma^2$，也就是说极大似然估计出来的高斯分布的&lt;strong&gt;方差是偏小的&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h2 id=&#34;从概率密度函数的角度看高斯分布&#34;&gt;从概率密度函数的角度看高斯分布&lt;/h2&gt;
+
+&lt;p&gt;注意到高斯分布的概率密度函数 $p(x)$ 本质是关于 $x$ 的函数，且和 $x$ 有关的部分为：&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    \Phi \triangleq (x-\mu)^T\Sigma^{-1}(x-\mu)
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;一般来说 $\Sigma$ 是半正定矩阵，为了便于分析其性质，这里假设其为正定矩阵，对其进行特征值分解：&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    \Sigma=U\Lambda U^T=\sum_{i=1}
+^pu_i\lambda_iu_i^T $$
+&lt;/div&gt;
+
+&lt;p&gt;其中，$U=(u_1,&amp;hellip;,u_p),UU^T=U^TU=I,\Lambda=diag(\lambda_i)$&lt;/p&gt;
+
+&lt;p&gt;则方差矩阵的逆为&lt;/p&gt;
+
+&lt;div&gt;$$
+\Sigma^{-1}=(U\Lambda U^T)^{-1}=U\Lambda^{-1}U^T=\sum_{i=1}^pu_i\frac{1}{\lambda_i}u_i^T
+$$&lt;/div&gt;
+
+&lt;p&gt;定义 $y_i=(x-\mu)^Tu_i$，可以将 $y_i$ 看作是 $x$ 去均值后在向量 $u_i$ 上的&lt;strong&gt;投影&lt;/strong&gt;，则 $\Phi$ 可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+\Phi = (x-\mu)^T\Sigma^{-1}(x-\mu)=(x-\mu)^T\sum_{i=1}^pu_i\frac{1}{\lambda_i}u_i^T(x-\mu)=\sum_{i=1}^p\frac{y_i^2}{\lambda_i}
+$$&lt;/div&gt;
+
+&lt;p&gt;为了便于展示我们取 $p=2$，并令 $\Phi=1$ 可以发现&lt;/p&gt;
+
+&lt;div&gt;$$
+\frac{y_1^2}{\lambda_1}+\frac{y_2^2}{\lambda_2} = 1
+$$&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;竟然是一个椭圆！&lt;/strong&gt;&lt;/p&gt;
+
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e3%80%8c%e6%a6%82%e7%8e%87%e5%9f%ba%e7%a1%80%e3%80%8d%e9%ab%98%e6%96%af%e5%88%86%e5%b8%83/Gaussian1.jpg&#34;/&gt; 
+&lt;/figure&gt;
+
+
+&lt;p&gt;也就是说指定了 $\Phi$ 的值，相当于能够得到高斯分布的等高线。&lt;/p&gt;
+
+&lt;p&gt;Matlab code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;60
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt; clear;
+ clear all;
+ clf
+
+ mu = [1,2];
+ Sigma = [1,0.5;0.5,2];
+ X = mvnrnd(mu,Sigma,500); % 从高斯分布中生成样本
+ scatter(X(:,1),X(:,2))
+ [U,Lambda] = eig(Sigma)；
+ u1 = U(:,1); % 对应博客中的投影向量
+ u2 = U(:,2);
+ lambda1 = Lambda(1,1); % 对应博客中的椭圆长短轴
+ lambda2 = Lambda(2,2);
+
+ X1 = [];
+ X2 = [];
+ % 采用暴力搜索来获取使得\Phi = 1的横纵坐标
+ for x1 = -3:.01:5
+     for x2 = -4:.01:5
+         phi = (([x1,x2] - mu)*u1)^2/lambda1 + (([x1,x2] - mu)*u2)^2/lambda2;
+         if phi &amp;lt;= 1.01 &amp;amp;&amp;amp; phi &amp;gt;= 0.99
+             X1 = [X1;x1];
+             X2 = [X2;x2];
+         end
+     end
+ end
+             
+ hold on 
+ scatter(X1,X2)
+
+ X1 = [];
+ X2 = [];
+ % 采用暴力搜索来获取使得\Phi = 2的横纵坐标
+ for x1 = -3:.01:5
+     for x2 = -4:.01:5
+         phi = (([x1,x2] - mu)*u1)^2/lambda1 + (([x1,x2] - mu)*u2)^2/lambda2;
+         if phi &amp;lt;= 2.01 &amp;amp;&amp;amp; phi &amp;gt;= 1.99
+             X1 = [X1;x1];
+             X2 = [X2;x2];
+         end
+     end
+ end
+             
+ hold on 
+ scatter(X1,X2)
+
+ % 画出投影向量
+ x = 1:2:3;
+ k1 = u1(2)/u1(1);
+ k2 = u2(2)/u2(1);
+ y1 = k1*(x-mu(1))+mu(2);
+ y2 = k2*(x-mu(1))+mu(2);
+ plot(x&amp;#39;,y1&amp;#39;,&amp;#39;LineWidth&amp;#39;,2)
+ plot(x&amp;#39;,y2&amp;#39;,&amp;#39;LineWidth&amp;#39;,2)
+ xlim([-2, 5]);
+ ylim([-2, 5]);
+ axis square
+ legend(&amp;#39;data&amp;#39;,&amp;#39;\Phi=1&amp;#39;,&amp;#39;\Phi=2&amp;#39;,&amp;#39;u1&amp;#39;,&amp;#39;u2&amp;#39;)
+ xlabel(&amp;#39;x1&amp;#39;)
+ ylabel(&amp;#39;x2&amp;#39;)&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id=&#34;高斯分布的局限性&#34;&gt;高斯分布的局限性&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;协方差矩阵 $\Sigma$ 中的参数个数太多 $p(p+1)/2 = O(p^2)$；可以采用&lt;strong&gt;对角化&lt;/strong&gt;或&lt;strong&gt;各向同性&lt;/strong&gt;的假设。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;单高斯分布来拟合数据不合理；可以采用&lt;strong&gt;混合高斯模型&lt;/strong&gt;。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;已知联合概率求边缘概率和条件概率&#34;&gt;已知联合概率求边缘概率和条件概率&lt;/h2&gt;
+
+&lt;p&gt;已知&lt;/p&gt;
+
+&lt;div&gt;$$
+x=\left(\begin{array}{l}{x_{a}} \\ {x_{b}}\end{array}\right),
+\mu=\left(\begin{array}{l}{\mu_{a}} \\ {\mu_{b}}\end{array}\right),\Sigma=\left(\begin{array}{ll}{\Sigma_{a a}} &amp; {\Sigma_{a b}} \\ {\Sigma_{b a}} &amp; {\Sigma_{b b}}\end{array}\right)
+$$&lt;/div&gt;
+
+&lt;p&gt;求 $p(x_a),p(x_b|x_a)$。可以采用配方法(见PRML，过于复杂)，这里采用构造定义法。&lt;/p&gt;
+
+&lt;p&gt;定义 $A = (I_m \quad 0)$，则 $x_a = Ax$&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+E[x_a]&amp;=AE[x]=\mu_a\\
+Var[x_a]&amp;=A\Sigma A^T=\Sigma_{aa}
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;所以&lt;strong&gt;边缘概率分布为&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;$$x_a \sim N(\mu_a,\Sigma_{aa})$$&lt;/div&gt;
+
+&lt;p&gt;定义&lt;/p&gt;
+
+&lt;div&gt;$$x_{b.a}=x_b-\Sigma_{ba}\Sigma_{aa}^{-1}x_a$$&lt;/div&gt;
+
+&lt;div&gt;$$A=(-\Sigma_{ba}\Sigma_{aa}^{-1} \quad I)$$&lt;/div&gt;
+
+&lt;p&gt;则 $x_{b.a}=Ax$&lt;/p&gt;
+
+&lt;div&gt;$$
+    \begin{aligned}
+E[x_{b.a}]&amp;=AE[x]=\mu_b-\Sigma_{ba}\Sigma_{aa}^{-1}\mu_a\\
+Var[x_{b.a}]&amp;=A\Sigma A^T = \Sigma_{bb}-\Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab}
+    \end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;则可以得到 $x_{b.a}$ 的分布，又因为&lt;/p&gt;
+
+&lt;div&gt;$$x_b=x_{b.a}+\Sigma_{ba}\Sigma_{aa}^{-1}x_a$$&lt;/div&gt;
+
+&lt;p&gt;条件分布的均值和方差可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+E[x_b|x_a] &amp;= E[x_{b.a}] + \Sigma_{ba}\Sigma_{aa}^{-1}x_a\\
+Var[x_b|x_a] &amp;= Var[x_{b.a}] 
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;因此&lt;strong&gt;条件概率分布&lt;/strong&gt;为&lt;/p&gt;
+
+&lt;div&gt;$$
+x_b|x_a \sim N(\mu_b+\Sigma_{ba}\Sigma_{aa}^{-1}(x_a-\mu_a),\Sigma_{bb}-\Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab})
+$$&lt;/div&gt;
+
+&lt;h2 id=&#34;已知边缘概率和条件概率求联合概率&#34;&gt;已知边缘概率和条件概率求联合概率&lt;/h2&gt;
+
+&lt;p&gt;已知&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+p(x)&amp;=N(x|\mu,\Lambda^{-1})\\
+p(y|x)&amp;=N(y|Ax+b,L^{-1})
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;求 $p(y),p(x|y)$&lt;/p&gt;
+
+&lt;p&gt;定义 $y=Ax+b+\epsilon,\epsilon \sim N(0,L^{-1})$&lt;/p&gt;
+
+&lt;p&gt;则 $y$ 的边缘概率为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+E[y]&amp;=E[Ax+b] + E[\epsilon] = A\mu+b\\
+Var[y]&amp;=Var[Ax+b]+Var[\epsilon]=A\Lambda^{-1}A^T+L^{-1}
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;即&lt;/p&gt;
+
+&lt;div&gt;$$
+y \sim N(A \mu +b, A\Lambda^{-1}A^T+L^{-1})
+$$&lt;/div&gt;
+
+&lt;p&gt;要求 $p(x|y)$ 可以构造联合分布，在利用联合概率求条件概率&lt;/p&gt;
+
+&lt;p&gt;构造&lt;/p&gt;
+
+&lt;div&gt;$$
+Z=\left(\begin{array}{l}{x} \\ {y}\end{array}\right) \sim \mathcal{N}\left(\left[\begin{array}{c}{\mu} \\ {A \mu+b}\end{array}\right],\left[\begin{array}{cc}{\Lambda^{-1}} &amp; {\Delta} \\ {\Delta} &amp; {L^{-1}+A \Lambda^{-1} A^{T}}\end{array}\right]\right)
+$$&lt;/div&gt;
+
+&lt;p&gt;也就是只要求出 $x$ 和 $y$ 之间的协方差 $\Delta$ 就能够知道它们的联合分布了。根据协方差的定义来求解&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\Delta &amp;= Cov(x,y)\\
+&amp;=E[(x-E[x])(y-E[y])^T]\\
+&amp;=E[(x-\mu)(Ax+b+\epsilon-(A\mu+b))^T]\\
+&amp;=E[(x-\mu)(Ax-A\mu+\epsilon)^T]\\
+&amp;=E[(x-\mu)(Ax-A\mu)^T+(x-\mu)\epsilon^T]\\
+&amp;=E[(x-\mu)(x-\mu)^T]A^T+E[(x-\mu)]E[\epsilon]\\
+&amp;=Var[x]A^T+0\\
+&amp;=\Lambda^{-1}A^T
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;这样完整的联合分布就得到了，代入上一节 $x_b|x_a$ 的公式即可得到 $p(x|y)$ 的概率分布了。&lt;/p&gt;</description>
     </item>
     
     <item>
