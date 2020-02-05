@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: %E2%80%9C/https:/minghaochen.github.io/%E2%80%9C/sitemap.xml
+Sitemap: %E2%80%9C/minghaochen.github.io/%E2%80%9C/sitemap.xml

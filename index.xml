@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>MH&#39;s Blog</title>
-    <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/</link>
+    <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/</link>
     <description>Recent content on MH&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
     <lastBuildDate>Wed, 05 Feb 2020 20:39:13 +0800</lastBuildDate>
     
-	<atom:link href="%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="%E2%80%9C//minghaochen.github.io/%E2%80%9C/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>About</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/about/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/about/</link>
       <pubDate>Sun, 20 Aug 2017 21:38:52 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/about/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/about/</guid>
       <description>  I&amp;#39;m a PhD student from Zhejiang University, China. Love bodybuilding, food and travel. Now I focus on Model Predictive Control and System Identification.   </description>
     </item>
     
     <item>
       <title>《经济学人》01</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA01/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA01/</link>
       <pubDate>Wed, 05 Feb 2020 20:39:13 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA01/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA01/</guid>
       <description>&lt;h1 id=&#34;title&#34;&gt;Title&lt;/h1&gt;
 
 &lt;p&gt;Will the Wuhan virus become a pandemic?
@@ -139,10 +139,10 @@ Probably. But public health services can help determine how severe it turns out 
     
     <item>
       <title>概率基础「高斯分布」</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</link>
       <pubDate>Sat, 31 Aug 2019 09:54:53 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</guid>
       <description>&lt;p&gt;今天补充一些&lt;strong&gt;有关均值方差的公式&lt;/strong&gt;和&lt;strong&gt;高斯分布&lt;/strong&gt;的一些性质。&lt;/p&gt;
 
 &lt;h2 id=&#34;some-formulas-of-mean-and-variance&#34;&gt;Some Formulas of Mean and Variance&lt;/h2&gt;
@@ -316,7 +316,7 @@ $$&lt;/div&gt;
 &lt;p&gt;&lt;strong&gt;竟然是一个椭圆！&lt;/strong&gt;&lt;/p&gt;
 
 &lt;figure&gt;
-    &lt;img src=&#34;%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/images/post/%e3%80%8c%e6%a6%82%e7%8e%87%e5%9f%ba%e7%a1%80%e3%80%8d%e9%ab%98%e6%96%af%e5%88%86%e5%b8%83/Gaussian1.jpg&#34;/&gt; 
+    &lt;img src=&#34;%E2%80%9C//minghaochen.github.io/%E2%80%9C/images/post/%e3%80%8c%e6%a6%82%e7%8e%87%e5%9f%ba%e7%a1%80%e3%80%8d%e9%ab%98%e6%96%af%e5%88%86%e5%b8%83/Gaussian1.jpg&#34;/&gt; 
 &lt;/figure&gt;
 
 
@@ -573,10 +573,10 @@ $$&lt;/div&gt;
     
     <item>
       <title>「机器学习」变分推断</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/</link>
       <pubDate>Wed, 28 Aug 2019 20:52:52 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/</guid>
       <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
 
 &lt;p&gt;之前一直对“变分推断”这个词有一种恐惧的心理，听着就有点难懂，加上没学过泛函分析这块内容，潜意识里也很抵触&amp;rdquo;变分&amp;rdquo;，导致之前经常有选择性地忽略这一块知识点。如果你也一样和我有这样的心理，那么首先恭喜你称为了我的有缘人，其次再恭喜你看到了这篇博客，我尽可能从外行的角度通俗易懂地把&amp;rdquo;变分推断&amp;rdquo;展示出来，希望对有缘人有所启发。&lt;/p&gt;
@@ -851,7 +851,7 @@ b_current = b_0 + (first + second)/2;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tabl
 &lt;p&gt;根据两个分布不断迭代就能得到最终两个分布各自的参数，然后两个分布的乘积就是要求的后验分布的近似分布了。&lt;/p&gt;
 
 &lt;figure&gt;
-    &lt;img src=&#34;%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/images/post/%e3%80%8c%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e3%80%8d%e5%8f%98%e5%88%86%e6%8e%a8%e6%96%ad/Variational.jpg&#34;/&gt; 
+    &lt;img src=&#34;%E2%80%9C//minghaochen.github.io/%E2%80%9C/images/post/%e3%80%8c%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e3%80%8d%e5%8f%98%e5%88%86%e6%8e%a8%e6%96%ad/Variational.jpg&#34;/&gt; 
 &lt;/figure&gt;
 
 
@@ -864,10 +864,10 @@ b_current = b_0 + (first + second)/2;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tabl
     
     <item>
       <title>「机器学习」高斯混合模型GMM</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/</link>
       <pubDate>Sun, 25 Aug 2019 13:40:23 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/</guid>
       <description>&lt;p&gt;前面总结了 EM 算法，我们知道这是一个&lt;strong&gt;采用迭代的方式&lt;/strong&gt;用于解决&lt;strong&gt;含有隐变量&lt;/strong&gt;的参数估计问题的算法。典型的一个应用就是今天的主角&lt;strong&gt;高斯混合模型&lt;/strong&gt; (Gaussian Misture Model)。这个模型和它的名字一样直白，也就是由&lt;strong&gt;多个高斯分布组合而成&lt;/strong&gt;的模型，其概率密度函数可以表示为&lt;/p&gt;
 
 &lt;div&gt;$$
@@ -1201,7 +1201,7 @@ end&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;figure&gt;
-    &lt;img src=&#34;%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/images/post/%e3%80%8c%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e3%80%8d%e9%ab%98%e6%96%af%e6%b7%b7%e5%90%88%e6%a8%a1%e5%9e%8bGMM/GMM_EM.jpg&#34;/&gt; 
+    &lt;img src=&#34;%E2%80%9C//minghaochen.github.io/%E2%80%9C/images/post/%e3%80%8c%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e3%80%8d%e9%ab%98%e6%96%af%e6%b7%b7%e5%90%88%e6%a8%a1%e5%9e%8bGMM/GMM_EM.jpg&#34;/&gt; 
 &lt;/figure&gt;
 
 
@@ -1210,10 +1210,10 @@ end&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
     
     <item>
       <title>美音发音技巧——末尾s的发音</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/</link>
       <pubDate>Fri, 23 Aug 2019 09:44:21 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/</guid>
       <description>&lt;p&gt;不知道你会不会傻傻分不清楚&lt;/p&gt;
 
 &lt;p&gt;likes  /s/ 还是 /z/？&lt;/p&gt;
@@ -1247,10 +1247,10 @@ end&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
     
     <item>
       <title>「机器学习」EM算法</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/</link>
       <pubDate>Thu, 22 Aug 2019 09:43:39 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/</guid>
       <description>&lt;p&gt;期望最大(EM)算法的大名想必大家都听过，说来惭愧，大概两年前就学过用过这个算法，但是到后来只记得EM这个名字，把算法的原理都给忘光光了，这几天重新捡起来，总结一下，也希望对想了解这个算法的人有点启发。&lt;/p&gt;
 
 &lt;p&gt;对我EM算法我总结为三点：&lt;strong&gt;为什么&lt;/strong&gt;、&lt;strong&gt;是什么&lt;/strong&gt;、&lt;strong&gt;怎么用&lt;/strong&gt;。&lt;/p&gt;
@@ -1565,10 +1565,10 @@ end&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
     
     <item>
       <title>「机器学习」指数族分布</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/</link>
       <pubDate>Sat, 17 Aug 2019 08:27:25 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/</guid>
       <description>&lt;p&gt;听到指数族分布这个名字可能会觉得有点抽象，甚至你可能之前都没听过(反正我以前是没听过的)，但是如果说&lt;strong&gt;高斯分布、伯努利分布、二项分布、泊松分布、beta分布、Dirichlet分布、gamma分布&lt;/strong&gt;这些分布，那我想你应该大部分都听过而且可能对其中部分还很熟悉了。其实呢，指数族分布就是这些分布的统称啦，也就是说这些分布的概率密度函数都能写成一个统一的形式，而这个统一的形式就是：&lt;/p&gt;
 
 &lt;div&gt;$$
@@ -1769,10 +1769,10 @@ $$&lt;/div&gt;
     
     <item>
       <title>核函数与再生核希尔伯特空间</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</link>
       <pubDate>Thu, 15 Aug 2019 20:59:29 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</guid>
       <description>&lt;p&gt;说到核方法，很多人第一反应就是SVM，其实不然，其应用很广，但核心思想均是&lt;strong&gt;用在原始空间计算核函数的值来避免直接求解高维特征空间的内积&lt;/strong&gt;；说到核函数往往还会带上一个吓人的概念“再生核希尔伯特空间”，先揭秘一下什么是希尔伯特空间，希尔伯特空间其实就是&lt;strong&gt;函数空间&lt;/strong&gt;(或者可以把函数理解为无限维的向量)，函数空间里任意一个元素都表示一个函数，而再加上“再生核”这个限定词相当于就是特定的函数空间，就是具有再生性的函数空间，那什么是再生性听我慢慢道来。&lt;/p&gt;
 
 &lt;p&gt;假设有原始空间样本 $x_i \in \mathbb{R}^p, i=1,&amp;hellip;,N$，通常为了&lt;strong&gt;在高维空间寻找线性关系&lt;/strong&gt;我们会将其通过函数映射 $\phi(\cdot)$ 到高维空间 $\phi(x_i) \in \mathbb{R}^n$，但是这样也意味着如果原始空间求内积 $&amp;lt;x_i,x_j&amp;gt;$ 对应到特征空间为 $&amp;lt;\phi(x_i),\phi(x_j)&amp;gt;$，直接求解高维空间的内积计算量是很大的，同时我们可能并不知道这个映射函数 $\phi(\cdot)$ 怎么选择才是合适的。核函数则提供了另一种求解的思路。&lt;/p&gt;
@@ -1890,10 +1890,10 @@ $$&amp;lt;ax,y&amp;gt;=a&amp;lt;x,y&amp;gt;,&amp;lt;x+y,z&amp;gt;=&amp;lt;x,z&am
     
     <item>
       <title>「机器学习」支持向量机SVM</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/</link>
       <pubDate>Wed, 14 Aug 2019 20:05:08 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/</guid>
       <description>&lt;p&gt;SVM（Support Vector Machine）又称为支持向量机，是一种用于机器学习的算法，不仅支持线性分类，结合核方法还可以用于非线性分类。其思想主要为&lt;strong&gt;最大间隔&lt;/strong&gt;，推导依赖于&lt;strong&gt;对偶理论&lt;/strong&gt;，因此可以将SVM归结于：间隔、对偶、核方法。&lt;/p&gt;
 
 &lt;h2 id=&#34;间隔&#34;&gt;间隔&lt;/h2&gt;
@@ -2077,10 +2077,10 @@ $$&lt;/div&gt;</description>
     
     <item>
       <title>对偶理论</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/</link>
       <pubDate>Sun, 11 Aug 2019 21:59:22 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/</guid>
       <description>&lt;p&gt;在求解一个优化命题时，如果其对偶形式便于求解，常常可以通过求解对偶问题来避免直接对原问题进行求解。比如机器学习中典型的SVM就涉及到对偶理论，以及拉格朗日乘子法、KKT条件等概念。&lt;/p&gt;
 
 &lt;p&gt;首先简单通俗地说说这几个概念是干嘛的&lt;/p&gt;
@@ -2259,10 +2259,10 @@ $\nabla_x f_0(x^*) + \sum_{i=1}^k \lambda_i^* \nabla_x f_i(x^*) + \sum_{j=1}^l v
     
     <item>
       <title>「机器学习」主成分分析PCA</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/</link>
       <pubDate>Fri, 09 Aug 2019 21:40:19 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/</guid>
       <description>&lt;h1 id=&#34;为什么要降维&#34;&gt;为什么要降维&lt;/h1&gt;
 
 &lt;p&gt;要说到降维的目的，主要是用来解决过拟合这一问题的，降维的方式主要有三种&lt;/p&gt;
@@ -2458,10 +2458,10 @@ H*X*V&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
     
     <item>
       <title>「机器学习」特征工程</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/</link>
       <pubDate>Mon, 05 Aug 2019 11:22:25 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/</guid>
       <description>&lt;p&gt;&lt;strong&gt;数据和特征决定了机器学习的上限，而模型和算法只是逼近这个上限而已。&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;那么我们需要怎么来抬高这一上限呢，特征工程的流程还是比较常规的，这里讲一下主要的思路，只要思路理清了，具体的实现调调包一般就OK啦。（sklearn统统搞定~）&lt;/p&gt;
@@ -2483,19 +2483,19 @@ H*X*V&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;p&gt;OK了，经过&lt;strong&gt;数据预处理、特征选择、特征提取&lt;/strong&gt;，现在你手上有的就是&lt;strong&gt;较低维度的有用数据&lt;/strong&gt;了吧，快拿去train一发试试！&lt;/p&gt;
 
 &lt;figure&gt;
-    &lt;img src=&#34;%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/images/post/%e7%89%b9%e5%be%81%e5%b7%a5%e7%a8%8b/%e7%89%b9%e5%be%81%e5%b7%a5%e7%a8%8b.svg&#34;/&gt; 
+    &lt;img src=&#34;%E2%80%9C//minghaochen.github.io/%E2%80%9C/images/post/%e7%89%b9%e5%be%81%e5%b7%a5%e7%a8%8b/%e7%89%b9%e5%be%81%e5%b7%a5%e7%a8%8b.svg&#34;/&gt; 
 &lt;/figure&gt;</description>
     </item>
     
     <item>
       <title>美音中t的发音</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E4%B8%ADt%E7%9A%84%E5%8F%91%E9%9F%B3/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E4%B8%ADt%E7%9A%84%E5%8F%91%E9%9F%B3/</link>
       <pubDate>Sun, 04 Aug 2019 18:33:34 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E4%B8%ADt%E7%9A%84%E5%8F%91%E9%9F%B3/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E4%B8%ADt%E7%9A%84%E5%8F%91%E9%9F%B3/</guid>
       <description>&lt;p&gt;今天做高铁回家路上刚好看了Jason的视频，总结一下美音中 t 的发音技巧，同时感谢一下Jason哥。
 &lt;figure&gt;
-    &lt;img src=&#34;%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/images/post/%e7%be%8e%e9%9f%b3%e4%b8%adt%e7%9a%84%e5%8f%91%e9%9f%b3/%e7%be%8e%e9%9f%b3%e4%b8%adt%e7%9a%84%e5%90%84%e7%a7%8d%e5%8f%91%e9%9f%b3.svg&#34;/&gt; 
+    &lt;img src=&#34;%E2%80%9C//minghaochen.github.io/%E2%80%9C/images/post/%e7%be%8e%e9%9f%b3%e4%b8%adt%e7%9a%84%e5%8f%91%e9%9f%b3/%e7%be%8e%e9%9f%b3%e4%b8%adt%e7%9a%84%e5%90%84%e7%a7%8d%e5%8f%91%e9%9f%b3.svg&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
@@ -2504,10 +2504,10 @@ H*X*V&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
     
     <item>
       <title>「机器学习」高斯过程</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/</link>
       <pubDate>Fri, 26 Jul 2019 14:38:14 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/</guid>
       <description>&lt;p&gt;网上机器学习的算法铺天盖地，高斯过程却显得不那么起眼，它与其他大多数算法不一样的地方在于，它提供了&lt;strong&gt;不确定性&lt;/strong&gt;的估计，这篇文章争取在不涉及数学推导的情况下给大家一个直观的理解。&lt;/p&gt;
 
 &lt;h1 id=&#34;什么是不确定性&#34;&gt;什么是不确定性？&lt;/h1&gt;
@@ -2523,17 +2523,17 @@ H*X*V&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
 &lt;p&gt;还是不够形象？那我们来个例子，上面说过离散概率分布了，这次我们来个连续的看看，来看看身高吧，来猜猜小陈有多高（猜对有奖哦，文末二维码随意扫随意打赏哈），你又不认识我没见过我，怎么知道我有多高呢，那直观的猜测就是小陈是个中国人，小陈的身高服从中国人身高的概率分布（假设你能得到这个概率分布咯）
 &lt;figure&gt;
-    &lt;img src=&#34;%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e7%94%b7%e6%80%a7%e8%ba%ab%e9%ab%98.jpg&#34;/&gt; 
+    &lt;img src=&#34;%E2%80%9C//minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e7%94%b7%e6%80%a7%e8%ba%ab%e9%ab%98.jpg&#34;/&gt; 
 &lt;/figure&gt;
 
 然后有一天你在博客上看到了小陈和朋友们的合照
 &lt;figure&gt;
-    &lt;img src=&#34;%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%88%e7%85%a7.jpg&#34;/&gt; 
+    &lt;img src=&#34;%E2%80%9C//minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%88%e7%85%a7.jpg&#34;/&gt; 
 &lt;/figure&gt;
 
 卧槽！小陈有点高啊，在朋友中是最高的，于是你对小陈身高的概率分布的认识改变了
 &lt;figure&gt;
-    &lt;img src=&#34;%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%8e%e9%aa%8c%e8%ba%ab%e9%ab%98.jpg&#34;/&gt; 
+    &lt;img src=&#34;%E2%80%9C//minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%8e%e9%aa%8c%e8%ba%ab%e9%ab%98.jpg&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 
@@ -2545,7 +2545,7 @@ H*X*V&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
 &lt;p&gt;比如有一个sin函数，我们有五个点的训练数据
 &lt;figure&gt;
-    &lt;img src=&#34;%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/data.png&#34;/&gt; 
+    &lt;img src=&#34;%E2%80%9C//minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/data.png&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2562,7 +2562,7 @@ pl.plot(Xtrain, ytrain, &amp;#39;bs&amp;#39;, ms=8)&lt;/pre&gt;&lt;/td&gt;&lt;/t
 &lt;/div&gt;
 &lt;p&gt;没有训练前我们对这个函数没什么认知，那就假设其均值函数为0（大部分时候也都是当做0来使用的），核函数就取SE核函数吧（这个是什么先不管啦，你就认为是个用来生成协方差矩阵的函数，主要我们是要得到它的协方差呀！核函数里一般会有超参数需要估计，为了简单起见，我直接直接给定超参数，不去估计这个参数了），在这样的先验分布下，你得到的函数会是什么样的呢？我们从这个函数的概率分布中采样三个函数出来看看。
 &lt;figure&gt;
-    &lt;img src=&#34;%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/prior.png&#34;/&gt; 
+    &lt;img src=&#34;%E2%80%9C//minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/prior.png&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2627,7 +2627,7 @@ pl.show()&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;p&gt;那再根据训练数据训练一发，也就是相当于前面提到的贝叶斯推断，就能得到函数的后验概率分布
 &lt;figure&gt;
-    &lt;img src=&#34;%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/posterior.png&#34;/&gt; 
+    &lt;img src=&#34;%E2%80%9C//minghaochen.github.io/%E2%80%9C/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/posterior.png&#34;/&gt; 
 &lt;/figure&gt;
 &lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2700,10 +2700,10 @@ $$&lt;div&gt;
     
     <item>
       <title>Chol分解与SVD分解</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/</link>
       <pubDate>Thu, 25 Jul 2019 15:27:09 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/</guid>
       <description>&lt;p&gt;今天说说两个整天见却整天忘的矩阵分解，一个是Chol分解，一个是SVD分解&lt;/p&gt;
 
 &lt;h1 id=&#34;chol分解&#34;&gt;Chol分解&lt;/h1&gt;
@@ -2828,19 +2828,19 @@ $$&lt;/p&gt;
     
     <item>
       <title>TwinCAT3 with Matlab-simulink 配置及使用</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/twincat3-with-matlab-simulink/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/twincat3-with-matlab-simulink/</link>
       <pubDate>Tue, 23 Jul 2019 19:35:03 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/twincat3-with-matlab-simulink/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/twincat3-with-matlab-simulink/</guid>
       <description>这几天忙项目的事，需要用到TwinCAT3这个平台，这是倍福（backoff）公司的一个产品，基于PC的控制软件，并且可以用来编译matla</description>
     </item>
     
     <item>
       <title>美音发音技巧——连读</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E8%BF%9E%E8%AF%BB/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E8%BF%9E%E8%AF%BB/</link>
       <pubDate>Mon, 22 Jul 2019 19:58:54 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E8%BF%9E%E8%AF%BB/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E8%BF%9E%E8%AF%BB/</guid>
       <description>&lt;p&gt;连读主要有三种情况：&lt;/p&gt;
 
 &lt;ol&gt;
@@ -2862,10 +2862,10 @@ $$&lt;/p&gt;
     
     <item>
       <title>如何搭建hugo博客</title>
-      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/</link>
+      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/</link>
       <pubDate>Mon, 22 Jul 2019 09:27:29 +0800</pubDate>
       
-      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/</guid>
+      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/</guid>
       <description>&lt;ol&gt;
 &lt;li&gt;安装git&lt;/li&gt;
 &lt;li&gt;安装brew&lt;/li&gt;
