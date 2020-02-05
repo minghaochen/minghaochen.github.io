@@ -2,58 +2,58 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on MH&#39;s Blog</title>
-    <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/</link>
+    <link>https://minghaochen.github.io/categories/</link>
     <description>Recent content in Categories on MH&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
     <lastBuildDate>Wed, 05 Feb 2020 20:39:13 +0800</lastBuildDate>
     
-	<atom:link href="%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://minghaochen.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>English</title>
-      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/english/</link>
+      <link>https://minghaochen.github.io/categories/english/</link>
       <pubDate>Wed, 05 Feb 2020 20:39:13 +0800</pubDate>
       
-      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/english/</guid>
+      <guid>https://minghaochen.github.io/categories/english/</guid>
       <description></description>
     </item>
     
     <item>
       <title>‘数据基础’</title>
-      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/</link>
+      <link>https://minghaochen.github.io/categories/%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/</link>
       <pubDate>Sat, 31 Aug 2019 09:54:53 +0800</pubDate>
       
-      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/</guid>
+      <guid>https://minghaochen.github.io/categories/%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/</guid>
       <description></description>
     </item>
     
     <item>
       <title>机器学习</title>
-      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+      <link>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
       <pubDate>Wed, 28 Aug 2019 20:52:52 +0800</pubDate>
       
-      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
+      <guid>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
       <description></description>
     </item>
     
     <item>
       <title>数学基础</title>
-      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/</link>
+      <link>https://minghaochen.github.io/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/</link>
       <pubDate>Thu, 15 Aug 2019 20:59:29 +0800</pubDate>
       
-      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/</guid>
+      <guid>https://minghaochen.github.io/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/</guid>
       <description></description>
     </item>
     
     <item>
       <title>技术贴</title>
-      <link>%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/</link>
+      <link>https://minghaochen.github.io/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/</link>
       <pubDate>Tue, 23 Jul 2019 19:35:03 +0800</pubDate>
       
-      <guid>%E2%80%9C//minghaochen.github.io/%E2%80%9C/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/</guid>
+      <guid>https://minghaochen.github.io/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/</guid>
       <description></description>
     </item>
     
