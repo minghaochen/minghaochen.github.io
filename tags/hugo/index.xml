@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>hugo on MH&#39;s Blog</title>
-    <link>https://minghaochen.github.io/tags/hugo/</link>
+    <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/tags/hugo/</link>
     <description>Recent content in hugo on MH&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
     <lastBuildDate>Mon, 22 Jul 2019 09:27:29 +0800</lastBuildDate>
     
-	<atom:link href="https://minghaochen.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>如何搭建hugo博客</title>
-      <link>https://minghaochen.github.io/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/</link>
+      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/</link>
       <pubDate>Mon, 22 Jul 2019 09:27:29 +0800</pubDate>
       
-      <guid>https://minghaochen.github.io/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/</guid>
+      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/</guid>
       <description>&lt;ol&gt;
 &lt;li&gt;安装git&lt;/li&gt;
 &lt;li&gt;安装brew&lt;/li&gt;

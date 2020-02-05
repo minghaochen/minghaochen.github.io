@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>数学基础 on MH&#39;s Blog</title>
-    <link>https://minghaochen.github.io/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/</link>
+    <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/</link>
     <description>Recent content in 数学基础 on MH&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>MinghaoChen</copyright>
     <lastBuildDate>Thu, 15 Aug 2019 20:59:29 +0800</lastBuildDate>
     
-	<atom:link href="https://minghaochen.github.io/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>核函数与再生核希尔伯特空间</title>
-      <link>https://minghaochen.github.io/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</link>
+      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</link>
       <pubDate>Thu, 15 Aug 2019 20:59:29 +0800</pubDate>
       
-      <guid>https://minghaochen.github.io/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</guid>
+      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</guid>
       <description>&lt;p&gt;说到核方法，很多人第一反应就是SVM，其实不然，其应用很广，但核心思想均是&lt;strong&gt;用在原始空间计算核函数的值来避免直接求解高维特征空间的内积&lt;/strong&gt;；说到核函数往往还会带上一个吓人的概念“再生核希尔伯特空间”，先揭秘一下什么是希尔伯特空间，希尔伯特空间其实就是&lt;strong&gt;函数空间&lt;/strong&gt;(或者可以把函数理解为无限维的向量)，函数空间里任意一个元素都表示一个函数，而再加上“再生核”这个限定词相当于就是特定的函数空间，就是具有再生性的函数空间，那什么是再生性听我慢慢道来。&lt;/p&gt;
 
 &lt;p&gt;假设有原始空间样本 $x_i \in \mathbb{R}^p, i=1,&amp;hellip;,N$，通常为了&lt;strong&gt;在高维空间寻找线性关系&lt;/strong&gt;我们会将其通过函数映射 $\phi(\cdot)$ 到高维空间 $\phi(x_i) \in \mathbb{R}^n$，但是这样也意味着如果原始空间求内积 $&amp;lt;x_i,x_j&amp;gt;$ 对应到特征空间为 $&amp;lt;\phi(x_i),\phi(x_j)&amp;gt;$，直接求解高维空间的内积计算量是很大的，同时我们可能并不知道这个映射函数 $\phi(\cdot)$ 怎么选择才是合适的。核函数则提供了另一种求解的思路。&lt;/p&gt;
@@ -135,10 +135,10 @@ $$&amp;lt;ax,y&amp;gt;=a&amp;lt;x,y&amp;gt;,&amp;lt;x+y,z&amp;gt;=&amp;lt;x,z&am
     
     <item>
       <title>对偶理论</title>
-      <link>https://minghaochen.github.io/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/</link>
+      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/</link>
       <pubDate>Sun, 11 Aug 2019 21:59:22 +0800</pubDate>
       
-      <guid>https://minghaochen.github.io/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/</guid>
+      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/</guid>
       <description>&lt;p&gt;在求解一个优化命题时，如果其对偶形式便于求解，常常可以通过求解对偶问题来避免直接对原问题进行求解。比如机器学习中典型的SVM就涉及到对偶理论，以及拉格朗日乘子法、KKT条件等概念。&lt;/p&gt;
 
 &lt;p&gt;首先简单通俗地说说这几个概念是干嘛的&lt;/p&gt;
@@ -317,10 +317,10 @@ $\nabla_x f_0(x^*) + \sum_{i=1}^k \lambda_i^* \nabla_x f_i(x^*) + \sum_{j=1}^l v
     
     <item>
       <title>Chol分解与SVD分解</title>
-      <link>https://minghaochen.github.io/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/</link>
+      <link>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/</link>
       <pubDate>Thu, 25 Jul 2019 15:27:09 +0800</pubDate>
       
-      <guid>https://minghaochen.github.io/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/</guid>
+      <guid>%E2%80%9C//https://minghaochen.github.io/%E2%80%9C/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/</guid>
       <description>&lt;p&gt;今天说说两个整天见却整天忘的矩阵分解，一个是Chol分解，一个是SVD分解&lt;/p&gt;
 
 &lt;h1 id=&#34;chol分解&#34;&gt;Chol分解&lt;/h1&gt;
