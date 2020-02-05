@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>MinghaoChen</copyright>
-    <lastBuildDate>Tue, 23 Jul 2019 19:35:03 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 05 Feb 2020 20:39:13 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -19,6 +19,2811 @@
       
       <guid>https://minghaochen.github.io/about/</guid>
       <description>  I&amp;#39;m a PhD student from Zhejiang University, China. Love bodybuilding, food and travel. Now I focus on Model Predictive Control and System Identification.   </description>
+    </item>
+    
+    <item>
+      <title>《经济学人》01</title>
+      <link>https://minghaochen.github.io/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA01/</link>
+      <pubDate>Wed, 05 Feb 2020 20:39:13 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA01/</guid>
+      <description>&lt;h1 id=&#34;title&#34;&gt;Title&lt;/h1&gt;
+
+&lt;p&gt;Will the Wuhan virus become a pandemic?
+Probably. But public health services can help determine how severe it turns out to be&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Pandemic: a disease that affects people over a very large area or the whole world&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;paragraph-1&#34;&gt;Paragraph 1&lt;/h1&gt;
+
+&lt;p&gt;Two things explain why a new infectious disease is so alarming. One is that, at first, it spreads exponentially. As tens of cases become hundreds and hundreds become thousands, the mathematics run away with you, conjuring speculation about a health-care collapse, social and economic upheaval and a deadly pandemic. The other is profound uncertainty. Sparse data and conflicting reports mean that scientists can not rule out the worst case—and that lets bad information thrive.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Conjure: to make something appear or happen in a way which is not expected&lt;/li&gt;
+&lt;li&gt;Speculation: when you guess about the possible causes or effects of something without knowing all the facts. 例：There is speculation that the president is ill.&lt;/li&gt;
+&lt;li&gt;Upheaval: a very big change that often causes problems&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;paragraph-2&#34;&gt;Paragraph 2&lt;/h1&gt;
+
+&lt;p&gt;So it is with a new coronavirus, known as2019-nCoV, which has struck in China. The number of reported cases grew from 282 on January 20th to almost 7,800 just nine days later. In that time four reported cases outside mainland China have multiplied to 105 in 19 territories. Doubt clouds fundamental properties of the disease, including how it is passed on and what share of infected people die. Amid the uncertainty, a simulation of a coronavirus outbreak by Johns Hopkins University in October, in which 65m people lost their lives, was put about as a prediction. It is not.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Strike: 类似于hit&lt;/li&gt;
+&lt;li&gt;Cloud: 云延伸出来就是“使模糊”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;paragraph-3&#34;&gt;Paragraph 3&lt;/h1&gt;
+
+&lt;p&gt;Those are the right questions, though: will the new virus become a global disease? And how deadly will it be? A definite answer is weeks or months away, but public-health authorities have to plan today. The best guess is that the disease has taken hold in China and there is a high risk that it spreads around the world—it may even become a recurrent seasonal infection. It may turn out to be no more lethal than seasonal influenza, but that would still count as serious. In the short term that would hit the world economy and, depending on how the outbreak is handled, it could also have political effects in China.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Take hold: to start to have a definite effect&lt;/li&gt;
+&lt;li&gt;Lethal: causing death, or able to cause death&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;paragraph-4&#34;&gt;Paragraph 4&lt;/h1&gt;
+
+&lt;p&gt;The outbreak began in December. The repeated mingling of people and animals in China means that viral mutations that infect humans are likely to arise there; and mass migration to cities means that they are likely to spread between people. This virus probably originated in bats and passed through mammals, such as palm civets (果子狸) or ferret badgers (鼬獾), ending up in Wuhan’s wet market, where wild animals were on sale. Symptoms resemble flu, but can include pneumonia, which may be fatal. About 20\% of reported cases are severe, and need hospital care; about 2\% of them have been fatal. As yet, there is no vaccine or antiviral treatment.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Mingling: if two feelings, sounds, smells etc mingle, they mix together with each other&lt;/li&gt;
+&lt;li&gt;Wet market: 指的是传统市场，卖生鲜的这种&lt;/li&gt;
+&lt;li&gt;Pneumonia: 肺炎&lt;/li&gt;
+&lt;li&gt;Vaccine: 疫苗&lt;/li&gt;
+&lt;li&gt;Antiviral: 复合词的结构，抗病毒&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;paragraph-5&#34;&gt;Paragraph 5&lt;/h1&gt;
+
+&lt;p&gt;The greatest uncertainty is how many cases have gone unrecorded. Primary health care is rudimentary in China and some of the ill either avoided or were turned away from busy hospitals. Many more may have such mild symptoms that they do not realise they have the disease. Modelling by academics in Hong Kong suggests that, as of January 25th, tens of thousands of people have already been infected and that the epidemic will peak in a few months’ time. If so, the virus is more widespread than thought, and hence will be harder to contain within China. But it will also prove less lethal, because the number of deaths should be measured against a much larger base of infections. As with flu, a lot of people could die nonetheless. In 2017-18 a bad flu season saw symptoms in 45m Americans, and 61,000 deaths.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Rudimentary: simple and basic&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;paragraph-6&#34;&gt;Paragraph 6&lt;/h1&gt;
+
+&lt;p&gt;Scientists have started work on vaccines and on treatments to make infections less severe. These are six to 12 months away, so the world must fall back on public-health measures. In China that has led to the biggest quarantine in history, as Wuhan and the rest of Hubei province have been sealed off. The impact of such draconian measures has rippled throughout China. The spring holiday has been extended, keeping schools and businesses closed. The economy is running on the home-delivery of food and goods.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Quarantine: a period of time when a person or animal is kept apart from others in case they are carrying a disease&lt;/li&gt;
+&lt;li&gt;Draconian: very strict and cruel&lt;/li&gt;
+&lt;li&gt;Ripple: to pass from one person to another like a wave. 例：Panic rippled through Hollywood as the murders were discovered.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;paragraph-7&#34;&gt;Paragraph 7&lt;/h1&gt;
+
+&lt;p&gt;Many experts praise China’s efforts. Certainly, its scientists have coped better with the Wuhan virus than they did with SARS in 2003, rapidly detecting it, sequencing its genome (基因测序), licensing diagnostic kits (诊断试剂) and informing international bodies. China’s politicians come off less well. They left alone the cramped markets filled with wild animals that spawned SARS. With the new virus, local officials in Wuhan first played down the science and then, when the disease had taken hold, enacted the draconian quarantine fully eight hours after announcing it, allowing perhaps 1m potentially infectious people to leave the city first.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Cramped: not have enough space. 例：The kitchen was small and cramped.&lt;/li&gt;
+&lt;li&gt;Spawn: to make a series of things happen or start to exist&lt;/li&gt;
+&lt;li&gt;Enact: to make a proposal into a law. 例：Congress refused to enact the bill.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;paragraph-8&#34;&gt;Paragraph 8&lt;/h1&gt;
+
+&lt;p&gt;That may have undermined a measure which is taking a substantial toll. China’s growth in the first quarter could fall to as little as 2\%, from 6\% before the outbreak. As China accounts for almost a fifth of world output, there will probably be a noticeable dent on global growth. Though the economy will bounce back when the virus fades, the reputation of the Communist Party and even of Xi Jinping may be more lastingly affected. The party claims that, armed with science, it is more efficient at governing than democracies. The heavy-handed failure to contain the virus suggests otherwise.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Substantial: large in amount or number; considerable&lt;/li&gt;
+&lt;li&gt;Dent: a reduction in the amount of something&lt;/li&gt;
+&lt;li&gt;Contain: to stop something from spreading or escaping. 例：Doctors are struggling to contain the epidemic.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;paragraph-9&#34;&gt;Paragraph 9&lt;/h1&gt;
+
+&lt;p&gt;Outside China such quarantines are unthinkable. The medical and economic cost will depend on governments slowing the disease’s spread. The way to do this is by isolating cases as soon as they crop up and tracing and quarantining people that victims have been in contact with—indeed, if the disease burns out in China, that might yet stop the pandemic altogether. If, by contrast, that proves inadequate, they could shut schools, discourage travel and urge the cancellation of public events. Buying time in this way has advantages even if it does not completely stop the disease. Health-care systems would have a greater chance to prepare for the onslaught, and to empty beds that are now full of people with seasonal flu.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Crop up: if a problem crops up, it happens or appears suddenly and in an unexpected way; arise. 例：if anything crops up, give me a call.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;paragraph-10&#34;&gt;Paragraph 10&lt;/h1&gt;
+
+&lt;p&gt;Despite all those efforts the epidemic could still be severe. Some health systems, in Africa and the slums of Asia’s vast cities, will not be able to isolate patients and trace contacts. Much depends on whether people are infectious when their symptoms are mild (or before they show any at all, as some reports suggest), because such people are hard to spot. And also on whether the virus mutates to become more transmissible or lethal.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Slum: an area that is in bad condition, where very poor people live&lt;/li&gt;
+&lt;li&gt;Spot: to notice someone or something, especially when they are difficult to see or recognize. 例：I spotted a police car behind us.&lt;/li&gt;
+&lt;li&gt;Mutate: a change in genetic structure. 例：Simple organisms like bacteria mutate rapidly.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;paragraph-11&#34;&gt;Paragraph 11&lt;/h1&gt;
+
+&lt;p&gt;The world has never responded as rapidly to a disease as it has to 2019-nCoV. Even so, the virus may still do great harm. As humans encroach on new habitats, farm more animals, gather in cities, travel and warm the planet, new diseases will become more common. One estimate puts their cost at $60bn a year. SARS, MERS, Nipah, Zika, Mexican swine flu: the fever from Wuhan is the latest of a bad bunch. It will not be the last.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>概率基础「高斯分布」</title>
+      <link>https://minghaochen.github.io/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</link>
+      <pubDate>Sat, 31 Aug 2019 09:54:53 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/</guid>
+      <description>&lt;p&gt;今天补充一些&lt;strong&gt;有关均值方差的公式&lt;/strong&gt;和&lt;strong&gt;高斯分布&lt;/strong&gt;的一些性质。&lt;/p&gt;
+
+&lt;h2 id=&#34;some-formulas-of-mean-and-variance&#34;&gt;Some Formulas of Mean and Variance&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;定理一&lt;/strong&gt;：
+We consider two random variables $X$ and $Y$&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+E(X+Y) &amp;= E(X) + E(Y)\\
+V(X\pm Y) &amp;= V(X) \pm 2Cov(X,Y)+V(Y)\\
+Cov(X,Y)&amp;=E(XY)-E(X)E(Y)
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;定理二&lt;/strong&gt;：
+When $X$ is indenpendent of $Y$&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+E(XY) &amp;= E(X)E(Y)\\
+V(X \pm Y) &amp;= V(X) + V(Y)\\
+Cov(X,Y)&amp;=0
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;定理三&lt;/strong&gt;：
+For $n$ random variables $X_1,&amp;hellip;,X_n$&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned} 
+E(\sum_{i}a_iX_i) &amp;= \sum_{i}a_i\mu_i\\
+V(\sum_{i}a_iX_i) &amp;= \sum_{i}\sum_{j}a_ia_jCov(X_i,X_j)
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;where $E(X_i)=\mu_i$ and $a_i$ is a constant value. When $X_1,&amp;hellip;,X_n$ are mutually independent, we have the following:&lt;/p&gt;
+
+&lt;div&gt;$$
+V(\sum_{i}a_iX_i) = \sum_{i}a_i^2V(X_i)
+$$&lt;/div&gt;
+
+&lt;h2 id=&#34;transformation-of-variables&#34;&gt;Transformation of Variables&lt;/h2&gt;
+
+&lt;p&gt;When a distribution of $X$ is known, we can find a distribution of $Y$ using the transformation of variables, where $Y$ is a function of $X$.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;定理四&lt;/strong&gt;：
+Distribution of $Y = \phi^{(-1)}(X)$: Let $f_x(x)$ be the pdf of $X$ and $X=\phi(Y)$ be a one-to-one transformation, then the pdf of $Y$ is given by&lt;/p&gt;
+
+&lt;div&gt;$$
+f_y(y) = |\phi&#39;(y)|f_x(\phi(y))
+$$&lt;/div&gt;
+
+&lt;p&gt;Example: $X\sim N(0,1),Y = \mu + \sigma X$&lt;/p&gt;
+
+&lt;p&gt;Since we have&lt;/p&gt;
+
+&lt;p&gt;$$
+X = \phi(Y) = \frac{Y-\mu}{\sigma},f_x(x)=\frac{1}{\sqrt{2\pi}}exp(-\frac{1}{2}x^2)
+$$&lt;/p&gt;
+
+&lt;p&gt;then $\phi&amp;rsquo;(y)=1/\sigma$&lt;/p&gt;
+
+&lt;div&gt;$$
+f_y(y) = \frac{1}{\sqrt{2\pi}|\sigma|}exp(-\frac{(y-\mu)^2}{2\sigma^2})
+$$&lt;/div&gt;
+
+&lt;p&gt;which indicates the normal distribution with mean $\mu$ and variance $\sigma^2$, denoted by $N(\mu,\sigma^2)$.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Multivariate Case&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Let $f_x(x_1,&amp;hellip;,x_n)$ be a joint pdf of $(X_1,&amp;hellip;,X_n)$, and a one-to-one transformation from ($X_1,&amp;hellip;,X_n$) to ($Y_1,&amp;hellip;,Y_n$) is given by&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+X_1 &amp;=\phi_1(Y_1,...,Y_n)\\
+&amp;...\\
+X_n &amp;=\phi_n(Y_1,...,Y_n)
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;then we obtain a joint pdf of $Y_1,&amp;hellip;,Y_n$&lt;/p&gt;
+
+&lt;div&gt;$$
+f_y(y_1,...,y_n) = |J|f_x(\phi_1(y_1,...,y_n),...,\phi_n(y_1,...,y_n))
+$$&lt;/div&gt;
+
+&lt;p&gt;where $J$ is the Jacobian of the transformation.&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+J=\left|\begin{array}{cccc}{\frac{\partial x_{1}}{\partial y_{1}}} &amp; {\frac{\partial x_{1}}{\partial y_{2}}} &amp; {\cdots} &amp; {\frac{\partial x_{1}}{\partial y_{n}}} \\ {\frac{\partial x_{2}}{\partial y_{1}}} &amp; {\frac{\partial x_{2}}{\partial y_{2}}} &amp; {\cdots} &amp; {\frac{\partial x_{2}}{\partial y_{n}}} \\ {\vdots} &amp; {\vdots} &amp; {\ddots} &amp; {\vdots} \\ {\frac{\partial x_{n}}{\partial y_{1}}} &amp; {\frac{\partial x_{n}}{\partial y_{2}}} &amp; {\cdots} &amp; {\frac{\partial x_{n}}{\partial y_{n}}}\end{array}\right|
+$$
+&lt;/div&gt;
+
+&lt;h1 id=&#34;gaussian-distribution&#34;&gt;Gaussian Distribution&lt;/h1&gt;
+
+&lt;h2 id=&#34;极大似然估计&#34;&gt;极大似然估计&lt;/h2&gt;
+
+&lt;p&gt;说起高斯分布大家都很熟悉了，假设一个 $p$ 维变量 $x \in R^p$ 满足高斯分布 $N(\mu,\Sigma)$，则其概率密度函数可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+p(x)=\frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}} exp(-\frac{1}{2}(x-\mu)^T \Sigma^{-1}(x-\mu))
+$$&lt;/div&gt;
+
+&lt;p&gt;当有样本数据 $X_{N \times p}=(x_1,&amp;hellip;,x_N)^T$ 时，我们能通过极大似然法估计高斯分布的均值和方差，即&lt;/p&gt;
+
+&lt;div&gt;$$
+\theta_{MLE}=\arg\max_{\theta}p(X|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;假设 $x_i$ 服从独立同分布 (i.i.d)，则&lt;/p&gt;
+
+&lt;div&gt;$$
+\log p(X|\theta) = \sum_{i=1}^N \log p(x_i|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;为了便于计算假设 $p=1$ 且真实高斯分布为 $N(\mu,\sigma^2)$，通过极值条件 (令导数为0) 可以得到&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\mu_{MLE}&amp;=\frac{1}{N}\sum_{i=1}^Nx_i\\
+\sigma^2_{MLE}&amp;=\frac{1}{N}\sum_{i=1}^N(x_i-\mu_{MLE})^2
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;其中,&lt;/p&gt;
+
+&lt;p&gt;均值是无偏估计 $E(\mu_{MLE}) = \mu$&lt;/p&gt;
+
+&lt;p&gt;方差是有偏估计 $E(\sigma_{MLE}^2)=\frac{N-1}{N}\sigma^2$，也就是说极大似然估计出来的高斯分布的&lt;strong&gt;方差是偏小的&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h2 id=&#34;从概率密度函数的角度看高斯分布&#34;&gt;从概率密度函数的角度看高斯分布&lt;/h2&gt;
+
+&lt;p&gt;注意到高斯分布的概率密度函数 $p(x)$ 本质是关于 $x$ 的函数，且和 $x$ 有关的部分为：&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    \Phi \triangleq (x-\mu)^T\Sigma^{-1}(x-\mu)
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;一般来说 $\Sigma$ 是半正定矩阵，为了便于分析其性质，这里假设其为正定矩阵，对其进行特征值分解：&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    \Sigma=U\Lambda U^T=\sum_{i=1}
+^pu_i\lambda_iu_i^T $$
+&lt;/div&gt;
+
+&lt;p&gt;其中，$U=(u_1,&amp;hellip;,u_p),UU^T=U^TU=I,\Lambda=diag(\lambda_i)$&lt;/p&gt;
+
+&lt;p&gt;则方差矩阵的逆为&lt;/p&gt;
+
+&lt;div&gt;$$
+\Sigma^{-1}=(U\Lambda U^T)^{-1}=U\Lambda^{-1}U^T=\sum_{i=1}^pu_i\frac{1}{\lambda_i}u_i^T
+$$&lt;/div&gt;
+
+&lt;p&gt;定义 $y_i=(x-\mu)^Tu_i$，可以将 $y_i$ 看作是 $x$ 去均值后在向量 $u_i$ 上的&lt;strong&gt;投影&lt;/strong&gt;，则 $\Phi$ 可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+\Phi = (x-\mu)^T\Sigma^{-1}(x-\mu)=(x-\mu)^T\sum_{i=1}^pu_i\frac{1}{\lambda_i}u_i^T(x-\mu)=\sum_{i=1}^p\frac{y_i^2}{\lambda_i}
+$$&lt;/div&gt;
+
+&lt;p&gt;为了便于展示我们取 $p=2$，并令 $\Phi=1$ 可以发现&lt;/p&gt;
+
+&lt;div&gt;$$
+\frac{y_1^2}{\lambda_1}+\frac{y_2^2}{\lambda_2} = 1
+$$&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;竟然是一个椭圆！&lt;/strong&gt;&lt;/p&gt;
+
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e3%80%8c%e6%a6%82%e7%8e%87%e5%9f%ba%e7%a1%80%e3%80%8d%e9%ab%98%e6%96%af%e5%88%86%e5%b8%83/Gaussian1.jpg&#34;/&gt; 
+&lt;/figure&gt;
+
+
+&lt;p&gt;也就是说指定了 $\Phi$ 的值，相当于能够得到高斯分布的等高线。&lt;/p&gt;
+
+&lt;p&gt;Matlab code&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;60
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt; clear;
+ clear all;
+ clf
+
+ mu = [1,2];
+ Sigma = [1,0.5;0.5,2];
+ X = mvnrnd(mu,Sigma,500); % 从高斯分布中生成样本
+ scatter(X(:,1),X(:,2))
+ [U,Lambda] = eig(Sigma)；
+ u1 = U(:,1); % 对应博客中的投影向量
+ u2 = U(:,2);
+ lambda1 = Lambda(1,1); % 对应博客中的椭圆长短轴
+ lambda2 = Lambda(2,2);
+
+ X1 = [];
+ X2 = [];
+ % 采用暴力搜索来获取使得\Phi = 1的横纵坐标
+ for x1 = -3:.01:5
+     for x2 = -4:.01:5
+         phi = (([x1,x2] - mu)*u1)^2/lambda1 + (([x1,x2] - mu)*u2)^2/lambda2;
+         if phi &amp;lt;= 1.01 &amp;amp;&amp;amp; phi &amp;gt;= 0.99
+             X1 = [X1;x1];
+             X2 = [X2;x2];
+         end
+     end
+ end
+             
+ hold on 
+ scatter(X1,X2)
+
+ X1 = [];
+ X2 = [];
+ % 采用暴力搜索来获取使得\Phi = 2的横纵坐标
+ for x1 = -3:.01:5
+     for x2 = -4:.01:5
+         phi = (([x1,x2] - mu)*u1)^2/lambda1 + (([x1,x2] - mu)*u2)^2/lambda2;
+         if phi &amp;lt;= 2.01 &amp;amp;&amp;amp; phi &amp;gt;= 1.99
+             X1 = [X1;x1];
+             X2 = [X2;x2];
+         end
+     end
+ end
+             
+ hold on 
+ scatter(X1,X2)
+
+ % 画出投影向量
+ x = 1:2:3;
+ k1 = u1(2)/u1(1);
+ k2 = u2(2)/u2(1);
+ y1 = k1*(x-mu(1))+mu(2);
+ y2 = k2*(x-mu(1))+mu(2);
+ plot(x&amp;#39;,y1&amp;#39;,&amp;#39;LineWidth&amp;#39;,2)
+ plot(x&amp;#39;,y2&amp;#39;,&amp;#39;LineWidth&amp;#39;,2)
+ xlim([-2, 5]);
+ ylim([-2, 5]);
+ axis square
+ legend(&amp;#39;data&amp;#39;,&amp;#39;\Phi=1&amp;#39;,&amp;#39;\Phi=2&amp;#39;,&amp;#39;u1&amp;#39;,&amp;#39;u2&amp;#39;)
+ xlabel(&amp;#39;x1&amp;#39;)
+ ylabel(&amp;#39;x2&amp;#39;)&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id=&#34;高斯分布的局限性&#34;&gt;高斯分布的局限性&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;协方差矩阵 $\Sigma$ 中的参数个数太多 $p(p+1)/2 = O(p^2)$；可以采用&lt;strong&gt;对角化&lt;/strong&gt;或&lt;strong&gt;各向同性&lt;/strong&gt;的假设。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;单高斯分布来拟合数据不合理；可以采用&lt;strong&gt;混合高斯模型&lt;/strong&gt;。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;已知联合概率求边缘概率和条件概率&#34;&gt;已知联合概率求边缘概率和条件概率&lt;/h2&gt;
+
+&lt;p&gt;已知&lt;/p&gt;
+
+&lt;div&gt;$$
+x=\left(\begin{array}{l}{x_{a}} \\ {x_{b}}\end{array}\right),
+\mu=\left(\begin{array}{l}{\mu_{a}} \\ {\mu_{b}}\end{array}\right),\Sigma=\left(\begin{array}{ll}{\Sigma_{a a}} &amp; {\Sigma_{a b}} \\ {\Sigma_{b a}} &amp; {\Sigma_{b b}}\end{array}\right)
+$$&lt;/div&gt;
+
+&lt;p&gt;求 $p(x_a),p(x_b|x_a)$。可以采用配方法(见PRML，过于复杂)，这里采用构造定义法。&lt;/p&gt;
+
+&lt;p&gt;定义 $A = (I_m \quad 0)$，则 $x_a = Ax$&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+E[x_a]&amp;=AE[x]=\mu_a\\
+Var[x_a]&amp;=A\Sigma A^T=\Sigma_{aa}
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;所以&lt;strong&gt;边缘概率分布为&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;$$x_a \sim N(\mu_a,\Sigma_{aa})$$&lt;/div&gt;
+
+&lt;p&gt;定义&lt;/p&gt;
+
+&lt;div&gt;$$x_{b.a}=x_b-\Sigma_{ba}\Sigma_{aa}^{-1}x_a$$&lt;/div&gt;
+
+&lt;div&gt;$$A=(-\Sigma_{ba}\Sigma_{aa}^{-1} \quad I)$$&lt;/div&gt;
+
+&lt;p&gt;则 $x_{b.a}=Ax$&lt;/p&gt;
+
+&lt;div&gt;$$
+    \begin{aligned}
+E[x_{b.a}]&amp;=AE[x]=\mu_b-\Sigma_{ba}\Sigma_{aa}^{-1}\mu_a\\
+Var[x_{b.a}]&amp;=A\Sigma A^T = \Sigma_{bb}-\Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab}
+    \end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;则可以得到 $x_{b.a}$ 的分布，又因为&lt;/p&gt;
+
+&lt;div&gt;$$x_b=x_{b.a}+\Sigma_{ba}\Sigma_{aa}^{-1}x_a$$&lt;/div&gt;
+
+&lt;p&gt;条件分布的均值和方差可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+E[x_b|x_a] &amp;= E[x_{b.a}] + \Sigma_{ba}\Sigma_{aa}^{-1}x_a\\
+Var[x_b|x_a] &amp;= Var[x_{b.a}] 
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;因此&lt;strong&gt;条件概率分布&lt;/strong&gt;为&lt;/p&gt;
+
+&lt;div&gt;$$
+x_b|x_a \sim N(\mu_b+\Sigma_{ba}\Sigma_{aa}^{-1}(x_a-\mu_a),\Sigma_{bb}-\Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab})
+$$&lt;/div&gt;
+
+&lt;h2 id=&#34;已知边缘概率和条件概率求联合概率&#34;&gt;已知边缘概率和条件概率求联合概率&lt;/h2&gt;
+
+&lt;p&gt;已知&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+p(x)&amp;=N(x|\mu,\Lambda^{-1})\\
+p(y|x)&amp;=N(y|Ax+b,L^{-1})
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;求 $p(y),p(x|y)$&lt;/p&gt;
+
+&lt;p&gt;定义 $y=Ax+b+\epsilon,\epsilon \sim N(0,L^{-1})$&lt;/p&gt;
+
+&lt;p&gt;则 $y$ 的边缘概率为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+E[y]&amp;=E[Ax+b] + E[\epsilon] = A\mu+b\\
+Var[y]&amp;=Var[Ax+b]+Var[\epsilon]=A\Lambda^{-1}A^T+L^{-1}
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;即&lt;/p&gt;
+
+&lt;div&gt;$$
+y \sim N(A \mu +b, A\Lambda^{-1}A^T+L^{-1})
+$$&lt;/div&gt;
+
+&lt;p&gt;要求 $p(x|y)$ 可以构造联合分布，在利用联合概率求条件概率&lt;/p&gt;
+
+&lt;p&gt;构造&lt;/p&gt;
+
+&lt;div&gt;$$
+Z=\left(\begin{array}{l}{x} \\ {y}\end{array}\right) \sim \mathcal{N}\left(\left[\begin{array}{c}{\mu} \\ {A \mu+b}\end{array}\right],\left[\begin{array}{cc}{\Lambda^{-1}} &amp; {\Delta} \\ {\Delta} &amp; {L^{-1}+A \Lambda^{-1} A^{T}}\end{array}\right]\right)
+$$&lt;/div&gt;
+
+&lt;p&gt;也就是只要求出 $x$ 和 $y$ 之间的协方差 $\Delta$ 就能够知道它们的联合分布了。根据协方差的定义来求解&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\Delta &amp;= Cov(x,y)\\
+&amp;=E[(x-E[x])(y-E[y])^T]\\
+&amp;=E[(x-\mu)(Ax+b+\epsilon-(A\mu+b))^T]\\
+&amp;=E[(x-\mu)(Ax-A\mu+\epsilon)^T]\\
+&amp;=E[(x-\mu)(Ax-A\mu)^T+(x-\mu)\epsilon^T]\\
+&amp;=E[(x-\mu)(x-\mu)^T]A^T+E[(x-\mu)]E[\epsilon]\\
+&amp;=Var[x]A^T+0\\
+&amp;=\Lambda^{-1}A^T
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;这样完整的联合分布就得到了，代入上一节 $x_b|x_a$ 的公式即可得到 $p(x|y)$ 的概率分布了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>「机器学习」变分推断</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/</link>
+      <pubDate>Wed, 28 Aug 2019 20:52:52 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD/</guid>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;之前一直对“变分推断”这个词有一种恐惧的心理，听着就有点难懂，加上没学过泛函分析这块内容，潜意识里也很抵触&amp;rdquo;变分&amp;rdquo;，导致之前经常有选择性地忽略这一块知识点。如果你也一样和我有这样的心理，那么首先恭喜你称为了我的有缘人，其次再恭喜你看到了这篇博客，我尽可能从外行的角度通俗易懂地把&amp;rdquo;变分推断&amp;rdquo;展示出来，希望对有缘人有所启发。&lt;/p&gt;
+
+&lt;p&gt;我还是从&lt;strong&gt;为什么、是什么、怎么做&lt;/strong&gt;三方面进行阐述。&lt;/p&gt;
+
+&lt;h2 id=&#34;为什么要用变分推断&#34;&gt;为什么要用变分推断&lt;/h2&gt;
+
+&lt;p&gt;一个算法的出现总是有问题驱动的，了解算法要解决的问题能帮助我们更好了解算法的用途。我们知道从贝叶斯角度来看待机器学习问题可以分为两个步骤：&lt;strong&gt;推断&lt;/strong&gt;和&lt;strong&gt;决策&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;说的通俗点&lt;strong&gt;推测&lt;/strong&gt;就是先求参数的后验&lt;/p&gt;
+
+&lt;p&gt;$$p(\theta|X)$$&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;决策&lt;/strong&gt;就是根据后验对测试数据进行预测&lt;/p&gt;
+
+&lt;div&gt;$$
+p(x_{new}|X) = \int_{\theta} p(x_{new}|\theta) p (\theta|X) d \theta = E_{\theta|X}[p(x_{new}|\theta)]
+$$&lt;/div&gt;
+
+&lt;p&gt;也就相当于测试数据关于后验的期望。&lt;/p&gt;
+
+&lt;p&gt;但问题就在于这个后验的计算通常是非常困难的，对于不能&lt;strong&gt;精确推断&lt;/strong&gt; (直接计算)的后验分布，很朴素的想法就是&lt;strong&gt;近似推断&lt;/strong&gt;，比如今天要讲的变分推断就属于&lt;strong&gt;确定性近似&lt;/strong&gt;的一种方法；以及接下来还会再讲的&lt;strong&gt;随机近似&lt;/strong&gt;，比如 MCMC。&lt;/p&gt;
+
+&lt;p&gt;第一个问题也就得到回答了，为什么要用变分推断？&lt;strong&gt;因为要计算后验分布的近似分布&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h2 id=&#34;变分推断是什么&#34;&gt;变分推断是什么&lt;/h2&gt;
+
+&lt;p&gt;知道了为什么要用变分推断后，其实变分推断做的是什么也就顺理成章了，很朴素的想法就是用简单好搞的分布来逼近难求的后验分布。那怎么评价两个分布有多接近呢？那就看看这两个分布的 KL 散度 (这是非负的)，当 KL 散度为 0 时代表两个分布是一样的，因此变分推断要做的就是优化一个分布 $q(Z)$ 使得其与后验分布 $p(Z|X)$ 的 KL 散度最小化 (其中 $X$ 是观测数据，$Z$ 包含隐变量和参数)，用优化命题的形式来描述就是&lt;/p&gt;
+
+&lt;div&gt;$$
+q^{*}(Z) = \arg \min_{q(Z)} \text{KL}(q(Z)||p(Z|X))
+$$&lt;/div&gt;
+
+&lt;p&gt;但是 $p(Z|X)$ 本身就不知道的，这种直接求解的方式显然是行不通的，因此需要找个间接求解的方法。&lt;/p&gt;
+
+&lt;p&gt;根据贝叶斯公式有&lt;/p&gt;
+
+&lt;div&gt;$$
+p(X) = \frac{p(X,Z)}{p(Z|X)} 
+$$&lt;/div&gt;
+
+&lt;p&gt;两边取对数&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+\ln p(X) = ln (p(X,Z)) - ln (p(Z|X))
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;在推导 EM 算法时我们也是这么做的，先对上式右边加减一个关于 $Z$ 的分布 $q(Z)$，然后左边两边同时关于 $q(Z)$ 求期望。左边求期望还是等于本身 $\ln p(X)$，因此&lt;/p&gt;
+
+&lt;div&gt;$$
+    \begin{aligned}
+\ln p(X) &amp;= \int_Z q(Z)\ln (\frac{p(X,Z)}{q(Z)}） dZ - \int_Zq(Z) \ln(\frac{p(Z|X)}{q(Z)}) dZ\\
+&amp;=\text{ELBO} + \text{KL}(q(Z)||p(Z|X))
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;为什么叫 ELBO？通常 $p(X)$ 称为 evidence，而 KL 散度是非负的，所以有&lt;/p&gt;
+
+&lt;div&gt;$$
+\ln p(X) \ge \int_Z q(Z)\ln (\frac{p(X,Z)}{q(Z)}） dZ 
+$$&lt;/div&gt;
+
+&lt;p&gt;因此不等式右边这项也就称为 evidence 的 lower bound (ELBO) 了。&lt;/p&gt;
+
+&lt;p&gt;我们之前想求的 KL 散度又出现了！虽然搞不定它，但是我们可以搞旁边的 ELBO 啊，刚才最小化 KL 散度不就转化为最大化 ELBO 了！再用优化命题的形式描述就是&lt;/p&gt;
+
+&lt;div&gt;$$
+q(Z) = \arg \max_{q(Z)} \int_Z q(Z)\ln (p(X,Z)) dZ - \int_Z q(Z)\ln (q(Z)）dZ
+$$&lt;/div&gt;
+
+&lt;p&gt;因为 $q(Z)$ 是前面假设出来的关于 $Z$ 的分布，对这个分布还没有做任何假设，为了进一步推导便于求解，这里引入&lt;strong&gt;平均场理论&lt;/strong&gt;，将 $q(Z)$ 划分为 $M$ 个相互独立的部分，即&lt;/p&gt;
+
+&lt;div&gt;$$
+q(Z) = \prod_{i=1}^M q_i(Z_i)
+$$&lt;/div&gt;
+
+&lt;p&gt;采用如下的符号定义&lt;/p&gt;
+
+&lt;div&gt;$$
+Z = \{Z_j,\bar{Z_j}\},\bar{Z_j} = Z \backslash Z_j
+$$&lt;/div&gt;
+
+&lt;p&gt;然后代入 ELBO 进行化简，我们一项一项来看&lt;/p&gt;
+
+&lt;p&gt;第一项为：&lt;/p&gt;
+
+&lt;div&gt;$$
+    \begin{aligned}
+    &amp;\int_Z q(Z)\ln (p(X,Z)) dZ\\
+=&amp;\int_{Z_1}...\int_{Z_M} \prod_{i=1}^M q_i(Z_i) \ln (p(X,Z)) dZ_1...dZ_M\\
+=&amp;\int_{Z_j}q_j(Z_j)[\int_{\bar{Z_j}}\prod_{i \not=j}^M q_i(Z_i) \ln(p(X,Z)) d \bar{Z_j}] d Z_j\\
+=&amp;\int_{Z_j}q_j(Z_j)E_{q(\bar{Z_j})} [\ln (p(X,Z))] d Z_j
+    \end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;第二项为：&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+&amp;\int_Z q(Z)\ln (q(Z)）dZ\\
+=&amp;\int_{Z_1}...\int_{Z_M} \prod_{i=1}^M q_i(Z_i) \sum_{i=1}^M \ln (q_i(Z_i)) dZ_1...dZ_M\\
+=&amp;\sum_{i=1}^M\int_{Z_i} q_i(Z_i)\ln(q_i(Z_i))dZ_i\\
+=&amp;\int_{Z_j} q_j(Z_j)\ln(q_j(Z_j))dZ_j + C
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;为了统一描述，定义&lt;/p&gt;
+
+&lt;div&gt;$$
+    \tilde{p}(X,Z_j) = E_{q(\bar{Z_j})} [\ln (p(X,Z))]
+$$&lt;/div&gt;
+
+&lt;p&gt;因此 ELBO 可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+    \begin{aligned}
+\text{ELBO} &amp;= \int_{Z_j}q_j(Z_j)E_{q(\bar{Z_j})} [\ln (p(X,Z))] d Z_j - \int_{Z_j} q_j(Z_j)\ln(q_j(Z_j))dZ_j - C\\
+&amp;=\int_{Z_j} q_j(Z_j)\ln\frac{\tilde{p}(X,Z_j)}{q_j(Z_j)}dZ_j - C\\
+&amp;=-\text{KL}(q_j(Z_j)||\tilde{p}(X,Z_j)) - C
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;也就是将 ELBO 转化成另外一个 KL 散度，ELBO取最大值时对应 KL 散度取等号，即&lt;/p&gt;
+
+&lt;div&gt;$$
+q_j^{*}(Z_j) = \tilde{p}(X,Z_j)
+$$&lt;/div&gt;
+
+&lt;p&gt;将 $\tilde{p}(X,Z_j)$ 的定义代入得&lt;/p&gt;
+
+&lt;div&gt;$$
+\ln (q_j^{*}(Z_j)) = E_{q(\bar{Z_j})} [\ln (p(X,Z))]
+$$&lt;/div&gt;
+
+&lt;p&gt;通俗来说就是用对数联合概率分布关于&lt;strong&gt;利用除了 $Z_j$ 以外的其他分布&lt;/strong&gt;的期望来更新 $Z_j$ 的分布。这是一个迭代的过程：&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\ln(q_1^{*}(Z_1)) &amp;= \int_{Z_2} \int_{Z_3}... \int_{Z_M} q_2({Z_2})...q_M(z_M)\ln (p(X,Z)) dZ_2d Z_3 ... dZ_M\\
+\ln(q_2^{*}(Z_2)) &amp;= \int_{Z_1^*} \int_{Z_3}... \int_{Z_M} q_1^*({Z_1}) q_2({Z_3})...q_M(z_M) \ln (p(X,Z)) dZ_1^* dZ_3 ... dZ_M\\
+&amp;...\\
+\ln(q_M^{*}(Z_M)) &amp;= \int_{Z_1^*} \int_{Z_2^*}... \int_{Z_{M-1}} q_1^*({Z_1})...q_{M-1}^*(z_{M-1}) \ln (p(X,Z)) dZ_1^* dZ_2^* ... dZ_{M-1}^*
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;迭代收敛得到的分布 $q(Z)$ 就是要求的后验分布的 $p(Z|X)$ 的近似分布了。&lt;/p&gt;
+
+&lt;h2 id=&#34;变分推断怎么用&#34;&gt;变分推断怎么用&lt;/h2&gt;
+
+&lt;p&gt;知道了变分推断是怎么一回事后，更多人想要知道具体使用时是怎么用的，这里用一个一元高斯分布的例子进行说明，该例子选自《徐亦达机器学习》系列。结合 matlab 代码跟我一起来实现一下变分推断吧&lt;/p&gt;
+
+&lt;p&gt;首先假设你有个数据集 $D =$ {$x_1,&amp;hellip;,x_N$} 来自一个高斯分布 $\mathcal{N}(0,1)$，这个均值和方差我们是不知道的，也就是等下要从数据中去学习的 $p(\mu,\tau|D)$，其中 $\tau=1/\sigma^2$。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;N = 100;
+mu_0 = 0; 
+sigma_0 = 1;
+D = mu_0 + sigma_0* randn(N,1);&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;根据贝叶斯公式我们有&lt;/p&gt;
+
+&lt;div&gt;$$
+p(\mu,\tau|D) \propto p(D|\mu,\tau)p(\mu|\tau)p(\tau)
+$$&lt;/div&gt;
+
+&lt;p&gt;因此要学习参数的分布，需要先对参数假定一个先验，因为 $\tau$ 大于 0 的性质，假设其为 Gamma 分布 $Gamma(\tau|a_0,b_0)$，$p(\mu|\tau)$ 为高斯分布 $\mathcal{N}(\mu_0,(\lambda_0 \tau)^{-1})$，由于共轭性可以直接得到后验分布的解析形式&lt;/p&gt;
+
+&lt;div&gt;$$
+p(\mu,\tau|D) = \mathcal{N}(\mu_n,(\lambda_n\tau)^{-1})Gamma(\tau|a_n,b_n)
+$$&lt;/div&gt;
+
+&lt;p&gt;且参数 $\mu_n,\lambda_n,a_n,b_n$ 直接可以得到&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;% 先验分布里的参数
+lambda_0 = 1;
+a_0 = 1.5;
+b_0 = 1;
+
+% 后验分布的参数 
+mu_n = (lambda_0 * mu_0 + N * mean(D) )/ (lambda_0 + N);
+lambda_n = lambda_0 + N;
+a_n = a_0 + N/2;
+b_n = b_0 + 1/2 * sum((X - mean(X)).^2) + (lambda_0*n * (mean(X) - mu_0)^2)/(2*(lambda_0 + N));&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;但是我们要假装不知道这个共轭分布能直接这么得到，用变分推断来求求看，首先假设 $q(Z)$ 由独立的两部分组成，在这里就是&lt;/p&gt;
+
+&lt;div&gt;$$
+q(\mu,\tau) = q_{\mu}(\mu)q_{\tau}(\tau)
+$$&lt;/div&gt;
+
+&lt;p&gt;根据之前推导得到的变分推断的迭代公式对应为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\ln(q_{\mu}^{*}(\mu)) &amp;= \int_{\tau} q_{\tau}(\tau) \ln (p(X,Z)) d \tau\\
+\ln(q_{\tau}^{*}(\tau)) &amp;= \int_{\mu^*}  q_{\mu}^*(\mu) \ln (p(X,Z)) d \mu^*
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;化简为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned} \ln \left(q_{\mu}^{*}(\mu)\right) &amp;=-\frac{E_{q_{\tau}}[\tau]}{2}\left[\sum_{i=1}^{N}\left(x_{i}-\mu\right)^{2}+\lambda_{0}\left(\mu-\mu_{0}\right)^{2}\right]+\text { const } \\ &amp;=-\frac{E_{q_{\tau}}[\tau]\left(n+\lambda_{0}\right)}{2}\left(\mu-\frac{\left(N \overline{x}+\lambda_{0} \mu_{0}\right)}{\left(N+\lambda_{0}\right)}\right)^{2}+\text { const } \\ &amp;=\mathcal{N}\left(\frac{N \overline{x}+\lambda_{0} \mu_{0}}{N+\lambda_{0}}, E_{q_{\tau}}[\tau]\left(N+\lambda_{0}\right)\right) \end{aligned}
+$$&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;E_tau = a_current/b_current; % Gamma分布的均值
+mu_current       = (lambda_0 * mu_0 + N * mean(X))/(lambda_0 + N);
+lambda_current   = (lambda_0 + N) * E_tau;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div&gt;
+$$
+\ln {q^*_{\tau}(\tau)}=(\underbrace{\frac{N}{2}+a_{0}-1}_{a_{n}}) \ln (\tau)-\tau(\underbrace{b_{0}+\frac{1}{2} E_{q_{\mu}^*(\mu)}\left[\sum_{i=1}^{N}\left(x_{i}-\mu\right)^{2}+\lambda_{0}\left(\mu-\mu_{0}\right)^{2}\right]}_{b_{n}})+\text { const }
+$$
+&lt;/div&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;a_current  = a_0 + N/2;
+% E[mu^2] = var(mu) + (E[mu])^2
+E_mu_square = inv(lambda_0) + mu_prev^2;
+% E[mu]
+E_mu = mu_prev;
+%sum [(x_i - mu)^2]
+first = sum( X.^2 - 2 * X .* repmat(E_mu,size(X)) + repmat(E_mu_square, size(X)));
+%lambda_0 (mu - mu_0)^2
+second = lambda_0 *(E_mu_square - 2*mu_0*E_mu + mu_0^2);
+b_current = b_0 + (first + second)/2;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;根据两个分布不断迭代就能得到最终两个分布各自的参数，然后两个分布的乘积就是要求的后验分布的近似分布了。&lt;/p&gt;
+
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e3%80%8c%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e3%80%8d%e5%8f%98%e5%88%86%e6%8e%a8%e6%96%ad/Variational.jpg&#34;/&gt; 
+&lt;/figure&gt;
+
+
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;当我们遇到难搞的后验分布时，可以用容易表达和求解的分布来近似，常规的变分推断基于&lt;strong&gt;平均场理论&lt;/strong&gt;，假设近似分布由独立的几部分组成，通过最大化 ELBO 我们可以得到近似分布各个独立部分的迭代求解式，可以理解为积分(求期望)掉 $Z_j$ 外的其他部分得到 $Z_j$ 的更新，类似坐标上升法的思想，先固定其它然后求其中一项。&lt;/p&gt;
+
+&lt;p&gt;基于平均场理论的变分推断假设(要求各部分独立)还是比较强的，比如上面的例子中 $\mu$ 和 $\tau$ 其实并不是独立的，$p(\mu/\tau)$ 是个高斯分布；其次这种递推求解的方式中还是涉及了许多的积分，计算量大。因此改进的方法还有&lt;strong&gt;随机梯度变分推断&lt;/strong&gt;，感兴趣的可以看看shuhuai大神的讲解。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>「机器学习」高斯混合模型GMM</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/</link>
+      <pubDate>Sun, 25 Aug 2019 13:40:23 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/</guid>
+      <description>&lt;p&gt;前面总结了 EM 算法，我们知道这是一个&lt;strong&gt;采用迭代的方式&lt;/strong&gt;用于解决&lt;strong&gt;含有隐变量&lt;/strong&gt;的参数估计问题的算法。典型的一个应用就是今天的主角&lt;strong&gt;高斯混合模型&lt;/strong&gt; (Gaussian Misture Model)。这个模型和它的名字一样直白，也就是由&lt;strong&gt;多个高斯分布组合而成&lt;/strong&gt;的模型，其概率密度函数可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+p(x) = \sum_{k=1}^K \alpha_k \cdot \mathcal{N}(x|\mu_k,\Sigma_k) 
+$$&lt;/div&gt;
+
+&lt;p&gt;这不就是 $K$ 个单高斯模型 $\mathcal{N}(x|\mu_k,\Sigma_k),k=1,&amp;hellip;,K$ 加权而成，$\alpha_k$ 则是对应单高斯模型的权重，且满足 $\sum_{k=1}^K \alpha_k = 1$。这样做很直观的原因是混合多个单一模型得到复杂模型自然能够生成更复杂的样本，并且理论上如果 $K$ 足够大且权重合理，得到的混合模型能够拟合任意分布。&lt;/p&gt;
+
+&lt;h2 id=&#34;模型参数学习&#34;&gt;模型参数学习&lt;/h2&gt;
+
+&lt;p&gt;对混合高斯模型，我们要确定的参数有单高斯的个数 $K$ (你要混合几个单高斯总要告诉模型吧，通常直接给定或者采用一定的评价指标来确定合适的 $K$ 值)，每个单高斯分布的均值 $\mu_k$ 和方差 $\Sigma_k$ 以及对应的权重 $\alpha_k$。也就是我们需要从观测数据 $x_1,&amp;hellip;,x_N$ 中学习得到这些模型参数。&lt;/p&gt;
+
+&lt;p&gt;对于每一个样本 $x$，从生成模型的角度来理解：&lt;strong&gt;以 $\alpha_k$ 的概率选择第 $k$ 个高斯元 $\mathcal{N}(x|\mu_k,\Sigma_k)$，然后进行采样&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;但是观测数据 $x_1,&amp;hellip;,x_N$ 并没有告诉我们每一个样本采样自哪一个单高斯分布，因此引入隐变量 $z$，其分布满足&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;$z$&lt;/th&gt;
+&lt;th&gt;1&lt;/th&gt;
+&lt;th&gt;2&lt;/th&gt;
+&lt;th&gt;&amp;hellip;&lt;/th&gt;
+&lt;th&gt;$K$&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;$p(z)$&lt;/td&gt;
+&lt;td&gt;$p_1$&lt;/td&gt;
+&lt;td&gt;$p_2$&lt;/td&gt;
+&lt;td&gt;&amp;hellip;&lt;/td&gt;
+&lt;td&gt;$p_K$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;如果 $z_i = 1$ 表示第 $i$ 个样本 $x_i$ 采样自第 1 个单高斯分布，概率为 $p_1$ (也就相当于前面说的权重 $\alpha_1$)。&lt;/p&gt;
+
+&lt;p&gt;定义完隐变量后，对于任意样本，完整数据 (观测数据和隐变量) 的概率密度函数可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+p(x,z) = p(z)p(x|z) = p(z) \mathcal{N}(x|\mu_z,\Sigma_z)
+$$&lt;/div&gt; 
+
+&lt;p&gt;假设各个样本之间相互独立，则观测数据的似然函数可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+L(\theta) = \prod_{i=1}^N p(x_i|\theta) = \prod_{i=1}^N  \int_{z_i} p(x_i,z_i|\theta) dz_i = \prod_{i=1}^N \sum_{k=1}^K p_k \mathcal{N}(x_i | \mu_k,\Sigma_k)
+$$&lt;/div&gt;
+
+&lt;p&gt;上式中，观测数据的概率分布通过对完整数据的概率分布进行积分操作消除隐变量，对于离散变量 $z$ 也就是转化为求和操作。&lt;/p&gt;
+
+&lt;p&gt;对数似然函数为&lt;/p&gt;
+
+&lt;div&gt;$$
+\ln L(\theta) = \sum_{i=1}^N \ln \sum_{k=1}^K p_k \mathcal{N}(x_i | \mu_k,\Sigma_k)
+$$&lt;/div&gt;
+
+&lt;p&gt;如果要像往常一样采用求导的方式来估计参数行不通了，因为&lt;strong&gt;对数里面还有求和&lt;/strong&gt;。所以就要用 EM 算法来迭代求解啦。&lt;/p&gt;
+
+&lt;h2 id=&#34;em-算法与-gmm&#34;&gt;EM 算法与 GMM&lt;/h2&gt;
+
+&lt;p&gt;这里直接给出参数估计的迭代公式(不清楚的可以翻翻前面关于 EM 算法的博客)&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    \theta^{(t+1)} = \arg \max_{\theta} Q(\theta,\theta^{(t)}) = \arg \max_{\theta} E_{Z|X,\theta^{(t)}}[\log p(X,Z|\theta)]
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;即&lt;strong&gt;需要先求隐变量 $Z$ 的后验，然后再令期望 $Q(\theta,\theta^{(t)})$ 最大化。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;进一步可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+Q(\theta,\theta^{(t)}) &amp;= \int_Z \log p(X,Z|\theta) p(Z|X,\theta^{(t)}) dZ\\
+&amp;=\sum_{z_1,...,z_N} \log \prod_{i=1}^N p(x_i,z_i|\theta) \prod_{i=1}^N p(z_i|x_i,\theta^{(t)})\\
+&amp;=\sum_{z_1,...,z_N} (\sum_{i=1}^N \log p(x_i,z_i|\theta)) \prod_{i=1}^N p(z_i|x_i,\theta^{(t)})\\
+&amp;=\sum_{z_1,...,z_N} \log p(x_1,z_1|\theta) p(z_1|x_1,\theta^{(t)}) \prod_{i=2}^N p(z_i|x_i,\theta^{(t)})\\
+&amp;+ ... + \sum_{z_1,...,z_N} \log p(x_N,z_N|\theta) p(z_N|x_N,\theta^{(t)}) \prod_{i=1}^{N-1} p(z_i|x_i,\theta^{(t)})\\
+&amp;=\sum_{i=1}^N \sum_{z_i} \log p(x_i,z_i|\theta)p(z_i|x_i,\theta^{(t)})\\
+&amp;=\sum_{i=1}^N \sum_{k=1}^K \log p(x_i,z_i=k|\theta)p(z_i=k|x_i,\theta^{(t)})
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;其中隐变量的后验分布为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+p(z_i=k|x_i,\theta^{(t)}) &amp;= \frac
+{p(z_i=k,x_i|\theta^{(t)})}{p(x_i|\theta^{(t)})}\\
+&amp;=\frac{p^{(t)}_k \mathcal{N}(x_i|\mu^{(t)}_k,\Sigma^{(t)}_k)}{\sum_{k=1}^K p^{(t)}_k \mathcal{N}(x_i|\mu^{(t)}_k,\Sigma^{(t)}_k)} 
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;联合分布为&lt;/p&gt;
+
+&lt;div&gt;$$
+\log p(x_i,z_i=k|\theta) = \log p_k + \log \mathcal{N}(x_i|\mu_k,\Sigma_k)
+$$&lt;/div&gt;
+
+&lt;p&gt;即&lt;/p&gt;
+
+&lt;div&gt;$$
+Q(\theta,\theta^{(t)})=\sum_{k=1}^K\sum_{i=1}^N [\log p_k +\log \mathcal{N}(x_i|\mu_k,\Sigma_k)]p(z_i=k|x_i,\theta^{(t)})
+$$&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;记住这里 $p(z_i=k|x_i,\theta^{(t)})$ 相当于是个常数&lt;/strong&gt;，然后根据最大化期望函数 $Q(\theta,\theta^{(t)})$ 的原则依次求解 $p_k,u_k,\Sigma_k$，由于 $p_k$ 额外满足等式约束 $\sum_{k=1}^K p_k=1$，求解 $p_k$ 是一个带有等式约束的最大化问题需要用到拉格朗日乘子法(不清楚的也可以翻翻之前的文章)，$u_k,\Sigma_k$ 则直接对期望函数求导利用极值条件就能得到解析解。&lt;/p&gt;
+
+&lt;p&gt;对于参数 $p_k$，拉格朗日函数可以表示为：&lt;/p&gt;
+
+&lt;div&gt;$$
+\mathcal{L}(p_k,\lambda) = \sum_{k=1}^K\sum_{i=1}^N \log p_k p(z_i=k|x_i,\theta^{(t)}) + \lambda(\sum_{k=1}^K p_k - 1)
+$$&lt;/div&gt;
+
+&lt;p&gt;令 $\partial \mathcal{L}/\partial p_k=0$&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\sum_{i=1}^N \frac{1}{p_k}p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)}) + p_k \lambda = 0\\
+\sum_{k=1}^K\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+\sum_{i=1}^N \sum_{k=1}^K p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+N+\lambda = 0
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;第三式到第四式利用 $\sum_{k=1}^K p_k = 1$，第三式到第四式利用&lt;strong&gt;离散随机变量的概率密度函数对所有可能情况求和为1&lt;/strong&gt;，然后将最后一式代入第一式可得&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+p_k^{(t+1)} = \frac{1}{N} \sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)})
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;对于参数 $u_k$，直接对 $Q$ 函数求导，并令 $\partial Q/ \partial u_k=0$:&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\frac{\partial}{\partial u_k} \sum_{k=1}^K \sum_{i=1}^N \log [\frac{1}{{(2\pi)}^{(d/2)}|\Sigma_k|^{(1/2)}}\exp(-\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k) )]p(z_i=k|x_i,\theta^{(t})=0\\
+\frac{\partial}{\partial u_k} \sum_{k=1}^K \sum_{i=1}^N [-\frac{d}{2} \log 2\pi -\frac{1}{2} \log|\Sigma_k| -\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k)] p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N (x_i-u_k)^T\Sigma_k^{(-1)} p(z_i=k|x_i,\theta^{(t)})=0
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;根据最后一式可得：&lt;/p&gt;
+
+&lt;div&gt;$$
+u_k^{(t+1)} = \frac{\sum_{i=1}^Nx_i p(z_i=k|x_i,\theta^{(t)})}{\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)})}
+$$&lt;/div&gt;
+
+&lt;p&gt;对于参数 $\Sigma_k$，直接对 $Q$ 函数求导，并令 $\partial Q/ \partial \Sigma_k=0$:&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\frac{\partial}{\partial \Sigma_k} \sum_{k=1}^K \sum_{i=1}^N \log [\frac{1}{{(2\pi)}^{(d/2)}|\Sigma_k|^{(1/2)}}\exp(-\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k) )]p(z_i=k|x_i,\theta^{(t})=0\\
+\frac{\partial}{\partial \Sigma_k} \sum_{k=1}^K \sum_{i=1}^N [-\frac{d}{2} \log 2\pi -\frac{1}{2} \log |\Sigma_k| -\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k)] p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N [-\frac{1}{2}(\Sigma_k^{(-1)})^T + \frac{1}{2} \Sigma_k^{(-1)}(x_i-u_k) (x_i-u_k)^T \Sigma_k^{(-1)}]p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N [-\Sigma_k + (x_i - u_k)(x_i - u_k)^T] p(z_i=k|x_i,\theta^{(t)})=0\\
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;根据最后一式可得：&lt;/p&gt;
+
+&lt;div&gt;$$
+{\Sigma_k}^{(t+1)} = \frac{\sum_{i=1}^N (x_i - u_k)(x_i - u_k)^T p(z_i=k|x_i,\theta^{(t)})}{\sum_{i=1}^N  p(z_i=k|x_i,\theta^{(t)})}
+$$&lt;/div&gt;
+
+&lt;h2 id=&#34;matlab实现&#34;&gt;matlab实现&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;60
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;61
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;62
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;63
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;64
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;65
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;66
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;67
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;68
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;69
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;70
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;71
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;72
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;73
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;74
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;75
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;76
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;77
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;clear
+clear all;
+% 生成数据 由3个二元高斯分布各生成1000个样本
+mu1 = [1 2];
+Sigma1 = [2 0;0 0.5];
+mu2 = [-3 -5];
+Sigma2 = [1 0;0 1];
+mu3 = [2 -3];
+Sigma3 = [1 0;0 2];
+rng(1); % For reproducibility
+X = [mvnrnd(mu1,Sigma1,1000);mvnrnd(mu2,Sigma2,1000);mvnrnd(mu3,Sigma3,1000)];
+[N, d] = size(X); % 样本数、样本维度
+figure
+y = [0*ones(1000,1);ones(1000,1);2*ones(1000,1)];
+h = gscatter(X(:,1),X(:,2),y);
+legend(h,&amp;#39;Gaussian 1&amp;#39;,&amp;#39;Gaussian 2&amp;#39;,&amp;#39;Gaussian 3&amp;#39;)
+
+% 初始参数
+K     = 3; % 单高斯的个数
+p_k   = ones(K,1)*1/K; % 各个高斯元的权重系数
+mu    = rand(K, d); % 待估计的均值，每一行是一个高斯分布的均值
+sigma = zeros(d, d, K); % 待估计的协方差矩阵
+for k = 1:K
+    sigma(:, :, k) = eye(d);
+end
+
+% 概率密度函数表达式
+pdf_value = @(x,mu,Sigma) 1/((2*pi)^(d/2)*(det(Sigma))^(1/2))*exp(-0.5*(x-mu)*inv(Sigma)*(x-mu)&amp;#39;);
+
+% EM算法估计参数
+p_z = repmat(ones(1,K)*1/K,N,1); % 隐变量的后验分布矩阵，每一个样本对应K个后验
+
+% 迭代1000次，可以自己设置各种结束迭代条件
+for iter = 1:1000
+    % E 步 计算后验
+    for i = 1:N
+        p_xi = 0; % 后验的分母p(x_i|theta^(t))
+        for j = 1:K
+            p_xi = p_xi + p_k(j)*pdf_value(X(i,:),mu(j,:),sigma(:,:,j));
+        end
+        for k = 1:K
+            p_z(i,k) = p_k(k)*pdf_value(X(i,:),mu(k,:),sigma(:,:,k))/p_xi;
+        end
+    end
+
+    % M 步
+    for k = 1:K
+        p_k(k)  = 1/N*sum(p_z(:,k)); % 更新权重
+        num = 0; % 均值的分子
+        for i = 1:N
+            num = num + X(i,:)*p_z(i,k);
+        end
+        mu(k,:) = num/sum(p_z(:,k)); % 更新均值
+    end
+    
+    for k = 1:K
+        num = 0; % 协方差的分子
+        for i = 1:N
+            num = num + (X(i,:)-mu(k,:))&amp;#39;*(X(i,:)-mu(k,:))*p_z(i,k);
+        end
+        sigma(:,:,k) = num/sum(p_z(:,k)); % 更新协方差
+    end
+end
+
+% 画各个高斯分布的等高线
+for k = 1:K
+    x1 = -7:.2:7;
+    x2 = -9:.2:5;
+    [X1,X2] = meshgrid(x1,x2);
+    X = [X1(:) X2(:)];
+    y = mvnpdf(X,mu(k,:),sigma(:,:,k));
+    y = reshape(y,length(x2),length(x1));
+    hold on 
+    contour(x1,x2,y,[0.0001 0.001 0.01 0.05 0.15 0.25 0.35])
+    xlabel(&amp;#39;x_1&amp;#39;)
+    ylabel(&amp;#39;x_2&amp;#39;)
+end&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e3%80%8c%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e3%80%8d%e9%ab%98%e6%96%af%e6%b7%b7%e5%90%88%e6%a8%a1%e5%9e%8bGMM/GMM_EM.jpg&#34;/&gt; 
+&lt;/figure&gt;
+
+
+&lt;p&gt;散点就是由三个不同的高斯分布生成的样本，等高线则是根据学习出来的三个高斯元画的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>美音发音技巧——末尾s的发音</title>
+      <link>https://minghaochen.github.io/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/</link>
+      <pubDate>Fri, 23 Aug 2019 09:44:21 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/</guid>
+      <description>&lt;p&gt;不知道你会不会傻傻分不清楚&lt;/p&gt;
+
+&lt;p&gt;likes  /s/ 还是 /z/？&lt;/p&gt;
+
+&lt;p&gt;lives /s/ 还是 /z/？&lt;/p&gt;
+
+&lt;p&gt;首先说说 /s/ 和 /z/ 的发音，需要注意的是这个 /z/ 的发音其实和 /s/ 是一样的！只是在 /s/ 的基础上加上了声带的震动， &lt;strong&gt;不是中文拼音里的 z，是中文拼音里的 z，是中文拼音里的 z&lt;/strong&gt;！！！ 重要的事情说三遍，很多小伙伴很可能都是按照拼音的 ‘zi’ 来发音(包括我之前也是)那就要好好改改咯。&lt;/p&gt;
+
+&lt;p&gt;知道了怎么发音我们再来看几个单词，你试着读读看？&lt;/p&gt;
+
+&lt;p&gt;Set 1: likes/books/laughs/mats&lt;/p&gt;
+
+&lt;p&gt;Set 2: lives/feels/cares&lt;/p&gt;
+
+&lt;p&gt;Set 3: is/has/was/these/because&lt;/p&gt;
+
+&lt;p&gt;答案揭晓：&lt;strong&gt;第一组都发 /s/，第二组都发 /z/，第三组都发 /z/&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;不知道你发对了没有还是 /s/ 和 /z/ 胡乱发一通，搞不清楚也没关系，我们先来找找规律，第一组 s 前都是什么？对！是以&lt;strong&gt;清辅音&lt;/strong&gt; 结尾的；第二组呢？是以&lt;strong&gt;浊辅音&lt;/strong&gt;结尾的，第三组则是&lt;strong&gt;元音&lt;/strong&gt;结尾的。&lt;/p&gt;
+
+&lt;p&gt;那你就记住：&lt;strong&gt;/s/ 是清辅音，那就接在清辅音后面，/z/ 是浊辅音那就接在浊辅音后面，元音后面通常跟 /z/&lt;/strong&gt;，OK，再试试把上面三组单词读一遍感受一下。&lt;/p&gt;
+
+&lt;p&gt;问题又来了，有的小伙伴会问什么是清辅音，什么是浊辅音，这个很好判断，你摸着你的声带，发音时感受到声带的就是浊辅音，比如/b/,/d/,/g/,/v/,/z/，不震动的就是清辅音，比如/p/,/t/,/k/,/f/,/s/。&lt;/p&gt;
+
+&lt;p&gt;还有一个关于浊辅音和清辅音的技巧就是：&lt;strong&gt;浊辅音前的元音发音更“长”一点&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;不信你对比一下以下几组单词： back 和 bag; safe 和save; pick 和 pig; lock 和 log; cup 和 cub&lt;/p&gt;
+
+&lt;p&gt;是不是发音每组单词中后面那个单词的元音都拉得比较长呢，那就对了！&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>「机器学习」EM算法</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Thu, 22 Aug 2019 09:43:39 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/</guid>
+      <description>&lt;p&gt;期望最大(EM)算法的大名想必大家都听过，说来惭愧，大概两年前就学过用过这个算法，但是到后来只记得EM这个名字，把算法的原理都给忘光光了，这几天重新捡起来，总结一下，也希望对想了解这个算法的人有点启发。&lt;/p&gt;
+
+&lt;p&gt;对我EM算法我总结为三点：&lt;strong&gt;为什么&lt;/strong&gt;、&lt;strong&gt;是什么&lt;/strong&gt;、&lt;strong&gt;怎么用&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h2 id=&#34;为什么要用em算法&#34;&gt;为什么要用EM算法？&lt;/h2&gt;
+
+&lt;p&gt;会看到这篇博客的大家想必都知道，EM算法是用来&lt;strong&gt;估计参数&lt;/strong&gt;的，并且是以&lt;strong&gt;迭代&lt;/strong&gt;的方式进行。看到估计参数这个字眼，你脑子里首先会想到什么方法？毫无疑问就是极大似然法吧，再帮大家回忆一下极大似然法的思想：&lt;strong&gt;什么参数对应的事件发生的概率最大，我们就认为这个参数就是未知参数的估计值&lt;/strong&gt;。通俗一点讲就是你知道了事件的观测值 $y_1,&amp;hellip;,y_N$，然后要寻找能够让事件发生的可能性 $p(y_1,&amp;hellip;,y_N|\theta)$ 最大的参数 $\hat{\theta}$，也就是&lt;/p&gt;
+
+&lt;div&gt;$$
+\hat{\theta}=\arg\max_{\theta} p(y_1,...,y_N|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;或者通常为了计算方便采用对数的形式&lt;/p&gt;
+
+&lt;div&gt;$$
+\hat{\theta}=\arg\max_{\theta} \log p(y_1,...,y_N|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;其中 $\log p(y_1,&amp;hellip;,y_N|\theta)$ 就称为对数似然函数，常常假设事件之间相互独立，那也就能进一步把联合概率写成独立概率乘积的形式：&lt;/p&gt;
+
+&lt;div&gt;$$
+\hat{\theta}=\arg\max_{\theta} \log \prod_{i=1}^N p(y_i|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;这样一个无约束的优化问题利用极值条件(导数为0)也就能得到待估计参数的解析解了。&lt;/p&gt;
+
+&lt;p&gt;回到我们的问题&lt;strong&gt;为什么要用EM算法&lt;/strong&gt;，那肯定是因为极大似然法不管用了呗，也就是当有&lt;strong&gt;隐变量(latent variable)&lt;/strong&gt;存在的时候，原来的对数似然函数变为&lt;/p&gt;
+
+&lt;div&gt;$$
+\log p(Y|\theta) = \log \sum_{Z} p(Y|Z,\theta)p(Z,\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;相当于求完全数据 $Y,Z$ 的联合分布 $p(Y,Z|\theta)$ (把隐变量积分掉)的和，但是由于里面包含隐变量，直接用极大似然求解是不行滴。但是如果能够估计出隐变量 $Z$，那这个问题又回到了原来的极大似然估计。这样也就自然地与EM算法的思想挂上勾了：&lt;strong&gt;估计隐变量(E步)，再估计参数(M步)，不断迭代&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;现在可以回答第一个问题了：为什么要用EM算法？&lt;strong&gt;EM算法是用来解决含有隐变量的参数估计问题的。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;什么是em算法&#34;&gt;什么是EM算法？&lt;/h2&gt;
+
+&lt;p&gt;那么这个所谓的迭代算法是怎么迭代的呢？我们还是先回到对数似然函数，可以将其表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\log p(Y|\theta) &amp;= \log p(Y,Z|\theta) - \log p(Z|Y,\theta)\\
+&amp;=\log \frac{p(Y,Z|\theta)}{q(Z)}-\log \frac{p(Z|Y,\theta)}{q(Z)}
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;第一行公式(完整数据减去后验)根据条件概率公式可得，第二行公式相当于减去一个 $\log q(Z)$ 再加上一个 $\log q(Z)$ 恒等变换。这里假设 $q(Z)$ 是 $Z$ 的一个概率分布 ($\int_Z q(Z) dZ = 1$)。&lt;/p&gt;
+
+&lt;p&gt;然后&lt;strong&gt;同时对两侧对$q(Z)$求期望&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;左边积分还是它本身：&lt;/p&gt;
+
+&lt;div&gt;$$
+\int_Z q(Z) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z q(Z) dZ = \log p(Y|\theta)
+$$&lt;/div&gt;
+
+&lt;p&gt;右边积分则是&lt;/p&gt;
+
+&lt;div&gt;$$
+\int_z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ - \int_Z q(Z) \log \frac{p(Z|Y,\theta)}{q(Z)}
+$$&lt;/div&gt;
+
+&lt;p&gt;左边等于右边即&lt;/p&gt;
+
+&lt;div&gt;$$
+\log p(Y|\theta) = \text{ELBO} + \text{KL}(q(Z)||p(Z|Y,\theta))
+$$&lt;/div&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;KL divergence的概念&lt;/p&gt;
+
+&lt;div&gt;$$
+D_{\mathrm{KL}}(P \| Q)=-\sum_{i} P(i) \ln \frac{Q(i)}{P(i)} \ge 0
+$$&lt;/div&gt;
+
+&lt;p&gt;由吉布斯不等式可知，当且仅当 $P = Q$ 时 $D_{KL}(P||Q)$为零。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;因为相对熵大于等于0的性质，所以 ELBO 为 $\log p(Y|\theta)$ 提供了下界，所以EM算法的想法就是想让ELBO不断变大从而让对数似然变大&lt;/strong&gt;，并且只有当 $q(Z) = p(Z|Y,\theta^{(t)})$ 时ELBO等于对数似然， 即&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\theta^{(t+1)} = \hat{\theta} &amp;= \arg \max_{\theta} \text{ELBO}\\
+&amp;= \arg \max_{\theta} \int_Z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ\\
+&amp;= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Y,Z|\theta)}{p(Z|Y,\theta^{(t)})} dZ\\
+&amp;= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) [\log p(Y,Z|\theta) - \log p(Z|Y,\theta^{(t)})] dZ\\
+&amp;= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)  dZ
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;这也就解释了EM算法是怎么来的啦，&lt;strong&gt;当 $q(Z)$ 等于后验 $p(Z|Y,\theta^{{t}})$ 时，ELBO 等于log likelihood，先固定 $\theta^{(t)}$ 得到后验，然后求 ELBO (关于后验的期望)，滑动 $\theta$ 得到期望的最大值，最大期望对应的 $\theta$ 就是 $\theta^{(t+1)}$&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;从思路上是能说通了，你可能会疑惑为什么这么迭代求解就能得到最优解呢？或者说 $\theta_{t}$ 到最后会收敛吗？我们回到最初的目标最大化对数似然 $\log p(Y|\theta)$，那如果我们每次迭代求解都能使得对应的对数似然函数的值增加，最后是不是也就说明能向似然函数的最大值靠近了呢，也就是我们希望看到的结果是&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    \log p(Y|\theta^{(t)}) \le \log p(Y|\theta^{(t+1)})
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;事实也说明了这是成立的，我们再回到对数似然函数的表达式&lt;/p&gt;
+
+&lt;div&gt;
+$$
+\log p(Y|\theta) = \log p(Y,Z|\theta) - \log p(Z|Y,\theta)
+$$
+&lt;/div&gt;
+
+&lt;p&gt;两边求关于后验 $p(Z|Y,\theta^{(t)})$ 的期望，也就是求积分&lt;/p&gt;
+
+&lt;p&gt;左边积分还是它本身：&lt;/p&gt;
+
+&lt;div&gt;$$
+\int_Z p(Z|Y,\theta^{(t)}) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z p(Z|Y,\theta^{(t)}) dZ=\log p(Y|\theta) 
+$$&lt;/div&gt;
+
+&lt;p&gt;右边积分则是：&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    Q(\theta,\theta^{(t)}) - H(\theta,\theta^{(t)})
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;其中，$Q(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta) dZ, H(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Z|Y,\theta) dZ$&lt;/p&gt;
+
+&lt;p&gt;那要使得迭代收敛需要满足的条件就变为了&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    Q(\theta^{(t)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t+1)},\theta^{(t)})
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;因为 $Q(\theta,\theta^{(t)})$ 对应的就是EM的迭代公式，那根据最大化问题可以得到 $Q(\theta,\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那也就有 $Q(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那再根据&lt;strong&gt;放缩&lt;/strong&gt;的思想，只要我们能证明 $H(\theta^{(t)},\theta^{(t)}) \ge H(\theta^{(t+1)},\theta^{(t)})$，那一切就都顺理成章了。&lt;/p&gt;
+
+&lt;p&gt;直接对这两项作差&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Z|Y,\theta^{(t+1)})}{p(Z|Y,\theta^{(t)})} dZ
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;看出点什么没有，不然再回到上面 KL 散度的定义看看，这结果不就是 $-D_{\text{KL}}(p(Z|Y,\theta^{(t)})||p(Z|Y,\theta^{(t+1)}))$，根据散度大于等于0的性质，可以得到 $H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le 0$，这也就得证了&lt;strong&gt;EM迭代求解每次得到的似然函数值总是非减的( $\theta^{(t)}$ 会逐渐收敛)，那最终也就会取到最大似然咯，需要注意这并不能保证找到全局最优解的。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;怎么用em算法&#34;&gt;怎么用EM算法？&lt;/h2&gt;
+
+&lt;p&gt;看到这里的话想必你对算法的原理也有了大概的认识，但是大家最关心的应该是在认识原理后如何去应用，这里根据李航老师的《统计学习方法》里的例子介绍一下算法的应用和实现。&lt;/p&gt;
+
+&lt;p&gt;三硬币模型：有A，B，C三枚硬币，它们正面向上的概率分别为 $a,b,c$，进行如下试验：先掷硬币 A，如果正面则再掷 B，如果反面则掷 C，掷硬币的结果正面记为1反面为0，独立重复10次试验，结果为1，1，0，1，0，0，1，0，1，1。我们只知道最终掷硬币的结果并不能观测掷硬币的过程，那么如何估计三枚硬币正面向上的概率呢？&lt;/p&gt;
+
+&lt;p&gt;这个例子里观测变量 $y_i$ 也就是掷硬币的结果0或1，要估计的参数为概率 $\theta=(a,b,c)$，由于我们不知道掷A的结果导致这一问题不能直接采用极大似然来估计，因此我们引入隐变量 $z$ 来表示掷 A的结果。&lt;/p&gt;
+
+&lt;p&gt;观测数据 $y_1,&amp;hellip;,y_N$
+由以下模型生成&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    p(y|\theta) = ab^{y}(1-b)^{(1-{y})} + (1-a)c^{y}(1-c)^{(1-{y})}
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;隐变量 $z_i = 1$ 表示第 $i$ 个观测来自掷硬币B的结果，$z_i = 0$ 表示第 $i$ 个观测来自掷硬币C的结果。&lt;/p&gt;
+
+&lt;p&gt;于是可以写出完全数据的似然函数：&lt;/p&gt;
+
+&lt;div&gt;$$
+    \begin{aligned}
+p(Y,Z|\theta) &amp;= \prod_{i=1}^N p(y_i,z_i
+|\theta)\\
+&amp;=\prod_{i=1}^N [ab^{y_i}(1-b)^{(1-{y_i})}]^{z_i} \cdot [(1-a)c^{y_i}(1-c)^{(1-{y_i})}]^{1-z_i}
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;那么，完全数据的对数似然函数为&lt;/p&gt;
+
+&lt;div&gt;$$
+\log p(Y,Z|\theta) = \sum_{i=1}^N  z_i (\log a + y_i \log b + (1-y_i) \log(1-b)) + (1-z_i) (\log(1-a) + y_i \log c + (1-y_i) \log(1-c)) 
+$$&lt;/div&gt;
+
+&lt;p&gt;按照我上面说的&lt;strong&gt;先固定 $\theta^{(t)}$ 计算后验：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    \begin{aligned}
+    p(z_i=1|y_i,\theta^{(t)}) &amp;= \frac{p(z=1,y_i|\theta^{(t)})}{p(z_i=1,y_i|\theta^{(t)}) + p(z_i=0,y_i|\theta^{(t)})}\\
+    &amp;=\frac{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)})}{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)}) + p(y_i|z=0,\theta^{(t)}) p(z=0|\theta^{(t)})}\\
+    &amp;=\frac{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)}}{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)} + (1-a^{(t)})(c^{(t)})^{y_i}(1-c^{(t)})^{(1-y_i)}}\\
+    p(z_i=0|y_i,\theta^{(t)}) &amp;= 1- p(z_i=1|y_i,\theta^{(t)}) 
+    \end{aligned}
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;有了隐变量的后验分布后，在对完全数据的对数似然函数求最大期望&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    \begin{aligned}
+    \theta^{(t+1)} &amp;= \arg \max_{\theta} Q(\theta)\\ 
+    &amp;= \arg \max_{\theta} \sum_{Z} p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)\\
+    &amp;= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \log p(y_i,z_i=1|\theta) + p(z_i=0|y_i,\theta^{(t)}) \log p(y_i,z_i=0|\theta)\\
+    &amp;= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) [\log a + y_i \log b + (1-y_i)\log (1-b)] \\ &amp; + p(z_i=0|y_i,\theta^{(t)})[ \log (1-a) + y_i \log c + (1-y_i) \log (1-c)]
+    \end{aligned}
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;又回到这个极大似然的问题，现在相当于隐变量已知咯，那直接按照传统的套路利用极值条件求导获得待参数的解析解。&lt;/p&gt;
+
+&lt;p&gt;对于参数 $a$，令 $\partial Q(\theta)/ \partial a = 0$&lt;/p&gt;
+
+&lt;div&gt;$$
+\frac{\partial L}{\partial a} = \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \frac{1}{a} - p(z_i=0|y_i,\theta^{(t)}) (-\frac{1}{1-a})=0
+$$&lt;/div&gt;
+
+&lt;p&gt;可得&lt;/p&gt;
+
+&lt;div&gt;
+    $$
+    a^{(t+1)} = \frac{1}{N} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) 
+    $$
+&lt;/div&gt;
+
+&lt;p&gt;同理可得&lt;/p&gt;
+
+&lt;div&gt;$$
+b^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) }}
+$$&lt;/div&gt;
+
+&lt;div&gt;$$
+c^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) }}
+$$&lt;/div&gt;
+
+&lt;h3 id=&#34;matlab-实现em算法&#34;&gt;matlab 实现EM算法&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;% 给定观测结果
+y = [1;1;0;1;0;0;1;0;1;1];
+N = length(y);
+% 先随便假设个初始参数 
+a_old = 0.4;
+b_old = 0.6;
+c_old = 0.7;
+theta0 = [a_old;b_old;c_old];
+% 隐变量z=1的后验概率的初始值
+p_z  = zeros(N,1);
+% 用于存储更新后的参数
+a_new = 0.0;
+b_new = 0.0;
+c_new = 0.0;
+theta = [a_new;b_new;c_new];
+% 给EM算法的迭代设置个终止条件
+epsilon = 0.01;
+% 迭代更新参数
+while norm(theta - theta0) &amp;gt; epsilon
+% E步，计算隐变量的后验
+	for i = 1:N
+		p_z(i) = (a_old*b_old^y(i)*(1-b_old)^(1-y(i)))/((a_old*(b_old)^y(i)*(1-b_old)^(1-y(i))) + ((1-a_old)*c_old^y(i)*(1-c_old)^(1-y(i))));
+	end
+	theta0 = [a_old;b_old;c_old];
+% M步，极大似然更新待估计参数 
+	a_new = 1/N*sum(p_z);
+	b_new = p_z&amp;#39;*y/sum(p_z);
+	c_new = (1-p_z)&amp;#39;*y/sum(1-p_z);
+	theta = [a_new;b_new;c_new];
+	a_old = a_new;
+	b_old = b_new;
+	c_old = c_new;
+end&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2 id=&#34;本文小结&#34;&gt;本文小结&lt;/h2&gt;
+
+&lt;p&gt;首先从为什么需要用EM算法说起：&lt;strong&gt;含有隐变量的参数估计问题&lt;/strong&gt;，然后从&lt;strong&gt;最大化ELBO的角度&lt;/strong&gt;推导了EM算法迭代公式的由来并证明了算法的收敛性，最后以三硬币模型为例介绍了EM算法的使用以及matlab实现。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>「机器学习」指数族分布</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/</link>
+      <pubDate>Sat, 17 Aug 2019 08:27:25 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/</guid>
+      <description>&lt;p&gt;听到指数族分布这个名字可能会觉得有点抽象，甚至你可能之前都没听过(反正我以前是没听过的)，但是如果说&lt;strong&gt;高斯分布、伯努利分布、二项分布、泊松分布、beta分布、Dirichlet分布、gamma分布&lt;/strong&gt;这些分布，那我想你应该大部分都听过而且可能对其中部分还很熟悉了。其实呢，指数族分布就是这些分布的统称啦，也就是说这些分布的概率密度函数都能写成一个统一的形式，而这个统一的形式就是：&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+p(x|\eta) &amp;= h(x)exp(\eta^T\phi(x)-A(\eta)) \\
+&amp;=\frac{1}{exp(A(\eta))}h(x)exp(\eta^T\phi(x))
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;其中，$\eta$ 为参数向量；你看 $exp(A(\eta))$ 看着是不是就像归一化的作用，再取个对数就是 $A(\eta)$ 因此 $A(\eta)$ 也就是所谓的对数配分函数；$\phi(x)$ 则称为&lt;strong&gt;充分统计量&lt;/strong&gt;，这是关于样本的函数，充分的意思呢就是有了它就相当于可以丢掉样本了，比如正态分布里的均值和方差。$h(x)$ 就不怎么重要了通常取 1。&lt;/p&gt;
+
+&lt;p&gt;指数族分布可以总结为 &lt;strong&gt;3 个特性和 3 个地位&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;3 个特性：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;充分统计量&lt;/strong&gt;：online learning时不必要保存所有样本信息&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;共轭&lt;/strong&gt;：指数族分布具有共轭先验，在贝叶斯理论中，若先验为似然函数的共轭先验，则后验与先验具有相同的形式，避免了求积分常数的困难&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;最大熵&lt;/strong&gt;：指数族分布满足最大熵原理，在所有可能的概率模型(分布)中，熵最大的模型是最好的模型&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;3 个地位：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;广义线性模型&lt;/strong&gt;：通过三个假设将指数分布族转换成对应的机器学习模型，如线性回归、logistic 回归、Softmax模型等&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;广义线性模型的三个假设：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;$y$ 的条件概率属于指数族分布&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;$y$ 的估计值 $h(x,\theta)=E(y|x,\theta)$&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;线性预测算子 $\eta=\theta^Tx$&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;概率图模型&lt;/strong&gt;：无向图RBM(这个目前我也还不了解，后续学习到了再补充吧)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;变分推断&lt;/strong&gt;：后续补充&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;高斯分布的指数族形式&#34;&gt;高斯分布的指数族形式&lt;/h2&gt;
+
+&lt;p&gt;上面光说了那么多分布都属于指数族分布，那么我们现在来推一个看看，将大家最熟悉的高斯分布转化为指数族分布的形式，假设单变量高斯分布的均值为 $\mu$，方差为 $\sigma^2$，其概率密度可以表示为：&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+p(x|\mu,\sigma)&amp;=\frac{1}{\sqrt{2\pi \sigma^2}}exp\{-\frac{(x-\mu)^2}{2\sigma^2}\}\\
+&amp;=\frac{1}{\sqrt{2\pi \sigma^2}}exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x + \mu^2)\}\\
+&amp;=exp\{\log(2\pi \sigma^2)^{-1/2}\}exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x) - \frac{\mu^2}{2\sigma^2}\}\\
+&amp;=exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x) -(\frac{\mu^2}{2\sigma^2} + \frac{1}{2}\log(2 \pi \sigma^2)) \}
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;令&lt;/p&gt;
+
+&lt;div&gt;$$
+\eta=\left(\begin{array}{l}{\eta_{1}} \\ {\eta_{2}}\end{array}\right) 
+=\left(\begin{array}{c}{\frac{u}{\sigma^{2}}} \\ {-\frac{1}{2 \sigma^2}}\end{array}\right),\phi(x) = \left(\begin{array}{l}{x} \\ {x^2}\end{array}\right) 
+$$&lt;/div&gt;
+
+&lt;p&gt;眼尖的你是不是发现高斯分布的概率密度函数表示成了指数族分布的形式了。其他分布也可以这样表示，这里就不详细推导了。&lt;/p&gt;
+
+&lt;h2 id=&#34;对数配分函数与充分统计量的关系&#34;&gt;对数配分函数与充分统计量的关系&lt;/h2&gt;
+
+&lt;p&gt;对数配分函数在指数族分布里的表现形式为 $exp(A(\eta))$，进一步可以表示为积分的形式：&lt;/p&gt;
+
+&lt;p&gt;$$
+exp(A(\eta)) = \int h(x) \cdot \exp \left(\eta^T\phi(x)\right) d x
+$$&lt;/p&gt;
+
+&lt;p&gt;两边同时对 $\eta$ 求导&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;牛顿莱布尼兹
+$$
+\frac{\partial}{\partial \eta} \int=\int \frac{\partial}{\partial \eta}
+$$&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;可得&lt;/p&gt;
+
+&lt;p&gt;$$
+exp(A(\eta))A&amp;rsquo;(\eta)=\int h(x) \cdot exp(\eta^T\phi(x)) \cdot \phi(x) dx
+$$&lt;/p&gt;
+
+&lt;p&gt;将 $exp(A(\eta)$ 移到右边&lt;/p&gt;
+
+&lt;p&gt;$$
+A&amp;rsquo;(\eta) = \frac{\int h(x) \cdot exp(\eta^T\phi(x)) \cdot \phi(x) dx}{exp(A(\eta))}=\int h(x) \cdot exp(\eta^T\phi(x) - A(\eta)) \cdot \phi(x) dx
+$$&lt;/p&gt;
+
+&lt;p&gt;即&lt;/p&gt;
+
+&lt;p&gt;$$
+A&amp;rsquo;(\eta) = \int p(x|\eta) \cdot \phi(x) dx = E_{p(x|\eta)}[\phi(x)]
+$$&lt;/p&gt;
+
+&lt;p&gt;还可以推导出&lt;/p&gt;
+
+&lt;p&gt;$$
+A^{\prime \prime}(\eta) = Var[\phi(x)]
+$$&lt;/p&gt;
+
+&lt;p&gt;进一步也说明了 $A(\eta)$ 是个凸函数。这里告诉了我们&lt;strong&gt;对数配分函数是个凸函数，且它的一阶导数和二阶导数分别对应着充分统计量的期望和方差。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;极大似然估计与充分统计量的关系&#34;&gt;极大似然估计与充分统计量的关系&lt;/h2&gt;
+
+&lt;p&gt;既然 $\eta$ 是参数，我们在learning的时候当然是需要将其估计出来的，很自然的想法就是用极大似然估计来估计 $\eta$，假设有数据 $x_1,&amp;hellip;,x_N$，则&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+\eta_{MLE}&amp;=\arg\max\log p(x_1,...,p_N|\eta)\\
+&amp;=\arg\max\log \prod_{i=1}^{N} p(x_i|\eta)\\
+&amp;=\arg\max\ \sum_{i=1}^N \log p(x_i|\eta)\\
+&amp;=\arg\max\ \sum_{i=1}^N [\log h(x_i) + \eta^T\phi(x_i) - A(\eta)]
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;目标函数对 $\eta$ 求导并令导函数为0&lt;/p&gt;
+
+&lt;div&gt;$$
+\frac{\partial}{\partial \eta} \sum_{i=1}^N [\log h(x_i) + \eta^T\phi(x_i) - A(\eta)] = \sum_{i=1}^N \phi(x_i) - N \cdot A&#39;(\eta) = 0
+$$&lt;/div&gt;
+
+&lt;p&gt;可得到 $A&amp;rsquo;(\eta_{MLE})$ 可以表示为&lt;/p&gt;
+
+&lt;div&gt;$$
+A&#39;(\eta_{MLE}) = \frac{1}{N} \sum_{i=1}^N\phi(x_i)
+$$&lt;/div&gt;
+
+&lt;p&gt;又因为 $A(\eta)$ 是 $\eta$ 的函数，$A&amp;rsquo;(\eta)$ 也是 $\eta$ 的函数，那么就可以通过 $A&amp;rsquo;(\eta)$ 的反函数求解出 $\eta$ 的估计值 $\eta_{MLE}$，同时这也表现了充分统计量的性质，&lt;strong&gt;不需要保存所有样本信息，只需要通过充分统计量就能得到参数的估计值&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h2 id=&#34;最大熵原理与指数族分布&#34;&gt;最大熵原理与指数族分布&lt;/h2&gt;
+
+&lt;p&gt;一言不合甩结论：&lt;strong&gt;在给定的约束条件下，指数族分布是信息熵(微分熵)最大的分布。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;很多人可能对熵的概念都还不清楚，那我们从信息量说起，信息量就是你对一个事件的不确定程度的认识，我们直观地来理解一下，一个事件发生的概率越大，那就是越确定这个事件会发生，那他的不确定性就越小，包含的信息可能就越少，那他的信息量就比较小，也就是说信息量和事件发生的概率成反比，信息量的定义为：&lt;/p&gt;
+
+&lt;p&gt;$$
+I(X)=-\log p(X)
+$$&lt;/p&gt;
+
+&lt;p&gt;一个事件发生的可能有好几种可能情况，那么我们就会希望知道平均意义下这个事件的信息量有多少，这就得到了信息熵的概念，其实是信息量的期望:&lt;/p&gt;
+
+&lt;p&gt;$$
+H(X)=E(I(X))
+$$&lt;/p&gt;
+
+&lt;p&gt;当 $X$ 为离散时，期望就是求和&lt;/p&gt;
+
+&lt;p&gt;$$
+H(X)=-\sum_{x} p(x) \log p(x)
+$$&lt;/p&gt;
+
+&lt;p&gt;其中，$p(x)=p(X=x)$，那如果 $X$ 是连续的，那信息熵就是个积分的形式了。&lt;/p&gt;
+
+&lt;p&gt;介绍了半天熵，那么最大熵有什么好处呢？答案是：&lt;strong&gt;在学习概率模型时，在所有可能的概率模型(分布)中，熵最大的模型是最好的模型。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;在没有任何已知的情况下&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;最大熵可以用优化命题表示为：&lt;/p&gt;
+
+&lt;div&gt;$$
+    $$
+\begin{array}{cl}{\max_{p}} &amp; {-\sum_{i=1}^{K} p\left(x_{i}\right) \log p\left(x_{i}\right)} \\ {\text { s.t. }} &amp; {\sum_{i=1}^K p\left(x_{i}\right) = 1}\end{array}
+$$
+$$&lt;/div&gt;
+
+&lt;p&gt;利用拉格朗日乘子法可得：$\hat{p}(x_i)=\frac{1}{K}$&lt;/p&gt;
+
+&lt;p&gt;也就是说&lt;strong&gt;在没有任何已知的情况下均匀分布的熵最大。(离散型)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;满足已知事实(约束)的情况下&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;最大熵可以用优化命题表示为：&lt;/p&gt;
+
+&lt;div&gt;$$
+    $$
+\begin{array}{cl}{\max_{p}} &amp; {-\sum_{i=1}^{K} p\left(x_{i}\right) \log p\left(x_{i}\right)} \\ {\text { s.t. }} &amp; {\sum_{i=1}^K p\left(x_{i}\right) = 1} \\
+{} &amp; {E_{p(x)}[f(x)]= E_{\hat{p}(x)}[f(x)] = \Delta}
+\end{array}
+$$
+$$&lt;/div&gt;
+
+&lt;p&gt;其中，$\hat{p}(x)$ 为经验分布，$f(x)$ 为任意关于 $x$ 的函数向量(可以理解为将已知事实或者先验信息写成约束的形式)。&lt;/p&gt;
+
+&lt;p&gt;同样利用拉格朗日乘子法可以得到 $p(x)$ 的表达式符合指数族分布的一般形式。&lt;/p&gt;
+
+&lt;p&gt;也就是说&lt;strong&gt;在满足已知事实(约束)的情况下指数族分布的熵最大。(离散型)&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>核函数与再生核希尔伯特空间</title>
+      <link>https://minghaochen.github.io/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</link>
+      <pubDate>Thu, 15 Aug 2019 20:59:29 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/</guid>
+      <description>&lt;p&gt;说到核方法，很多人第一反应就是SVM，其实不然，其应用很广，但核心思想均是&lt;strong&gt;用在原始空间计算核函数的值来避免直接求解高维特征空间的内积&lt;/strong&gt;；说到核函数往往还会带上一个吓人的概念“再生核希尔伯特空间”，先揭秘一下什么是希尔伯特空间，希尔伯特空间其实就是&lt;strong&gt;函数空间&lt;/strong&gt;(或者可以把函数理解为无限维的向量)，函数空间里任意一个元素都表示一个函数，而再加上“再生核”这个限定词相当于就是特定的函数空间，就是具有再生性的函数空间，那什么是再生性听我慢慢道来。&lt;/p&gt;
+
+&lt;p&gt;假设有原始空间样本 $x_i \in \mathbb{R}^p, i=1,&amp;hellip;,N$，通常为了&lt;strong&gt;在高维空间寻找线性关系&lt;/strong&gt;我们会将其通过函数映射 $\phi(\cdot)$ 到高维空间 $\phi(x_i) \in \mathbb{R}^n$，但是这样也意味着如果原始空间求内积 $&amp;lt;x_i,x_j&amp;gt;$ 对应到特征空间为 $&amp;lt;\phi(x_i),\phi(x_j)&amp;gt;$，直接求解高维空间的内积计算量是很大的，同时我们可能并不知道这个映射函数 $\phi(\cdot)$ 怎么选择才是合适的。核函数则提供了另一种求解的思路。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;核函数的定义&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;$$
+\kappa(\cdot,\cdot):\mathbb{R}^p \times \mathbb{R}^p \rightarrow \mathbb{R}
+$$&lt;/p&gt;
+
+&lt;p&gt;则特征空间的内积可以表示为&lt;/p&gt;
+
+&lt;p&gt;$$
+&amp;lt;\phi(x_i),\phi(x_j)&amp;gt; = \kappa(x_i,x_j)
+$$&lt;/p&gt;
+
+&lt;p&gt;此外，特征空间的距离和角度也可以用核函数来表示。&lt;/p&gt;
+
+&lt;p&gt;同时有 Mercer 定理告诉我们怎么样的函数能称为核函数&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;任何正半定函数均可以作为核函数，即由 $\kappa(\cdot,\cdot)$ 构成的核矩阵 $K$ 是正半定的：$a^TKa\ge 0$，其中 $K_{ij} = \kappa(x_i,x_j)$&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;这也就说明了只要我们构造出一个正定核(往往是应用现成的)，那么就不需要显式地定义特征空间和映射函数，并且能够利用已有的线性方法来解决非线性问题&lt;/strong&gt;。&lt;strong&gt;同时，核函数还可以理解为用来衡量两个向量的相似度(因为内积可以一定程度反应两个样本之间的相似度)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;因为核函数可以总结为：&lt;strong&gt;映射、内积、相似度&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;再生核希尔伯特空间的定义&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;有了核函数，那么就会至少有一个与之对应的再生核希尔伯特空间 $\mathcal{H}$，它满足&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;固定任意 $x_0$，则 $\kappa(\cdot,x_0):\mathbb{R^p} \rightarrow \mathbb{R}$ (这是个函数！) 属于 $\mathcal{H}$ (这是个函数空间！)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;再生性：&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+&lt;\kappa(\cdot,x),f&gt; &amp;= f(x),f \in \mathcal{H} \\
+&lt;\kappa(\cdot,x),\kappa(\cdot,z)&gt; &amp;= \kappa(x,z) = \kappa(z,x)
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;给定核函数如何确定映射以及对应的希尔伯特空间？&lt;/p&gt;
+
+&lt;p&gt;定义再生核map $\Phi:\mathbb{R}^p \rightarrow \mathbb{R}^{\mathbb{R}^p}$ 且 $\Phi(z)=\kappa(\cdot,z)$，相当于将 $z\in \mathbb{R}^p$ 映射成一个函数 $\kappa(\cdot,z):\mathbb{R}^p \rightarrow \mathbb{R}$，则&lt;/p&gt;
+
+&lt;p&gt;$$
+\kappa(x,z) = &amp;lt;\kappa(\cdot,x),\kappa(\cdot,z)&amp;gt;=&amp;lt;\Phi(x),\Phi(z)&amp;gt;
+$$&lt;/p&gt;
+
+&lt;p&gt;即通过核函数可以找到对应的映射，而对应的希尔伯特空间可以表示为由 $\Phi(\cdot)$ 组成的向量空间。&lt;/p&gt;
+
+&lt;p&gt;给定映射关系如何确定核函数？&lt;/p&gt;
+
+&lt;p&gt;直接令 $\kappa(x,z) = &amp;lt;\Phi(x),\Phi(z)&amp;gt;$，然后验证 Mercer 定理即可。&lt;/p&gt;
+
+&lt;h2 id=&#34;各种空间的定义补充&#34;&gt;各种空间的定义补充&lt;/h2&gt;
+
+&lt;p&gt;各种空间之间的关系其实有点&lt;strong&gt;从抽象到具体的过程&lt;/strong&gt;。我们给空间&lt;strong&gt;赋予一些属性或者制定一些规则&lt;/strong&gt;就能得到特定的空间。&lt;/p&gt;
+
+&lt;p&gt;比如大家熟悉的&lt;strong&gt;向量空间&lt;/strong&gt;，那就是满足加减法和数乘的空间，很好理解，空间内任意元素都可以用一组基通过加减和数乘(线性组合)表示。&lt;/p&gt;
+
+&lt;p&gt;比如赋予距离的空间称为&lt;strong&gt;度量空间&lt;/strong&gt;，定义距离时需要遵守三条公理：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;非负性，同一性：距离都是非负的，自己到自己的距离当然是 0 了&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;对称性：你走向我的距离等于我走向你的距离&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;三角不等式：你从 A 走到 B 在走到 C 的距离肯定大于等于直接从 A 到 C 的距离&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;比如赋予范数的空间称为&lt;strong&gt;赋范空间&lt;/strong&gt;，范数可以理解为一个元素到 0 的距离，同时它比距离的定义&lt;strong&gt;更具体了一步&lt;/strong&gt;，因为它还需要额外满足&lt;/p&gt;
+
+&lt;p&gt;$$
+||ax|| = |a| \times||x||
+$$&lt;/p&gt;
+
+&lt;p&gt;那么我们在定义了范数后自然能用范数来定义距离了，比如 $d(x,y) = ||x-y||$，但是不能用距离来定义范数哦，因为&lt;strong&gt;波霸奶茶是奶茶，但不是所有奶茶都叫波霸奶茶&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;有了范数来定义距离了有时候还不够，我们有时候会需要&lt;strong&gt;角度&lt;/strong&gt;信息，这时候就&lt;strong&gt;再给波霸奶茶加点料&lt;/strong&gt;，于是赋予了内积的向量空间称为&lt;strong&gt;内积空间&lt;/strong&gt;，定义内积需要遵守三条公理：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;对称性&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;第一元素线性：
+$$&amp;lt;ax,y&amp;gt;=a&amp;lt;x,y&amp;gt;,&amp;lt;x+y,z&amp;gt;=&amp;lt;x,z&amp;gt;+&amp;lt;y,z&amp;gt;$$ 这不就是向量空间的数乘和加减运算嘛&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;正定性&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;那么定义了内积后自然也能用&lt;strong&gt;加了仙草的波霸奶茶来定义波霸奶茶&lt;/strong&gt;(用内积来定义范数)，比如&lt;/p&gt;
+
+&lt;p&gt;$$||x||=\sqrt{&amp;lt;x,x&amp;gt;}$$&lt;/p&gt;
+
+&lt;p&gt;还有个比较难以描述的&lt;strong&gt;完备空间&lt;/strong&gt;，可以理解为极限操作不会跑出自己的空间就称为完备的，&lt;strong&gt;奶茶只要三分糖，太甜了就超出能承受的甜度极限了呗&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;有了这么一步步的具体化后，&lt;strong&gt;希尔伯特空间&lt;/strong&gt;就可以出来了，它就是&lt;strong&gt;一杯三分糖的加了仙草的波霸奶茶&lt;/strong&gt;，呸，它就是&lt;strong&gt;一个完备的内积空间&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;总结来说：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;赋范线性空间就是赋予了范数的向量空间，也是度量空间（具有线性结构的度量空间）&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;内积空间是赋范线性空间&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;希尔伯特空间就是完备的内积空间，同时需要注意的是希尔伯特空间中的元素一般是函数，一个函数可以视为一个无穷维的向量。如果大家熟悉傅里叶变换或者泰勒展开，便能自然的想到这个空间的基底是什么。没错，也是一组无限多的函数。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>「机器学习」支持向量机SVM</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/</link>
+      <pubDate>Wed, 14 Aug 2019 20:05:08 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/</guid>
+      <description>&lt;p&gt;SVM（Support Vector Machine）又称为支持向量机，是一种用于机器学习的算法，不仅支持线性分类，结合核方法还可以用于非线性分类。其思想主要为&lt;strong&gt;最大间隔&lt;/strong&gt;，推导依赖于&lt;strong&gt;对偶理论&lt;/strong&gt;，因此可以将SVM归结于：间隔、对偶、核方法。&lt;/p&gt;
+
+&lt;h2 id=&#34;间隔&#34;&gt;间隔&lt;/h2&gt;
+
+&lt;p&gt;简单举例一个二分类问题，假设有线性可分的两堆点&lt;/p&gt;
+
+&lt;div&gt;$$
+\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1}^{N}， x_{i} \in \mathbb{R}^{p}, y_{j} \in\{-1,1\}
+$$&lt;/div&gt;
+
+&lt;p&gt;要将它们分开的超平面有很多种，&lt;strong&gt;SVM做的相当于要寻找一个最优的超平面 $w^Tx+b=0$ 来分开不同类别的样本点&lt;/strong&gt;，因此首先需要定义什么样的超平面是最优的，&lt;strong&gt;也就是所有样本点到超平面的最短距离是最大的&lt;/strong&gt;，假设两个类别中距离分隔超平面最近的点所在的超平面分别为 $w^Tx + b =1$ 和 $w^Tx+b = -1$(这里的 $1,-1$ 只是为了方便推导，不影响优化的结果，因为你总是可以对超平面乘以一个系数然后做变量替换得到$w^Tx + b =1$ 和 $w^Tx+b = -1$)，SVM要最大化的间隔就是&lt;strong&gt;这两个平面之间的距离&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;你可能要问两个平面的距离怎么求？回忆下高中的两条平行直线的距离公式，对于直线 $ax+by+c_1 = 0$ 和 $ax + by +c_2 = 0$，距离公式为
+$$d = \frac{|c_1-c_2|}{\sqrt{a^2+b^2}}$$&lt;/p&gt;
+
+&lt;p&gt;(莫名的亲切感有没有)那平面的距离公式类比下就可以得到：
+$$
+\text{margin} = \frac{1 - (-1)}{\sqrt{w_1^2+w_2^2+ &amp;hellip; + w_p^2}} = \frac{2}{||w||}
+$$&lt;/p&gt;
+
+&lt;p&gt;$w$ 的维度为 $p$, $w_i$ 表示 $w$ 的第 $i$ 个元素。SVM的目标就是最大化这个margin，那需要满足什么约束呢？首先分类要准确吧这可是分类器的初衷，即&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+w^Tx_i+b \ge +1 &amp;\text{ if } y_i= +1\\
+w^Tx_i+b \le -1 &amp;\text{ if } y_i= -1\\
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;上面两个式子的直观解释就是样本点在超平面 $w^Tx + b \ge +1$ 和 $w^Tx +b \le -1$ 的两侧。可以进一步合并为
+$$
+y_i(w^Tx_i+b) \ge +1, \forall i = 1,&amp;hellip;,N
+$$&lt;/p&gt;
+
+&lt;p&gt;那么我们要求解相当于是一个目标函数为最大化间隔且满足分类约束的优化命题：&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{array}{ll}{\text { max }} &amp; {J(w)= \frac{2}{||w||} }\\ {\text { s. t. }} &amp; {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
+$$&lt;/div&gt;
+
+&lt;p&gt;等价于最小化问题(目标函数取倒数)&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{array}{ll}{\text { min }} &amp; {\Phi(w)= \frac{1}{2} w^{T} w} \\ {\text { s. t. }} &amp; {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
+$$&lt;/div&gt;
+
+&lt;h2 id=&#34;对偶&#34;&gt;对偶&lt;/h2&gt;
+
+&lt;p&gt;我们已经将SVM的思想表达为优化命题的形式，接下来考虑如何对其进行求解，对于一个含约束的优化命题可以通过拉格朗日乘子法转化为无约束问题，然后通过求解对偶问题来间接求解原问题。&lt;/p&gt;
+
+&lt;p&gt;对于上述SVM的最小化问题，构造拉格朗日函数&lt;/p&gt;
+
+&lt;div&gt;$$
+L(w, b, \alpha)=\frac{1}{2} w^{T} w-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1\right]
+$$&lt;/div&gt;
+
+&lt;p&gt;原问题的拉格朗日形式为：&lt;/p&gt;
+
+&lt;div&gt;$$
+\min_{w,b}\max_{\alpha_i \ge 0 }L(w,b,\alpha)
+$$&lt;/div&gt;
+
+&lt;p&gt;对偶问题为&lt;/p&gt;
+
+&lt;div&gt;$$
+\max_{\alpha_i \ge 0 }\min_{w,b}L(w,b,\alpha)
+$$&lt;/div&gt;
+
+&lt;p&gt;先看对偶问题的内层 $\min_{w,b}L(w,b,\alpha)$，对于这个无约束最小化问题，直接求导&lt;/p&gt;
+
+&lt;div&gt;
+$$
+\begin{array}{l}{\frac{\partial L(w, b, \alpha)}{\partial w}=0 \Rightarrow w(\alpha)=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial L(w, b, \alpha)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0}\end{array}
+$$
+&lt;/div&gt;
+
+&lt;p&gt;再将求导得到的结果带入拉格朗日函数 $L(w,b,\alpha)$ 得到外层的最大化问题为：&lt;/p&gt;
+
+&lt;div&gt;
+$$
+\begin{aligned}
+\max_{\alpha} &amp;\sum_{i=1}^{N} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j} x_{i}^T x_{j}\\
+\text{s.t. }&amp; \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
+&amp; \alpha_i \ge 0, \forall i= 1,...,N
+\end{aligned}
+$$
+&lt;/div&gt;
+
+&lt;p&gt;这样得到的是一个二次规划问题，很多求解器可以完美解决，但如果样本数过多，则计算量过大。序列最小最优化SMO算法是高效求解这个问题的算法代表。SMO算法的思想与坐标上升算法的思想类似。坐标上升算法每次通过更新多元函数中的一维，经过多次迭代直到收敛来达到优化函数的目的，SMO则是每次选择尽量少的变量来优化，不断迭代直到函数收敛到最优值。&lt;/p&gt;
+
+&lt;p&gt;在求解得到 $\alpha^*$ 后，如何求解原问题的 $w^*,b^*$ 呢？&lt;/p&gt;
+
+&lt;p&gt;对于 $w$，直接带入求解对偶问题内层最小化问题的极值条件：&lt;/p&gt;
+
+&lt;div&gt;$$
+w^*=\sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}
+$$&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;可以看出 $w$ 仅由 $\alpha_i^*$ 大于0 的元素对应的 $x_i$ 构成，这些 $x_i$ 也称为支持向量。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;对于 $b$，找到 $\alpha_t^* &amp;gt; 0$ 的点，然后根据KKT条件中的松弛互补条件&lt;/p&gt;
+
+&lt;div&gt;$$
+\alpha_{t}^{*}\left(y_{t}\left(w^{* T} x_{t}+b^{*}\right)-1\right)=0
+$$&lt;/div&gt;
+
+&lt;p&gt;可以得到 $x_t$ 在margin上且&lt;/p&gt;
+
+&lt;p&gt;$$
+{w^*}^Tx_t + b^* = y_t
+$$&lt;/p&gt;
+
+&lt;p&gt;所以&lt;/p&gt;
+
+&lt;div&gt;$$
+b^* = y_t - {w^*}^Tx_t = y_t - \sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}^T x_t
+$$&lt;/div&gt;
+
+&lt;p&gt;这样就得到了用于分类的超平面了，对于测试样本，只需要带入超平面检验其正负(在超平面的哪一侧)就能进行分类。&lt;/p&gt;
+
+&lt;p&gt;总结一下SVM的套路：&lt;strong&gt;首先根据最大间隔(max问题)的思想确定目标函数(min问题)，将原问题(带约束)表示为拉格朗日函数的形式(minmax问题，无约束)，转换为对偶问题(maxmin问题)，对于内层无约束min问题，求导并将极值条件代入拉格朗日函数，可以得到外层max问题是一个二次规划，求解得到拉格朗日乘子的最优解 $\alpha^*$ 后反求超平面参数 $w^*,b^*$，其中 $b^*$ 需要利用KKT松弛互补条件求解。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;核方法&#34;&gt;核方法&lt;/h2&gt;
+
+&lt;p&gt;对于线性不可分的样本，我们可以对原始样本 $x_i \in \mathbb{R}^p$ 进行非线性变换 $\phi(x_i) \in \mathbb{R}^q$ (通常 $q&amp;gt;p$) 得到高维特征空间，在特征空间中寻找一个超平面 $w^T\phi(x) + b = 0$ 来划分不同类别的样本点。推导思路与上面一致，只是原来 $x_i$ 的位置需要用 $\phi(x_i)$ 替代，并且 $\phi(x_i)^T\phi(x_j)$ 可以用核函数表示为 $\kappa(x_i,x_j)$。&lt;/p&gt;
+
+&lt;h2 id=&#34;soft-margin-svm&#34;&gt;Soft Margin SVM&lt;/h2&gt;
+
+&lt;p&gt;上面讲述的Hard Margin SVM可能出现两个问题：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;投影到高维空间仍然不可分&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;过拟合&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;改进方法：&lt;strong&gt;加入软约束&lt;/strong&gt;，原来我们要求分类必须准确，即&lt;/p&gt;
+
+&lt;p&gt;$$
+y_i(w^Tx_i +b) \ge 1, \forall i=1,&amp;hellip;,N
+$$&lt;/p&gt;
+
+&lt;p&gt;现在我们允许一些异常点的出现，也就是说异常点不一定需要满足分类约束(异常点可以在超平面 $w^Tx+b = 1$ 和 $w^Tx + b =-1$ 之间)，与超平面的距离假设为 $\epsilon_i$，同时我们需要对 $\epsilon_i$ 进行惩罚，这样才能确保分类的准确性。可以理解为我们期望正常情况下 $\epsilon_i$ 都为 0，只有在异常点出现时 $\epsilon_i$ 才是个大于零的实数。对应的优化命题可以改写为&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{array}{ll}{\text { min }} &amp; {\Phi(w,\epsilon)= \frac{1}{2} w^{T} w} + C \sum_{i=1}^N \epsilon_i \\ {\text { s. t. }} &amp; {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 - \epsilon_i,\forall i=1, \ldots, N} \\
+&amp;\epsilon_i \ge 0
+\end{array}
+$$&lt;/div&gt;
+
+&lt;p&gt;其中 $C\ge 0$ 是可调参数，表示对异常点的惩罚程度，$\epsilon_i$ 表示软约束。&lt;/p&gt;
+
+&lt;p&gt;相比于原来hard margin的SVM，这一优化命题多了 $N$ 条关于 $\epsilon_i$ 的不等式约束，还是跟先前一样的套路，写成拉格朗日函数&lt;/p&gt;
+
+&lt;div&gt;$$
+L(w,b,\epsilon,\alpha,\beta) = \frac{1}{2} w^{T} w+C \sum_{i=1}^{N} \epsilon_{i}-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1+\epsilon_{i}\right]-\sum_{i=1}^{N} \beta_{i} \epsilon_{i}
+$$&lt;/div&gt;
+
+&lt;p&gt;转化为对偶问题，内层的最小化问题求导得到极值条件&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{array}{l}{\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial w}=0 \Rightarrow w=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial \epsilon_i}=0 \Rightarrow C-\alpha_{i}-\beta_{i}=0 \Rightarrow\left\{\begin{array}{l}{\alpha_{i}=C-\beta_{i}} \\ {\beta_{i}=C-\alpha_{i}}\end{array} \Rightarrow 0 \leq \alpha_{i}, \beta_{i} \leq C\right.}\end{array}
+$$&lt;/div&gt;
+
+&lt;p&gt;然后代入 $L(w,b,\epsilon,\alpha,\beta)$ 并求解外层max问题，最后来根据KKT条件求解超平面参数。&lt;/p&gt;
+
+&lt;h2 id=&#34;多类别问题&#34;&gt;多类别问题&lt;/h2&gt;
+
+&lt;p&gt;两种策略(假设共有K个类别)&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;一对一 (one-against-one)：所有类别两两之间进行分类得到 $C_K^2$ 个超平面，对于测试数据代入所有超平面进行判断，然后采用&lt;strong&gt;投票表决&lt;/strong&gt;进行分类。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;一对所有 (one-against-all)：针对一个类别和剩下所有类别进行分类得到 $K-1$ 个超平面，对于测试数据，代入超平面方程，选择结果最大的那个超平面对应的类别作为分类结果。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div&gt;$$
+k^{*}=\underset{k}{\arg \max }\left(w_{k}^{T} x+b\right)
+$$&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>对偶理论</title>
+      <link>https://minghaochen.github.io/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/</link>
+      <pubDate>Sun, 11 Aug 2019 21:59:22 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/</guid>
+      <description>&lt;p&gt;在求解一个优化命题时，如果其对偶形式便于求解，常常可以通过求解对偶问题来避免直接对原问题进行求解。比如机器学习中典型的SVM就涉及到对偶理论，以及拉格朗日乘子法、KKT条件等概念。&lt;/p&gt;
+
+&lt;p&gt;首先简单通俗地说说这几个概念是干嘛的&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;对偶理论：对偶也就是孪生双胞胎，一个优化命题也就有其对应的兄弟优化命题。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;拉格朗日函数：将原本优化命题的目标函数和约束整合成一个函数。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;KKT条件：函数的最优值满足的性质。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;上面的解释可能不够准确，但希望对这些概念有个初步的认识，接下来从优化命题的角度来解释一下这些东西。&lt;/p&gt;
+
+&lt;p&gt;首先是原问题&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned} \min _{x \in R^{n}} f_0(x) &amp; \\ \text { s.t. } f_{i}(x) \leq 0, i &amp;=1,2, \ldots, k \\ h_{j}(x)=0, j &amp;=1,2, \ldots, l \end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;这个优化命题说的是你有个函数 $f_0(x)$，它的自变量是 $x$，维度为 $n$，你想要求这个函数的最小值，同时这个自变量(优化里又叫决策变量)还需要满足 $k$ 个不等式约束 $f_i(x) \le 0$ 以及 $l$ 个等式约束 $h_j(x) = 0$。假设满足这些约束的情况下这个函数的最小值为 $p^*$。&lt;/p&gt;
+
+&lt;p&gt;如果是个无约束的求极值问题，高中时我们就学过，求导并令导函数为 $0$ 便能求出函数取得极值时对应的自变量 $x^*$。 但是这里是有约束的优化问题，显然直接求导的方法不再适用，那自然的想法就是把约束去掉，拉格朗日函数就是通过将约束&lt;strong&gt;线性组合&lt;/strong&gt;放入目标函数而形成的新的一个函数：&lt;/p&gt;
+
+&lt;p&gt;$$
+L(x,\lambda,v) = f_0(x) + \sum_{i=1}^k \lambda_i f_i(x) + \sum_{j=1}^l v_j h_j(x)
+$$
+这里 $L(x,\lambda,v)$ 是个三元函数 $R^n \times R^k \times R^l \rightarrow R$，且 $\lambda \ge 0,v$ 称为拉格朗日向量，至于这个系数 $\lambda$ 为什么还需要满足 $\lambda \ge 0$，你先记住这是为了&lt;strong&gt;确保下界&lt;/strong&gt;，后面会详细解释。&lt;/p&gt;
+
+&lt;h2 id=&#34;原问题的等价形式&#34;&gt;原问题的等价形式&lt;/h2&gt;
+
+&lt;p&gt;我们原来是要求函数 $f_0(x)$ 关于 $x$ 的最小值，为了不考虑原问题的约束而构造了拉格朗日函数 $L(x,\lambda,v)$。我们先将其看作是 $\lambda,v$ 的函数，然后定义函数：&lt;/p&gt;
+
+&lt;p&gt;$$
+q(x) = \max_{\lambda \ge 0,v } L(x,\lambda,v)
+$$&lt;/p&gt;
+
+&lt;p&gt;可以证明 $\min_{x\in R^{n}}q(x)$ 与原问题等价，即满足&lt;/p&gt;
+
+&lt;div&gt;$$
+p^* = \min_{x\in R^{n}}q(x) = \min_{x\in R^{n}}\max_{\lambda \ge 0,v}L(x,\lambda,v)
+$$&lt;/div&gt;
+
+&lt;p&gt;这个证明很简单，我们只需要分类讨论一下这个&lt;strong&gt;无约束问题中原问题约束是否成立&lt;/strong&gt;：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;$x$ 满足原问题约束，则 $q(x) = f_0(x)$&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;$x$ 不满足原问题约束，即 $f_i(x) \ge 0$ 或 $h_j(x) \not= 0$，则 $q(x) = + \infty$&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;因此 $\min_{x}q(x) = \min_{x}f_0(x)$ 且 $x$ &lt;strong&gt;满足原问题约束&lt;/strong&gt;，即 $\min_{x\in R^{n}}q(x)$  &lt;strong&gt;等价于原问题。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;拉格朗日对偶函数&#34;&gt;拉格朗日对偶函数&lt;/h2&gt;
+
+&lt;p&gt;先前我们把拉格朗日函数看作是 $\lambda,v$ 的函数，现在我们将其看作是关于 $x$ 的函数，定义拉格朗日对偶函数，这只是个名字，其实就是 $L(x,\lambda,v)$ 关于 $x$ 的下界(或者理解为最小值)：&lt;/p&gt;
+
+&lt;p&gt;$$
+g(\lambda,v) = \min_{x \in R^{n} } L(x,\lambda,v)
+$$&lt;/p&gt;
+
+&lt;p&gt;拉格朗日对偶函数 $g(\lambda,v)$ 有两个重要的性质：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;这是个凹函数(这里不证明了，感兴趣的可以自查)&lt;/li&gt;
+&lt;li&gt;$g(\lambda,v)\le p^*$&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;性质2是重点！我们来证明一下，假设 $\tilde{x}$ 是原问题的可行解，说明 $\tilde{x}$ 满足原问题的不等式约束以及等式约束，将其带入 $L(x,\lambda,v)$ 中，有&lt;/p&gt;
+
+&lt;p&gt;$$
+L(\tilde{x},\lambda,v) = f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x}) + \sum_{j=1}^l v_j h_j(\tilde{x})
+$$&lt;/p&gt;
+
+&lt;p&gt;根据 $g(\lambda,v)$ 的定义有&lt;/p&gt;
+
+&lt;p&gt;$$
+g(\lambda,v) = \min_{x} L(x,\lambda,v) \le L(\tilde{x},\lambda,v) = f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x})
+$$&lt;/p&gt;
+
+&lt;p&gt;$\min_{x} L(x,\lambda,v) \le L(\tilde{x},\lambda,v)$ 是因为函数的(最小值)下界肯定小于可行解代入的值呀！&lt;/p&gt;
+
+&lt;p&gt;我们知道 $\tilde{x}$ 是原问题的可行解也意味着 $f_i(x) \le 0$，进一步，如果 $\lambda_i \ge 0$ 会发生什么？也就是 $\lambda_i f_i(x) \le 0$，那么
+$$
+g(\lambda,v) \le f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x}) \le f_0(\tilde{x})
+$$
+也就是 $g(\lambda,v) \le f_0(\tilde{x})$，这是对任意可行解 $\tilde{x}$ 都成立的，那么对函数取得最小值的 $x^*$ 对应的函数值 $p^*$ 也成立。即&lt;/p&gt;
+
+&lt;p&gt;$$
+g(\lambda,v) \le p^*
+$$
+这也就得到了性质2，可以理解为&lt;strong&gt;我们为原问题的最优值 $p^*$ 找到了一个下界函数 $g(\lambda,v)$，为了确保下界需要满足我们之前的假设 $\lambda \ge 0$，而对 $v$ 的取值则是任意的。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;原问题的对偶形式&#34;&gt;原问题的对偶形式&lt;/h2&gt;
+
+&lt;p&gt;前面的分析中我们看到原问题的最优值有一个函数下界，那么如果我们来优化这个函数下界，让它来逼近原问题的最优值，是不是为求解原问题提供了另一种思路呢？这就是所谓的&lt;strong&gt;对偶问题&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned} d^* =\max _{\lambda \ge 0,v} g(\lambda,v) = \max _{\lambda \ge 0,v} \min _{x \in R^n} L(x,\lambda,v)
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;这个优化命题相当于最大化原问题的下界函数，其中 $d^*$ 为优化命题的最优值，约束 $\lambda \ge 0 $ 是用来确保下界的。根据 $g(\lambda,v)$ 是凹函数这一性质可知，这个最大化凹函数的优化问题是个&lt;strong&gt;凸问题&lt;/strong&gt;，凸问题也就意味着便于求解，&lt;strong&gt;因此无论原问题的凹凸性如何，都可以转化为对偶问题然后通过求解这个凸问题来得到原问题的下界，甚至原问题的最优解&lt;/strong&gt;。什么时候这个下界函数的最大值等于原问题的最优解呢？这就是下面要讨论的问题。&lt;/p&gt;
+
+&lt;h3 id=&#34;强对偶性与弱对偶性&#34;&gt;强对偶性与弱对偶性&lt;/h3&gt;
+
+&lt;p&gt;我们已知知道 $g(\lambda,v)$ 是原函数最小值 $p^*$ 的下界，那么说明 $g(\lambda,v)$ 的最大值也需要满足&lt;/p&gt;
+
+&lt;p&gt;$$
+d^* \le p^*
+$$&lt;/p&gt;
+
+&lt;p&gt;这就是弱对偶性了，很自然就满足了，那么强对偶性从名字听就比较强，自然要求要严格一点，不能只是取 $\le$ 号，而是直接取等号，即&lt;/p&gt;
+
+&lt;p&gt;$$
+d^* = p^*
+$$&lt;/p&gt;
+
+&lt;p&gt;对于弱对偶，我们能够通过求解原问题的对偶问题得到原问题最小值的下界，而如果满足强对偶性，我们直接就得到原问题的最优解了！意味着&lt;strong&gt;我们能够通过求解对偶问题来避免直接求解原问题同时获得原问题的最优函数值&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h3 id=&#34;强对偶性&#34;&gt;强对偶性&lt;/h3&gt;
+
+&lt;p&gt;如何才能判断原问题是否满足强对偶性呢？&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;凸问题通常but not always满足强对偶性&lt;/strong&gt;
+也就是说凸问题中有部分满足强对偶性，那对这些部分约束一下就是slater条件：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;存在 $x$ 严格可行：$f_i(x) &amp;lt; 0,i=1,&amp;hellip;,k$&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;当不等式约束为仿射函数时，这个条件可以弱化为&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;存在 $x$ 满足部分严格可行：$f_i(x) \le 0,i=1,&amp;hellip;,m;f_i(x) &amp;lt; 0,i=m+1,&amp;hellip;,k$&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;那么有
+$$
+\text{凸问题} + \text{Slater条件} = \text{强对偶性}
+$$&lt;/p&gt;
+
+&lt;p&gt;进一步探究一下当原问题满足强对偶性时，原问题和对偶问题的最优解满足哪些性质，首先从 $p^* = d^*$ 看起，利用函数的表达式描述这一关系有：&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+f_0(x^*) &amp;= g(\lambda^*,v^*)\\
+&amp;= \min_x (f_0(x) + \sum_{i=1}^k \lambda_i^* f_i(x) + \sum_{j=1}^l v_j^* h_j(x))\\
+&amp;\le f_0(x^*) + \sum_{i=1}^k \lambda_i^* f_i(x^*) + \sum_{j=1}^l v_j^* h_j(x^*)\\
+&amp;\le f_0(x^*)
+\end{aligned}   
+$$&lt;/div&gt;
+
+&lt;p&gt;第一行到第二行是根据 $g(\lambda,v)$ 的函数定义，第二行到第三行是根据函数的下界小于 $x$ 取任意值对应的函数值，这里 $x = x^*$，第三行到第四行是根据 $x^*$ 满足原问题的约束条件 $f_i(x) \le 0, h_j(x) =0$。所以&lt;strong&gt;不等号同时取等号&lt;/strong&gt;，并可以得出以下两条结论：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;极值条件：$x^*$ 是使 $L(x,\lambda^*,v^*)$ 取得下界的点，即 $x^*$ 是使 $\nabla_x L(x,\lambda^*,v^*) = 0$ 的点&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;松弛互补条件：$\sum_{i=1}^k \lambda_i^*f_i(x^*)=0$&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;kkt条件&#34;&gt;KKT条件&lt;/h3&gt;
+
+&lt;p&gt;KKT也就是原问题和对偶问题的最优点 $x^*,\lambda^*,v^*$ 满足的几个条件：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;原问题的约束条件：$f_i(x^*) \le 0,h_j(x^*)=0$&lt;/li&gt;
+&lt;li&gt;对偶问题的约束条件：$\lambda_i^* \ge 0$&lt;/li&gt;
+&lt;li&gt;松弛互补条件：$\sum_{i=1}^k \lambda_i^*f_i(x^*)=0$&lt;/li&gt;
+&lt;li&gt;极值条件：
+$\nabla_x f_0(x^*) + \sum_{i=1}^k \lambda_i^* \nabla_x f_i(x^*) + \sum_{j=1}^l v_j^* \nabla_x h_j(x^*) = 0$&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;如果原问题是凸问题，则KKT条件为充要条件，也就是说满足KKT条件的点也就是原问题和对偶问题的最优解，那就能够在满足KKT条件下用求解对偶问题来替代求解原问题，使得问题求解更加容易。&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>「机器学习」主成分分析PCA</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/</link>
+      <pubDate>Fri, 09 Aug 2019 21:40:19 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/</guid>
+      <description>&lt;h1 id=&#34;为什么要降维&#34;&gt;为什么要降维&lt;/h1&gt;
+
+&lt;p&gt;要说到降维的目的，主要是用来解决过拟合这一问题的，降维的方式主要有三种&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;直接降维—特征选择&lt;/li&gt;
+&lt;li&gt;线性降维—PCA(今日份猪脚)，MDS多维尺度法&lt;/li&gt;
+&lt;li&gt;非线性降维—流形学习ISOMAP，LLE(Locally Linear Embedding)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;数据矩阵描述&#34;&gt;数据矩阵描述&lt;/h1&gt;
+
+&lt;p&gt;数据：$X=(x_1,x_2,&amp;hellip;,x_N)^T_{N \times P }, x_i \in \mathbb{R}^P $，为了便于后续推导我们将均值和方差表示为矩阵形式，思路就是&lt;strong&gt;把连加符号改写成矩阵乘积的形式&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;采样均值为：
+$$
+\bar{x} = \frac{1}{N}\sum_{i=1}^N x_i = \frac{1}{N}(x_1,x_2,&amp;hellip;,x_N)\mathbb{1}_{N} = \frac{1}{N}X^T\mathbb{1}_N
+$$
+采样方差为
+$$
+S = \frac{1}{N}\sum_{i=1}^N (x_i-\bar{x}) (x_i-\bar{x})^T = \frac{1}{N}X^THH^TX =  \frac{1}{N}X^THX
+$$
+其中 $H = I_N - \frac{1}{N}\mathbb{1}_N\mathbb{1}_N^T$ 为中心矩阵，作用可以理解为&lt;strong&gt;去均值&lt;/strong&gt;，这里可以中心均镇的转置等于本身，中心矩阵的平方 $HH^T$ 等于中心矩阵 $H$ 本身。&lt;/p&gt;
+
+&lt;h1 id=&#34;pca的主要思想&#34;&gt;PCA的主要思想&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一个中心：原始特征空间的重构&lt;/li&gt;
+&lt;li&gt;两个基本点： 1. 最大投影方差 2. 最小重构代价&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;首先将数据进行中心化，即 $x_i - \bar{x}$&lt;/p&gt;
+
+&lt;h2 id=&#34;最大投影方差角度&#34;&gt;最大投影方差角度&lt;/h2&gt;
+
+&lt;p&gt;假设有单位投影向量 $u_1,||u_1||_2 = 1$，向量 $x_i - \bar{x}$ 在 $u_1$ 上的投影为 $(x_i - \bar{x})^Tu_1$ 且均值为0，那么目标函数最大化投影方差可以直接表示为
+$$
+\max J=\frac{1}{N} \sum_{i=1}^N((x_i - \bar{x})^Tu_1)^2 = u_1^T\cdot S\cdot u_1  \quad s.t. u_1^Tu_1 = 1
+$$
+这是一个等式约束的最优化问题，直接拉格朗日乘子法写开&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{array}{l} \mathcal{L}\left(u_{1}, \lambda\right)=u_{1}^{T} S u_{1}+\lambda\left(1-u_{1}^{T} u\right)\\ {\frac{\partial \mathcal{L}}{\partial u_{1}}=2 S \cdot u_{1}-\lambda \cdot 2 u_{1}=0}\end{array}
+$$&lt;/div&gt;
+
+&lt;p&gt;即
+$$
+Su_1 = \lambda u_1
+$$
+转化成&lt;strong&gt;特征值分解&lt;/strong&gt;的问题，所谓的主成分也就是特征向量矩阵，用最大的 $q$ 个特征值对应的特征向量来重构数据矩阵就是特征空间的重构。&lt;/p&gt;
+
+&lt;h2 id=&#34;最小重构代价角度&#34;&gt;最小重构代价角度&lt;/h2&gt;
+
+&lt;p&gt;何谓重构代价？我们先来看下在重构空间中原始数据的表示为
+$$
+x_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &amp;hellip; + (x_i^Tu_p)\cdot u_p = \sum_{k=1}^p (x_i^T\cdot u_k) \cdot u_k
+$$
+$x_i^Tu_k$ 可以理解成各个投影，$u_k$ 为投影方向。
+如果将特征进行压缩，用 $q$ 个特征来表示原始特征空间，则
+$$
+\hat{x}_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &amp;hellip; + (x_i^Tu_q)\cdot u_q = \sum_{k=1}^q (x_i^T\cdot u_k) \cdot u_k
+$$
+上面两个式子均假设 $x_i$ 中心化过了。那么重构代价很直观的理解就是 $x_i - \hat{x}_i$，目标函数就能表示为
+$$
+\min J = \sum_{i=1}^N ||x_i - \hat{x}_i ||^2=\sum_{k=q+1}^p u_k^T \cdot S \cdot u_k \quad s.t. u_k^T\cdot u_k =1
+$$
+由于 $u_k$ 之间是无关的，所以这个优化问题可以拆成单个的优化问题逐一求解。也就转化成&lt;strong&gt;特征值求解&lt;/strong&gt;问题，即求得最小 $p-q$ 个特征值所对应的特征向量。&lt;/p&gt;
+
+&lt;h2 id=&#34;svd角度&#34;&gt;SVD角度&lt;/h2&gt;
+
+&lt;p&gt;前面的两个基本点相当于都是从&lt;strong&gt;方差矩阵 $S$ 进行特征值分解&lt;/strong&gt;来获得主成分的。下面来看看如果直接对数据矩阵进行奇异值分解，两者之间会有什么样的联系。&lt;/p&gt;
+
+&lt;p&gt;对中心化后的数据进行SVD分解：
+$$
+HX = U \Sigma V^T
+$$
+原来的方差矩阵可以表示为
+$$
+S = X^THX=X^TH^THX = V\Sigma U^TU\Sigma V^T=V\Sigma^2V^T
+$$
+也就是说&lt;strong&gt;对 $HX$ 进行奇异值分解得到的 $V$ 矩阵就是对方差矩阵进行特征值分解得到的特征矩阵，奇异值分解得到到奇异值矩阵的平方就是特征值分解得到的特征值矩阵。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;构造矩阵
+$$T =HXX^TH=U\Sigma V^TV\Sigma U^T=U\Sigma^2U^T$$
+可以看出 $T$ 和 $S$ 具有&lt;strong&gt;相同的特征值。&lt;/strong&gt;
+要获得重构空间的坐标有两个思路：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;内积求投影：$HX\cdot V$&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;对矩阵 $T$ 进行特征分解：
+$$
+TU\Sigma = U\Sigma^2U^TU\Sigma= U\Sigma^3 = \Sigma^2\cdot U\Sigma
+$$
+$$
+HX \cdot V=U \Sigma V^T V= U \Sigma
+$$&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;因此在遇到原始数据特征空间较高时($P$ 大于 $N$)，可以采用 $T$ 矩阵进行特征分解直接获得坐标，也称为主坐标分解(PCoA)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;概率主成分分析-p-pca&#34;&gt;概率主成分分析(P-PCA)&lt;/h2&gt;
+
+&lt;p&gt;从概率的角度来看则是将观测数据 $x \in \mathcal{R}^p$ 作为观测变量(observed variable)，重构特征空间 $z \in \mathcal{R}^q$ 作为隐变量(latent variable)，我们降维的过程则相当于从观测变量去求得隐变量的过程
+&lt;strong&gt;假设&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{equation}
+\begin{aligned}
+z &amp;\in \mathcal{N}(0,I_q)\\
+x &amp;= Wz + \mu + \epsilon\\
+\epsilon &amp;\in \mathcal{N}(0,\sigma^2 I_p)
+\end{aligned}
+\end{equation}
+$$&lt;/div&gt;
+
+&lt;p&gt;且 $z$ 和 $\epsilon$ 相互独立。这是一个线性高斯模型，相当于我们有了 $z, x|z, x$ 要求 $z|x$。&lt;/p&gt;
+
+&lt;p&gt;第一步就是Inference求后验 $z|x$ (通过构造 $x,z$ 的联合概率求条件概率)&lt;/p&gt;
+
+&lt;p&gt;第二步就是Learning参数 $W, \mu, \sigma$（比如采用EM算法）&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;P-PCA与GMM的区别&lt;/strong&gt;：P-PCA的隐变量是连续的，而GMM的隐变量是离散的。&lt;/p&gt;
+
+&lt;h2 id=&#34;matlab-实现&#34;&gt;Matlab 实现&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;% Data 两个特征线性关系加点噪声
+X1 = [1,2,3,4,5,6]&amp;#39;;
+X2 = [X1] + rand(6,1);
+X = [X1,X2];
+plot(X1,X2)
+N = size(X,1);
+
+% 矩阵描述
+x_bar = 1/N*X&amp;#39;*ones(N,1);
+H = eye(N) - 1/N*ones(N,1)*ones(N,1)&amp;#39;;
+S = 1/N*X&amp;#39;*H*X;
+
+% 根据采样方差特征值分解
+[G,K] = eig(S);
+
+% 根据中心化的数据进行奇异值分解
+[U,Sigma,V] = svd(H*X);
+
+% 方差矩阵的特征值与奇异值分解的奇异值的关系
+Sigma.^2/N
+K
+% 观察V矩阵和G矩阵的关系
+G
+V
+
+% 主坐标分析
+T = H*X*X&amp;#39;*H&amp;#39;;
+[G2,K2] = eig(T);
+% 观察非零特征值对应特征向量也就是主坐标与HXV的关系
+H*X*V&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>「机器学习」特征工程</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/</link>
+      <pubDate>Mon, 05 Aug 2019 11:22:25 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;数据和特征决定了机器学习的上限，而模型和算法只是逼近这个上限而已。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;那么我们需要怎么来抬高这一上限呢，特征工程的流程还是比较常规的，这里讲一下主要的思路，只要思路理清了，具体的实现调调包一般就OK啦。（sklearn统统搞定~）&lt;/p&gt;
+
+&lt;p&gt;当你拿到一堆数据时，你的第一反应想干嘛？&lt;/p&gt;
+
+&lt;p&gt;肯定想画几个特征看看它们长什么样吧，那如果不同特征之间规格都不一样，假设你把它们画在同一坐标轴也观察比较不了，而且也会影响后续的训练效率，所以很自然的想法就是先把数据的规格统一一下，那就是所谓的无量纲化；&lt;/p&gt;
+
+&lt;p&gt;那你在无量纲化难免遇到缺失数据，这时候当然是要补全数据啦，最直接的做法就是拿平均值来替代一下；&lt;/p&gt;
+
+&lt;p&gt;还有可能需要做的就是针对不同的算法进行特征的转化，算法中有的需要定性特征有的需要定量特征，转化的思想有点“分类”的思想，比如根据阈值将定量特征“分类”为0或1（大于某个阈值为1否则为0），再比如根据定性数据的值“分类”，有几个值就分几类，相当于拓展几个特征，只有对应特征的值为1，其他特征的值为0，这也叫做哑编码（比如一个特征的值有1、2、3三种可能情况；那就可以拓展为3个特征，原特征值为1时，对应新特征”1“的位置为1，其他位置为0）。&lt;/p&gt;
+
+&lt;p&gt;以及还有按照一定规则进行特征转化的，比如多项式、或者自定义规则。以上这些过程呢也称为&lt;strong&gt;数据预处理&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;当你把手头上的数据处理一波后，起码这些数据能够拿来进行训练了，但是还是要进一步提高所谓的&lt;strong&gt;上限&lt;/strong&gt;呀，你拿到的数据可能特征非常多，含有很多无用特征，自然的想法就是把那些无用的特征剔除掉，选择有用的特征来训练，这就是&lt;strong&gt;特征选择&lt;/strong&gt;的过程，那什么样的数据称为”有用“呢，一般来说两个基本原则吧：发散就是说方差要大，如果一个特征没什么变化，那肯定反应不出目标的变化；相关就很直白了，和目标关系越大的特征当然越有用了。&lt;/p&gt;
+
+&lt;p&gt;当你把有用的特征选择出来后，结果还是发现特征维度还是太高了，这会影响你的训练效率，维度高的解决办法很自然就是降低维度啊，那就轮到降维算法出场了，主要有PCA和LDA，降维的目标相当于用较低维度的数据来表征原始数据的特征，也就是&lt;strong&gt;特征提取&lt;/strong&gt;啦。&lt;/p&gt;
+
+&lt;p&gt;OK了，经过&lt;strong&gt;数据预处理、特征选择、特征提取&lt;/strong&gt;，现在你手上有的就是&lt;strong&gt;较低维度的有用数据&lt;/strong&gt;了吧，快拿去train一发试试！&lt;/p&gt;
+
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e7%89%b9%e5%be%81%e5%b7%a5%e7%a8%8b/%e7%89%b9%e5%be%81%e5%b7%a5%e7%a8%8b.svg&#34;/&gt; 
+&lt;/figure&gt;</description>
+    </item>
+    
+    <item>
+      <title>美音中t的发音</title>
+      <link>https://minghaochen.github.io/post/%E7%BE%8E%E9%9F%B3%E4%B8%ADt%E7%9A%84%E5%8F%91%E9%9F%B3/</link>
+      <pubDate>Sun, 04 Aug 2019 18:33:34 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E7%BE%8E%E9%9F%B3%E4%B8%ADt%E7%9A%84%E5%8F%91%E9%9F%B3/</guid>
+      <description>&lt;p&gt;今天做高铁回家路上刚好看了Jason的视频，总结一下美音中 t 的发音技巧，同时感谢一下Jason哥。
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e7%be%8e%e9%9f%b3%e4%b8%adt%e7%9a%84%e5%8f%91%e9%9f%b3/%e7%be%8e%e9%9f%b3%e4%b8%adt%e7%9a%84%e5%90%84%e7%a7%8d%e5%8f%91%e9%9f%b3.svg&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;这里的说法可能跟网上的一些说法不太一致，这里的 held t就是网上说的 stop t，简单理解就是 t 做出口形舌形但不发音，但是需要停顿一下而不是直接省略，达到所谓的 held 住或者 stop 的效果；这里的发音成 fast d 就是网上说的 flap t，弹舌音，简单理解就是舌头快速弹一下发出 d 的音，也就是发音现象中的浊化。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>「机器学习」高斯过程</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/</link>
+      <pubDate>Fri, 26 Jul 2019 14:38:14 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/</guid>
+      <description>&lt;p&gt;网上机器学习的算法铺天盖地，高斯过程却显得不那么起眼，它与其他大多数算法不一样的地方在于，它提供了&lt;strong&gt;不确定性&lt;/strong&gt;的估计，这篇文章争取在不涉及数学推导的情况下给大家一个直观的理解。&lt;/p&gt;
+
+&lt;h1 id=&#34;什么是不确定性&#34;&gt;什么是不确定性？&lt;/h1&gt;
+
+&lt;p&gt;我觉得最能代表不确定性的应该就是概率分布（probability distribution）了，不了解概率分布也没关系，骰子摇过吧，一个六面均匀的骰子，摇到任一数字的概率是多少？答案是显然的: $\frac{1}{6}$，这就是一个离散的概率分布，有六种可能的结果（朝上的面为1、2、3、4、5或6），每种结果的可能性为 $\frac{1}{6}$。进一步延伸一下，离散概率分布的升级版就是连续概率分布，它的可能结果可就不是简单几种情况那么简单了，可以是任意实数，比如人的身高，中国男性的身高统计出来画一下，你就能看到一个中间高两边低的正态分布的样子了。&lt;/p&gt;
+
+&lt;p&gt;那么已知概率分布后，如何采样呢？很简单呀，比如骰子你摇一次就是从这个离散概率分布中采样一次。&lt;/p&gt;
+
+&lt;h1 id=&#34;贝叶斯推断&#34;&gt;贝叶斯推断&lt;/h1&gt;
+
+&lt;p&gt;一提到贝叶斯推断，可能要吓跑一群人，别跑！等我给你介绍完就不怕了！
+其实贝叶斯推断就是&lt;strong&gt;根据我们观察到的现象去更新我们脑袋里的认知。&lt;/strong&gt;再具体点就是：我们在事情没发生前对这件事情有所认知（或者叫做先验），通常可以用一个概率分布来表示，然后在得到一些发生的事实后，我们会对这件事情的认知有所该表（就是得到了后验）；而把这些东西联系到一起的就是大名鼎鼎的&lt;strong&gt;贝叶斯定理&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;还是不够形象？那我们来个例子，上面说过离散概率分布了，这次我们来个连续的看看，来看看身高吧，来猜猜小陈有多高（猜对有奖哦，文末二维码随意扫随意打赏哈），你又不认识我没见过我，怎么知道我有多高呢，那直观的猜测就是小陈是个中国人，小陈的身高服从中国人身高的概率分布（假设你能得到这个概率分布咯）
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e7%94%b7%e6%80%a7%e8%ba%ab%e9%ab%98.jpg&#34;/&gt; 
+&lt;/figure&gt;
+
+然后有一天你在博客上看到了小陈和朋友们的合照
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%88%e7%85%a7.jpg&#34;/&gt; 
+&lt;/figure&gt;
+
+卧槽！小陈有点高啊，在朋友中是最高的，于是你对小陈身高的概率分布的认识改变了
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%8e%e9%aa%8c%e8%ba%ab%e9%ab%98.jpg&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&#34;什么是高斯过程&#34;&gt;什么是高斯过程？&lt;/h1&gt;
+
+&lt;p&gt;好了，今天的主角登场了，&lt;strong&gt;高斯过程其实就是函数的概率分布&lt;/strong&gt;，既然是概率分布，再用上面贝叶斯的套路我们就也能够通过训练数据来更新它的概率分布。&lt;/p&gt;
+
+&lt;p&gt;我们来理一下思路，函数是什么，最简单的回顾你初中学的 $y=f(x)$ 就是个函数（随便函数形式都行，一次二次正弦等等），把它画一下就是在 XY 平面上的一条线呗；既然是概率分布还是高斯的，那总有均值吧，总有协方差吧，在这里对应就是均值函数和协方差函数。因此高斯过程本质就是&lt;strong&gt;由均值函数和协方差函数决定的一个随机过程。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;比如有一个sin函数，我们有五个点的训练数据
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/data.png&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;Xtrain = np.array([-3, -2, -1, 1, 2]).reshape(5,1)
+ytrain = np.sin(Xtrain)
+pl.plot(Xtrain, ytrain, &amp;#39;bs&amp;#39;, ms=8)&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;没有训练前我们对这个函数没什么认知，那就假设其均值函数为0（大部分时候也都是当做0来使用的），核函数就取SE核函数吧（这个是什么先不管啦，你就认为是个用来生成协方差矩阵的函数，主要我们是要得到它的协方差呀！核函数里一般会有超参数需要估计，为了简单起见，我直接直接给定超参数，不去估计这个参数了），在这样的先验分布下，你得到的函数会是什么样的呢？我们从这个函数的概率分布中采样三个函数出来看看。
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/prior.png&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;import numpy as np
+import matplotlib.pyplot as pl
+%matplotlib inline
+# Test data
+n = 50
+Xtest = np.linspace(-3, 3, n).reshape(-1,1)
+
+# Define the kernel function
+def kernel(a, b, param):
+    sqdist = np.sum(a**2,1).reshape(-1,1) + np.sum(b**2,1) - 2*np.dot(a, b.T)
+    return np.exp(-.5 * (1/param) * sqdist)
+
+param = 0.1
+K_ss = kernel(Xtest, Xtest, param)
+
+# Get cholesky decomposition (square root) of the
+# covariance matrix
+L = np.linalg.cholesky(K_ss + 1e-15*np.eye(n))
+# Sample 3 sets of standard normals for our test points,
+# multiply them by the square root of the covariance matrix
+f_prior = np.dot(L, np.random.normal(size=(n,3)))
+
+# Now let&amp;#39;s plot the 3 sampled functions.
+pl.plot(Xtest, f_prior)
+pl.axis([-3, 3, -3, 3])
+pl.title(&amp;#39;Three samples from the GP prior&amp;#39;)
+pl.show()&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;那再根据训练数据训练一发，也就是相当于前面提到的贝叶斯推断，就能得到函数的后验概率分布
+&lt;figure&gt;
+    &lt;img src=&#34;https://minghaochen.github.io/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/posterior.png&#34;/&gt; 
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;# Apply the kernel function to our training points
+K = kernel(Xtrain, Xtrain, param)
+L = np.linalg.cholesky(K + 0.00005*np.eye(len(Xtrain)))
+
+# Compute the mean at our test points.
+K_s = kernel(Xtrain, Xtest, param)
+Lk = np.linalg.solve(L, K_s)
+mu = np.dot(Lk.T, np.linalg.solve(L, ytrain)).reshape((n,))
+
+# Compute the standard deviation so we can plot it
+s2 = np.diag(K_ss) - np.sum(Lk**2, axis=0)
+stdv = np.sqrt(s2)
+# Draw samples from the posterior at our test points.
+L = np.linalg.cholesky(K_ss + 1e-6*np.eye(n) - np.dot(Lk.T, Lk))
+f_post = mu.reshape(-1,1) + np.dot(L, np.random.normal(size=(n,3)))
+
+pl.plot(Xtrain, ytrain, &amp;#39;bs&amp;#39;, ms=8)
+pl.gca().fill_between(Xtest.flat, mu-2*stdv, mu+2*stdv, color=&amp;#34;#dddddd&amp;#34;)
+pl.plot(Xtest, mu, &amp;#39;r--&amp;#39;, lw=2)
+pl.axis([-3, 3, -3, 3])
+pl.title(&amp;#39;GP posterior&amp;#39;)
+pl.show()&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;这个回归效果很差，主要因为核函数的超参数没估计，而且训练的数据太少了。感兴趣可以自己去改改代码试试看。详细的推导和理论可以看06年的那本《Gaussian Process for Machine Learning》&lt;/p&gt;
+
+&lt;h2 id=&#34;划重点&#34;&gt;划重点&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;先验 “加&amp;rdquo; 数据得到后验；后验&amp;rdquo;加权平均&amp;rdquo;输出就是预测！&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;最后的最后上两个公式吧&lt;/p&gt;
+
+&lt;p&gt;&lt;div&gt;$$
+p(w|y,X) = \frac{p(y|X,w)p(w)}{p(y|X)}
+$$&lt;div&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div&gt;$$
+p\left(f_{*} | {x}_{*}, X, {y}\right)=\int p\left(f_{*} | {x}_{*}, {w}\right) p({w} | X, {y}) d \mathbf{w}
+$$&lt;div&gt;
+配合上面那句话好好理解消化一下！&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Chol分解与SVD分解</title>
+      <link>https://minghaochen.github.io/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/</link>
+      <pubDate>Thu, 25 Jul 2019 15:27:09 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/</guid>
+      <description>&lt;p&gt;今天说说两个整天见却整天忘的矩阵分解，一个是Chol分解，一个是SVD分解&lt;/p&gt;
+
+&lt;h1 id=&#34;chol分解&#34;&gt;Chol分解&lt;/h1&gt;
+
+&lt;p&gt;对于Chol分解，首先要知道它针对的对象是什么，也就是&lt;strong&gt;埃尔米特矩阵（Hermitian matrix）&lt;/strong&gt;，听着有点难懂，其实就是共轭对称矩阵，再简单点说，我们常见的实对称矩阵就是埃尔米特矩阵的特例。&lt;/p&gt;
+
+&lt;p&gt;那么这个Chol分解分解得到的是什么东西？是干嘛用的呢？
+我们先来回答第一个问题，Chol分解是将一个矩阵分解成两个矩阵的乘积，即
+$$
+A = LL^*
+$$
+其中，$L$ 是一个&lt;strong&gt;下三角&lt;/strong&gt;矩阵，$L^*$ 是 $L$ 的共轭转置，如果实数那就是转置（i.e., $L^T$）&lt;/p&gt;
+
+&lt;p&gt;分解成这个玩意干嘛用的呢？目前了解到的比较常用的两个地方&lt;/p&gt;
+
+&lt;h2 id=&#34;1-解线性方程呗-比如-ax-b&#34;&gt;1. 解线性方程呗，比如 $Ax=b$&lt;/h2&gt;
+
+&lt;p&gt;你可能会说直接目测方程的解就是 $x = A^{-1}b$，还需要什么Chol分解？如果矩阵 $A$ 是病态的（条件数很大），那么问题就来了，我们在用计算机求解这类问题的时候出现舍入误差可能会导致所答非所问。&lt;/p&gt;
+
+&lt;p&gt;如果对矩阵进行Chol分解再来求解方程呢，原方程需要两步求解&lt;/p&gt;
+
+&lt;p&gt;Step1
+$$
+Ly=b
+$$
+Step2
+$$
+L^Tx=y
+$$
+打开Matlab感受一下？&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;A = [5,7;7,10];
+cond(A)
+L = chol(A)&amp;#39;;
+cond(L)&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;可以看出分解后求解的两个方程都是良态的且只需储存矩阵的下三角部分即可咯。&lt;/p&gt;
+
+&lt;h2 id=&#34;2-求矩阵的行列式&#34;&gt;2. 求矩阵的行列式&lt;/h2&gt;
+
+&lt;p&gt;既然Chol分解把矩阵分解成下三角阵，那么求解原矩阵的行列式自然非常容易了&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned} \operatorname{det} {A} &amp;=\prod_{i=1}^{n} {L}_{i i}^{2} \\ \log \operatorname{det} {A} &amp;=2 \sum_{i=1}^{n} \log {L}_{i i} \end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;其中 ${L}_{i i}$ 为矩阵的对角元素。&lt;/p&gt;
+
+&lt;h1 id=&#34;svd分解&#34;&gt;SVD分解&lt;/h1&gt;
+
+&lt;p&gt;要说SVD分解，首先要提到特征根分解，线代学过吧？忘记了没关系，我们再来复习一下。&lt;/p&gt;
+
+&lt;p&gt;首先还是要知道特征值分解的对象是什么，答案是&lt;strong&gt;方阵&lt;/strong&gt;，对于方阵 $A$，有&lt;/p&gt;
+
+&lt;p&gt;$$
+Av=\lambda v
+$$&lt;/p&gt;
+
+&lt;p&gt;这时，$v$ 就称为特征向量，$\lambda$ 就是与之对应的特征值。&lt;/p&gt;
+
+&lt;p&gt;那么这个特征值分解分解得到的是什么东西？是干嘛用的呢？&lt;/p&gt;
+
+&lt;p&gt;通过特征值分解，可以把矩阵 $A$ 分解为&lt;/p&gt;
+
+&lt;p&gt;$$
+A = Q\Sigma Q^{-1}
+$$&lt;/p&gt;
+
+&lt;p&gt;其中 $Q$ 就是特征向量组成的矩阵，$\Sigma$ 就是对角线为对应特征值的对角阵。&lt;/p&gt;
+
+&lt;p&gt;这样分解有什么用呢？我们知道矩阵的本质就是线性变换，那么分解后我不就知道&lt;strong&gt;变换方向的主次&lt;/strong&gt;了，因为我们分解得到的 $\Sigma$ 是一个对角阵且特征值从大到小排列，而特征值所对应的特征向量也就是描述矩阵的变化方向，所以 $Q$ 矩阵就是&lt;strong&gt;按照主要变化到次要变化进行排列&lt;/strong&gt;。那么我们就可以根据自己的需要选择特定个数的变化方向来近似原始矩阵变化，也就是&lt;strong&gt;提取原始矩阵中我们期望的主要特征&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;那么这些和今天的猪脚SVD有什么联系呢？（哪有猪脚，肚肚饿）&lt;/p&gt;
+
+&lt;p&gt;关系可大了，你可以粗糙地把SVD也当做是特征值分解，虽然不太准确。上面说到特征值分解针对的是&lt;strong&gt;方阵&lt;/strong&gt;，可是哪来那么多的方阵啊！遇到非方阵时特征值分解不就GG了，这时候SVD出场了。&lt;/p&gt;
+
+&lt;p&gt;一句话概括SVD是适用&lt;strong&gt;任意&lt;/strong&gt;，是&lt;strong&gt;任意&lt;/strong&gt;矩阵的一种分解方法：&lt;/p&gt;
+
+&lt;p&gt;&lt;div&gt;$$
+A_{m \times n} = U_{m \times m} \Sigma_{m \times n}V_{n \times n}^T
+$$&lt;div&gt;&lt;/p&gt;
+
+&lt;p&gt;那么奇异值和特征值是怎么对应起来的呢？由于矩阵 $A$ 不一定是方阵，我们乘以它的转置就能得到方阵，那么就能特征值分解了。&lt;/p&gt;
+
+&lt;p&gt;$$
+(A^TA)v_i = \lambda_iv_i
+$$&lt;/p&gt;
+
+&lt;p&gt;这样求得的 $v_i$ 就组成了SVD中的右奇异矩阵 $V$，此外&lt;/p&gt;
+
+&lt;p&gt;$$
+\sigma_i=\sqrt{\lambda_i},u_i=Av_i/\sigma_i
+$$&lt;/p&gt;
+
+&lt;p&gt;这里的 $\sigma_i$ 就是所谓的奇异值，它在矩阵 $\Sigma$ 中也是从大到小排列的，而且&lt;strong&gt;减小速度非常快！&lt;/strong&gt;，这可是个好消息，说明我们利用&lt;strong&gt;很少的奇异值就能近似描述原始矩阵&lt;/strong&gt;，相当于是&lt;strong&gt;空间压缩&lt;/strong&gt;，比如我们利用 $r$ 个奇异值来近似原始矩阵（$r$ 远小于 $m$ 或 $n$）&lt;/p&gt;
+
+&lt;p&gt;$$
+A_{m \times n} = U_{m \times r} \Sigma_{r \times r}V_{r \times n}^T
+$$&lt;/p&gt;
+
+&lt;p&gt;所以总的来说SVD就是用来提取重要特征的一个方法。SVD或者特征值分解的具体实现都有现成的函数可以调用，感兴趣可以通过matlab分解一把再观察一下。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;[Q,Sigma1] = eig(A&amp;#39;*A)   % matlab求特征值不一定按从小到大排序的 
+[U,Sigma2,V] = svd(A)&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;观察一下 $Q$ 和 $V$ 的关系以及 $Sigma1$ 和 $Sigma2$ 的关系，可以再根据上面给出的公式人工计算一下 $U$ 矩阵，再和matlab的结果进行比较。&lt;/p&gt;</description>
     </item>
     
     <item>
