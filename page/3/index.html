@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -115,9 +115,9 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/">「机器学习」主成分分析PCA</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/">「机器学习」指数族分布</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-09 </span>
+      <span class="post-time"> 2019-08-17 </span>
       <div class="post-category">
           <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
@@ -126,487 +126,214 @@
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="为什么要降维">为什么要降维</h1>
-
-<p>要说到降维的目的，主要是用来解决过拟合这一问题的，降维的方式主要有三种</p>
-
-<ul>
-<li>直接降维—特征选择</li>
-<li>线性降维—PCA(今日份猪脚)，MDS多维尺度法</li>
-<li>非线性降维—流形学习ISOMAP，LLE(Locally Linear Embedding)</li>
-</ul>
-
-<h1 id="数据矩阵描述">数据矩阵描述</h1>
-
-<p>数据：$X=(x_1,x_2,&hellip;,x_N)^T_{N \times P }, x_i \in \mathbb{R}^P $，为了便于后续推导我们将均值和方差表示为矩阵形式，思路就是<strong>把连加符号改写成矩阵乘积的形式</strong>。</p>
-
-<p>采样均值为：
-$$
-\bar{x} = \frac{1}{N}\sum_{i=1}^N x_i = \frac{1}{N}(x_1,x_2,&hellip;,x_N)\mathbb{1}_{N} = \frac{1}{N}X^T\mathbb{1}_N
-$$
-采样方差为
-$$
-S = \frac{1}{N}\sum_{i=1}^N (x_i-\bar{x}) (x_i-\bar{x})^T = \frac{1}{N}X^THH^TX =  \frac{1}{N}X^THX
-$$
-其中 $H = I_N - \frac{1}{N}\mathbb{1}_N\mathbb{1}_N^T$ 为中心矩阵，作用可以理解为<strong>去均值</strong>，这里可以中心均镇的转置等于本身，中心矩阵的平方 $HH^T$ 等于中心矩阵 $H$ 本身。</p>
-
-<h1 id="pca的主要思想">PCA的主要思想</h1>
-
-<ul>
-<li>一个中心：原始特征空间的重构</li>
-<li>两个基本点： 1. 最大投影方差 2. 最小重构代价</li>
-</ul>
-
-<p>首先将数据进行中心化，即 $x_i - \bar{x}$</p>
-
-<h2 id="最大投影方差角度">最大投影方差角度</h2>
-
-<p>假设有单位投影向量 $u_1,||u_1||_2 = 1$，向量 $x_i - \bar{x}$ 在 $u_1$ 上的投影为 $(x_i - \bar{x})^Tu_1$ 且均值为0，那么目标函数最大化投影方差可以直接表示为
-$$
-\max J=\frac{1}{N} \sum_{i=1}^N((x_i - \bar{x})^Tu_1)^2 = u_1^T\cdot S\cdot u_1  \quad s.t. u_1^Tu_1 = 1
-$$
-这是一个等式约束的最优化问题，直接拉格朗日乘子法写开</p>
+      <p>听到指数族分布这个名字可能会觉得有点抽象，甚至你可能之前都没听过(反正我以前是没听过的)，但是如果说<strong>高斯分布、伯努利分布、二项分布、泊松分布、beta分布、Dirichlet分布、gamma分布</strong>这些分布，那我想你应该大部分都听过而且可能对其中部分还很熟悉了。其实呢，指数族分布就是这些分布的统称啦，也就是说这些分布的概率密度函数都能写成一个统一的形式，而这个统一的形式就是：</p>
 
 <div>$$
-\begin{array}{l} \mathcal{L}\left(u_{1}, \lambda\right)=u_{1}^{T} S u_{1}+\lambda\left(1-u_{1}^{T} u\right)\\ {\frac{\partial \mathcal{L}}{\partial u_{1}}=2 S \cdot u_{1}-\lambda \cdot 2 u_{1}=0}\end{array}
+\begin{aligned}
+p(x|\eta) &= h(x)exp(\eta^T\phi(x)-A(\eta)) \\
+&=\frac{1}{exp(A(\eta))}h(x)exp(\eta^T\phi(x))
+\end{aligned}
 $$</div>
 
-<p>即
-$$
-Su_1 = \lambda u_1
-$$
-转化成<strong>特征值分解</strong>的问题，所谓的主成分也就是特征向量矩阵，用最大的 $q$ 个特征值对应的特征向量来重构数据矩阵就是特征空间的重构。</p>
+<p>其中，$\eta$ 为参数向量；你看 $exp(A(\eta))$ 看着是不是就像归一化的作用，再取个对数就是 $A(\eta)$ 因此 $A(\eta)$ 也就是所谓的对数配分函数；$\phi(x)$ 则称为<strong>充分统计量</strong>，这是关于样本的函数，充分的意思呢就是有了它就相当于可以丢掉样本了，比如正态分布里的均值和方差。$h(x)$ 就不怎么重要了通常取 1。</p>
 
-<h2 id="最小重构代价角度">最小重构代价角度</h2>
+<p>指数族分布可以总结为 <strong>3 个特性和 3 个地位</strong>。</p>
 
-<p>何谓重构代价？我们先来看下在重构空间中原始数据的表示为
-$$
-x_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_p)\cdot u_p = \sum_{k=1}^p (x_i^T\cdot u_k) \cdot u_k
-$$
-$x_i^Tu_k$ 可以理解成各个投影，$u_k$ 为投影方向。
-如果将特征进行压缩，用 $q$ 个特征来表示原始特征空间，则
-$$
-\hat{x}_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_q)\cdot u_q = \sum_{k=1}^q (x_i^T\cdot u_k) \cdot u_k
-$$
-上面两个式子均假设 $x_i$ 中心化过了。那么重构代价很直观的理解就是 $x_i - \hat{x}_i$，目标函数就能表示为
-$$
-\min J = \sum_{i=1}^N ||x_i - \hat{x}_i ||^2=\sum_{k=q+1}^p u_k^T \cdot S \cdot u_k \quad s.t. u_k^T\cdot u_k =1
-$$
-由于 $u_k$ 之间是无关的，所以这个优化问题可以拆成单个的优化问题逐一求解。也就转化成<strong>特征值求解</strong>问题，即求得最小 $p-q$ 个特征值所对应的特征向量。</p>
-
-<h2 id="svd角度">SVD角度</h2>
-
-<p>前面的两个基本点相当于都是从<strong>方差矩阵 $S$ 进行特征值分解</strong>来获得主成分的。下面来看看如果直接对数据矩阵进行奇异值分解，两者之间会有什么样的联系。</p>
-
-<p>对中心化后的数据进行SVD分解：
-$$
-HX = U \Sigma V^T
-$$
-原来的方差矩阵可以表示为
-$$
-S = X^THX=X^TH^THX = V\Sigma U^TU\Sigma V^T=V\Sigma^2V^T
-$$
-也就是说<strong>对 $HX$ 进行奇异值分解得到的 $V$ 矩阵就是对方差矩阵进行特征值分解得到的特征矩阵，奇异值分解得到到奇异值矩阵的平方就是特征值分解得到的特征值矩阵。</strong></p>
-
-<p>构造矩阵
-$$T =HXX^TH=U\Sigma V^TV\Sigma U^T=U\Sigma^2U^T$$
-可以看出 $T$ 和 $S$ 具有<strong>相同的特征值。</strong>
-要获得重构空间的坐标有两个思路：</p>
+<p>3 个特性：</p>
 
 <ol>
-<li><p>内积求投影：$HX\cdot V$</p></li>
+<li><p><strong>充分统计量</strong>：online learning时不必要保存所有样本信息</p></li>
 
-<li><p>对矩阵 $T$ 进行特征分解：
-$$
-TU\Sigma = U\Sigma^2U^TU\Sigma= U\Sigma^3 = \Sigma^2\cdot U\Sigma
-$$
-$$
-HX \cdot V=U \Sigma V^T V= U \Sigma
-$$</p></li>
+<li><p><strong>共轭</strong>：指数族分布具有共轭先验，在贝叶斯理论中，若先验为似然函数的共轭先验，则后验与先验具有相同的形式，避免了求积分常数的困难</p></li>
+
+<li><p><strong>最大熵</strong>：指数族分布满足最大熵原理，在所有可能的概率模型(分布)中，熵最大的模型是最好的模型</p></li>
 </ol>
 
-<p><strong>因此在遇到原始数据特征空间较高时($P$ 大于 $N$)，可以采用 $T$ 矩阵进行特征分解直接获得坐标，也称为主坐标分解(PCoA)</strong></p>
+<p>3 个地位：</p>
 
-<h2 id="概率主成分分析-p-pca">概率主成分分析(P-PCA)</h2>
+<ol>
+<li><strong>广义线性模型</strong>：通过三个假设将指数分布族转换成对应的机器学习模型，如线性回归、logistic 回归、Softmax模型等</li>
+</ol>
 
-<p>从概率的角度来看则是将观测数据 $x \in \mathcal{R}^p$ 作为观测变量(observed variable)，重构特征空间 $z \in \mathcal{R}^q$ 作为隐变量(latent variable)，我们降维的过程则相当于从观测变量去求得隐变量的过程
-<strong>假设</strong></p>
+<blockquote>
+<p>广义线性模型的三个假设：</p>
+
+<ol>
+<li><p>$y$ 的条件概率属于指数族分布</p></li>
+
+<li><p>$y$ 的估计值 $h(x,\theta)=E(y|x,\theta)$</p></li>
+
+<li><p>线性预测算子 $\eta=\theta^Tx$</p></li>
+</ol>
+</blockquote>
+
+<ol>
+<li><p><strong>概率图模型</strong>：无向图RBM(这个目前我也还不了解，后续学习到了再补充吧)</p></li>
+
+<li><p><strong>变分推断</strong>：后续补充</p></li>
+</ol>
+
+<h2 id="高斯分布的指数族形式">高斯分布的指数族形式</h2>
+
+<p>上面光说了那么多分布都属于指数族分布，那么我们现在来推一个看看，将大家最熟悉的高斯分布转化为指数族分布的形式，假设单变量高斯分布的均值为 $\mu$，方差为 $\sigma^2$，其概率密度可以表示为：</p>
 
 <div>$$
-\begin{equation}
 \begin{aligned}
-z &\in \mathcal{N}(0,I_q)\\
-x &= Wz + \mu + \epsilon\\
-\epsilon &\in \mathcal{N}(0,\sigma^2 I_p)
+p(x|\mu,\sigma)&=\frac{1}{\sqrt{2\pi \sigma^2}}exp\{-\frac{(x-\mu)^2}{2\sigma^2}\}\\
+&=\frac{1}{\sqrt{2\pi \sigma^2}}exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x + \mu^2)\}\\
+&=exp\{\log(2\pi \sigma^2)^{-1/2}\}exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x) - \frac{\mu^2}{2\sigma^2}\}\\
+&=exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x) -(\frac{\mu^2}{2\sigma^2} + \frac{1}{2}\log(2 \pi \sigma^2)) \}
 \end{aligned}
-\end{equation}
 $$</div>
 
-<p>且 $z$ 和 $\epsilon$ 相互独立。这是一个线性高斯模型，相当于我们有了 $z, x|z, x$ 要求 $z|x$。</p>
+<p>令</p>
 
-<p>第一步就是Inference求后验 $z|x$ (通过构造 $x,z$ 的联合概率求条件概率)</p>
+<div>$$
+\eta=\left(\begin{array}{l}{\eta_{1}} \\ {\eta_{2}}\end{array}\right) 
+=\left(\begin{array}{c}{\frac{u}{\sigma^{2}}} \\ {-\frac{1}{2 \sigma^2}}\end{array}\right),\phi(x) = \left(\begin{array}{l}{x} \\ {x^2}\end{array}\right) 
+$$</div>
 
-<p>第二步就是Learning参数 $W, \mu, \sigma$（比如采用EM算法）</p>
+<p>眼尖的你是不是发现高斯分布的概率密度函数表示成了指数族分布的形式了。其他分布也可以这样表示，这里就不详细推导了。</p>
 
-<p><strong>P-PCA与GMM的区别</strong>：P-PCA的隐变量是连续的，而GMM的隐变量是离散的。</p>
+<h2 id="对数配分函数与充分统计量的关系">对数配分函数与充分统计量的关系</h2>
 
-<h2 id="matlab-实现">Matlab 实现</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">% Data 两个特征线性关系加点噪声
-X1 = [1,2,3,4,5,6]&#39;;
-X2 = [X1] + rand(6,1);
-X = [X1,X2];
-plot(X1,X2)
-N = size(X,1);
+<p>对数配分函数在指数族分布里的表现形式为 $exp(A(\eta))$，进一步可以表示为积分的形式：</p>
 
-% 矩阵描述
-x_bar = 1/N*X&#39;*ones(N,1);
-H = eye(N) - 1/N*ones(N,1)*ones(N,1)&#39;;
-S = 1/N*X&#39;*H*X;
+<p>$$
+exp(A(\eta)) = \int h(x) \cdot \exp \left(\eta^T\phi(x)\right) d x
+$$</p>
 
-% 根据采样方差特征值分解
-[G,K] = eig(S);
+<p>两边同时对 $\eta$ 求导</p>
 
-% 根据中心化的数据进行奇异值分解
-[U,Sigma,V] = svd(H*X);
+<blockquote>
+<p>牛顿莱布尼兹
+$$
+\frac{\partial}{\partial \eta} \int=\int \frac{\partial}{\partial \eta}
+$$</p>
+</blockquote>
 
-% 方差矩阵的特征值与奇异值分解的奇异值的关系
-Sigma.^2/N
-K
-% 观察V矩阵和G矩阵的关系
-G
-V
+<p>可得</p>
 
-% 主坐标分析
-T = H*X*X&#39;*H&#39;;
-[G2,K2] = eig(T);
-% 观察非零特征值对应特征向量也就是主坐标与HXV的关系
-H*X*V</pre></td></tr></table>
-</div>
-</div>
+<p>$$
+exp(A(\eta))A&rsquo;(\eta)=\int h(x) \cdot exp(\eta^T\phi(x)) \cdot \phi(x) dx
+$$</p>
+
+<p>将 $exp(A(\eta)$ 移到右边</p>
+
+<p>$$
+A&rsquo;(\eta) = \frac{\int h(x) \cdot exp(\eta^T\phi(x)) \cdot \phi(x) dx}{exp(A(\eta))}=\int h(x) \cdot exp(\eta^T\phi(x) - A(\eta)) \cdot \phi(x) dx
+$$</p>
+
+<p>即</p>
+
+<p>$$
+A&rsquo;(\eta) = \int p(x|\eta) \cdot \phi(x) dx = E_{p(x|\eta)}[\phi(x)]
+$$</p>
+
+<p>还可以推导出</p>
+
+<p>$$
+A^{\prime \prime}(\eta) = Var[\phi(x)]
+$$</p>
+
+<p>进一步也说明了 $A(\eta)$ 是个凸函数。这里告诉了我们<strong>对数配分函数是个凸函数，且它的一阶导数和二阶导数分别对应着充分统计量的期望和方差。</strong></p>
+
+<h2 id="极大似然估计与充分统计量的关系">极大似然估计与充分统计量的关系</h2>
+
+<p>既然 $\eta$ 是参数，我们在learning的时候当然是需要将其估计出来的，很自然的想法就是用极大似然估计来估计 $\eta$，假设有数据 $x_1,&hellip;,x_N$，则</p>
+
+<div>$$
+\begin{aligned}
+\eta_{MLE}&=\arg\max\log p(x_1,...,p_N|\eta)\\
+&=\arg\max\log \prod_{i=1}^{N} p(x_i|\eta)\\
+&=\arg\max\ \sum_{i=1}^N \log p(x_i|\eta)\\
+&=\arg\max\ \sum_{i=1}^N [\log h(x_i) + \eta^T\phi(x_i) - A(\eta)]
+\end{aligned}
+$$</div>
+
+<p>目标函数对 $\eta$ 求导并令导函数为0</p>
+
+<div>$$
+\frac{\partial}{\partial \eta} \sum_{i=1}^N [\log h(x_i) + \eta^T\phi(x_i) - A(\eta)] = \sum_{i=1}^N \phi(x_i) - N \cdot A'(\eta) = 0
+$$</div>
+
+<p>可得到 $A&rsquo;(\eta_{MLE})$ 可以表示为</p>
+
+<div>$$
+A'(\eta_{MLE}) = \frac{1}{N} \sum_{i=1}^N\phi(x_i)
+$$</div>
+
+<p>又因为 $A(\eta)$ 是 $\eta$ 的函数，$A&rsquo;(\eta)$ 也是 $\eta$ 的函数，那么就可以通过 $A&rsquo;(\eta)$ 的反函数求解出 $\eta$ 的估计值 $\eta_{MLE}$，同时这也表现了充分统计量的性质，<strong>不需要保存所有样本信息，只需要通过充分统计量就能得到参数的估计值</strong>。</p>
+
+<h2 id="最大熵原理与指数族分布">最大熵原理与指数族分布</h2>
+
+<p>一言不合甩结论：<strong>在给定的约束条件下，指数族分布是信息熵(微分熵)最大的分布。</strong></p>
+
+<p>很多人可能对熵的概念都还不清楚，那我们从信息量说起，信息量就是你对一个事件的不确定程度的认识，我们直观地来理解一下，一个事件发生的概率越大，那就是越确定这个事件会发生，那他的不确定性就越小，包含的信息可能就越少，那他的信息量就比较小，也就是说信息量和事件发生的概率成反比，信息量的定义为：</p>
+
+<p>$$
+I(X)=-\log p(X)
+$$</p>
+
+<p>一个事件发生的可能有好几种可能情况，那么我们就会希望知道平均意义下这个事件的信息量有多少，这就得到了信息熵的概念，其实是信息量的期望:</p>
+
+<p>$$
+H(X)=E(I(X))
+$$</p>
+
+<p>当 $X$ 为离散时，期望就是求和</p>
+
+<p>$$
+H(X)=-\sum_{x} p(x) \log p(x)
+$$</p>
+
+<p>其中，$p(x)=p(X=x)$，那如果 $X$ 是连续的，那信息熵就是个积分的形式了。</p>
+
+<p>介绍了半天熵，那么最大熵有什么好处呢？答案是：<strong>在学习概率模型时，在所有可能的概率模型(分布)中，熵最大的模型是最好的模型。</strong></p>
+
+<p><strong>在没有任何已知的情况下</strong></p>
+
+<p>最大熵可以用优化命题表示为：</p>
+
+<div>$$
+    $$
+\begin{array}{cl}{\max_{p}} & {-\sum_{i=1}^{K} p\left(x_{i}\right) \log p\left(x_{i}\right)} \\ {\text { s.t. }} & {\sum_{i=1}^K p\left(x_{i}\right) = 1}\end{array}
+$$
+$$</div>
+
+<p>利用拉格朗日乘子法可得：$\hat{p}(x_i)=\frac{1}{K}$</p>
+
+<p>也就是说<strong>在没有任何已知的情况下均匀分布的熵最大。(离散型)</strong></p>
+
+<p><strong>满足已知事实(约束)的情况下</strong></p>
+
+<p>最大熵可以用优化命题表示为：</p>
+
+<div>$$
+    $$
+\begin{array}{cl}{\max_{p}} & {-\sum_{i=1}^{K} p\left(x_{i}\right) \log p\left(x_{i}\right)} \\ {\text { s.t. }} & {\sum_{i=1}^K p\left(x_{i}\right) = 1} \\
+{} & {E_{p(x)}[f(x)]= E_{\hat{p}(x)}[f(x)] = \Delta}
+\end{array}
+$$
+$$</div>
+
+<p>其中，$\hat{p}(x)$ 为经验分布，$f(x)$ 为任意关于 $x$ 的函数向量(可以理解为将已知事实或者先验信息写成约束的形式)。</p>
+
+<p>同样利用拉格朗日乘子法可以得到 $p(x)$ 的表达式符合指数族分布的一般形式。</p>
+
+<p>也就是说<strong>在满足已知事实(约束)的情况下指数族分布的熵最大。(离散型)</strong></p>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/" class="read-more-link"></a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">「机器学习」特征工程</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/">核函数与再生核希尔伯特空间</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-05 </span>
-      <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> ‘机器学习’ </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p><strong>数据和特征决定了机器学习的上限，而模型和算法只是逼近这个上限而已。</strong></p>
-
-<p>那么我们需要怎么来抬高这一上限呢，特征工程的流程还是比较常规的，这里讲一下主要的思路，只要思路理清了，具体的实现调调包一般就OK啦。（sklearn统统搞定~）</p>
-
-<p>当你拿到一堆数据时，你的第一反应想干嘛？</p>
-
-<p>肯定想画几个特征看看它们长什么样吧，那如果不同特征之间规格都不一样，假设你把它们画在同一坐标轴也观察比较不了，而且也会影响后续的训练效率，所以很自然的想法就是先把数据的规格统一一下，那就是所谓的无量纲化；</p>
-
-<p>那你在无量纲化难免遇到缺失数据，这时候当然是要补全数据啦，最直接的做法就是拿平均值来替代一下；</p>
-
-<p>还有可能需要做的就是针对不同的算法进行特征的转化，算法中有的需要定性特征有的需要定量特征，转化的思想有点“分类”的思想，比如根据阈值将定量特征“分类”为0或1（大于某个阈值为1否则为0），再比如根据定性数据的值“分类”，有几个值就分几类，相当于拓展几个特征，只有对应特征的值为1，其他特征的值为0，这也叫做哑编码（比如一个特征的值有1、2、3三种可能情况；那就可以拓展为3个特征，原特征值为1时，对应新特征”1“的位置为1，其他位置为0）。</p>
-
-<p>以及还有按照一定规则进行特征转化的，比如多项式、或者自定义规则。以上这些过程呢也称为<strong>数据预处理</strong>。</p>
-
-<p>当你把手头上的数据处理一波后，起码这些数据能够拿来进行训练了，但是还是要进一步提高所谓的<strong>上限</strong>呀，你拿到的数据可能特征非常多，含有很多无用特征，自然的想法就是把那些无用的特征剔除掉，选择有用的特征来训练，这就是<strong>特征选择</strong>的过程，那什么样的数据称为”有用“呢，一般来说两个基本原则吧：发散就是说方差要大，如果一个特征没什么变化，那肯定反应不出目标的变化；相关就很直白了，和目标关系越大的特征当然越有用了。</p>
-
-<p>当你把有用的特征选择出来后，结果还是发现特征维度还是太高了，这会影响你的训练效率，维度高的解决办法很自然就是降低维度啊，那就轮到降维算法出场了，主要有PCA和LDA，降维的目标相当于用较低维度的数据来表征原始数据的特征，也就是<strong>特征提取</strong>啦。</p>
-
-<p>OK了，经过<strong>数据预处理、特征选择、特征提取</strong>，现在你手上有的就是<strong>较低维度的有用数据</strong>了吧，快拿去train一发试试！</p>
-
-<figure>
-    <img src="/images/post/%e7%89%b9%e5%be%81%e5%b7%a5%e7%a8%8b/%e7%89%b9%e5%be%81%e5%b7%a5%e7%a8%8b.svg"/> 
-</figure>
-    </div>
-    <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" class="read-more-link"></a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E7%BE%8E%E9%9F%B3%E4%B8%ADt%E7%9A%84%E5%8F%91%E9%9F%B3/">美音中t的发音</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-08-04 </span>
-      <div class="post-category">
-          <a href="/categories/english/"> English </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p>今天做高铁回家路上刚好看了Jason的视频，总结一下美音中 t 的发音技巧，同时感谢一下Jason哥。
-<figure>
-    <img src="/images/post/%e7%be%8e%e9%9f%b3%e4%b8%adt%e7%9a%84%e5%8f%91%e9%9f%b3/%e7%be%8e%e9%9f%b3%e4%b8%adt%e7%9a%84%e5%90%84%e7%a7%8d%e5%8f%91%e9%9f%b3.svg"/> 
-</figure>
-</p>
-
-<p>这里的说法可能跟网上的一些说法不太一致，这里的 held t就是网上说的 stop t，简单理解就是 t 做出口形舌形但不发音，但是需要停顿一下而不是直接省略，达到所谓的 held 住或者 stop 的效果；这里的发音成 fast d 就是网上说的 flap t，弹舌音，简单理解就是舌头快速弹一下发出 d 的音，也就是发音现象中的浊化。</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/%E7%BE%8E%E9%9F%B3%E4%B8%ADt%E7%9A%84%E5%8F%91%E9%9F%B3/" class="read-more-link"></a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">「机器学习」高斯过程</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-07-26 </span>
-      <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p>网上机器学习的算法铺天盖地，高斯过程却显得不那么起眼，它与其他大多数算法不一样的地方在于，它提供了<strong>不确定性</strong>的估计，这篇文章争取在不涉及数学推导的情况下给大家一个直观的理解。</p>
-
-<h1 id="什么是不确定性">什么是不确定性？</h1>
-
-<p>我觉得最能代表不确定性的应该就是概率分布（probability distribution）了，不了解概率分布也没关系，骰子摇过吧，一个六面均匀的骰子，摇到任一数字的概率是多少？答案是显然的: $\frac{1}{6}$，这就是一个离散的概率分布，有六种可能的结果（朝上的面为1、2、3、4、5或6），每种结果的可能性为 $\frac{1}{6}$。进一步延伸一下，离散概率分布的升级版就是连续概率分布，它的可能结果可就不是简单几种情况那么简单了，可以是任意实数，比如人的身高，中国男性的身高统计出来画一下，你就能看到一个中间高两边低的正态分布的样子了。</p>
-
-<p>那么已知概率分布后，如何采样呢？很简单呀，比如骰子你摇一次就是从这个离散概率分布中采样一次。</p>
-
-<h1 id="贝叶斯推断">贝叶斯推断</h1>
-
-<p>一提到贝叶斯推断，可能要吓跑一群人，别跑！等我给你介绍完就不怕了！
-其实贝叶斯推断就是<strong>根据我们观察到的现象去更新我们脑袋里的认知。</strong>再具体点就是：我们在事情没发生前对这件事情有所认知（或者叫做先验），通常可以用一个概率分布来表示，然后在得到一些发生的事实后，我们会对这件事情的认知有所该表（就是得到了后验）；而把这些东西联系到一起的就是大名鼎鼎的<strong>贝叶斯定理</strong>。</p>
-
-<p>还是不够形象？那我们来个例子，上面说过离散概率分布了，这次我们来个连续的看看，来看看身高吧，来猜猜小陈有多高（猜对有奖哦，文末二维码随意扫随意打赏哈），你又不认识我没见过我，怎么知道我有多高呢，那直观的猜测就是小陈是个中国人，小陈的身高服从中国人身高的概率分布（假设你能得到这个概率分布咯）
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e7%94%b7%e6%80%a7%e8%ba%ab%e9%ab%98.jpg"/> 
-</figure>
-
-然后有一天你在博客上看到了小陈和朋友们的合照
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%88%e7%85%a7.jpg"/> 
-</figure>
-
-卧槽！小陈有点高啊，在朋友中是最高的，于是你对小陈身高的概率分布的认识改变了
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%8e%e9%aa%8c%e8%ba%ab%e9%ab%98.jpg"/> 
-</figure>
-</p>
-
-<h1 id="什么是高斯过程">什么是高斯过程？</h1>
-
-<p>好了，今天的主角登场了，<strong>高斯过程其实就是函数的概率分布</strong>，既然是概率分布，再用上面贝叶斯的套路我们就也能够通过训练数据来更新它的概率分布。</p>
-
-<p>我们来理一下思路，函数是什么，最简单的回顾你初中学的 $y=f(x)$ 就是个函数（随便函数形式都行，一次二次正弦等等），把它画一下就是在 XY 平面上的一条线呗；既然是概率分布还是高斯的，那总有均值吧，总有协方差吧，在这里对应就是均值函数和协方差函数。因此高斯过程本质就是<strong>由均值函数和协方差函数决定的一个随机过程。</strong></p>
-
-<p>比如有一个sin函数，我们有五个点的训练数据
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/data.png"/> 
-</figure>
-</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">Xtrain = np.array([-3, -2, -1, 1, 2]).reshape(5,1)
-ytrain = np.sin(Xtrain)
-pl.plot(Xtrain, ytrain, &#39;bs&#39;, ms=8)</pre></td></tr></table>
-</div>
-</div>
-<p>没有训练前我们对这个函数没什么认知，那就假设其均值函数为0（大部分时候也都是当做0来使用的），核函数就取SE核函数吧（这个是什么先不管啦，你就认为是个用来生成协方差矩阵的函数，主要我们是要得到它的协方差呀！核函数里一般会有超参数需要估计，为了简单起见，我直接直接给定超参数，不去估计这个参数了），在这样的先验分布下，你得到的函数会是什么样的呢？我们从这个函数的概率分布中采样三个函数出来看看。
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/prior.png"/> 
-</figure>
-</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">import numpy as np
-import matplotlib.pyplot as pl
-%matplotlib inline
-# Test data
-n = 50
-Xtest = np.linspace(-3, 3, n).reshape(-1,1)
-
-# Define the kernel function
-def kernel(a, b, param):
-    sqdist = np.sum(a**2,1).reshape(-1,1) + np.sum(b**2,1) - 2*np.dot(a, b.T)
-    return np.exp(-.5 * (1/param) * sqdist)
-
-param = 0.1
-K_ss = kernel(Xtest, Xtest, param)
-
-# Get cholesky decomposition (square root) of the
-# covariance matrix
-L = np.linalg.cholesky(K_ss + 1e-15*np.eye(n))
-# Sample 3 sets of standard normals for our test points,
-# multiply them by the square root of the covariance matrix
-f_prior = np.dot(L, np.random.normal(size=(n,3)))
-
-# Now let&#39;s plot the 3 sampled functions.
-pl.plot(Xtest, f_prior)
-pl.axis([-3, 3, -3, 3])
-pl.title(&#39;Three samples from the GP prior&#39;)
-pl.show()</pre></td></tr></table>
-</div>
-</div>
-<p>那再根据训练数据训练一发，也就是相当于前面提到的贝叶斯推断，就能得到函数的后验概率分布
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/posterior.png"/> 
-</figure>
-</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"># Apply the kernel function to our training points
-K = kernel(Xtrain, Xtrain, param)
-L = np.linalg.cholesky(K + 0.00005*np.eye(len(Xtrain)))
-
-# Compute the mean at our test points.
-K_s = kernel(Xtrain, Xtest, param)
-Lk = np.linalg.solve(L, K_s)
-mu = np.dot(Lk.T, np.linalg.solve(L, ytrain)).reshape((n,))
-
-# Compute the standard deviation so we can plot it
-s2 = np.diag(K_ss) - np.sum(Lk**2, axis=0)
-stdv = np.sqrt(s2)
-# Draw samples from the posterior at our test points.
-L = np.linalg.cholesky(K_ss + 1e-6*np.eye(n) - np.dot(Lk.T, Lk))
-f_post = mu.reshape(-1,1) + np.dot(L, np.random.normal(size=(n,3)))
-
-pl.plot(Xtrain, ytrain, &#39;bs&#39;, ms=8)
-pl.gca().fill_between(Xtest.flat, mu-2*stdv, mu+2*stdv, color=&#34;#dddddd&#34;)
-pl.plot(Xtest, mu, &#39;r--&#39;, lw=2)
-pl.axis([-3, 3, -3, 3])
-pl.title(&#39;GP posterior&#39;)
-pl.show()</pre></td></tr></table>
-</div>
-</div>
-<p>这个回归效果很差，主要因为核函数的超参数没估计，而且训练的数据太少了。感兴趣可以自己去改改代码试试看。详细的推导和理论可以看06年的那本《Gaussian Process for Machine Learning》</p>
-
-<h2 id="划重点">划重点</h2>
-
-<p><strong>先验 “加&rdquo; 数据得到后验；后验&rdquo;加权平均&rdquo;输出就是预测！</strong></p>
-
-<p>最后的最后上两个公式吧</p>
-
-<p><div>$$
-p(w|y,X) = \frac{p(y|X,w)p(w)}{p(y|X)}
-$$<div></p>
-
-<p><div>$$
-p\left(f_{*} | {x}_{*}, X, {y}\right)=\int p\left(f_{*} | {x}_{*}, {w}\right) p({w} | X, {y}) d \mathbf{w}
-$$<div>
-配合上面那句话好好理解消化一下！</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/" class="read-more-link"></a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/">Chol分解与SVD分解</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-07-25 </span>
+      <span class="post-time"> 2019-08-15 </span>
       <div class="post-category">
           <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
           </div>
@@ -615,129 +342,321 @@ $$<div>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>今天说说两个整天见却整天忘的矩阵分解，一个是Chol分解，一个是SVD分解</p>
+      <p>说到核方法，很多人第一反应就是SVM，其实不然，其应用很广，但核心思想均是<strong>用在原始空间计算核函数的值来避免直接求解高维特征空间的内积</strong>；说到核函数往往还会带上一个吓人的概念“再生核希尔伯特空间”，先揭秘一下什么是希尔伯特空间，希尔伯特空间其实就是<strong>函数空间</strong>(或者可以把函数理解为无限维的向量)，函数空间里任意一个元素都表示一个函数，而再加上“再生核”这个限定词相当于就是特定的函数空间，就是具有再生性的函数空间，那什么是再生性听我慢慢道来。</p>
 
-<h1 id="chol分解">Chol分解</h1>
+<p>假设有原始空间样本 $x_i \in \mathbb{R}^p, i=1,&hellip;,N$，通常为了<strong>在高维空间寻找线性关系</strong>我们会将其通过函数映射 $\phi(\cdot)$ 到高维空间 $\phi(x_i) \in \mathbb{R}^n$，但是这样也意味着如果原始空间求内积 $&lt;x_i,x_j&gt;$ 对应到特征空间为 $&lt;\phi(x_i),\phi(x_j)&gt;$，直接求解高维空间的内积计算量是很大的，同时我们可能并不知道这个映射函数 $\phi(\cdot)$ 怎么选择才是合适的。核函数则提供了另一种求解的思路。</p>
 
-<p>对于Chol分解，首先要知道它针对的对象是什么，也就是<strong>埃尔米特矩阵（Hermitian matrix）</strong>，听着有点难懂，其实就是共轭对称矩阵，再简单点说，我们常见的实对称矩阵就是埃尔米特矩阵的特例。</p>
+<p><strong>核函数的定义</strong></p>
 
-<p>那么这个Chol分解分解得到的是什么东西？是干嘛用的呢？
-我们先来回答第一个问题，Chol分解是将一个矩阵分解成两个矩阵的乘积，即
-$$
-A = LL^*
-$$
-其中，$L$ 是一个<strong>下三角</strong>矩阵，$L^*$ 是 $L$ 的共轭转置，如果实数那就是转置（i.e., $L^T$）</p>
+<p>$$
+\kappa(\cdot,\cdot):\mathbb{R}^p \times \mathbb{R}^p \rightarrow \mathbb{R}
+$$</p>
 
-<p>分解成这个玩意干嘛用的呢？目前了解到的比较常用的两个地方</p>
+<p>则特征空间的内积可以表示为</p>
 
-<h2 id="1-解线性方程呗-比如-ax-b">1. 解线性方程呗，比如 $Ax=b$</h2>
+<p>$$
+&lt;\phi(x_i),\phi(x_j)&gt; = \kappa(x_i,x_j)
+$$</p>
 
-<p>你可能会说直接目测方程的解就是 $x = A^{-1}b$，还需要什么Chol分解？如果矩阵 $A$ 是病态的（条件数很大），那么问题就来了，我们在用计算机求解这类问题的时候出现舍入误差可能会导致所答非所问。</p>
+<p>此外，特征空间的距离和角度也可以用核函数来表示。</p>
 
-<p>如果对矩阵进行Chol分解再来求解方程呢，原方程需要两步求解</p>
+<p>同时有 Mercer 定理告诉我们怎么样的函数能称为核函数</p>
 
-<p>Step1
-$$
-Ly=b
-$$
-Step2
-$$
-L^Tx=y
-$$
-打开Matlab感受一下？</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">A = [5,7;7,10];
-cond(A)
-L = chol(A)&#39;;
-cond(L)</pre></td></tr></table>
-</div>
-</div>
-<p>可以看出分解后求解的两个方程都是良态的且只需储存矩阵的下三角部分即可咯。</p>
+<blockquote>
+<p>任何正半定函数均可以作为核函数，即由 $\kappa(\cdot,\cdot)$ 构成的核矩阵 $K$ 是正半定的：$a^TKa\ge 0$，其中 $K_{ij} = \kappa(x_i,x_j)$</p>
+</blockquote>
 
-<h2 id="2-求矩阵的行列式">2. 求矩阵的行列式</h2>
+<p><strong>这也就说明了只要我们构造出一个正定核(往往是应用现成的)，那么就不需要显式地定义特征空间和映射函数，并且能够利用已有的线性方法来解决非线性问题</strong>。<strong>同时，核函数还可以理解为用来衡量两个向量的相似度(因为内积可以一定程度反应两个样本之间的相似度)</strong></p>
 
-<p>既然Chol分解把矩阵分解成下三角阵，那么求解原矩阵的行列式自然非常容易了</p>
+<p>因为核函数可以总结为：<strong>映射、内积、相似度</strong></p>
+
+<p><strong>再生核希尔伯特空间的定义</strong></p>
+
+<p>有了核函数，那么就会至少有一个与之对应的再生核希尔伯特空间 $\mathcal{H}$，它满足</p>
+
+<ol>
+<li><p>固定任意 $x_0$，则 $\kappa(\cdot,x_0):\mathbb{R^p} \rightarrow \mathbb{R}$ (这是个函数！) 属于 $\mathcal{H}$ (这是个函数空间！)</p></li>
+
+<li><p>再生性：</p></li>
+</ol>
 
 <div>$$
-\begin{aligned} \operatorname{det} {A} &=\prod_{i=1}^{n} {L}_{i i}^{2} \\ \log \operatorname{det} {A} &=2 \sum_{i=1}^{n} \log {L}_{i i} \end{aligned}
+\begin{aligned}
+<\kappa(\cdot,x),f> &= f(x),f \in \mathcal{H} \\
+<\kappa(\cdot,x),\kappa(\cdot,z)> &= \kappa(x,z) = \kappa(z,x)
+\end{aligned}
 $$</div>
 
-<p>其中 ${L}_{i i}$ 为矩阵的对角元素。</p>
+<p>给定核函数如何确定映射以及对应的希尔伯特空间？</p>
 
-<h1 id="svd分解">SVD分解</h1>
-
-<p>要说SVD分解，首先要提到特征根分解，线代学过吧？忘记了没关系，我们再来复习一下。</p>
-
-<p>首先还是要知道特征值分解的对象是什么，答案是<strong>方阵</strong>，对于方阵 $A$，有</p>
+<p>定义再生核map $\Phi:\mathbb{R}^p \rightarrow \mathbb{R}^{\mathbb{R}^p}$ 且 $\Phi(z)=\kappa(\cdot,z)$，相当于将 $z\in \mathbb{R}^p$ 映射成一个函数 $\kappa(\cdot,z):\mathbb{R}^p \rightarrow \mathbb{R}$，则</p>
 
 <p>$$
-Av=\lambda v
+\kappa(x,z) = &lt;\kappa(\cdot,x),\kappa(\cdot,z)&gt;=&lt;\Phi(x),\Phi(z)&gt;
 $$</p>
 
-<p>这时，$v$ 就称为特征向量，$\lambda$ 就是与之对应的特征值。</p>
+<p>即通过核函数可以找到对应的映射，而对应的希尔伯特空间可以表示为由 $\Phi(\cdot)$ 组成的向量空间。</p>
 
-<p>那么这个特征值分解分解得到的是什么东西？是干嘛用的呢？</p>
+<p>给定映射关系如何确定核函数？</p>
 
-<p>通过特征值分解，可以把矩阵 $A$ 分解为</p>
+<p>直接令 $\kappa(x,z) = &lt;\Phi(x),\Phi(z)&gt;$，然后验证 Mercer 定理即可。</p>
+
+<h2 id="各种空间的定义补充">各种空间的定义补充</h2>
+
+<p>各种空间之间的关系其实有点<strong>从抽象到具体的过程</strong>。我们给空间<strong>赋予一些属性或者制定一些规则</strong>就能得到特定的空间。</p>
+
+<p>比如大家熟悉的<strong>向量空间</strong>，那就是满足加减法和数乘的空间，很好理解，空间内任意元素都可以用一组基通过加减和数乘(线性组合)表示。</p>
+
+<p>比如赋予距离的空间称为<strong>度量空间</strong>，定义距离时需要遵守三条公理：</p>
+
+<ol>
+<li><p>非负性，同一性：距离都是非负的，自己到自己的距离当然是 0 了</p></li>
+
+<li><p>对称性：你走向我的距离等于我走向你的距离</p></li>
+
+<li><p>三角不等式：你从 A 走到 B 在走到 C 的距离肯定大于等于直接从 A 到 C 的距离</p></li>
+</ol>
+
+<p>比如赋予范数的空间称为<strong>赋范空间</strong>，范数可以理解为一个元素到 0 的距离，同时它比距离的定义<strong>更具体了一步</strong>，因为它还需要额外满足</p>
 
 <p>$$
-A = Q\Sigma Q^{-1}
+||ax|| = |a| \times||x||
 $$</p>
 
-<p>其中 $Q$ 就是特征向量组成的矩阵，$\Sigma$ 就是对角线为对应特征值的对角阵。</p>
+<p>那么我们在定义了范数后自然能用范数来定义距离了，比如 $d(x,y) = ||x-y||$，但是不能用距离来定义范数哦，因为<strong>波霸奶茶是奶茶，但不是所有奶茶都叫波霸奶茶</strong></p>
 
-<p>这样分解有什么用呢？我们知道矩阵的本质就是线性变换，那么分解后我不就知道<strong>变换方向的主次</strong>了，因为我们分解得到的 $\Sigma$ 是一个对角阵且特征值从大到小排列，而特征值所对应的特征向量也就是描述矩阵的变化方向，所以 $Q$ 矩阵就是<strong>按照主要变化到次要变化进行排列</strong>。那么我们就可以根据自己的需要选择特定个数的变化方向来近似原始矩阵变化，也就是<strong>提取原始矩阵中我们期望的主要特征</strong>。</p>
+<p>有了范数来定义距离了有时候还不够，我们有时候会需要<strong>角度</strong>信息，这时候就<strong>再给波霸奶茶加点料</strong>，于是赋予了内积的向量空间称为<strong>内积空间</strong>，定义内积需要遵守三条公理：</p>
 
-<p>那么这些和今天的猪脚SVD有什么联系呢？（哪有猪脚，肚肚饿）</p>
+<ol>
+<li><p>对称性</p></li>
 
-<p>关系可大了，你可以粗糙地把SVD也当做是特征值分解，虽然不太准确。上面说到特征值分解针对的是<strong>方阵</strong>，可是哪来那么多的方阵啊！遇到非方阵时特征值分解不就GG了，这时候SVD出场了。</p>
+<li><p>第一元素线性：
+$$&lt;ax,y&gt;=a&lt;x,y&gt;,&lt;x+y,z&gt;=&lt;x,z&gt;+&lt;y,z&gt;$$ 这不就是向量空间的数乘和加减运算嘛</p></li>
 
-<p>一句话概括SVD是适用<strong>任意</strong>，是<strong>任意</strong>矩阵的一种分解方法：</p>
+<li><p>正定性</p></li>
+</ol>
 
-<p><div>$$
-A_{m \times n} = U_{m \times m} \Sigma_{m \times n}V_{n \times n}^T
-$$<div></p>
+<p>那么定义了内积后自然也能用<strong>加了仙草的波霸奶茶来定义波霸奶茶</strong>(用内积来定义范数)，比如</p>
 
-<p>那么奇异值和特征值是怎么对应起来的呢？由于矩阵 $A$ 不一定是方阵，我们乘以它的转置就能得到方阵，那么就能特征值分解了。</p>
+<p>$$||x||=\sqrt{&lt;x,x&gt;}$$</p>
 
-<p>$$
-(A^TA)v_i = \lambda_iv_i
-$$</p>
+<p>还有个比较难以描述的<strong>完备空间</strong>，可以理解为极限操作不会跑出自己的空间就称为完备的，<strong>奶茶只要三分糖，太甜了就超出能承受的甜度极限了呗</strong>。</p>
 
-<p>这样求得的 $v_i$ 就组成了SVD中的右奇异矩阵 $V$，此外</p>
+<p>有了这么一步步的具体化后，<strong>希尔伯特空间</strong>就可以出来了，它就是<strong>一杯三分糖的加了仙草的波霸奶茶</strong>，呸，它就是<strong>一个完备的内积空间</strong></p>
 
-<p>$$
-\sigma_i=\sqrt{\lambda_i},u_i=Av_i/\sigma_i
-$$</p>
+<blockquote>
+<p>总结来说：</p>
 
-<p>这里的 $\sigma_i$ 就是所谓的奇异值，它在矩阵 $\Sigma$ 中也是从大到小排列的，而且<strong>减小速度非常快！</strong>，这可是个好消息，说明我们利用<strong>很少的奇异值就能近似描述原始矩阵</strong>，相当于是<strong>空间压缩</strong>，比如我们利用 $r$ 个奇异值来近似原始矩阵（$r$ 远小于 $m$ 或 $n$）</p>
+<ol>
+<li><p>赋范线性空间就是赋予了范数的向量空间，也是度量空间（具有线性结构的度量空间）</p></li>
 
-<p>$$
-A_{m \times n} = U_{m \times r} \Sigma_{r \times r}V_{r \times n}^T
-$$</p>
+<li><p>内积空间是赋范线性空间</p></li>
 
-<p>所以总的来说SVD就是用来提取重要特征的一个方法。SVD或者特征值分解的具体实现都有现成的函数可以调用，感兴趣可以通过matlab分解一把再观察一下。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">[Q,Sigma1] = eig(A&#39;*A)   % matlab求特征值不一定按从小到大排序的 
-[U,Sigma2,V] = svd(A)</pre></td></tr></table>
-</div>
-</div>
-<p>观察一下 $Q$ 和 $V$ 的关系以及 $Sigma1$ 和 $Sigma2$ 的关系，可以再根据上面给出的公式人工计算一下 $U$ 矩阵，再和matlab的结果进行比较。</p>
+<li><p>希尔伯特空间就是完备的内积空间，同时需要注意的是希尔伯特空间中的元素一般是函数，一个函数可以视为一个无穷维的向量。如果大家熟悉傅里叶变换或者泰勒展开，便能自然的想到这个空间的基底是什么。没错，也是一组无限多的函数。</p></li>
+</ol>
+</blockquote>
     </div>
     <div class="read-more">
-      <a href="/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/" class="read-more-link"></a>
+      <a href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/">「机器学习」支持向量机SVM</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-08-14 </span>
+      <div class="post-category">
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>SVM（Support Vector Machine）又称为支持向量机，是一种用于机器学习的算法，不仅支持线性分类，结合核方法还可以用于非线性分类。其思想主要为<strong>最大间隔</strong>，推导依赖于<strong>对偶理论</strong>，因此可以将SVM归结于：间隔、对偶、核方法。</p>
+
+<h2 id="间隔">间隔</h2>
+
+<p>简单举例一个二分类问题，假设有线性可分的两堆点</p>
+
+<div>$$
+\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1}^{N}， x_{i} \in \mathbb{R}^{p}, y_{j} \in\{-1,1\}
+$$</div>
+
+<p>要将它们分开的超平面有很多种，<strong>SVM做的相当于要寻找一个最优的超平面 $w^Tx+b=0$ 来分开不同类别的样本点</strong>，因此首先需要定义什么样的超平面是最优的，<strong>也就是所有样本点到超平面的最短距离是最大的</strong>，假设两个类别中距离分隔超平面最近的点所在的超平面分别为 $w^Tx + b =1$ 和 $w^Tx+b = -1$(这里的 $1,-1$ 只是为了方便推导，不影响优化的结果，因为你总是可以对超平面乘以一个系数然后做变量替换得到$w^Tx + b =1$ 和 $w^Tx+b = -1$)，SVM要最大化的间隔就是<strong>这两个平面之间的距离</strong>。</p>
+
+<p>你可能要问两个平面的距离怎么求？回忆下高中的两条平行直线的距离公式，对于直线 $ax+by+c_1 = 0$ 和 $ax + by +c_2 = 0$，距离公式为
+$$d = \frac{|c_1-c_2|}{\sqrt{a^2+b^2}}$$</p>
+
+<p>(莫名的亲切感有没有)那平面的距离公式类比下就可以得到：
+$$
+\text{margin} = \frac{1 - (-1)}{\sqrt{w_1^2+w_2^2+ &hellip; + w_p^2}} = \frac{2}{||w||}
+$$</p>
+
+<p>$w$ 的维度为 $p$, $w_i$ 表示 $w$ 的第 $i$ 个元素。SVM的目标就是最大化这个margin，那需要满足什么约束呢？首先分类要准确吧这可是分类器的初衷，即</p>
+
+<div>$$
+\begin{aligned}
+w^Tx_i+b \ge +1 &\text{ if } y_i= +1\\
+w^Tx_i+b \le -1 &\text{ if } y_i= -1\\
+\end{aligned}
+$$</div>
+
+<p>上面两个式子的直观解释就是样本点在超平面 $w^Tx + b \ge +1$ 和 $w^Tx +b \le -1$ 的两侧。可以进一步合并为
+$$
+y_i(w^Tx_i+b) \ge +1, \forall i = 1,&hellip;,N
+$$</p>
+
+<p>那么我们要求解相当于是一个目标函数为最大化间隔且满足分类约束的优化命题：</p>
+
+<div>$$
+\begin{array}{ll}{\text { max }} & {J(w)= \frac{2}{||w||} }\\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
+$$</div>
+
+<p>等价于最小化问题(目标函数取倒数)</p>
+
+<div>$$
+\begin{array}{ll}{\text { min }} & {\Phi(w)= \frac{1}{2} w^{T} w} \\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
+$$</div>
+
+<h2 id="对偶">对偶</h2>
+
+<p>我们已经将SVM的思想表达为优化命题的形式，接下来考虑如何对其进行求解，对于一个含约束的优化命题可以通过拉格朗日乘子法转化为无约束问题，然后通过求解对偶问题来间接求解原问题。</p>
+
+<p>对于上述SVM的最小化问题，构造拉格朗日函数</p>
+
+<div>$$
+L(w, b, \alpha)=\frac{1}{2} w^{T} w-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1\right]
+$$</div>
+
+<p>原问题的拉格朗日形式为：</p>
+
+<div>$$
+\min_{w,b}\max_{\alpha_i \ge 0 }L(w,b,\alpha)
+$$</div>
+
+<p>对偶问题为</p>
+
+<div>$$
+\max_{\alpha_i \ge 0 }\min_{w,b}L(w,b,\alpha)
+$$</div>
+
+<p>先看对偶问题的内层 $\min_{w,b}L(w,b,\alpha)$，对于这个无约束最小化问题，直接求导</p>
+
+<div>
+$$
+\begin{array}{l}{\frac{\partial L(w, b, \alpha)}{\partial w}=0 \Rightarrow w(\alpha)=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial L(w, b, \alpha)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0}\end{array}
+$$
+</div>
+
+<p>再将求导得到的结果带入拉格朗日函数 $L(w,b,\alpha)$ 得到外层的最大化问题为：</p>
+
+<div>
+$$
+\begin{aligned}
+\max_{\alpha} &\sum_{i=1}^{N} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j} x_{i}^T x_{j}\\
+\text{s.t. }& \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
+& \alpha_i \ge 0, \forall i= 1,...,N
+\end{aligned}
+$$
+</div>
+
+<p>这样得到的是一个二次规划问题，很多求解器可以完美解决，但如果样本数过多，则计算量过大。序列最小最优化SMO算法是高效求解这个问题的算法代表。SMO算法的思想与坐标上升算法的思想类似。坐标上升算法每次通过更新多元函数中的一维，经过多次迭代直到收敛来达到优化函数的目的，SMO则是每次选择尽量少的变量来优化，不断迭代直到函数收敛到最优值。</p>
+
+<p>在求解得到 $\alpha^*$ 后，如何求解原问题的 $w^*,b^*$ 呢？</p>
+
+<p>对于 $w$，直接带入求解对偶问题内层最小化问题的极值条件：</p>
+
+<div>$$
+w^*=\sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}
+$$</div>
+
+<p><strong>可以看出 $w$ 仅由 $\alpha_i^*$ 大于0 的元素对应的 $x_i$ 构成，这些 $x_i$ 也称为支持向量。</strong></p>
+
+<p>对于 $b$，找到 $\alpha_t^* &gt; 0$ 的点，然后根据KKT条件中的松弛互补条件</p>
+
+<div>$$
+\alpha_{t}^{*}\left(y_{t}\left(w^{* T} x_{t}+b^{*}\right)-1\right)=0
+$$</div>
+
+<p>可以得到 $x_t$ 在margin上且</p>
+
+<p>$$
+{w^*}^Tx_t + b^* = y_t
+$$</p>
+
+<p>所以</p>
+
+<div>$$
+b^* = y_t - {w^*}^Tx_t = y_t - \sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}^T x_t
+$$</div>
+
+<p>这样就得到了用于分类的超平面了，对于测试样本，只需要带入超平面检验其正负(在超平面的哪一侧)就能进行分类。</p>
+
+<p>总结一下SVM的套路：<strong>首先根据最大间隔(max问题)的思想确定目标函数(min问题)，将原问题(带约束)表示为拉格朗日函数的形式(minmax问题，无约束)，转换为对偶问题(maxmin问题)，对于内层无约束min问题，求导并将极值条件代入拉格朗日函数，可以得到外层max问题是一个二次规划，求解得到拉格朗日乘子的最优解 $\alpha^*$ 后反求超平面参数 $w^*,b^*$，其中 $b^*$ 需要利用KKT松弛互补条件求解。</strong></p>
+
+<h2 id="核方法">核方法</h2>
+
+<p>对于线性不可分的样本，我们可以对原始样本 $x_i \in \mathbb{R}^p$ 进行非线性变换 $\phi(x_i) \in \mathbb{R}^q$ (通常 $q&gt;p$) 得到高维特征空间，在特征空间中寻找一个超平面 $w^T\phi(x) + b = 0$ 来划分不同类别的样本点。推导思路与上面一致，只是原来 $x_i$ 的位置需要用 $\phi(x_i)$ 替代，并且 $\phi(x_i)^T\phi(x_j)$ 可以用核函数表示为 $\kappa(x_i,x_j)$。</p>
+
+<h2 id="soft-margin-svm">Soft Margin SVM</h2>
+
+<p>上面讲述的Hard Margin SVM可能出现两个问题：</p>
+
+<ol>
+<li><p>投影到高维空间仍然不可分</p></li>
+
+<li><p>过拟合</p></li>
+</ol>
+
+<p>改进方法：<strong>加入软约束</strong>，原来我们要求分类必须准确，即</p>
+
+<p>$$
+y_i(w^Tx_i +b) \ge 1, \forall i=1,&hellip;,N
+$$</p>
+
+<p>现在我们允许一些异常点的出现，也就是说异常点不一定需要满足分类约束(异常点可以在超平面 $w^Tx+b = 1$ 和 $w^Tx + b =-1$ 之间)，与超平面的距离假设为 $\epsilon_i$，同时我们需要对 $\epsilon_i$ 进行惩罚，这样才能确保分类的准确性。可以理解为我们期望正常情况下 $\epsilon_i$ 都为 0，只有在异常点出现时 $\epsilon_i$ 才是个大于零的实数。对应的优化命题可以改写为</p>
+
+<div>$$
+\begin{array}{ll}{\text { min }} & {\Phi(w,\epsilon)= \frac{1}{2} w^{T} w} + C \sum_{i=1}^N \epsilon_i \\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 - \epsilon_i,\forall i=1, \ldots, N} \\
+&\epsilon_i \ge 0
+\end{array}
+$$</div>
+
+<p>其中 $C\ge 0$ 是可调参数，表示对异常点的惩罚程度，$\epsilon_i$ 表示软约束。</p>
+
+<p>相比于原来hard margin的SVM，这一优化命题多了 $N$ 条关于 $\epsilon_i$ 的不等式约束，还是跟先前一样的套路，写成拉格朗日函数</p>
+
+<div>$$
+L(w,b,\epsilon,\alpha,\beta) = \frac{1}{2} w^{T} w+C \sum_{i=1}^{N} \epsilon_{i}-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1+\epsilon_{i}\right]-\sum_{i=1}^{N} \beta_{i} \epsilon_{i}
+$$</div>
+
+<p>转化为对偶问题，内层的最小化问题求导得到极值条件</p>
+
+<div>$$
+\begin{array}{l}{\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial w}=0 \Rightarrow w=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial \epsilon_i}=0 \Rightarrow C-\alpha_{i}-\beta_{i}=0 \Rightarrow\left\{\begin{array}{l}{\alpha_{i}=C-\beta_{i}} \\ {\beta_{i}=C-\alpha_{i}}\end{array} \Rightarrow 0 \leq \alpha_{i}, \beta_{i} \leq C\right.}\end{array}
+$$</div>
+
+<p>然后代入 $L(w,b,\epsilon,\alpha,\beta)$ 并求解外层max问题，最后来根据KKT条件求解超平面参数。</p>
+
+<h2 id="多类别问题">多类别问题</h2>
+
+<p>两种策略(假设共有K个类别)</p>
+
+<ol>
+<li><p>一对一 (one-against-one)：所有类别两两之间进行分类得到 $C_K^2$ 个超平面，对于测试数据代入所有超平面进行判断，然后采用<strong>投票表决</strong>进行分类。</p></li>
+
+<li><p>一对所有 (one-against-all)：针对一个类别和剩下所有类别进行分类得到 $K-1$ 个超平面，对于测试数据，代入超平面方程，选择结果最大的那个超平面对应的类别作为分类结果。</p></li>
+</ol>
+
+<div>$$
+k^{*}=\underset{k}{\arg \max }\left(w_{k}^{T} x+b\right)
+$$</div>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -747,10 +666,10 @@ $$</p>
   <nav class="pagination">
     <a class="prev" href="/page/2/">
         <i class="iconfont icon-left"></i>
-        <span class="prev-text"></span>
+        <span class="prev-text">Prev</span>
       </a>
     <a class="next" href="/page/4/">
-        <span class="next-text"></span>
+        <span class="next-text">Next</span>
         <i class="iconfont icon-right"></i>
       </a>
   </nav>
@@ -768,11 +687,11 @@ $$</p>
 
 <div class="copyright">
   <span class="power-by">
-    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
   </span>
   <span class="division">|</span>
   <span class="theme-info">
-     - 
+    Theme - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
   </span>
 

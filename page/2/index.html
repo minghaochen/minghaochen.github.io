@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -113,6 +113,413 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/">「机器学习」高斯混合模型GMM</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-08-25 </span>
+      <div class="post-category">
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>前面总结了 EM 算法，我们知道这是一个<strong>采用迭代的方式</strong>用于解决<strong>含有隐变量</strong>的参数估计问题的算法。典型的一个应用就是今天的主角<strong>高斯混合模型</strong> (Gaussian Misture Model)。这个模型和它的名字一样直白，也就是由<strong>多个高斯分布组合而成</strong>的模型，其概率密度函数可以表示为</p>
+
+<div>$$
+p(x) = \sum_{k=1}^K \alpha_k \cdot \mathcal{N}(x|\mu_k,\Sigma_k) 
+$$</div>
+
+<p>这不就是 $K$ 个单高斯模型 $\mathcal{N}(x|\mu_k,\Sigma_k),k=1,&hellip;,K$ 加权而成，$\alpha_k$ 则是对应单高斯模型的权重，且满足 $\sum_{k=1}^K \alpha_k = 1$。这样做很直观的原因是混合多个单一模型得到复杂模型自然能够生成更复杂的样本，并且理论上如果 $K$ 足够大且权重合理，得到的混合模型能够拟合任意分布。</p>
+
+<h2 id="模型参数学习">模型参数学习</h2>
+
+<p>对混合高斯模型，我们要确定的参数有单高斯的个数 $K$ (你要混合几个单高斯总要告诉模型吧，通常直接给定或者采用一定的评价指标来确定合适的 $K$ 值)，每个单高斯分布的均值 $\mu_k$ 和方差 $\Sigma_k$ 以及对应的权重 $\alpha_k$。也就是我们需要从观测数据 $x_1,&hellip;,x_N$ 中学习得到这些模型参数。</p>
+
+<p>对于每一个样本 $x$，从生成模型的角度来理解：<strong>以 $\alpha_k$ 的概率选择第 $k$ 个高斯元 $\mathcal{N}(x|\mu_k,\Sigma_k)$，然后进行采样</strong>。</p>
+
+<p>但是观测数据 $x_1,&hellip;,x_N$ 并没有告诉我们每一个样本采样自哪一个单高斯分布，因此引入隐变量 $z$，其分布满足</p>
+
+<table>
+<thead>
+<tr>
+<th>$z$</th>
+<th>1</th>
+<th>2</th>
+<th>&hellip;</th>
+<th>$K$</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>$p(z)$</td>
+<td>$p_1$</td>
+<td>$p_2$</td>
+<td>&hellip;</td>
+<td>$p_K$</td>
+</tr>
+</tbody>
+</table>
+
+<p>如果 $z_i = 1$ 表示第 $i$ 个样本 $x_i$ 采样自第 1 个单高斯分布，概率为 $p_1$ (也就相当于前面说的权重 $\alpha_1$)。</p>
+
+<p>定义完隐变量后，对于任意样本，完整数据 (观测数据和隐变量) 的概率密度函数可以表示为</p>
+
+<div>$$
+p(x,z) = p(z)p(x|z) = p(z) \mathcal{N}(x|\mu_z,\Sigma_z)
+$$</div> 
+
+<p>假设各个样本之间相互独立，则观测数据的似然函数可以表示为</p>
+
+<div>$$
+L(\theta) = \prod_{i=1}^N p(x_i|\theta) = \prod_{i=1}^N  \int_{z_i} p(x_i,z_i|\theta) dz_i = \prod_{i=1}^N \sum_{k=1}^K p_k \mathcal{N}(x_i | \mu_k,\Sigma_k)
+$$</div>
+
+<p>上式中，观测数据的概率分布通过对完整数据的概率分布进行积分操作消除隐变量，对于离散变量 $z$ 也就是转化为求和操作。</p>
+
+<p>对数似然函数为</p>
+
+<div>$$
+\ln L(\theta) = \sum_{i=1}^N \ln \sum_{k=1}^K p_k \mathcal{N}(x_i | \mu_k,\Sigma_k)
+$$</div>
+
+<p>如果要像往常一样采用求导的方式来估计参数行不通了，因为<strong>对数里面还有求和</strong>。所以就要用 EM 算法来迭代求解啦。</p>
+
+<h2 id="em-算法与-gmm">EM 算法与 GMM</h2>
+
+<p>这里直接给出参数估计的迭代公式(不清楚的可以翻翻前面关于 EM 算法的博客)</p>
+
+<div>
+    $$
+    \theta^{(t+1)} = \arg \max_{\theta} Q(\theta,\theta^{(t)}) = \arg \max_{\theta} E_{Z|X,\theta^{(t)}}[\log p(X,Z|\theta)]
+    $$
+</div>
+
+<p>即<strong>需要先求隐变量 $Z$ 的后验，然后再令期望 $Q(\theta,\theta^{(t)})$ 最大化。</strong></p>
+
+<p>进一步可以表示为</p>
+
+<div>$$
+\begin{aligned}
+Q(\theta,\theta^{(t)}) &= \int_Z \log p(X,Z|\theta) p(Z|X,\theta^{(t)}) dZ\\
+&=\sum_{z_1,...,z_N} \log \prod_{i=1}^N p(x_i,z_i|\theta) \prod_{i=1}^N p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{z_1,...,z_N} (\sum_{i=1}^N \log p(x_i,z_i|\theta)) \prod_{i=1}^N p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{z_1,...,z_N} \log p(x_1,z_1|\theta) p(z_1|x_1,\theta^{(t)}) \prod_{i=2}^N p(z_i|x_i,\theta^{(t)})\\
+&+ ... + \sum_{z_1,...,z_N} \log p(x_N,z_N|\theta) p(z_N|x_N,\theta^{(t)}) \prod_{i=1}^{N-1} p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{i=1}^N \sum_{z_i} \log p(x_i,z_i|\theta)p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{i=1}^N \sum_{k=1}^K \log p(x_i,z_i=k|\theta)p(z_i=k|x_i,\theta^{(t)})
+\end{aligned}
+$$</div>
+
+<p>其中隐变量的后验分布为</p>
+
+<div>$$
+\begin{aligned}
+p(z_i=k|x_i,\theta^{(t)}) &= \frac
+{p(z_i=k,x_i|\theta^{(t)})}{p(x_i|\theta^{(t)})}\\
+&=\frac{p^{(t)}_k \mathcal{N}(x_i|\mu^{(t)}_k,\Sigma^{(t)}_k)}{\sum_{k=1}^K p^{(t)}_k \mathcal{N}(x_i|\mu^{(t)}_k,\Sigma^{(t)}_k)} 
+\end{aligned}
+$$</div>
+
+<p>联合分布为</p>
+
+<div>$$
+\log p(x_i,z_i=k|\theta) = \log p_k + \log \mathcal{N}(x_i|\mu_k,\Sigma_k)
+$$</div>
+
+<p>即</p>
+
+<div>$$
+Q(\theta,\theta^{(t)})=\sum_{k=1}^K\sum_{i=1}^N [\log p_k +\log \mathcal{N}(x_i|\mu_k,\Sigma_k)]p(z_i=k|x_i,\theta^{(t)})
+$$</div>
+
+<p><strong>记住这里 $p(z_i=k|x_i,\theta^{(t)})$ 相当于是个常数</strong>，然后根据最大化期望函数 $Q(\theta,\theta^{(t)})$ 的原则依次求解 $p_k,u_k,\Sigma_k$，由于 $p_k$ 额外满足等式约束 $\sum_{k=1}^K p_k=1$，求解 $p_k$ 是一个带有等式约束的最大化问题需要用到拉格朗日乘子法(不清楚的也可以翻翻之前的文章)，$u_k,\Sigma_k$ 则直接对期望函数求导利用极值条件就能得到解析解。</p>
+
+<p>对于参数 $p_k$，拉格朗日函数可以表示为：</p>
+
+<div>$$
+\mathcal{L}(p_k,\lambda) = \sum_{k=1}^K\sum_{i=1}^N \log p_k p(z_i=k|x_i,\theta^{(t)}) + \lambda(\sum_{k=1}^K p_k - 1)
+$$</div>
+
+<p>令 $\partial \mathcal{L}/\partial p_k=0$</p>
+
+<div>$$
+\begin{aligned}
+\sum_{i=1}^N \frac{1}{p_k}p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)}) + p_k \lambda = 0\\
+\sum_{k=1}^K\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+\sum_{i=1}^N \sum_{k=1}^K p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+N+\lambda = 0
+\end{aligned}
+$$</div>
+
+<p>第三式到第四式利用 $\sum_{k=1}^K p_k = 1$，第三式到第四式利用<strong>离散随机变量的概率密度函数对所有可能情况求和为1</strong>，然后将最后一式代入第一式可得</p>
+
+<div>
+    $$
+p_k^{(t+1)} = \frac{1}{N} \sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)})
+    $$
+</div>
+
+<p>对于参数 $u_k$，直接对 $Q$ 函数求导，并令 $\partial Q/ \partial u_k=0$:</p>
+
+<div>$$
+\begin{aligned}
+\frac{\partial}{\partial u_k} \sum_{k=1}^K \sum_{i=1}^N \log [\frac{1}{{(2\pi)}^{(d/2)}|\Sigma_k|^{(1/2)}}\exp(-\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k) )]p(z_i=k|x_i,\theta^{(t})=0\\
+\frac{\partial}{\partial u_k} \sum_{k=1}^K \sum_{i=1}^N [-\frac{d}{2} \log 2\pi -\frac{1}{2} \log|\Sigma_k| -\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k)] p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N (x_i-u_k)^T\Sigma_k^{(-1)} p(z_i=k|x_i,\theta^{(t)})=0
+\end{aligned}
+$$</div>
+
+<p>根据最后一式可得：</p>
+
+<div>$$
+u_k^{(t+1)} = \frac{\sum_{i=1}^Nx_i p(z_i=k|x_i,\theta^{(t)})}{\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)})}
+$$</div>
+
+<p>对于参数 $\Sigma_k$，直接对 $Q$ 函数求导，并令 $\partial Q/ \partial \Sigma_k=0$:</p>
+
+<div>$$
+\begin{aligned}
+\frac{\partial}{\partial \Sigma_k} \sum_{k=1}^K \sum_{i=1}^N \log [\frac{1}{{(2\pi)}^{(d/2)}|\Sigma_k|^{(1/2)}}\exp(-\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k) )]p(z_i=k|x_i,\theta^{(t})=0\\
+\frac{\partial}{\partial \Sigma_k} \sum_{k=1}^K \sum_{i=1}^N [-\frac{d}{2} \log 2\pi -\frac{1}{2} \log |\Sigma_k| -\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k)] p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N [-\frac{1}{2}(\Sigma_k^{(-1)})^T + \frac{1}{2} \Sigma_k^{(-1)}(x_i-u_k) (x_i-u_k)^T \Sigma_k^{(-1)}]p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N [-\Sigma_k + (x_i - u_k)(x_i - u_k)^T] p(z_i=k|x_i,\theta^{(t)})=0\\
+\end{aligned}
+$$</div>
+
+<p>根据最后一式可得：</p>
+
+<div>$$
+{\Sigma_k}^{(t+1)} = \frac{\sum_{i=1}^N (x_i - u_k)(x_i - u_k)^T p(z_i=k|x_i,\theta^{(t)})}{\sum_{i=1}^N  p(z_i=k|x_i,\theta^{(t)})}
+$$</div>
+
+<h2 id="matlab实现">matlab实现</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">clear
+clear all;
+% 生成数据 由3个二元高斯分布各生成1000个样本
+mu1 = [1 2];
+Sigma1 = [2 0;0 0.5];
+mu2 = [-3 -5];
+Sigma2 = [1 0;0 1];
+mu3 = [2 -3];
+Sigma3 = [1 0;0 2];
+rng(1); % For reproducibility
+X = [mvnrnd(mu1,Sigma1,1000);mvnrnd(mu2,Sigma2,1000);mvnrnd(mu3,Sigma3,1000)];
+[N, d] = size(X); % 样本数、样本维度
+figure
+y = [0*ones(1000,1);ones(1000,1);2*ones(1000,1)];
+h = gscatter(X(:,1),X(:,2),y);
+legend(h,&#39;Gaussian 1&#39;,&#39;Gaussian 2&#39;,&#39;Gaussian 3&#39;)
+
+% 初始参数
+K     = 3; % 单高斯的个数
+p_k   = ones(K,1)*1/K; % 各个高斯元的权重系数
+mu    = rand(K, d); % 待估计的均值，每一行是一个高斯分布的均值
+sigma = zeros(d, d, K); % 待估计的协方差矩阵
+for k = 1:K
+    sigma(:, :, k) = eye(d);
+end
+
+% 概率密度函数表达式
+pdf_value = @(x,mu,Sigma) 1/((2*pi)^(d/2)*(det(Sigma))^(1/2))*exp(-0.5*(x-mu)*inv(Sigma)*(x-mu)&#39;);
+
+% EM算法估计参数
+p_z = repmat(ones(1,K)*1/K,N,1); % 隐变量的后验分布矩阵，每一个样本对应K个后验
+
+% 迭代1000次，可以自己设置各种结束迭代条件
+for iter = 1:1000
+    % E 步 计算后验
+    for i = 1:N
+        p_xi = 0; % 后验的分母p(x_i|theta^(t))
+        for j = 1:K
+            p_xi = p_xi + p_k(j)*pdf_value(X(i,:),mu(j,:),sigma(:,:,j));
+        end
+        for k = 1:K
+            p_z(i,k) = p_k(k)*pdf_value(X(i,:),mu(k,:),sigma(:,:,k))/p_xi;
+        end
+    end
+
+    % M 步
+    for k = 1:K
+        p_k(k)  = 1/N*sum(p_z(:,k)); % 更新权重
+        num = 0; % 均值的分子
+        for i = 1:N
+            num = num + X(i,:)*p_z(i,k);
+        end
+        mu(k,:) = num/sum(p_z(:,k)); % 更新均值
+    end
+    
+    for k = 1:K
+        num = 0; % 协方差的分子
+        for i = 1:N
+            num = num + (X(i,:)-mu(k,:))&#39;*(X(i,:)-mu(k,:))*p_z(i,k);
+        end
+        sigma(:,:,k) = num/sum(p_z(:,k)); % 更新协方差
+    end
+end
+
+% 画各个高斯分布的等高线
+for k = 1:K
+    x1 = -7:.2:7;
+    x2 = -9:.2:5;
+    [X1,X2] = meshgrid(x1,x2);
+    X = [X1(:) X2(:)];
+    y = mvnpdf(X,mu(k,:),sigma(:,:,k));
+    y = reshape(y,length(x2),length(x1));
+    hold on 
+    contour(x1,x2,y,[0.0001 0.001 0.01 0.05 0.15 0.25 0.35])
+    xlabel(&#39;x_1&#39;)
+    ylabel(&#39;x_2&#39;)
+end</pre></td></tr></table>
+</div>
+</div>
+<figure>
+    <img src="/images/post/%e3%80%8c%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e3%80%8d%e9%ab%98%e6%96%af%e6%b7%b7%e5%90%88%e6%a8%a1%e5%9e%8bGMM/GMM_EM.jpg"/> 
+</figure>
+
+
+<p>散点就是由三个不同的高斯分布生成的样本，等高线则是根据学习出来的三个高斯元画的。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/">美音发音技巧——末尾s的发音</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2019-08-23 </span>
+      <div class="post-category">
+          <a href="/categories/english/"> English </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>不知道你会不会傻傻分不清楚</p>
+
+<p>likes  /s/ 还是 /z/？</p>
+
+<p>lives /s/ 还是 /z/？</p>
+
+<p>首先说说 /s/ 和 /z/ 的发音，需要注意的是这个 /z/ 的发音其实和 /s/ 是一样的！只是在 /s/ 的基础上加上了声带的震动， <strong>不是中文拼音里的 z，是中文拼音里的 z，是中文拼音里的 z</strong>！！！ 重要的事情说三遍，很多小伙伴很可能都是按照拼音的 ‘zi’ 来发音(包括我之前也是)那就要好好改改咯。</p>
+
+<p>知道了怎么发音我们再来看几个单词，你试着读读看？</p>
+
+<p>Set 1: likes/books/laughs/mats</p>
+
+<p>Set 2: lives/feels/cares</p>
+
+<p>Set 3: is/has/was/these/because</p>
+
+<p>答案揭晓：<strong>第一组都发 /s/，第二组都发 /z/，第三组都发 /z/</strong></p>
+
+<p>不知道你发对了没有还是 /s/ 和 /z/ 胡乱发一通，搞不清楚也没关系，我们先来找找规律，第一组 s 前都是什么？对！是以<strong>清辅音</strong> 结尾的；第二组呢？是以<strong>浊辅音</strong>结尾的，第三组则是<strong>元音</strong>结尾的。</p>
+
+<p>那你就记住：<strong>/s/ 是清辅音，那就接在清辅音后面，/z/ 是浊辅音那就接在浊辅音后面，元音后面通常跟 /z/</strong>，OK，再试试把上面三组单词读一遍感受一下。</p>
+
+<p>问题又来了，有的小伙伴会问什么是清辅音，什么是浊辅音，这个很好判断，你摸着你的声带，发音时感受到声带的就是浊辅音，比如/b/,/d/,/g/,/v/,/z/，不震动的就是清辅音，比如/p/,/t/,/k/,/f/,/s/。</p>
+
+<p>还有一个关于浊辅音和清辅音的技巧就是：<strong>浊辅音前的元音发音更“长”一点</strong></p>
+
+<p>不信你对比一下以下几组单词： back 和 bag; safe 和save; pick 和 pig; lock 和 log; cup 和 cub</p>
+
+<p>是不是发音每组单词中后面那个单词的元音都拉得比较长呢，那就对了！</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/">「机器学习」EM算法</a></h1>
@@ -438,749 +845,7 @@ end</pre></td></tr></table>
 <p>首先从为什么需要用EM算法说起：<strong>含有隐变量的参数估计问题</strong>，然后从<strong>最大化ELBO的角度</strong>推导了EM算法迭代公式的由来并证明了算法的收敛性，最后以三硬币模型为例介绍了EM算法的使用以及matlab实现。</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/" class="read-more-link"></a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/">「机器学习」指数族分布</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-08-17 </span>
-      <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p>听到指数族分布这个名字可能会觉得有点抽象，甚至你可能之前都没听过(反正我以前是没听过的)，但是如果说<strong>高斯分布、伯努利分布、二项分布、泊松分布、beta分布、Dirichlet分布、gamma分布</strong>这些分布，那我想你应该大部分都听过而且可能对其中部分还很熟悉了。其实呢，指数族分布就是这些分布的统称啦，也就是说这些分布的概率密度函数都能写成一个统一的形式，而这个统一的形式就是：</p>
-
-<div>$$
-\begin{aligned}
-p(x|\eta) &= h(x)exp(\eta^T\phi(x)-A(\eta)) \\
-&=\frac{1}{exp(A(\eta))}h(x)exp(\eta^T\phi(x))
-\end{aligned}
-$$</div>
-
-<p>其中，$\eta$ 为参数向量；你看 $exp(A(\eta))$ 看着是不是就像归一化的作用，再取个对数就是 $A(\eta)$ 因此 $A(\eta)$ 也就是所谓的对数配分函数；$\phi(x)$ 则称为<strong>充分统计量</strong>，这是关于样本的函数，充分的意思呢就是有了它就相当于可以丢掉样本了，比如正态分布里的均值和方差。$h(x)$ 就不怎么重要了通常取 1。</p>
-
-<p>指数族分布可以总结为 <strong>3 个特性和 3 个地位</strong>。</p>
-
-<p>3 个特性：</p>
-
-<ol>
-<li><p><strong>充分统计量</strong>：online learning时不必要保存所有样本信息</p></li>
-
-<li><p><strong>共轭</strong>：指数族分布具有共轭先验，在贝叶斯理论中，若先验为似然函数的共轭先验，则后验与先验具有相同的形式，避免了求积分常数的困难</p></li>
-
-<li><p><strong>最大熵</strong>：指数族分布满足最大熵原理，在所有可能的概率模型(分布)中，熵最大的模型是最好的模型</p></li>
-</ol>
-
-<p>3 个地位：</p>
-
-<ol>
-<li><strong>广义线性模型</strong>：通过三个假设将指数分布族转换成对应的机器学习模型，如线性回归、logistic 回归、Softmax模型等</li>
-</ol>
-
-<blockquote>
-<p>广义线性模型的三个假设：</p>
-
-<ol>
-<li><p>$y$ 的条件概率属于指数族分布</p></li>
-
-<li><p>$y$ 的估计值 $h(x,\theta)=E(y|x,\theta)$</p></li>
-
-<li><p>线性预测算子 $\eta=\theta^Tx$</p></li>
-</ol>
-</blockquote>
-
-<ol>
-<li><p><strong>概率图模型</strong>：无向图RBM(这个目前我也还不了解，后续学习到了再补充吧)</p></li>
-
-<li><p><strong>变分推断</strong>：后续补充</p></li>
-</ol>
-
-<h2 id="高斯分布的指数族形式">高斯分布的指数族形式</h2>
-
-<p>上面光说了那么多分布都属于指数族分布，那么我们现在来推一个看看，将大家最熟悉的高斯分布转化为指数族分布的形式，假设单变量高斯分布的均值为 $\mu$，方差为 $\sigma^2$，其概率密度可以表示为：</p>
-
-<div>$$
-\begin{aligned}
-p(x|\mu,\sigma)&=\frac{1}{\sqrt{2\pi \sigma^2}}exp\{-\frac{(x-\mu)^2}{2\sigma^2}\}\\
-&=\frac{1}{\sqrt{2\pi \sigma^2}}exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x + \mu^2)\}\\
-&=exp\{\log(2\pi \sigma^2)^{-1/2}\}exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x) - \frac{\mu^2}{2\sigma^2}\}\\
-&=exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x) -(\frac{\mu^2}{2\sigma^2} + \frac{1}{2}\log(2 \pi \sigma^2)) \}
-\end{aligned}
-$$</div>
-
-<p>令</p>
-
-<div>$$
-\eta=\left(\begin{array}{l}{\eta_{1}} \\ {\eta_{2}}\end{array}\right) 
-=\left(\begin{array}{c}{\frac{u}{\sigma^{2}}} \\ {-\frac{1}{2 \sigma^2}}\end{array}\right),\phi(x) = \left(\begin{array}{l}{x} \\ {x^2}\end{array}\right) 
-$$</div>
-
-<p>眼尖的你是不是发现高斯分布的概率密度函数表示成了指数族分布的形式了。其他分布也可以这样表示，这里就不详细推导了。</p>
-
-<h2 id="对数配分函数与充分统计量的关系">对数配分函数与充分统计量的关系</h2>
-
-<p>对数配分函数在指数族分布里的表现形式为 $exp(A(\eta))$，进一步可以表示为积分的形式：</p>
-
-<p>$$
-exp(A(\eta)) = \int h(x) \cdot \exp \left(\eta^T\phi(x)\right) d x
-$$</p>
-
-<p>两边同时对 $\eta$ 求导</p>
-
-<blockquote>
-<p>牛顿莱布尼兹
-$$
-\frac{\partial}{\partial \eta} \int=\int \frac{\partial}{\partial \eta}
-$$</p>
-</blockquote>
-
-<p>可得</p>
-
-<p>$$
-exp(A(\eta))A&rsquo;(\eta)=\int h(x) \cdot exp(\eta^T\phi(x)) \cdot \phi(x) dx
-$$</p>
-
-<p>将 $exp(A(\eta)$ 移到右边</p>
-
-<p>$$
-A&rsquo;(\eta) = \frac{\int h(x) \cdot exp(\eta^T\phi(x)) \cdot \phi(x) dx}{exp(A(\eta))}=\int h(x) \cdot exp(\eta^T\phi(x) - A(\eta)) \cdot \phi(x) dx
-$$</p>
-
-<p>即</p>
-
-<p>$$
-A&rsquo;(\eta) = \int p(x|\eta) \cdot \phi(x) dx = E_{p(x|\eta)}[\phi(x)]
-$$</p>
-
-<p>还可以推导出</p>
-
-<p>$$
-A^{\prime \prime}(\eta) = Var[\phi(x)]
-$$</p>
-
-<p>进一步也说明了 $A(\eta)$ 是个凸函数。这里告诉了我们<strong>对数配分函数是个凸函数，且它的一阶导数和二阶导数分别对应着充分统计量的期望和方差。</strong></p>
-
-<h2 id="极大似然估计与充分统计量的关系">极大似然估计与充分统计量的关系</h2>
-
-<p>既然 $\eta$ 是参数，我们在learning的时候当然是需要将其估计出来的，很自然的想法就是用极大似然估计来估计 $\eta$，假设有数据 $x_1,&hellip;,x_N$，则</p>
-
-<div>$$
-\begin{aligned}
-\eta_{MLE}&=\arg\max\log p(x_1,...,p_N|\eta)\\
-&=\arg\max\log \prod_{i=1}^{N} p(x_i|\eta)\\
-&=\arg\max\ \sum_{i=1}^N \log p(x_i|\eta)\\
-&=\arg\max\ \sum_{i=1}^N [\log h(x_i) + \eta^T\phi(x_i) - A(\eta)]
-\end{aligned}
-$$</div>
-
-<p>目标函数对 $\eta$ 求导并令导函数为0</p>
-
-<div>$$
-\frac{\partial}{\partial \eta} \sum_{i=1}^N [\log h(x_i) + \eta^T\phi(x_i) - A(\eta)] = \sum_{i=1}^N \phi(x_i) - N \cdot A'(\eta) = 0
-$$</div>
-
-<p>可得到 $A&rsquo;(\eta_{MLE})$ 可以表示为</p>
-
-<div>$$
-A'(\eta_{MLE}) = \frac{1}{N} \sum_{i=1}^N\phi(x_i)
-$$</div>
-
-<p>又因为 $A(\eta)$ 是 $\eta$ 的函数，$A&rsquo;(\eta)$ 也是 $\eta$ 的函数，那么就可以通过 $A&rsquo;(\eta)$ 的反函数求解出 $\eta$ 的估计值 $\eta_{MLE}$，同时这也表现了充分统计量的性质，<strong>不需要保存所有样本信息，只需要通过充分统计量就能得到参数的估计值</strong>。</p>
-
-<h2 id="最大熵原理与指数族分布">最大熵原理与指数族分布</h2>
-
-<p>一言不合甩结论：<strong>在给定的约束条件下，指数族分布是信息熵(微分熵)最大的分布。</strong></p>
-
-<p>很多人可能对熵的概念都还不清楚，那我们从信息量说起，信息量就是你对一个事件的不确定程度的认识，我们直观地来理解一下，一个事件发生的概率越大，那就是越确定这个事件会发生，那他的不确定性就越小，包含的信息可能就越少，那他的信息量就比较小，也就是说信息量和事件发生的概率成反比，信息量的定义为：</p>
-
-<p>$$
-I(X)=-\log p(X)
-$$</p>
-
-<p>一个事件发生的可能有好几种可能情况，那么我们就会希望知道平均意义下这个事件的信息量有多少，这就得到了信息熵的概念，其实是信息量的期望:</p>
-
-<p>$$
-H(X)=E(I(X))
-$$</p>
-
-<p>当 $X$ 为离散时，期望就是求和</p>
-
-<p>$$
-H(X)=-\sum_{x} p(x) \log p(x)
-$$</p>
-
-<p>其中，$p(x)=p(X=x)$，那如果 $X$ 是连续的，那信息熵就是个积分的形式了。</p>
-
-<p>介绍了半天熵，那么最大熵有什么好处呢？答案是：<strong>在学习概率模型时，在所有可能的概率模型(分布)中，熵最大的模型是最好的模型。</strong></p>
-
-<p><strong>在没有任何已知的情况下</strong></p>
-
-<p>最大熵可以用优化命题表示为：</p>
-
-<div>$$
-    $$
-\begin{array}{cl}{\max_{p}} & {-\sum_{i=1}^{K} p\left(x_{i}\right) \log p\left(x_{i}\right)} \\ {\text { s.t. }} & {\sum_{i=1}^K p\left(x_{i}\right) = 1}\end{array}
-$$
-$$</div>
-
-<p>利用拉格朗日乘子法可得：$\hat{p}(x_i)=\frac{1}{K}$</p>
-
-<p>也就是说<strong>在没有任何已知的情况下均匀分布的熵最大。(离散型)</strong></p>
-
-<p><strong>满足已知事实(约束)的情况下</strong></p>
-
-<p>最大熵可以用优化命题表示为：</p>
-
-<div>$$
-    $$
-\begin{array}{cl}{\max_{p}} & {-\sum_{i=1}^{K} p\left(x_{i}\right) \log p\left(x_{i}\right)} \\ {\text { s.t. }} & {\sum_{i=1}^K p\left(x_{i}\right) = 1} \\
-{} & {E_{p(x)}[f(x)]= E_{\hat{p}(x)}[f(x)] = \Delta}
-\end{array}
-$$
-$$</div>
-
-<p>其中，$\hat{p}(x)$ 为经验分布，$f(x)$ 为任意关于 $x$ 的函数向量(可以理解为将已知事实或者先验信息写成约束的形式)。</p>
-
-<p>同样利用拉格朗日乘子法可以得到 $p(x)$ 的表达式符合指数族分布的一般形式。</p>
-
-<p>也就是说<strong>在满足已知事实(约束)的情况下指数族分布的熵最大。(离散型)</strong></p>
-    </div>
-    <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/" class="read-more-link"></a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/">核函数与再生核希尔伯特空间</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-08-15 </span>
-      <div class="post-category">
-          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p>说到核方法，很多人第一反应就是SVM，其实不然，其应用很广，但核心思想均是<strong>用在原始空间计算核函数的值来避免直接求解高维特征空间的内积</strong>；说到核函数往往还会带上一个吓人的概念“再生核希尔伯特空间”，先揭秘一下什么是希尔伯特空间，希尔伯特空间其实就是<strong>函数空间</strong>(或者可以把函数理解为无限维的向量)，函数空间里任意一个元素都表示一个函数，而再加上“再生核”这个限定词相当于就是特定的函数空间，就是具有再生性的函数空间，那什么是再生性听我慢慢道来。</p>
-
-<p>假设有原始空间样本 $x_i \in \mathbb{R}^p, i=1,&hellip;,N$，通常为了<strong>在高维空间寻找线性关系</strong>我们会将其通过函数映射 $\phi(\cdot)$ 到高维空间 $\phi(x_i) \in \mathbb{R}^n$，但是这样也意味着如果原始空间求内积 $&lt;x_i,x_j&gt;$ 对应到特征空间为 $&lt;\phi(x_i),\phi(x_j)&gt;$，直接求解高维空间的内积计算量是很大的，同时我们可能并不知道这个映射函数 $\phi(\cdot)$ 怎么选择才是合适的。核函数则提供了另一种求解的思路。</p>
-
-<p><strong>核函数的定义</strong></p>
-
-<p>$$
-\kappa(\cdot,\cdot):\mathbb{R}^p \times \mathbb{R}^p \rightarrow \mathbb{R}
-$$</p>
-
-<p>则特征空间的内积可以表示为</p>
-
-<p>$$
-&lt;\phi(x_i),\phi(x_j)&gt; = \kappa(x_i,x_j)
-$$</p>
-
-<p>此外，特征空间的距离和角度也可以用核函数来表示。</p>
-
-<p>同时有 Mercer 定理告诉我们怎么样的函数能称为核函数</p>
-
-<blockquote>
-<p>任何正半定函数均可以作为核函数，即由 $\kappa(\cdot,\cdot)$ 构成的核矩阵 $K$ 是正半定的：$a^TKa\ge 0$，其中 $K_{ij} = \kappa(x_i,x_j)$</p>
-</blockquote>
-
-<p><strong>这也就说明了只要我们构造出一个正定核(往往是应用现成的)，那么就不需要显式地定义特征空间和映射函数，并且能够利用已有的线性方法来解决非线性问题</strong>。<strong>同时，核函数还可以理解为用来衡量两个向量的相似度(因为内积可以一定程度反应两个样本之间的相似度)</strong></p>
-
-<p>因为核函数可以总结为：<strong>映射、内积、相似度</strong></p>
-
-<p><strong>再生核希尔伯特空间的定义</strong></p>
-
-<p>有了核函数，那么就会至少有一个与之对应的再生核希尔伯特空间 $\mathcal{H}$，它满足</p>
-
-<ol>
-<li><p>固定任意 $x_0$，则 $\kappa(\cdot,x_0):\mathbb{R^p} \rightarrow \mathbb{R}$ (这是个函数！) 属于 $\mathcal{H}$ (这是个函数空间！)</p></li>
-
-<li><p>再生性：</p></li>
-</ol>
-
-<div>$$
-\begin{aligned}
-<\kappa(\cdot,x),f> &= f(x),f \in \mathcal{H} \\
-<\kappa(\cdot,x),\kappa(\cdot,z)> &= \kappa(x,z) = \kappa(z,x)
-\end{aligned}
-$$</div>
-
-<p>给定核函数如何确定映射以及对应的希尔伯特空间？</p>
-
-<p>定义再生核map $\Phi:\mathbb{R}^p \rightarrow \mathbb{R}^{\mathbb{R}^p}$ 且 $\Phi(z)=\kappa(\cdot,z)$，相当于将 $z\in \mathbb{R}^p$ 映射成一个函数 $\kappa(\cdot,z):\mathbb{R}^p \rightarrow \mathbb{R}$，则</p>
-
-<p>$$
-\kappa(x,z) = &lt;\kappa(\cdot,x),\kappa(\cdot,z)&gt;=&lt;\Phi(x),\Phi(z)&gt;
-$$</p>
-
-<p>即通过核函数可以找到对应的映射，而对应的希尔伯特空间可以表示为由 $\Phi(\cdot)$ 组成的向量空间。</p>
-
-<p>给定映射关系如何确定核函数？</p>
-
-<p>直接令 $\kappa(x,z) = &lt;\Phi(x),\Phi(z)&gt;$，然后验证 Mercer 定理即可。</p>
-
-<h2 id="各种空间的定义补充">各种空间的定义补充</h2>
-
-<p>各种空间之间的关系其实有点<strong>从抽象到具体的过程</strong>。我们给空间<strong>赋予一些属性或者制定一些规则</strong>就能得到特定的空间。</p>
-
-<p>比如大家熟悉的<strong>向量空间</strong>，那就是满足加减法和数乘的空间，很好理解，空间内任意元素都可以用一组基通过加减和数乘(线性组合)表示。</p>
-
-<p>比如赋予距离的空间称为<strong>度量空间</strong>，定义距离时需要遵守三条公理：</p>
-
-<ol>
-<li><p>非负性，同一性：距离都是非负的，自己到自己的距离当然是 0 了</p></li>
-
-<li><p>对称性：你走向我的距离等于我走向你的距离</p></li>
-
-<li><p>三角不等式：你从 A 走到 B 在走到 C 的距离肯定大于等于直接从 A 到 C 的距离</p></li>
-</ol>
-
-<p>比如赋予范数的空间称为<strong>赋范空间</strong>，范数可以理解为一个元素到 0 的距离，同时它比距离的定义<strong>更具体了一步</strong>，因为它还需要额外满足</p>
-
-<p>$$
-||ax|| = |a| \times||x||
-$$</p>
-
-<p>那么我们在定义了范数后自然能用范数来定义距离了，比如 $d(x,y) = ||x-y||$，但是不能用距离来定义范数哦，因为<strong>波霸奶茶是奶茶，但不是所有奶茶都叫波霸奶茶</strong></p>
-
-<p>有了范数来定义距离了有时候还不够，我们有时候会需要<strong>角度</strong>信息，这时候就<strong>再给波霸奶茶加点料</strong>，于是赋予了内积的向量空间称为<strong>内积空间</strong>，定义内积需要遵守三条公理：</p>
-
-<ol>
-<li><p>对称性</p></li>
-
-<li><p>第一元素线性：
-$$&lt;ax,y&gt;=a&lt;x,y&gt;,&lt;x+y,z&gt;=&lt;x,z&gt;+&lt;y,z&gt;$$ 这不就是向量空间的数乘和加减运算嘛</p></li>
-
-<li><p>正定性</p></li>
-</ol>
-
-<p>那么定义了内积后自然也能用<strong>加了仙草的波霸奶茶来定义波霸奶茶</strong>(用内积来定义范数)，比如</p>
-
-<p>$$||x||=\sqrt{&lt;x,x&gt;}$$</p>
-
-<p>还有个比较难以描述的<strong>完备空间</strong>，可以理解为极限操作不会跑出自己的空间就称为完备的，<strong>奶茶只要三分糖，太甜了就超出能承受的甜度极限了呗</strong>。</p>
-
-<p>有了这么一步步的具体化后，<strong>希尔伯特空间</strong>就可以出来了，它就是<strong>一杯三分糖的加了仙草的波霸奶茶</strong>，呸，它就是<strong>一个完备的内积空间</strong></p>
-
-<blockquote>
-<p>总结来说：</p>
-
-<ol>
-<li><p>赋范线性空间就是赋予了范数的向量空间，也是度量空间（具有线性结构的度量空间）</p></li>
-
-<li><p>内积空间是赋范线性空间</p></li>
-
-<li><p>希尔伯特空间就是完备的内积空间，同时需要注意的是希尔伯特空间中的元素一般是函数，一个函数可以视为一个无穷维的向量。如果大家熟悉傅里叶变换或者泰勒展开，便能自然的想到这个空间的基底是什么。没错，也是一组无限多的函数。</p></li>
-</ol>
-</blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/" class="read-more-link"></a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/">「机器学习」支持向量机SVM</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-08-14 </span>
-      <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p>SVM（Support Vector Machine）又称为支持向量机，是一种用于机器学习的算法，不仅支持线性分类，结合核方法还可以用于非线性分类。其思想主要为<strong>最大间隔</strong>，推导依赖于<strong>对偶理论</strong>，因此可以将SVM归结于：间隔、对偶、核方法。</p>
-
-<h2 id="间隔">间隔</h2>
-
-<p>简单举例一个二分类问题，假设有线性可分的两堆点</p>
-
-<div>$$
-\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1}^{N}， x_{i} \in \mathbb{R}^{p}, y_{j} \in\{-1,1\}
-$$</div>
-
-<p>要将它们分开的超平面有很多种，<strong>SVM做的相当于要寻找一个最优的超平面 $w^Tx+b=0$ 来分开不同类别的样本点</strong>，因此首先需要定义什么样的超平面是最优的，<strong>也就是所有样本点到超平面的最短距离是最大的</strong>，假设两个类别中距离分隔超平面最近的点所在的超平面分别为 $w^Tx + b =1$ 和 $w^Tx+b = -1$(这里的 $1,-1$ 只是为了方便推导，不影响优化的结果，因为你总是可以对超平面乘以一个系数然后做变量替换得到$w^Tx + b =1$ 和 $w^Tx+b = -1$)，SVM要最大化的间隔就是<strong>这两个平面之间的距离</strong>。</p>
-
-<p>你可能要问两个平面的距离怎么求？回忆下高中的两条平行直线的距离公式，对于直线 $ax+by+c_1 = 0$ 和 $ax + by +c_2 = 0$，距离公式为
-$$d = \frac{|c_1-c_2|}{\sqrt{a^2+b^2}}$$</p>
-
-<p>(莫名的亲切感有没有)那平面的距离公式类比下就可以得到：
-$$
-\text{margin} = \frac{1 - (-1)}{\sqrt{w_1^2+w_2^2+ &hellip; + w_p^2}} = \frac{2}{||w||}
-$$</p>
-
-<p>$w$ 的维度为 $p$, $w_i$ 表示 $w$ 的第 $i$ 个元素。SVM的目标就是最大化这个margin，那需要满足什么约束呢？首先分类要准确吧这可是分类器的初衷，即</p>
-
-<div>$$
-\begin{aligned}
-w^Tx_i+b \ge +1 &\text{ if } y_i= +1\\
-w^Tx_i+b \le -1 &\text{ if } y_i= -1\\
-\end{aligned}
-$$</div>
-
-<p>上面两个式子的直观解释就是样本点在超平面 $w^Tx + b \ge +1$ 和 $w^Tx +b \le -1$ 的两侧。可以进一步合并为
-$$
-y_i(w^Tx_i+b) \ge +1, \forall i = 1,&hellip;,N
-$$</p>
-
-<p>那么我们要求解相当于是一个目标函数为最大化间隔且满足分类约束的优化命题：</p>
-
-<div>$$
-\begin{array}{ll}{\text { max }} & {J(w)= \frac{2}{||w||} }\\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
-$$</div>
-
-<p>等价于最小化问题(目标函数取倒数)</p>
-
-<div>$$
-\begin{array}{ll}{\text { min }} & {\Phi(w)= \frac{1}{2} w^{T} w} \\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
-$$</div>
-
-<h2 id="对偶">对偶</h2>
-
-<p>我们已经将SVM的思想表达为优化命题的形式，接下来考虑如何对其进行求解，对于一个含约束的优化命题可以通过拉格朗日乘子法转化为无约束问题，然后通过求解对偶问题来间接求解原问题。</p>
-
-<p>对于上述SVM的最小化问题，构造拉格朗日函数</p>
-
-<div>$$
-L(w, b, \alpha)=\frac{1}{2} w^{T} w-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1\right]
-$$</div>
-
-<p>原问题的拉格朗日形式为：</p>
-
-<div>$$
-\min_{w,b}\max_{\alpha_i \ge 0 }L(w,b,\alpha)
-$$</div>
-
-<p>对偶问题为</p>
-
-<div>$$
-\max_{\alpha_i \ge 0 }\min_{w,b}L(w,b,\alpha)
-$$</div>
-
-<p>先看对偶问题的内层 $\min_{w,b}L(w,b,\alpha)$，对于这个无约束最小化问题，直接求导</p>
-
-<div>
-$$
-\begin{array}{l}{\frac{\partial L(w, b, \alpha)}{\partial w}=0 \Rightarrow w(\alpha)=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial L(w, b, \alpha)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0}\end{array}
-$$
-</div>
-
-<p>再将求导得到的结果带入拉格朗日函数 $L(w,b,\alpha)$ 得到外层的最大化问题为：</p>
-
-<div>
-$$
-\begin{aligned}
-\max_{\alpha} &\sum_{i=1}^{N} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j} x_{i}^T x_{j}\\
-\text{s.t. }& \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
-& \alpha_i \ge 0, \forall i= 1,...,N
-\end{aligned}
-$$
-</div>
-
-<p>这样得到的是一个二次规划问题，很多求解器可以完美解决，但如果样本数过多，则计算量过大。序列最小最优化SMO算法是高效求解这个问题的算法代表。SMO算法的思想与坐标上升算法的思想类似。坐标上升算法每次通过更新多元函数中的一维，经过多次迭代直到收敛来达到优化函数的目的，SMO则是每次选择尽量少的变量来优化，不断迭代直到函数收敛到最优值。</p>
-
-<p>在求解得到 $\alpha^*$ 后，如何求解原问题的 $w^*,b^*$ 呢？</p>
-
-<p>对于 $w$，直接带入求解对偶问题内层最小化问题的极值条件：</p>
-
-<div>$$
-w^*=\sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}
-$$</div>
-
-<p><strong>可以看出 $w$ 仅由 $\alpha_i^*$ 大于0 的元素对应的 $x_i$ 构成，这些 $x_i$ 也称为支持向量。</strong></p>
-
-<p>对于 $b$，找到 $\alpha_t^* &gt; 0$ 的点，然后根据KKT条件中的松弛互补条件</p>
-
-<div>$$
-\alpha_{t}^{*}\left(y_{t}\left(w^{* T} x_{t}+b^{*}\right)-1\right)=0
-$$</div>
-
-<p>可以得到 $x_t$ 在margin上且</p>
-
-<p>$$
-{w^*}^Tx_t + b^* = y_t
-$$</p>
-
-<p>所以</p>
-
-<div>$$
-b^* = y_t - {w^*}^Tx_t = y_t - \sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}^T x_t
-$$</div>
-
-<p>这样就得到了用于分类的超平面了，对于测试样本，只需要带入超平面检验其正负(在超平面的哪一侧)就能进行分类。</p>
-
-<p>总结一下SVM的套路：<strong>首先根据最大间隔(max问题)的思想确定目标函数(min问题)，将原问题(带约束)表示为拉格朗日函数的形式(minmax问题，无约束)，转换为对偶问题(maxmin问题)，对于内层无约束min问题，求导并将极值条件代入拉格朗日函数，可以得到外层max问题是一个二次规划，求解得到拉格朗日乘子的最优解 $\alpha^*$ 后反求超平面参数 $w^*,b^*$，其中 $b^*$ 需要利用KKT松弛互补条件求解。</strong></p>
-
-<h2 id="核方法">核方法</h2>
-
-<p>对于线性不可分的样本，我们可以对原始样本 $x_i \in \mathbb{R}^p$ 进行非线性变换 $\phi(x_i) \in \mathbb{R}^q$ (通常 $q&gt;p$) 得到高维特征空间，在特征空间中寻找一个超平面 $w^T\phi(x) + b = 0$ 来划分不同类别的样本点。推导思路与上面一致，只是原来 $x_i$ 的位置需要用 $\phi(x_i)$ 替代，并且 $\phi(x_i)^T\phi(x_j)$ 可以用核函数表示为 $\kappa(x_i,x_j)$。</p>
-
-<h2 id="soft-margin-svm">Soft Margin SVM</h2>
-
-<p>上面讲述的Hard Margin SVM可能出现两个问题：</p>
-
-<ol>
-<li><p>投影到高维空间仍然不可分</p></li>
-
-<li><p>过拟合</p></li>
-</ol>
-
-<p>改进方法：<strong>加入软约束</strong>，原来我们要求分类必须准确，即</p>
-
-<p>$$
-y_i(w^Tx_i +b) \ge 1, \forall i=1,&hellip;,N
-$$</p>
-
-<p>现在我们允许一些异常点的出现，也就是说异常点不一定需要满足分类约束(异常点可以在超平面 $w^Tx+b = 1$ 和 $w^Tx + b =-1$ 之间)，与超平面的距离假设为 $\epsilon_i$，同时我们需要对 $\epsilon_i$ 进行惩罚，这样才能确保分类的准确性。可以理解为我们期望正常情况下 $\epsilon_i$ 都为 0，只有在异常点出现时 $\epsilon_i$ 才是个大于零的实数。对应的优化命题可以改写为</p>
-
-<div>$$
-\begin{array}{ll}{\text { min }} & {\Phi(w,\epsilon)= \frac{1}{2} w^{T} w} + C \sum_{i=1}^N \epsilon_i \\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 - \epsilon_i,\forall i=1, \ldots, N} \\
-&\epsilon_i \ge 0
-\end{array}
-$$</div>
-
-<p>其中 $C\ge 0$ 是可调参数，表示对异常点的惩罚程度，$\epsilon_i$ 表示软约束。</p>
-
-<p>相比于原来hard margin的SVM，这一优化命题多了 $N$ 条关于 $\epsilon_i$ 的不等式约束，还是跟先前一样的套路，写成拉格朗日函数</p>
-
-<div>$$
-L(w,b,\epsilon,\alpha,\beta) = \frac{1}{2} w^{T} w+C \sum_{i=1}^{N} \epsilon_{i}-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1+\epsilon_{i}\right]-\sum_{i=1}^{N} \beta_{i} \epsilon_{i}
-$$</div>
-
-<p>转化为对偶问题，内层的最小化问题求导得到极值条件</p>
-
-<div>$$
-\begin{array}{l}{\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial w}=0 \Rightarrow w=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial \epsilon_i}=0 \Rightarrow C-\alpha_{i}-\beta_{i}=0 \Rightarrow\left\{\begin{array}{l}{\alpha_{i}=C-\beta_{i}} \\ {\beta_{i}=C-\alpha_{i}}\end{array} \Rightarrow 0 \leq \alpha_{i}, \beta_{i} \leq C\right.}\end{array}
-$$</div>
-
-<p>然后代入 $L(w,b,\epsilon,\alpha,\beta)$ 并求解外层max问题，最后来根据KKT条件求解超平面参数。</p>
-
-<h2 id="多类别问题">多类别问题</h2>
-
-<p>两种策略(假设共有K个类别)</p>
-
-<ol>
-<li><p>一对一 (one-against-one)：所有类别两两之间进行分类得到 $C_K^2$ 个超平面，对于测试数据代入所有超平面进行判断，然后采用<strong>投票表决</strong>进行分类。</p></li>
-
-<li><p>一对所有 (one-against-all)：针对一个类别和剩下所有类别进行分类得到 $K-1$ 个超平面，对于测试数据，代入超平面方程，选择结果最大的那个超平面对应的类别作为分类结果。</p></li>
-</ol>
-
-<div>$$
-k^{*}=\underset{k}{\arg \max }\left(w_{k}^{T} x+b\right)
-$$</div>
-    </div>
-    <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/" class="read-more-link"></a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/">对偶理论</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2019-08-11 </span>
-      <div class="post-category">
-          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
-          </div>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p>在求解一个优化命题时，如果其对偶形式便于求解，常常可以通过求解对偶问题来避免直接对原问题进行求解。比如机器学习中典型的SVM就涉及到对偶理论，以及拉格朗日乘子法、KKT条件等概念。</p>
-
-<p>首先简单通俗地说说这几个概念是干嘛的</p>
-
-<ol>
-<li><p>对偶理论：对偶也就是孪生双胞胎，一个优化命题也就有其对应的兄弟优化命题。</p></li>
-
-<li><p>拉格朗日函数：将原本优化命题的目标函数和约束整合成一个函数。</p></li>
-
-<li><p>KKT条件：函数的最优值满足的性质。</p></li>
-</ol>
-
-<p>上面的解释可能不够准确，但希望对这些概念有个初步的认识，接下来从优化命题的角度来解释一下这些东西。</p>
-
-<p>首先是原问题</p>
-
-<div>$$
-\begin{aligned} \min _{x \in R^{n}} f_0(x) & \\ \text { s.t. } f_{i}(x) \leq 0, i &=1,2, \ldots, k \\ h_{j}(x)=0, j &=1,2, \ldots, l \end{aligned}
-$$</div>
-
-<p>这个优化命题说的是你有个函数 $f_0(x)$，它的自变量是 $x$，维度为 $n$，你想要求这个函数的最小值，同时这个自变量(优化里又叫决策变量)还需要满足 $k$ 个不等式约束 $f_i(x) \le 0$ 以及 $l$ 个等式约束 $h_j(x) = 0$。假设满足这些约束的情况下这个函数的最小值为 $p^*$。</p>
-
-<p>如果是个无约束的求极值问题，高中时我们就学过，求导并令导函数为 $0$ 便能求出函数取得极值时对应的自变量 $x^*$。 但是这里是有约束的优化问题，显然直接求导的方法不再适用，那自然的想法就是把约束去掉，拉格朗日函数就是通过将约束<strong>线性组合</strong>放入目标函数而形成的新的一个函数：</p>
-
-<p>$$
-L(x,\lambda,v) = f_0(x) + \sum_{i=1}^k \lambda_i f_i(x) + \sum_{j=1}^l v_j h_j(x)
-$$
-这里 $L(x,\lambda,v)$ 是个三元函数 $R^n \times R^k \times R^l \rightarrow R$，且 $\lambda \ge 0,v$ 称为拉格朗日向量，至于这个系数 $\lambda$ 为什么还需要满足 $\lambda \ge 0$，你先记住这是为了<strong>确保下界</strong>，后面会详细解释。</p>
-
-<h2 id="原问题的等价形式">原问题的等价形式</h2>
-
-<p>我们原来是要求函数 $f_0(x)$ 关于 $x$ 的最小值，为了不考虑原问题的约束而构造了拉格朗日函数 $L(x,\lambda,v)$。我们先将其看作是 $\lambda,v$ 的函数，然后定义函数：</p>
-
-<p>$$
-q(x) = \max_{\lambda \ge 0,v } L(x,\lambda,v)
-$$</p>
-
-<p>可以证明 $\min_{x\in R^{n}}q(x)$ 与原问题等价，即满足</p>
-
-<div>$$
-p^* = \min_{x\in R^{n}}q(x) = \min_{x\in R^{n}}\max_{\lambda \ge 0,v}L(x,\lambda,v)
-$$</div>
-
-<p>这个证明很简单，我们只需要分类讨论一下这个<strong>无约束问题中原问题约束是否成立</strong>：</p>
-
-<ol>
-<li><p>$x$ 满足原问题约束，则 $q(x) = f_0(x)$</p></li>
-
-<li><p>$x$ 不满足原问题约束，即 $f_i(x) \ge 0$ 或 $h_j(x) \not= 0$，则 $q(x) = + \infty$</p></li>
-</ol>
-
-<p>因此 $\min_{x}q(x) = \min_{x}f_0(x)$ 且 $x$ <strong>满足原问题约束</strong>，即 $\min_{x\in R^{n}}q(x)$  <strong>等价于原问题。</strong></p>
-
-<h2 id="拉格朗日对偶函数">拉格朗日对偶函数</h2>
-
-<p>先前我们把拉格朗日函数看作是 $\lambda,v$ 的函数，现在我们将其看作是关于 $x$ 的函数，定义拉格朗日对偶函数，这只是个名字，其实就是 $L(x,\lambda,v)$ 关于 $x$ 的下界(或者理解为最小值)：</p>
-
-<p>$$
-g(\lambda,v) = \min_{x \in R^{n} } L(x,\lambda,v)
-$$</p>
-
-<p>拉格朗日对偶函数 $g(\lambda,v)$ 有两个重要的性质：</p>
-
-<ol>
-<li>这是个凹函数(这里不证明了，感兴趣的可以自查)</li>
-<li>$g(\lambda,v)\le p^*$</li>
-</ol>
-
-<p>性质2是重点！我们来证明一下，假设 $\tilde{x}$ 是原问题的可行解，说明 $\tilde{x}$ 满足原问题的不等式约束以及等式约束，将其带入 $L(x,\lambda,v)$ 中，有</p>
-
-<p>$$
-L(\tilde{x},\lambda,v) = f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x}) + \sum_{j=1}^l v_j h_j(\tilde{x})
-$$</p>
-
-<p>根据 $g(\lambda,v)$ 的定义有</p>
-
-<p>$$
-g(\lambda,v) = \min_{x} L(x,\lambda,v) \le L(\tilde{x},\lambda,v) = f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x})
-$$</p>
-
-<p>$\min_{x} L(x,\lambda,v) \le L(\tilde{x},\lambda,v)$ 是因为函数的(最小值)下界肯定小于可行解代入的值呀！</p>
-
-<p>我们知道 $\tilde{x}$ 是原问题的可行解也意味着 $f_i(x) \le 0$，进一步，如果 $\lambda_i \ge 0$ 会发生什么？也就是 $\lambda_i f_i(x) \le 0$，那么
-$$
-g(\lambda,v) \le f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x}) \le f_0(\tilde{x})
-$$
-也就是 $g(\lambda,v) \le f_0(\tilde{x})$，这是对任意可行解 $\tilde{x}$ 都成立的，那么对函数取得最小值的 $x^*$ 对应的函数值 $p^*$ 也成立。即</p>
-
-<p>$$
-g(\lambda,v) \le p^*
-$$
-这也就得到了性质2，可以理解为<strong>我们为原问题的最优值 $p^*$ 找到了一个下界函数 $g(\lambda,v)$，为了确保下界需要满足我们之前的假设 $\lambda \ge 0$，而对 $v$ 的取值则是任意的。</strong></p>
-
-<h2 id="原问题的对偶形式">原问题的对偶形式</h2>
-
-<p>前面的分析中我们看到原问题的最优值有一个函数下界，那么如果我们来优化这个函数下界，让它来逼近原问题的最优值，是不是为求解原问题提供了另一种思路呢？这就是所谓的<strong>对偶问题</strong></p>
-
-<div>$$
-\begin{aligned} d^* =\max _{\lambda \ge 0,v} g(\lambda,v) = \max _{\lambda \ge 0,v} \min _{x \in R^n} L(x,\lambda,v)
-\end{aligned}
-$$</div>
-
-<p>这个优化命题相当于最大化原问题的下界函数，其中 $d^*$ 为优化命题的最优值，约束 $\lambda \ge 0 $ 是用来确保下界的。根据 $g(\lambda,v)$ 是凹函数这一性质可知，这个最大化凹函数的优化问题是个<strong>凸问题</strong>，凸问题也就意味着便于求解，<strong>因此无论原问题的凹凸性如何，都可以转化为对偶问题然后通过求解这个凸问题来得到原问题的下界，甚至原问题的最优解</strong>。什么时候这个下界函数的最大值等于原问题的最优解呢？这就是下面要讨论的问题。</p>
-
-<h3 id="强对偶性与弱对偶性">强对偶性与弱对偶性</h3>
-
-<p>我们已知知道 $g(\lambda,v)$ 是原函数最小值 $p^*$ 的下界，那么说明 $g(\lambda,v)$ 的最大值也需要满足</p>
-
-<p>$$
-d^* \le p^*
-$$</p>
-
-<p>这就是弱对偶性了，很自然就满足了，那么强对偶性从名字听就比较强，自然要求要严格一点，不能只是取 $\le$ 号，而是直接取等号，即</p>
-
-<p>$$
-d^* = p^*
-$$</p>
-
-<p>对于弱对偶，我们能够通过求解原问题的对偶问题得到原问题最小值的下界，而如果满足强对偶性，我们直接就得到原问题的最优解了！意味着<strong>我们能够通过求解对偶问题来避免直接求解原问题同时获得原问题的最优函数值</strong>。</p>
-
-<h3 id="强对偶性">强对偶性</h3>
-
-<p>如何才能判断原问题是否满足强对偶性呢？</p>
-
-<p><strong>凸问题通常but not always满足强对偶性</strong>
-也就是说凸问题中有部分满足强对偶性，那对这些部分约束一下就是slater条件：</p>
-
-<blockquote>
-<p>存在 $x$ 严格可行：$f_i(x) &lt; 0,i=1,&hellip;,k$</p>
-</blockquote>
-
-<p>当不等式约束为仿射函数时，这个条件可以弱化为</p>
-
-<blockquote>
-<p>存在 $x$ 满足部分严格可行：$f_i(x) \le 0,i=1,&hellip;,m;f_i(x) &lt; 0,i=m+1,&hellip;,k$</p>
-</blockquote>
-
-<p>那么有
-$$
-\text{凸问题} + \text{Slater条件} = \text{强对偶性}
-$$</p>
-
-<p>进一步探究一下当原问题满足强对偶性时，原问题和对偶问题的最优解满足哪些性质，首先从 $p^* = d^*$ 看起，利用函数的表达式描述这一关系有：</p>
-
-<div>$$
-\begin{aligned}
-f_0(x^*) &= g(\lambda^*,v^*)\\
-&= \min_x (f_0(x) + \sum_{i=1}^k \lambda_i^* f_i(x) + \sum_{j=1}^l v_j^* h_j(x))\\
-&\le f_0(x^*) + \sum_{i=1}^k \lambda_i^* f_i(x^*) + \sum_{j=1}^l v_j^* h_j(x^*)\\
-&\le f_0(x^*)
-\end{aligned}   
-$$</div>
-
-<p>第一行到第二行是根据 $g(\lambda,v)$ 的函数定义，第二行到第三行是根据函数的下界小于 $x$ 取任意值对应的函数值，这里 $x = x^*$，第三行到第四行是根据 $x^*$ 满足原问题的约束条件 $f_i(x) \le 0, h_j(x) =0$。所以<strong>不等号同时取等号</strong>，并可以得出以下两条结论：</p>
-
-<ol>
-<li><p>极值条件：$x^*$ 是使 $L(x,\lambda^*,v^*)$ 取得下界的点，即 $x^*$ 是使 $\nabla_x L(x,\lambda^*,v^*) = 0$ 的点</p></li>
-
-<li><p>松弛互补条件：$\sum_{i=1}^k \lambda_i^*f_i(x^*)=0$</p></li>
-</ol>
-
-<h3 id="kkt条件">KKT条件</h3>
-
-<p>KKT也就是原问题和对偶问题的最优点 $x^*,\lambda^*,v^*$ 满足的几个条件：</p>
-
-<ol>
-<li>原问题的约束条件：$f_i(x^*) \le 0,h_j(x^*)=0$</li>
-<li>对偶问题的约束条件：$\lambda_i^* \ge 0$</li>
-<li>松弛互补条件：$\sum_{i=1}^k \lambda_i^*f_i(x^*)=0$</li>
-<li>极值条件：
-$\nabla_x f_0(x^*) + \sum_{i=1}^k \lambda_i^* \nabla_x f_i(x^*) + \sum_{j=1}^l v_j^* \nabla_x h_j(x^*) = 0$</li>
-</ol>
-
-<p><strong>如果原问题是凸问题，则KKT条件为充要条件，也就是说满足KKT条件的点也就是原问题和对偶问题的最优解，那就能够在满足KKT条件下用求解对偶问题来替代求解原问题，使得问题求解更加容易。</strong></p>
-    </div>
-    <div class="read-more">
-      <a href="/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/" class="read-more-link"></a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -1190,10 +855,10 @@ $\nabla_x f_0(x^*) + \sum_{i=1}^k \lambda_i^* \nabla_x f_i(x^*) + \sum_{j=1}^l v
   <nav class="pagination">
     <a class="prev" href="/">
         <i class="iconfont icon-left"></i>
-        <span class="prev-text"></span>
+        <span class="prev-text">Prev</span>
       </a>
     <a class="next" href="/page/3/">
-        <span class="next-text"></span>
+        <span class="next-text">Next</span>
         <i class="iconfont icon-right"></i>
       </a>
   </nav>
@@ -1211,11 +876,11 @@ $\nabla_x f_0(x^*) + \sum_{i=1}^k \lambda_i^* \nabla_x f_i(x^*) + \sum_{j=1}^l v
 
 <div class="copyright">
   <span class="power-by">
-    %!(EXTRA string=<a class="hexo-link" href="https://gohugo.io">Hugo</a>)
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
   </span>
   <span class="division">|</span>
   <span class="theme-info">
-     - 
+    Theme - 
     <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
   </span>
 
