@@ -10,45 +10,52 @@
   
   <url>
     <loc>https://minghaochen.github.io/categories/</loc>
-    <lastmod>2020-02-05T20:39:13+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://minghaochen.github.io/categories/english/</loc>
-    <lastmod>2020-02-05T20:39:13+08:00</lastmod>
+    <lastmod>2020-02-08T21:20:52+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/</loc>
-    <lastmod>2020-02-05T20:39:13+08:00</lastmod>
+    <lastmod>2020-02-08T21:20:52+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/post/</loc>
-    <lastmod>2020-02-05T20:39:13+08:00</lastmod>
+    <lastmod>2020-02-08T21:20:52+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/tags/</loc>
-    <lastmod>2020-02-05T20:39:13+08:00</lastmod>
+    <lastmod>2020-02-08T21:20:52+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://minghaochen.github.io/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA01/</loc>
-    <lastmod>2020-02-05T20:39:13+08:00</lastmod>
+    <loc>https://minghaochen.github.io/categories/english/</loc>
+    <lastmod>2020-02-08T21:20:52+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E5%B7%9D%E6%99%AE%E7%9A%84%E5%92%8C%E5%B9%B3%E8%AE%A1%E5%88%92/</loc>
+    <lastmod>2020-02-08T21:20:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/tags/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA/</loc>
-    <lastmod>2020-02-05T20:39:13+08:00</lastmod>
+    <lastmod>2020-02-08T21:20:52+08:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E6%AD%A6%E6%B1%89%E6%96%B0%E5%9E%8B%E8%82%BA%E7%82%8E/</loc>
+    <lastmod>2020-02-05T20:39:13+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
