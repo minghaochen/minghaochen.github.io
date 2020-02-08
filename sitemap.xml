@@ -15,6 +15,12 @@
   </url>
   
   <url>
+    <loc>https://minghaochen.github.io/categories/english/</loc>
+    <lastmod>2020-02-08T21:20:52+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://minghaochen.github.io/</loc>
     <lastmod>2020-02-08T21:20:52+08:00</lastmod>
     <priority>0</priority>
@@ -28,12 +34,6 @@
   
   <url>
     <loc>https://minghaochen.github.io/tags/</loc>
-    <lastmod>2020-02-08T21:20:52+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://minghaochen.github.io/categories/english/</loc>
     <lastmod>2020-02-08T21:20:52+08:00</lastmod>
     <priority>0</priority>
   </url>
