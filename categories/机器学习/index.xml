@@ -6,10 +6,250 @@
     <description>Recent content in 机器学习 on MH&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 28 Aug 2019 20:52:52 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 09 Feb 2020 21:30:13 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>「机器学习」狄利克雷过程</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E8%BF%87%E7%A8%8B/</link>
+      <pubDate>Sun, 09 Feb 2020 21:30:13 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E8%BF%87%E7%A8%8B/</guid>
+      <description>&lt;h1 id=&#34;高斯混合模型&#34;&gt;高斯混合模型&lt;/h1&gt;
+
+&lt;p&gt;忘记什么是高斯过程的可以看一下之前博客，简单来说就是假设我们的数据$x_i,i=1,&amp;hellip;,N$是由$k$个高斯分布加权而成的混合模型生成的，从而估计出这些分布的参数。但是有个tricky的问题就是这个$k$是多少往往是由人来指定或者通过一些交叉验证等方法来确定。有人可能会说把$k$也当做未知参数一起拿去估计一下不就好了，但是这样做你会发现，得到的估计结果$k=N$，也就是有$N$个数据就有$N$个类。因为每个数据点自己一类得到的似然肯定最大鸭。而我们期望的结果肯定是类别数小于数据点的个数，这样才是合理的。&lt;/p&gt;
+
+&lt;h1 id=&#34;狄利克雷过程&#34;&gt;狄利克雷过程&lt;/h1&gt;
+
+&lt;p&gt;假设有$N$个数据$x_1,&amp;hellip;,x_N$，每个数据对应$\theta_i$，我们假设$\theta_i$满足概率分布
+$$
+\theta_i \sim H(\theta)
+$$&lt;/p&gt;
+
+&lt;p&gt;但是如果$H(\theta)$是个连续分布，那么采样得到的$\theta_i$都会是不同的值，也就是我们每个数据点对应的类别又都不一样了，因此我们需要$\theta_i$是从一个离散分布中采样，也就是$\theta_i$的可能情况是有限的，不同的数据点对应的$\theta_i$可以是相同的。
+那么如何得到这个离散的分布呢，最直接的想法就是把$H(\theta)$离散化一下，其实也就是狄利克雷过程了，即
+$$
+G\sim DP(\alpha,H)
+$$
+这里的$\alpha$相当于一个离散化的参数，想对这个结论有个印象，后面再继续展开：
+$\alpha$越大，离散化得到的分布$G$越密集，也就和原分布越像；$\alpha$越小越离散，$\alpha=0$对应的$G$就是一个采样值。&lt;/p&gt;
+
+&lt;h2 id=&#34;性质&#34;&gt;性质&lt;/h2&gt;
+
+&lt;p&gt;$G$从DP中采样出来是一个完整分布，因为是完整分布，所以$G$有无限个值（无限根棍子），但是如果对$G$所在的概率空间进行划分$a_1,&amp;hellip;,a_k$，那么各个区域的测度满足
+$$
+(G(a_1),G(a_2),&amp;hellip;,G(a_k)) \sim Dir(\alpha H(a_1),\alpha H(a_2),&amp;hellip;,\alpha H(a_k))
+$$
+其中$G(a_i)$表示区域$a_i$上”棍子“权重的总和，&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;补充&lt;/strong&gt;狄利克雷分布的性质&lt;/p&gt;
+
+&lt;p&gt;如果&lt;/p&gt;
+
+&lt;div&gt;
+$$
+(x_1,...,x_k) \sim Dir (\alpha_1,...,\alpha_k)=\frac{\prod_{i=1}^k \Gamma(\alpha_i)}{\Gamma(\sum_{i=1}^k \alpha_i)}\prod_{i=1}^k x_i^{\alpha_i - 1}
+$$&lt;/div&gt;
+
+&lt;p&gt;则其均值为&lt;/p&gt;
+
+&lt;div&gt;
+$$
+E[x_i] = \frac{\alpha_i}{\sum_{j=1}^k\alpha_j}
+$$
+&lt;/div&gt;
+
+&lt;p&gt;方差为&lt;/p&gt;
+
+&lt;div&gt;
+$$
+Var[x_i] =\frac{E[x_i](1-E[x_i])}{1+\sum_j \alpha_j}
+$$&lt;/div&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;将$G(a_i)$代入有均值和方差的表达式有
+$$
+E[G(a_i)]=\frac{\alpha H(a_i)}{\alpha H(\alpha_1) + &amp;hellip; + \alpha H(a_k)} = H(\alpha_i) &lt;br /&gt;
+$$&lt;/p&gt;
+
+&lt;p&gt;$$
+Var[G(a_i)] = \frac{\alpha H(\alpha_i)(\alpha - \alpha H(a_i))}{\alpha^2(\alpha + 1)} = \frac{H(\alpha_i)(1-H(\alpha_i))}{\alpha + 1}
+$$&lt;/p&gt;
+
+&lt;p&gt;可以看出$\alpha$趋于无穷，方差就趋于0，也就是采样出来的分布和原分布越像；$\alpha$趋于0，方差的表达式就是伯努利分布的方差表达式，也就是说要嘛有根棍，要嘛就没有，$G$就是$H$最离散的版本。&lt;/p&gt;
+
+&lt;h2 id=&#34;构造&#34;&gt;构造&lt;/h2&gt;
+
+&lt;p&gt;我们现在知道$G$本身是一个分布，同时它服从狄利克雷分布，那么要怎样去采样$G$这个分布呢，换句话就是说怎么去得到一个离散化版本的$H$。&lt;/p&gt;
+
+&lt;p&gt;这时候我们借助的手段就是sticking-breaking，我们每次从原分布$H$中采样出一个$\theta_i$，然后在通过$Beta$分布生成一个$0$到$1$之间的随机数用来构造$\theta_i$的权重$\pi_i。&lt;/p&gt;
+
+&lt;p&gt;比如第一次采样：
+$$
+\theta_1 \sim H, \beta_1 \sim Beta(1,\alpha), \pi_1 = \beta_1
+$$
+第二次采样：
+$$
+\theta_2 \sim H, \beta_2 \sim Beta(1,\alpha), \pi_2 = (1-\pi_1)*\beta_2
+$$
+以此类推&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;补充：如果$x$服从Beta分布 $x \sim Beta(a,b)$，那么其均值为$E[x]=a/(a+b)$&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这里我们也可以观察一下$\alpha$的变化对sticking breaking的影响：$\alpha$趋于0，Beta采样出来的结果就趋于1，也就是采样极少的次数就够了（离散）；如果$\alpha$趋于无穷，Beta采样出来的权重就趋于0，那么就能产生越来越多的棍子。&lt;strong&gt;记住采样的权重$\sum \pi_i=1$&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;基于离散采样的观点，我们可以把$G$写成&lt;/p&gt;
+
+&lt;div&gt;$$
+G = \sum_1^{\infty} \pi_i \delta_{\theta_i}
+$$&lt;/div&gt;
+
+&lt;p&gt;这样我们就有了个离散的分布，回到数据$x_1,&amp;hellip;,x_N$ 对应的$\theta_1,&amp;hellip;,\theta_N$可以从$G$产生，即
+$$
+\theta_i \sim G , i=1,&amp;hellip;,N
+$$&lt;/p&gt;
+
+&lt;p&gt;每个数据都是通过以$\theta_i$为参数的分布产生，即$x_i \sim F(\theta_i)$。&lt;/p&gt;
+
+&lt;p&gt;当我们已知$\theta_1,&amp;hellip;,\theta_N$时，$G$的后验是什么？&lt;/p&gt;
+
+&lt;p&gt;$$
+p(G|\theta_1,&amp;hellip;,\theta_N) \propto p(\theta_1,&amp;hellip;,\theta_N|G)p(G)
+$$
+似然就是$G$&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;补充&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;假设先验满足
+$$
+(p_1,&amp;hellip;,p_k)\sim Dir(\alpha_1,&amp;hellip;,\alpha_k), \sum p_i =1
+$$&lt;/p&gt;
+
+&lt;p&gt;似然/数据满足多项分布
+$$
+(n_1,&amp;hellip;,n_k)\sim Mult(p_1,&amp;hellip;,p_k)
+$$
+后验为
+$$
+p(p_1,&amp;hellip;,p_k|n_1,&amp;hellip;,n_k)=Dir(\alpha_1+n_1,&amp;hellip;,\alpha_k+n_k)
+$$&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;对任意划分&lt;/p&gt;
+
+&lt;p&gt;$$
+p(G(a_1),&amp;hellip;,G(a_k)|n_1,&amp;hellip;,n_k)
+\propto
+Likelihood \times Prior
+$$
+其中Likelihood为$Mult(n_1,&amp;hellip;,n_k|G(a_1),&amp;hellip;,G(a_k))$，先验是$ Dir(\alpha H(a_1),&amp;hellip;,\alpha H(a_k))$。&lt;/p&gt;
+
+&lt;p&gt;根据共轭先验的性质，我们知道$G$的后验也是狄利克雷分布。&lt;/p&gt;
+
+&lt;p&gt;$$
+Dir(\alpha H(a_1)+n_1,&amp;hellip;,\alpha H(a_k)+n_k)
+$$&lt;/p&gt;
+
+&lt;p&gt;同时也能对应到一个新的狄利克雷过程&lt;/p&gt;
+
+&lt;div&gt;
+$$
+DP(\alpha+n,\frac{\alpha H+\sum_{i=1}^n \delta_{\theta_i}}{\alpha +n})
+$$&lt;/div&gt;
+
+&lt;p&gt;其中，$\alpha+n$来自于前一个式子狄利克雷分布各项的总和，它的base measure是由一个连续和measure和一个离散的measure组成的。叫做Spike-and-Slab。&lt;/p&gt;
+
+&lt;h2 id=&#34;中国餐馆过程&#34;&gt;中国餐馆过程&lt;/h2&gt;
+
+&lt;p&gt;Predictive distribution&lt;/p&gt;
+
+&lt;div&gt;
+$$
+\begin{aligned}
+p(x_i|x_{-i})
+&amp;=\int_w p(x_i,w|x_{-i})dw \\
+&amp;=\int_w p(x_i|w,x_{-i})p(w|x_{-i})dw\\
+&amp;=\int_w p(x_i|w)p(w|x_{-i})dw
+\end{aligned}
+$$
+&lt;/div&gt;
+
+&lt;p&gt;通常 $x_{-i}$ 指训练数据，$x_{i}$ 指测试数据。这里隐含假设：我们有了模型$w$后，就不需要数据$x_{-i}$了。&lt;/p&gt;
+
+&lt;p&gt;在这里我们要求$\theta$&lt;/p&gt;
+
+&lt;div&gt;
+$$
+p(\theta_i|\theta_{-i})
+=\int_{G} p(\theta_i|G)p(G|\theta_{-i}) dG
+$$
+&lt;/div&gt;
+
+&lt;p&gt;但其实我们对$\theta_i$是多少并不感兴趣，我们更在意的是有几个$\theta$的值是一样的。
+假设有$4$个数据$x_1,&amp;hellip;,x_4$对应的$\theta_1=6,\theta_2=4,\theta_3=6,\theta_4=4$，那么也就是说对应的类别$z_1=z_3=1,z_2=z_4=2$，我们实际想知道的predictive distribution是&lt;/p&gt;
+
+&lt;div&gt;
+$$
+p(z_i=m|z_{-i})
+$$
+&lt;/div&gt;
+
+&lt;p&gt;表示我们已经知道了除了$i$以外的数据属于什么类，从而判断数据$i$属于$m$类的概率是什么。这个分布跟$H$没有关系，跟$\alpha$有关，因为$H$决定的是$\theta_i$的采样，而$\alpha$决定了类别的多少。&lt;/p&gt;
+
+&lt;p&gt;我们先假设有$k$个类，然后再把$k$到无穷，也就是狄利克雷过程。&lt;/p&gt;
+
+&lt;div&gt;
+$$
+\begin{aligned}
+p(z_i=m|z_{-i})
+&amp;= \frac{p(z_i=m,z_{-i})}{p(z_{-i})}\\
+&amp;=\frac{\int_{p_1,...,p_k}p(z_i=m,z_{-1}|p_1,...,p_k)p(p_1,...,p_k) dp_1,...,p_k }{\int_{p_1,...,p_k}p(z_{-i}|p_1,...,p_k)p(p_1,...,p_k)dp_1,...,p_k}
+\end{aligned}
+$$
+&lt;/div&gt;
+
+&lt;p&gt;其中
+$$
+p(p_1,&amp;hellip;,p_k)=Dir(\alpha/k,&amp;hellip;,\alpha/k)
+$$&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;补充&lt;/p&gt;
+
+&lt;p&gt;上面我们知道了有个狄利克雷分布的先验和多项分布的似然，得到的后验也是狄利克雷分布，那么加个积分&lt;/p&gt;
+
+&lt;div&gt;
+$$
+\begin{aligned}
+&amp;\int_{p_1...p_k} p(n_1,...,n_k|p_1,...,p_k)p(p_1,...,p_k|\alpha_1,...,\alpha_k)\\
+=&amp;\int_{p_1...p_k} Mult(n_1,...,n_k|p_1,...,p_k)Dir(p_1,...,p_k|\alpha_1,...,\alpha_k)\\
+=&amp;\frac{n!}{n_1!...n_k!}\frac{\Gamma(\sum \alpha_i)}{\prod \Gamma(\alpha_i)} \int_{p_1,...,p_k} \prod_{i=1}^k p_i^{n_i+\alpha_i-1}\\
+=&amp;\frac{n!}{n_1!...n_k!}\frac{\Gamma(\sum \alpha_i)}{\prod \Gamma(\alpha_i)} \frac{\prod \Gamma(\alpha_i+n_i)}{\Gamma(\sum (\alpha_i)+n )}
+\end{aligned}
+$$
+&lt;/div&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;代入预测分布&lt;/p&gt;
+
+&lt;div&gt;
+$$
+\begin{aligned}
+&amp;p(z_i=m|z_{-i})\\
+=&amp; \frac{n_{m,-i}}{n+\alpha-1}, existing\\
+= &amp;\frac{\alpha}{n+\alpha-1}, new
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;其中 $n_{m,-i}$ 表示 $z_{-i}$ 里有多少是 $m$ 类的。
+也就是说有概率$\frac{n_{m,-i}}{n+\alpha-1}$属于原有的类别，有$\frac{\alpha}{n+\alpha-1}$的概率属于新的类别。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>「机器学习」变分推断</title>

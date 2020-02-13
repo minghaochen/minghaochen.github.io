@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-08T21:20:52&#43;08:00"/>
+<meta property="og:updated_time" content="2020-02-13T11:59:18&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,208 +115,194 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">「机器学习」高斯过程</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/">对偶理论</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-07-26 </span>
+      <span class="post-time"> 2019-08-11 </span>
       <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>网上机器学习的算法铺天盖地，高斯过程却显得不那么起眼，它与其他大多数算法不一样的地方在于，它提供了<strong>不确定性</strong>的估计，这篇文章争取在不涉及数学推导的情况下给大家一个直观的理解。</p>
+      <p>在求解一个优化命题时，如果其对偶形式便于求解，常常可以通过求解对偶问题来避免直接对原问题进行求解。比如机器学习中典型的SVM就涉及到对偶理论，以及拉格朗日乘子法、KKT条件等概念。</p>
 
-<h1 id="什么是不确定性">什么是不确定性？</h1>
+<p>首先简单通俗地说说这几个概念是干嘛的</p>
 
-<p>我觉得最能代表不确定性的应该就是概率分布（probability distribution）了，不了解概率分布也没关系，骰子摇过吧，一个六面均匀的骰子，摇到任一数字的概率是多少？答案是显然的: $\frac{1}{6}$，这就是一个离散的概率分布，有六种可能的结果（朝上的面为1、2、3、4、5或6），每种结果的可能性为 $\frac{1}{6}$。进一步延伸一下，离散概率分布的升级版就是连续概率分布，它的可能结果可就不是简单几种情况那么简单了，可以是任意实数，比如人的身高，中国男性的身高统计出来画一下，你就能看到一个中间高两边低的正态分布的样子了。</p>
+<ol>
+<li><p>对偶理论：对偶也就是孪生双胞胎，一个优化命题也就有其对应的兄弟优化命题。</p></li>
 
-<p>那么已知概率分布后，如何采样呢？很简单呀，比如骰子你摇一次就是从这个离散概率分布中采样一次。</p>
+<li><p>拉格朗日函数：将原本优化命题的目标函数和约束整合成一个函数。</p></li>
 
-<h1 id="贝叶斯推断">贝叶斯推断</h1>
+<li><p>KKT条件：函数的最优值满足的性质。</p></li>
+</ol>
 
-<p>一提到贝叶斯推断，可能要吓跑一群人，别跑！等我给你介绍完就不怕了！
-其实贝叶斯推断就是<strong>根据我们观察到的现象去更新我们脑袋里的认知。</strong>再具体点就是：我们在事情没发生前对这件事情有所认知（或者叫做先验），通常可以用一个概率分布来表示，然后在得到一些发生的事实后，我们会对这件事情的认知有所该表（就是得到了后验）；而把这些东西联系到一起的就是大名鼎鼎的<strong>贝叶斯定理</strong>。</p>
+<p>上面的解释可能不够准确，但希望对这些概念有个初步的认识，接下来从优化命题的角度来解释一下这些东西。</p>
 
-<p>还是不够形象？那我们来个例子，上面说过离散概率分布了，这次我们来个连续的看看，来看看身高吧，来猜猜小陈有多高（猜对有奖哦，文末二维码随意扫随意打赏哈），你又不认识我没见过我，怎么知道我有多高呢，那直观的猜测就是小陈是个中国人，小陈的身高服从中国人身高的概率分布（假设你能得到这个概率分布咯）
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e7%94%b7%e6%80%a7%e8%ba%ab%e9%ab%98.jpg"/> 
-</figure>
+<p>首先是原问题</p>
 
-然后有一天你在博客上看到了小陈和朋友们的合照
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%88%e7%85%a7.jpg"/> 
-</figure>
+<div>$$
+\begin{aligned} \min _{x \in R^{n}} f_0(x) & \\ \text { s.t. } f_{i}(x) \leq 0, i &=1,2, \ldots, k \\ h_{j}(x)=0, j &=1,2, \ldots, l \end{aligned}
+$$</div>
 
-卧槽！小陈有点高啊，在朋友中是最高的，于是你对小陈身高的概率分布的认识改变了
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%8e%e9%aa%8c%e8%ba%ab%e9%ab%98.jpg"/> 
-</figure>
-</p>
+<p>这个优化命题说的是你有个函数 $f_0(x)$，它的自变量是 $x$，维度为 $n$，你想要求这个函数的最小值，同时这个自变量(优化里又叫决策变量)还需要满足 $k$ 个不等式约束 $f_i(x) \le 0$ 以及 $l$ 个等式约束 $h_j(x) = 0$。假设满足这些约束的情况下这个函数的最小值为 $p^*$。</p>
 
-<h1 id="什么是高斯过程">什么是高斯过程？</h1>
+<p>如果是个无约束的求极值问题，高中时我们就学过，求导并令导函数为 $0$ 便能求出函数取得极值时对应的自变量 $x^*$。 但是这里是有约束的优化问题，显然直接求导的方法不再适用，那自然的想法就是把约束去掉，拉格朗日函数就是通过将约束<strong>线性组合</strong>放入目标函数而形成的新的一个函数：</p>
 
-<p>好了，今天的主角登场了，<strong>高斯过程其实就是函数的概率分布</strong>，既然是概率分布，再用上面贝叶斯的套路我们就也能够通过训练数据来更新它的概率分布。</p>
+<p>$$
+L(x,\lambda,v) = f_0(x) + \sum_{i=1}^k \lambda_i f_i(x) + \sum_{j=1}^l v_j h_j(x)
+$$
+这里 $L(x,\lambda,v)$ 是个三元函数 $R^n \times R^k \times R^l \rightarrow R$，且 $\lambda \ge 0,v$ 称为拉格朗日向量，至于这个系数 $\lambda$ 为什么还需要满足 $\lambda \ge 0$，你先记住这是为了<strong>确保下界</strong>，后面会详细解释。</p>
 
-<p>我们来理一下思路，函数是什么，最简单的回顾你初中学的 $y=f(x)$ 就是个函数（随便函数形式都行，一次二次正弦等等），把它画一下就是在 XY 平面上的一条线呗；既然是概率分布还是高斯的，那总有均值吧，总有协方差吧，在这里对应就是均值函数和协方差函数。因此高斯过程本质就是<strong>由均值函数和协方差函数决定的一个随机过程。</strong></p>
+<h2 id="原问题的等价形式">原问题的等价形式</h2>
 
-<p>比如有一个sin函数，我们有五个点的训练数据
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/data.png"/> 
-</figure>
-</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">Xtrain = np.array([-3, -2, -1, 1, 2]).reshape(5,1)
-ytrain = np.sin(Xtrain)
-pl.plot(Xtrain, ytrain, &#39;bs&#39;, ms=8)</pre></td></tr></table>
-</div>
-</div>
-<p>没有训练前我们对这个函数没什么认知，那就假设其均值函数为0（大部分时候也都是当做0来使用的），核函数就取SE核函数吧（这个是什么先不管啦，你就认为是个用来生成协方差矩阵的函数，主要我们是要得到它的协方差呀！核函数里一般会有超参数需要估计，为了简单起见，我直接直接给定超参数，不去估计这个参数了），在这样的先验分布下，你得到的函数会是什么样的呢？我们从这个函数的概率分布中采样三个函数出来看看。
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/prior.png"/> 
-</figure>
-</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">import numpy as np
-import matplotlib.pyplot as pl
-%matplotlib inline
-# Test data
-n = 50
-Xtest = np.linspace(-3, 3, n).reshape(-1,1)
+<p>我们原来是要求函数 $f_0(x)$ 关于 $x$ 的最小值，为了不考虑原问题的约束而构造了拉格朗日函数 $L(x,\lambda,v)$。我们先将其看作是 $\lambda,v$ 的函数，然后定义函数：</p>
 
-# Define the kernel function
-def kernel(a, b, param):
-    sqdist = np.sum(a**2,1).reshape(-1,1) + np.sum(b**2,1) - 2*np.dot(a, b.T)
-    return np.exp(-.5 * (1/param) * sqdist)
+<p>$$
+q(x) = \max_{\lambda \ge 0,v } L(x,\lambda,v)
+$$</p>
 
-param = 0.1
-K_ss = kernel(Xtest, Xtest, param)
+<p>可以证明 $\min_{x\in R^{n}}q(x)$ 与原问题等价，即满足</p>
 
-# Get cholesky decomposition (square root) of the
-# covariance matrix
-L = np.linalg.cholesky(K_ss + 1e-15*np.eye(n))
-# Sample 3 sets of standard normals for our test points,
-# multiply them by the square root of the covariance matrix
-f_prior = np.dot(L, np.random.normal(size=(n,3)))
+<div>$$
+p^* = \min_{x\in R^{n}}q(x) = \min_{x\in R^{n}}\max_{\lambda \ge 0,v}L(x,\lambda,v)
+$$</div>
 
-# Now let&#39;s plot the 3 sampled functions.
-pl.plot(Xtest, f_prior)
-pl.axis([-3, 3, -3, 3])
-pl.title(&#39;Three samples from the GP prior&#39;)
-pl.show()</pre></td></tr></table>
-</div>
-</div>
-<p>那再根据训练数据训练一发，也就是相当于前面提到的贝叶斯推断，就能得到函数的后验概率分布
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/posterior.png"/> 
-</figure>
-</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"># Apply the kernel function to our training points
-K = kernel(Xtrain, Xtrain, param)
-L = np.linalg.cholesky(K + 0.00005*np.eye(len(Xtrain)))
+<p>这个证明很简单，我们只需要分类讨论一下这个<strong>无约束问题中原问题约束是否成立</strong>：</p>
 
-# Compute the mean at our test points.
-K_s = kernel(Xtrain, Xtest, param)
-Lk = np.linalg.solve(L, K_s)
-mu = np.dot(Lk.T, np.linalg.solve(L, ytrain)).reshape((n,))
+<ol>
+<li><p>$x$ 满足原问题约束，则 $q(x) = f_0(x)$</p></li>
 
-# Compute the standard deviation so we can plot it
-s2 = np.diag(K_ss) - np.sum(Lk**2, axis=0)
-stdv = np.sqrt(s2)
-# Draw samples from the posterior at our test points.
-L = np.linalg.cholesky(K_ss + 1e-6*np.eye(n) - np.dot(Lk.T, Lk))
-f_post = mu.reshape(-1,1) + np.dot(L, np.random.normal(size=(n,3)))
+<li><p>$x$ 不满足原问题约束，即 $f_i(x) \ge 0$ 或 $h_j(x) \not= 0$，则 $q(x) = + \infty$</p></li>
+</ol>
 
-pl.plot(Xtrain, ytrain, &#39;bs&#39;, ms=8)
-pl.gca().fill_between(Xtest.flat, mu-2*stdv, mu+2*stdv, color=&#34;#dddddd&#34;)
-pl.plot(Xtest, mu, &#39;r--&#39;, lw=2)
-pl.axis([-3, 3, -3, 3])
-pl.title(&#39;GP posterior&#39;)
-pl.show()</pre></td></tr></table>
-</div>
-</div>
-<p>这个回归效果很差，主要因为核函数的超参数没估计，而且训练的数据太少了。感兴趣可以自己去改改代码试试看。详细的推导和理论可以看06年的那本《Gaussian Process for Machine Learning》</p>
+<p>因此 $\min_{x}q(x) = \min_{x}f_0(x)$ 且 $x$ <strong>满足原问题约束</strong>，即 $\min_{x\in R^{n}}q(x)$  <strong>等价于原问题。</strong></p>
 
-<h2 id="划重点">划重点</h2>
+<h2 id="拉格朗日对偶函数">拉格朗日对偶函数</h2>
 
-<p><strong>先验 “加&rdquo; 数据得到后验；后验&rdquo;加权平均&rdquo;输出就是预测！</strong></p>
+<p>先前我们把拉格朗日函数看作是 $\lambda,v$ 的函数，现在我们将其看作是关于 $x$ 的函数，定义拉格朗日对偶函数，这只是个名字，其实就是 $L(x,\lambda,v)$ 关于 $x$ 的下界(或者理解为最小值)：</p>
 
-<p>最后的最后上两个公式吧</p>
+<p>$$
+g(\lambda,v) = \min_{x \in R^{n} } L(x,\lambda,v)
+$$</p>
 
-<p><div>$$
-p(w|y,X) = \frac{p(y|X,w)p(w)}{p(y|X)}
-$$<div></p>
+<p>拉格朗日对偶函数 $g(\lambda,v)$ 有两个重要的性质：</p>
 
-<p><div>$$
-p\left(f_{*} | {x}_{*}, X, {y}\right)=\int p\left(f_{*} | {x}_{*}, {w}\right) p({w} | X, {y}) d \mathbf{w}
-$$<div>
-配合上面那句话好好理解消化一下！</p>
+<ol>
+<li>这是个凹函数(这里不证明了，感兴趣的可以自查)</li>
+<li>$g(\lambda,v)\le p^*$</li>
+</ol>
+
+<p>性质2是重点！我们来证明一下，假设 $\tilde{x}$ 是原问题的可行解，说明 $\tilde{x}$ 满足原问题的不等式约束以及等式约束，将其带入 $L(x,\lambda,v)$ 中，有</p>
+
+<p>$$
+L(\tilde{x},\lambda,v) = f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x}) + \sum_{j=1}^l v_j h_j(\tilde{x})
+$$</p>
+
+<p>根据 $g(\lambda,v)$ 的定义有</p>
+
+<p>$$
+g(\lambda,v) = \min_{x} L(x,\lambda,v) \le L(\tilde{x},\lambda,v) = f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x})
+$$</p>
+
+<p>$\min_{x} L(x,\lambda,v) \le L(\tilde{x},\lambda,v)$ 是因为函数的(最小值)下界肯定小于可行解代入的值呀！</p>
+
+<p>我们知道 $\tilde{x}$ 是原问题的可行解也意味着 $f_i(x) \le 0$，进一步，如果 $\lambda_i \ge 0$ 会发生什么？也就是 $\lambda_i f_i(x) \le 0$，那么
+$$
+g(\lambda,v) \le f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x}) \le f_0(\tilde{x})
+$$
+也就是 $g(\lambda,v) \le f_0(\tilde{x})$，这是对任意可行解 $\tilde{x}$ 都成立的，那么对函数取得最小值的 $x^*$ 对应的函数值 $p^*$ 也成立。即</p>
+
+<p>$$
+g(\lambda,v) \le p^*
+$$
+这也就得到了性质2，可以理解为<strong>我们为原问题的最优值 $p^*$ 找到了一个下界函数 $g(\lambda,v)$，为了确保下界需要满足我们之前的假设 $\lambda \ge 0$，而对 $v$ 的取值则是任意的。</strong></p>
+
+<h2 id="原问题的对偶形式">原问题的对偶形式</h2>
+
+<p>前面的分析中我们看到原问题的最优值有一个函数下界，那么如果我们来优化这个函数下界，让它来逼近原问题的最优值，是不是为求解原问题提供了另一种思路呢？这就是所谓的<strong>对偶问题</strong></p>
+
+<div>$$
+\begin{aligned} d^* =\max _{\lambda \ge 0,v} g(\lambda,v) = \max _{\lambda \ge 0,v} \min _{x \in R^n} L(x,\lambda,v)
+\end{aligned}
+$$</div>
+
+<p>这个优化命题相当于最大化原问题的下界函数，其中 $d^*$ 为优化命题的最优值，约束 $\lambda \ge 0 $ 是用来确保下界的。根据 $g(\lambda,v)$ 是凹函数这一性质可知，这个最大化凹函数的优化问题是个<strong>凸问题</strong>，凸问题也就意味着便于求解，<strong>因此无论原问题的凹凸性如何，都可以转化为对偶问题然后通过求解这个凸问题来得到原问题的下界，甚至原问题的最优解</strong>。什么时候这个下界函数的最大值等于原问题的最优解呢？这就是下面要讨论的问题。</p>
+
+<h3 id="强对偶性与弱对偶性">强对偶性与弱对偶性</h3>
+
+<p>我们已知知道 $g(\lambda,v)$ 是原函数最小值 $p^*$ 的下界，那么说明 $g(\lambda,v)$ 的最大值也需要满足</p>
+
+<p>$$
+d^* \le p^*
+$$</p>
+
+<p>这就是弱对偶性了，很自然就满足了，那么强对偶性从名字听就比较强，自然要求要严格一点，不能只是取 $\le$ 号，而是直接取等号，即</p>
+
+<p>$$
+d^* = p^*
+$$</p>
+
+<p>对于弱对偶，我们能够通过求解原问题的对偶问题得到原问题最小值的下界，而如果满足强对偶性，我们直接就得到原问题的最优解了！意味着<strong>我们能够通过求解对偶问题来避免直接求解原问题同时获得原问题的最优函数值</strong>。</p>
+
+<h3 id="强对偶性">强对偶性</h3>
+
+<p>如何才能判断原问题是否满足强对偶性呢？</p>
+
+<p><strong>凸问题通常but not always满足强对偶性</strong>
+也就是说凸问题中有部分满足强对偶性，那对这些部分约束一下就是slater条件：</p>
+
+<blockquote>
+<p>存在 $x$ 严格可行：$f_i(x) &lt; 0,i=1,&hellip;,k$</p>
+</blockquote>
+
+<p>当不等式约束为仿射函数时，这个条件可以弱化为</p>
+
+<blockquote>
+<p>存在 $x$ 满足部分严格可行：$f_i(x) \le 0,i=1,&hellip;,m;f_i(x) &lt; 0,i=m+1,&hellip;,k$</p>
+</blockquote>
+
+<p>那么有
+$$
+\text{凸问题} + \text{Slater条件} = \text{强对偶性}
+$$</p>
+
+<p>进一步探究一下当原问题满足强对偶性时，原问题和对偶问题的最优解满足哪些性质，首先从 $p^* = d^*$ 看起，利用函数的表达式描述这一关系有：</p>
+
+<div>$$
+\begin{aligned}
+f_0(x^*) &= g(\lambda^*,v^*)\\
+&= \min_x (f_0(x) + \sum_{i=1}^k \lambda_i^* f_i(x) + \sum_{j=1}^l v_j^* h_j(x))\\
+&\le f_0(x^*) + \sum_{i=1}^k \lambda_i^* f_i(x^*) + \sum_{j=1}^l v_j^* h_j(x^*)\\
+&\le f_0(x^*)
+\end{aligned}   
+$$</div>
+
+<p>第一行到第二行是根据 $g(\lambda,v)$ 的函数定义，第二行到第三行是根据函数的下界小于 $x$ 取任意值对应的函数值，这里 $x = x^*$，第三行到第四行是根据 $x^*$ 满足原问题的约束条件 $f_i(x) \le 0, h_j(x) =0$。所以<strong>不等号同时取等号</strong>，并可以得出以下两条结论：</p>
+
+<ol>
+<li><p>极值条件：$x^*$ 是使 $L(x,\lambda^*,v^*)$ 取得下界的点，即 $x^*$ 是使 $\nabla_x L(x,\lambda^*,v^*) = 0$ 的点</p></li>
+
+<li><p>松弛互补条件：$\sum_{i=1}^k \lambda_i^*f_i(x^*)=0$</p></li>
+</ol>
+
+<h3 id="kkt条件">KKT条件</h3>
+
+<p>KKT也就是原问题和对偶问题的最优点 $x^*,\lambda^*,v^*$ 满足的几个条件：</p>
+
+<ol>
+<li>原问题的约束条件：$f_i(x^*) \le 0,h_j(x^*)=0$</li>
+<li>对偶问题的约束条件：$\lambda_i^* \ge 0$</li>
+<li>松弛互补条件：$\sum_{i=1}^k \lambda_i^*f_i(x^*)=0$</li>
+<li>极值条件：
+$\nabla_x f_0(x^*) + \sum_{i=1}^k \lambda_i^* \nabla_x f_i(x^*) + \sum_{j=1}^l v_j^* \nabla_x h_j(x^*) = 0$</li>
+</ol>
+
+<p><strong>如果原问题是凸问题，则KKT条件为充要条件，也就是说满足KKT条件的点也就是原问题和对偶问题的最优解，那就能够在满足KKT条件下用求解对偶问题来替代求解原问题，使得问题求解更加容易。</strong></p>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/" class="read-more-link">Read more...</a>
+      <a href="/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

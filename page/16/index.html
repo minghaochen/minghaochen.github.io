@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-08T21:20:52&#43;08:00"/>
+<meta property="og:updated_time" content="2020-02-13T11:59:18&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,140 +115,211 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/">Chol分解与SVD分解</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/">「机器学习」主成分分析PCA</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-07-25 </span>
+      <span class="post-time"> 2019-08-09 </span>
       <div class="post-category">
-          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>今天说说两个整天见却整天忘的矩阵分解，一个是Chol分解，一个是SVD分解</p>
+      <h1 id="为什么要降维">为什么要降维</h1>
 
-<h1 id="chol分解">Chol分解</h1>
+<p>要说到降维的目的，主要是用来解决过拟合这一问题的，降维的方式主要有三种</p>
 
-<p>对于Chol分解，首先要知道它针对的对象是什么，也就是<strong>埃尔米特矩阵（Hermitian matrix）</strong>，听着有点难懂，其实就是共轭对称矩阵，再简单点说，我们常见的实对称矩阵就是埃尔米特矩阵的特例。</p>
+<ul>
+<li>直接降维—特征选择</li>
+<li>线性降维—PCA(今日份猪脚)，MDS多维尺度法</li>
+<li>非线性降维—流形学习ISOMAP，LLE(Locally Linear Embedding)</li>
+</ul>
 
-<p>那么这个Chol分解分解得到的是什么东西？是干嘛用的呢？
-我们先来回答第一个问题，Chol分解是将一个矩阵分解成两个矩阵的乘积，即
+<h1 id="数据矩阵描述">数据矩阵描述</h1>
+
+<p>数据：$X=(x_1,x_2,&hellip;,x_N)^T_{N \times P }, x_i \in \mathbb{R}^P $，为了便于后续推导我们将均值和方差表示为矩阵形式，思路就是<strong>把连加符号改写成矩阵乘积的形式</strong>。</p>
+
+<p>采样均值为：
 $$
-A = LL^*
+\bar{x} = \frac{1}{N}\sum_{i=1}^N x_i = \frac{1}{N}(x_1,x_2,&hellip;,x_N)\mathbb{1}_{N} = \frac{1}{N}X^T\mathbb{1}_N
 $$
-其中，$L$ 是一个<strong>下三角</strong>矩阵，$L^*$ 是 $L$ 的共轭转置，如果实数那就是转置（i.e., $L^T$）</p>
-
-<p>分解成这个玩意干嘛用的呢？目前了解到的比较常用的两个地方</p>
-
-<h2 id="1-解线性方程呗-比如-ax-b">1. 解线性方程呗，比如 $Ax=b$</h2>
-
-<p>你可能会说直接目测方程的解就是 $x = A^{-1}b$，还需要什么Chol分解？如果矩阵 $A$ 是病态的（条件数很大），那么问题就来了，我们在用计算机求解这类问题的时候出现舍入误差可能会导致所答非所问。</p>
-
-<p>如果对矩阵进行Chol分解再来求解方程呢，原方程需要两步求解</p>
-
-<p>Step1
+采样方差为
 $$
-Ly=b
+S = \frac{1}{N}\sum_{i=1}^N (x_i-\bar{x}) (x_i-\bar{x})^T = \frac{1}{N}X^THH^TX =  \frac{1}{N}X^THX
 $$
-Step2
-$$
-L^Tx=y
-$$
-打开Matlab感受一下？</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">A = [5,7;7,10];
-cond(A)
-L = chol(A)&#39;;
-cond(L)</pre></td></tr></table>
-</div>
-</div>
-<p>可以看出分解后求解的两个方程都是良态的且只需储存矩阵的下三角部分即可咯。</p>
+其中 $H = I_N - \frac{1}{N}\mathbb{1}_N\mathbb{1}_N^T$ 为中心矩阵，作用可以理解为<strong>去均值</strong>，这里可以中心均镇的转置等于本身，中心矩阵的平方 $HH^T$ 等于中心矩阵 $H$ 本身。</p>
 
-<h2 id="2-求矩阵的行列式">2. 求矩阵的行列式</h2>
+<h1 id="pca的主要思想">PCA的主要思想</h1>
 
-<p>既然Chol分解把矩阵分解成下三角阵，那么求解原矩阵的行列式自然非常容易了</p>
+<ul>
+<li>一个中心：原始特征空间的重构</li>
+<li>两个基本点： 1. 最大投影方差 2. 最小重构代价</li>
+</ul>
+
+<p>首先将数据进行中心化，即 $x_i - \bar{x}$</p>
+
+<h2 id="最大投影方差角度">最大投影方差角度</h2>
+
+<p>假设有单位投影向量 $u_1,||u_1||_2 = 1$，向量 $x_i - \bar{x}$ 在 $u_1$ 上的投影为 $(x_i - \bar{x})^Tu_1$ 且均值为0，那么目标函数最大化投影方差可以直接表示为
+$$
+\max J=\frac{1}{N} \sum_{i=1}^N((x_i - \bar{x})^Tu_1)^2 = u_1^T\cdot S\cdot u_1  \quad s.t. u_1^Tu_1 = 1
+$$
+这是一个等式约束的最优化问题，直接拉格朗日乘子法写开</p>
 
 <div>$$
-\begin{aligned} \operatorname{det} {A} &=\prod_{i=1}^{n} {L}_{i i}^{2} \\ \log \operatorname{det} {A} &=2 \sum_{i=1}^{n} \log {L}_{i i} \end{aligned}
+\begin{array}{l} \mathcal{L}\left(u_{1}, \lambda\right)=u_{1}^{T} S u_{1}+\lambda\left(1-u_{1}^{T} u\right)\\ {\frac{\partial \mathcal{L}}{\partial u_{1}}=2 S \cdot u_{1}-\lambda \cdot 2 u_{1}=0}\end{array}
 $$</div>
 
-<p>其中 ${L}_{i i}$ 为矩阵的对角元素。</p>
+<p>即
+$$
+Su_1 = \lambda u_1
+$$
+转化成<strong>特征值分解</strong>的问题，所谓的主成分也就是特征向量矩阵，用最大的 $q$ 个特征值对应的特征向量来重构数据矩阵就是特征空间的重构。</p>
 
-<h1 id="svd分解">SVD分解</h1>
+<h2 id="最小重构代价角度">最小重构代价角度</h2>
 
-<p>要说SVD分解，首先要提到特征根分解，线代学过吧？忘记了没关系，我们再来复习一下。</p>
+<p>何谓重构代价？我们先来看下在重构空间中原始数据的表示为
+$$
+x_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_p)\cdot u_p = \sum_{k=1}^p (x_i^T\cdot u_k) \cdot u_k
+$$
+$x_i^Tu_k$ 可以理解成各个投影，$u_k$ 为投影方向。
+如果将特征进行压缩，用 $q$ 个特征来表示原始特征空间，则
+$$
+\hat{x}_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_q)\cdot u_q = \sum_{k=1}^q (x_i^T\cdot u_k) \cdot u_k
+$$
+上面两个式子均假设 $x_i$ 中心化过了。那么重构代价很直观的理解就是 $x_i - \hat{x}_i$，目标函数就能表示为
+$$
+\min J = \sum_{i=1}^N ||x_i - \hat{x}_i ||^2=\sum_{k=q+1}^p u_k^T \cdot S \cdot u_k \quad s.t. u_k^T\cdot u_k =1
+$$
+由于 $u_k$ 之间是无关的，所以这个优化问题可以拆成单个的优化问题逐一求解。也就转化成<strong>特征值求解</strong>问题，即求得最小 $p-q$ 个特征值所对应的特征向量。</p>
 
-<p>首先还是要知道特征值分解的对象是什么，答案是<strong>方阵</strong>，对于方阵 $A$，有</p>
+<h2 id="svd角度">SVD角度</h2>
 
-<p>$$
-Av=\lambda v
-$$</p>
+<p>前面的两个基本点相当于都是从<strong>方差矩阵 $S$ 进行特征值分解</strong>来获得主成分的。下面来看看如果直接对数据矩阵进行奇异值分解，两者之间会有什么样的联系。</p>
 
-<p>这时，$v$ 就称为特征向量，$\lambda$ 就是与之对应的特征值。</p>
+<p>对中心化后的数据进行SVD分解：
+$$
+HX = U \Sigma V^T
+$$
+原来的方差矩阵可以表示为
+$$
+S = X^THX=X^TH^THX = V\Sigma U^TU\Sigma V^T=V\Sigma^2V^T
+$$
+也就是说<strong>对 $HX$ 进行奇异值分解得到的 $V$ 矩阵就是对方差矩阵进行特征值分解得到的特征矩阵，奇异值分解得到到奇异值矩阵的平方就是特征值分解得到的特征值矩阵。</strong></p>
 
-<p>那么这个特征值分解分解得到的是什么东西？是干嘛用的呢？</p>
+<p>构造矩阵
+$$T =HXX^TH=U\Sigma V^TV\Sigma U^T=U\Sigma^2U^T$$
+可以看出 $T$ 和 $S$ 具有<strong>相同的特征值。</strong>
+要获得重构空间的坐标有两个思路：</p>
 
-<p>通过特征值分解，可以把矩阵 $A$ 分解为</p>
+<ol>
+<li><p>内积求投影：$HX\cdot V$</p></li>
 
-<p>$$
-A = Q\Sigma Q^{-1}
-$$</p>
+<li><p>对矩阵 $T$ 进行特征分解：
+$$
+TU\Sigma = U\Sigma^2U^TU\Sigma= U\Sigma^3 = \Sigma^2\cdot U\Sigma
+$$
+$$
+HX \cdot V=U \Sigma V^T V= U \Sigma
+$$</p></li>
+</ol>
 
-<p>其中 $Q$ 就是特征向量组成的矩阵，$\Sigma$ 就是对角线为对应特征值的对角阵。</p>
+<p><strong>因此在遇到原始数据特征空间较高时($P$ 大于 $N$)，可以采用 $T$ 矩阵进行特征分解直接获得坐标，也称为主坐标分解(PCoA)</strong></p>
 
-<p>这样分解有什么用呢？我们知道矩阵的本质就是线性变换，那么分解后我不就知道<strong>变换方向的主次</strong>了，因为我们分解得到的 $\Sigma$ 是一个对角阵且特征值从大到小排列，而特征值所对应的特征向量也就是描述矩阵的变化方向，所以 $Q$ 矩阵就是<strong>按照主要变化到次要变化进行排列</strong>。那么我们就可以根据自己的需要选择特定个数的变化方向来近似原始矩阵变化，也就是<strong>提取原始矩阵中我们期望的主要特征</strong>。</p>
+<h2 id="概率主成分分析-p-pca">概率主成分分析(P-PCA)</h2>
 
-<p>那么这些和今天的猪脚SVD有什么联系呢？（哪有猪脚，肚肚饿）</p>
+<p>从概率的角度来看则是将观测数据 $x \in \mathcal{R}^p$ 作为观测变量(observed variable)，重构特征空间 $z \in \mathcal{R}^q$ 作为隐变量(latent variable)，我们降维的过程则相当于从观测变量去求得隐变量的过程
+<strong>假设</strong></p>
 
-<p>关系可大了，你可以粗糙地把SVD也当做是特征值分解，虽然不太准确。上面说到特征值分解针对的是<strong>方阵</strong>，可是哪来那么多的方阵啊！遇到非方阵时特征值分解不就GG了，这时候SVD出场了。</p>
+<div>$$
+\begin{equation}
+\begin{aligned}
+z &\in \mathcal{N}(0,I_q)\\
+x &= Wz + \mu + \epsilon\\
+\epsilon &\in \mathcal{N}(0,\sigma^2 I_p)
+\end{aligned}
+\end{equation}
+$$</div>
 
-<p>一句话概括SVD是适用<strong>任意</strong>，是<strong>任意</strong>矩阵的一种分解方法：</p>
+<p>且 $z$ 和 $\epsilon$ 相互独立。这是一个线性高斯模型，相当于我们有了 $z, x|z, x$ 要求 $z|x$。</p>
 
-<p><div>$$
-A_{m \times n} = U_{m \times m} \Sigma_{m \times n}V_{n \times n}^T
-$$<div></p>
+<p>第一步就是Inference求后验 $z|x$ (通过构造 $x,z$ 的联合概率求条件概率)</p>
 
-<p>那么奇异值和特征值是怎么对应起来的呢？由于矩阵 $A$ 不一定是方阵，我们乘以它的转置就能得到方阵，那么就能特征值分解了。</p>
+<p>第二步就是Learning参数 $W, \mu, \sigma$（比如采用EM算法）</p>
 
-<p>$$
-(A^TA)v_i = \lambda_iv_i
-$$</p>
+<p><strong>P-PCA与GMM的区别</strong>：P-PCA的隐变量是连续的，而GMM的隐变量是离散的。</p>
 
-<p>这样求得的 $v_i$ 就组成了SVD中的右奇异矩阵 $V$，此外</p>
-
-<p>$$
-\sigma_i=\sqrt{\lambda_i},u_i=Av_i/\sigma_i
-$$</p>
-
-<p>这里的 $\sigma_i$ 就是所谓的奇异值，它在矩阵 $\Sigma$ 中也是从大到小排列的，而且<strong>减小速度非常快！</strong>，这可是个好消息，说明我们利用<strong>很少的奇异值就能近似描述原始矩阵</strong>，相当于是<strong>空间压缩</strong>，比如我们利用 $r$ 个奇异值来近似原始矩阵（$r$ 远小于 $m$ 或 $n$）</p>
-
-<p>$$
-A_{m \times n} = U_{m \times r} \Sigma_{r \times r}V_{r \times n}^T
-$$</p>
-
-<p>所以总的来说SVD就是用来提取重要特征的一个方法。SVD或者特征值分解的具体实现都有现成的函数可以调用，感兴趣可以通过matlab分解一把再观察一下。</p>
+<h2 id="matlab-实现">Matlab 实现</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">[Q,Sigma1] = eig(A&#39;*A)   % matlab求特征值不一定按从小到大排序的 
-[U,Sigma2,V] = svd(A)</pre></td></tr></table>
+<pre class="chroma">% Data 两个特征线性关系加点噪声
+X1 = [1,2,3,4,5,6]&#39;;
+X2 = [X1] + rand(6,1);
+X = [X1,X2];
+plot(X1,X2)
+N = size(X,1);
+
+% 矩阵描述
+x_bar = 1/N*X&#39;*ones(N,1);
+H = eye(N) - 1/N*ones(N,1)*ones(N,1)&#39;;
+S = 1/N*X&#39;*H*X;
+
+% 根据采样方差特征值分解
+[G,K] = eig(S);
+
+% 根据中心化的数据进行奇异值分解
+[U,Sigma,V] = svd(H*X);
+
+% 方差矩阵的特征值与奇异值分解的奇异值的关系
+Sigma.^2/N
+K
+% 观察V矩阵和G矩阵的关系
+G
+V
+
+% 主坐标分析
+T = H*X*X&#39;*H&#39;;
+[G2,K2] = eig(T);
+% 观察非零特征值对应特征向量也就是主坐标与HXV的关系
+H*X*V</pre></td></tr></table>
 </div>
 </div>
-<p>观察一下 $Q$ 和 $V$ 的关系以及 $Sigma1$ 和 $Sigma2$ 的关系，可以再根据上面给出的公式人工计算一下 $U$ 矩阵，再和matlab的结果进行比较。</p>
     </div>
     <div class="read-more">
-      <a href="/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-08T21:20:52&#43;08:00"/>
+<meta property="og:updated_time" content="2020-02-13T11:59:18&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,128 +115,56 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E6%AD%A6%E6%B1%89%E6%96%B0%E5%9E%8B%E8%82%BA%E7%82%8E/">《经济学人》武汉新型肺炎</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%A7%81%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/">「概率基础」常见概率分布</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-05 </span>
+      <span class="post-time"> 2020-02-10 </span>
       <div class="post-category">
-          <a href="/categories/english/"> ’English‘ </a>
+          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="title">Title</h1>
+      <p>本文主要总结一些基础的概率分布，便于遗忘时查阅。</p>
 
-<p>Will the Wuhan virus become a pandemic?
-Probably. But public health services can help determine how severe it turns out to be</p>
+<p>从最基础的抛硬币开始吧~</p>
 
-<ul>
-<li>Pandemic: a disease that affects people over a very large area or the whole world</li>
-</ul>
+<p>大家都知道一枚硬币只有正面和反面两种可能情况，用随机变量$X$来表示抛硬币的结果，那么$X$的可能情况为$X=1$（表示正面）或$X=0$（表示反面），<strong>伯努利试验</strong>也就指抛一次硬币的结果，即</p>
 
-<h1 id="paragraph-1">Paragraph 1</h1>
+<p>$$
+P(X=k) = p^k(1-p)^{1-k}, k=0,1
+$$
+其中$p$代表的就是硬币为正面的概率。我们也称$X$满足参数为$p$的伯努利分布，$X\sim Ber(p)$</p>
 
-<p>Two things explain why a new infectious disease is so alarming. One is that, at first, it spreads exponentially. As tens of cases become hundreds and hundreds become thousands, the mathematics run away with you, conjuring speculation about a health-care collapse, social and economic upheaval and a deadly pandemic. The other is profound uncertainty. Sparse data and conflicting reports mean that scientists can not rule out the worst case—and that lets bad information thrive.</p>
+<p>到这里我们只抛了一次硬币，那么如果多抛几次呢，那就是<strong>二项分布</strong>，即独立重复$n$次抛硬币（伯努利试验）。而原来的随机变量$X$表示的就是$n$次试验中正面朝上的次数，因此$X$的可能取值也就是$0,1,&hellip;,n$，出现$k$次正面的概率为</p>
 
-<ul>
-<li>Conjure: to make something appear or happen in a way which is not expected</li>
-<li>Speculation: when you guess about the possible causes or effects of something without knowing all the facts. 例：There is speculation that the president is ill.</li>
-<li>Upheaval: a very big change that often causes problems</li>
-</ul>
+<p>$$
+P(X=k)=C_n^k p^k(1-p)^{n-k}
+$$
+其中$C_n^k=\frac{n!}{k!(n-k)!}$为二项系数。
+我们也称$X$满足参数为$(n,p)$的二项分布$X\sim B(n,p)$， 二项分布具有期望$E[X]=np$和方差$Var[X]=np(1-p)$。</p>
 
-<h1 id="paragraph-2">Paragraph 2</h1>
+<p>有人会觉得抛硬币不过瘾，结果就两种情况，想要探索更多的情况我们进入到掷骰子，而且是一个不均匀的筛子，也就是不用面发生的可能性是不一样的，假设各个面发生的概率为$p=[p_1,&hellip;,p_6],\sum p_i=1$，并且引入$X=[X_1,&hellip;,X_6]$来表示各个面的情况，也就是说$X_i$里只有一个是$1$其他都是$0$，比如你筛子是3朝上，那么$X_3=1$，$X_1,X_2,X_4,X_5,X_6$均为$0$。这时候我们就可以表示$X$这个随机向量的概率了：</p>
 
-<p>So it is with a new coronavirus, known as2019-nCoV, which has struck in China. The number of reported cases grew from 282 on January 20th to almost 7,800 just nine days later. In that time four reported cases outside mainland China have multiplied to 105 in 19 territories. Doubt clouds fundamental properties of the disease, including how it is passed on and what share of infected people die. Amid the uncertainty, a simulation of a coronavirus outbreak by Johns Hopkins University in October, in which 65m people lost their lives, was put about as a prediction. It is not.</p>
+<p>$$
+P(X|p)=\prod_{i=1}^{6}p_i^{X_i}
+$$</p>
 
-<ul>
-<li>Strike: 类似于hit</li>
-<li>Cloud: 云延伸出来就是“使模糊”</li>
-</ul>
+<p>那如果掷骰子$n$次呢，$X=[X_1,&hellip;,X_6]$这时候表示的就是$n$次试验中某个面向上的次数。
+我们记第$i$面朝上的次数为$m_i$且满足$\sum m_i=n$，那么这时候$X$满足的就是<strong>多项分布</strong>：</p>
 
-<h1 id="paragraph-3">Paragraph 3</h1>
+<div>
+$$
+P(X_1=m_1,...,X_6=m_6)=Multi(n; p_1,...,p_6)=\frac{n!}{m_1!...m_6!}\prod_{i=1}^6p_i^{m_i}
+$$</div>
 
-<p>Those are the right questions, though: will the new virus become a global disease? And how deadly will it be? A definite answer is weeks or months away, but public-health authorities have to plan today. The best guess is that the disease has taken hold in China and there is a high risk that it spreads around the world—it may even become a recurrent seasonal infection. It may turn out to be no more lethal than seasonal influenza, but that would still count as serious. In the short term that would hit the world economy and, depending on how the outbreak is handled, it could also have political effects in China.</p>
+<p>记做$X\sim Multi(n,p)$一句话概括多项分布就是<strong>一个多种可能情况的事件独立发生$n$次，各种可能情况发生次数的联合分布</strong>。</p>
 
-<ul>
-<li>Take hold: to start to have a definite effect</li>
-<li>Lethal: causing death, or able to cause death</li>
-</ul>
-
-<h1 id="paragraph-4">Paragraph 4</h1>
-
-<p>The outbreak began in December. The repeated mingling of people and animals in China means that viral mutations that infect humans are likely to arise there; and mass migration to cities means that they are likely to spread between people. This virus probably originated in bats and passed through mammals, such as palm civets (果子狸) or ferret badgers (鼬獾), ending up in Wuhan’s wet market, where wild animals were on sale. Symptoms resemble flu, but can include pneumonia, which may be fatal. About 20\% of reported cases are severe, and need hospital care; about 2\% of them have been fatal. As yet, there is no vaccine or antiviral treatment.</p>
-
-<ul>
-<li>Mingling: if two feelings, sounds, smells etc mingle, they mix together with each other</li>
-<li>Wet market: 指的是传统市场，卖生鲜的这种</li>
-<li>Pneumonia: 肺炎</li>
-<li>Vaccine: 疫苗</li>
-<li>Antiviral: 复合词的结构，抗病毒</li>
-</ul>
-
-<h1 id="paragraph-5">Paragraph 5</h1>
-
-<p>The greatest uncertainty is how many cases have gone unrecorded. Primary health care is rudimentary in China and some of the ill either avoided or were turned away from busy hospitals. Many more may have such mild symptoms that they do not realise they have the disease. Modelling by academics in Hong Kong suggests that, as of January 25th, tens of thousands of people have already been infected and that the epidemic will peak in a few months’ time. If so, the virus is more widespread than thought, and hence will be harder to contain within China. But it will also prove less lethal, because the number of deaths should be measured against a much larger base of infections. As with flu, a lot of people could die nonetheless. In 2017-18 a bad flu season saw symptoms in 45m Americans, and 61,000 deaths.</p>
-
-<ul>
-<li>Rudimentary: simple and basic</li>
-</ul>
-
-<h1 id="paragraph-6">Paragraph 6</h1>
-
-<p>Scientists have started work on vaccines and on treatments to make infections less severe. These are six to 12 months away, so the world must fall back on public-health measures. In China that has led to the biggest quarantine in history, as Wuhan and the rest of Hubei province have been sealed off. The impact of such draconian measures has rippled throughout China. The spring holiday has been extended, keeping schools and businesses closed. The economy is running on the home-delivery of food and goods.</p>
-
-<ul>
-<li>Quarantine: a period of time when a person or animal is kept apart from others in case they are carrying a disease</li>
-<li>Draconian: very strict and cruel</li>
-<li>Ripple: to pass from one person to another like a wave. 例：Panic rippled through Hollywood as the murders were discovered.</li>
-</ul>
-
-<h1 id="paragraph-7">Paragraph 7</h1>
-
-<p>Many experts praise China’s efforts. Certainly, its scientists have coped better with the Wuhan virus than they did with SARS in 2003, rapidly detecting it, sequencing its genome (基因测序), licensing diagnostic kits (诊断试剂) and informing international bodies. China’s politicians come off less well. They left alone the cramped markets filled with wild animals that spawned SARS. With the new virus, local officials in Wuhan first played down the science and then, when the disease had taken hold, enacted the draconian quarantine fully eight hours after announcing it, allowing perhaps 1m potentially infectious people to leave the city first.</p>
-
-<ul>
-<li>Cramped: not have enough space. 例：The kitchen was small and cramped.</li>
-<li>Spawn: to make a series of things happen or start to exist</li>
-<li>Enact: to make a proposal into a law. 例：Congress refused to enact the bill.</li>
-</ul>
-
-<h1 id="paragraph-8">Paragraph 8</h1>
-
-<p>That may have undermined a measure which is taking a substantial toll. China’s growth in the first quarter could fall to as little as 2\%, from 6\% before the outbreak. As China accounts for almost a fifth of world output, there will probably be a noticeable dent on global growth. Though the economy will bounce back when the virus fades, the reputation of the Communist Party and even of Xi Jinping may be more lastingly affected. The party claims that, armed with science, it is more efficient at governing than democracies. The heavy-handed failure to contain the virus suggests otherwise.</p>
-
-<ul>
-<li>Substantial: large in amount or number; considerable</li>
-<li>Dent: a reduction in the amount of something</li>
-<li>Contain: to stop something from spreading or escaping. 例：Doctors are struggling to contain the epidemic.</li>
-</ul>
-
-<h1 id="paragraph-9">Paragraph 9</h1>
-
-<p>Outside China such quarantines are unthinkable. The medical and economic cost will depend on governments slowing the disease’s spread. The way to do this is by isolating cases as soon as they crop up and tracing and quarantining people that victims have been in contact with—indeed, if the disease burns out in China, that might yet stop the pandemic altogether. If, by contrast, that proves inadequate, they could shut schools, discourage travel and urge the cancellation of public events. Buying time in this way has advantages even if it does not completely stop the disease. Health-care systems would have a greater chance to prepare for the onslaught, and to empty beds that are now full of people with seasonal flu.</p>
-
-<ul>
-<li>Crop up: if a problem crops up, it happens or appears suddenly and in an unexpected way; arise. 例：if anything crops up, give me a call.</li>
-</ul>
-
-<h1 id="paragraph-10">Paragraph 10</h1>
-
-<p>Despite all those efforts the epidemic could still be severe. Some health systems, in Africa and the slums of Asia’s vast cities, will not be able to isolate patients and trace contacts. Much depends on whether people are infectious when their symptoms are mild (or before they show any at all, as some reports suggest), because such people are hard to spot. And also on whether the virus mutates to become more transmissible or lethal.</p>
-
-<ul>
-<li>Slum: an area that is in bad condition, where very poor people live</li>
-<li>Spot: to notice someone or something, especially when they are difficult to see or recognize. 例：I spotted a police car behind us.</li>
-<li>Mutate: a change in genetic structure. 例：Simple organisms like bacteria mutate rapidly.</li>
-</ul>
-
-<h1 id="paragraph-11">Paragraph 11</h1>
-
-<p>The world has never responded as rapidly to a disease as it has to 2019-nCoV. Even so, the virus may still do great harm. As humans encroach on new habitats, farm more animals, gather in cities, travel and warm the planet, new diseases will become more common. One estimate puts their cost at $60bn a year. SARS, MERS, Nipah, Zika, Mexican swine flu: the fever from Wuhan is the latest of a bad bunch. It will not be the last.</p>
+<p>多项分布的统计量满足$E[X_i]=Np_i$，$Var[X_i]=Np_i(1-p_i)$，$Cov(X_i,X_j)=-Np_ip_j$</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E6%AD%A6%E6%B1%89%E6%96%B0%E5%9E%8B%E8%82%BA%E7%82%8E/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%A7%81%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

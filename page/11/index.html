@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-08T21:20:52&#43;08:00"/>
+<meta property="og:updated_time" content="2020-02-13T11:59:18&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,194 +115,330 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/">对偶理论</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/">「机器学习」EM算法</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-11 </span>
+      <span class="post-time"> 2019-08-22 </span>
       <div class="post-category">
-          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>在求解一个优化命题时，如果其对偶形式便于求解，常常可以通过求解对偶问题来避免直接对原问题进行求解。比如机器学习中典型的SVM就涉及到对偶理论，以及拉格朗日乘子法、KKT条件等概念。</p>
+      <p>期望最大(EM)算法的大名想必大家都听过，说来惭愧，大概两年前就学过用过这个算法，但是到后来只记得EM这个名字，把算法的原理都给忘光光了，这几天重新捡起来，总结一下，也希望对想了解这个算法的人有点启发。</p>
 
-<p>首先简单通俗地说说这几个概念是干嘛的</p>
+<p>对我EM算法我总结为三点：<strong>为什么</strong>、<strong>是什么</strong>、<strong>怎么用</strong>。</p>
 
-<ol>
-<li><p>对偶理论：对偶也就是孪生双胞胎，一个优化命题也就有其对应的兄弟优化命题。</p></li>
+<h2 id="为什么要用em算法">为什么要用EM算法？</h2>
 
-<li><p>拉格朗日函数：将原本优化命题的目标函数和约束整合成一个函数。</p></li>
-
-<li><p>KKT条件：函数的最优值满足的性质。</p></li>
-</ol>
-
-<p>上面的解释可能不够准确，但希望对这些概念有个初步的认识，接下来从优化命题的角度来解释一下这些东西。</p>
-
-<p>首先是原问题</p>
+<p>会看到这篇博客的大家想必都知道，EM算法是用来<strong>估计参数</strong>的，并且是以<strong>迭代</strong>的方式进行。看到估计参数这个字眼，你脑子里首先会想到什么方法？毫无疑问就是极大似然法吧，再帮大家回忆一下极大似然法的思想：<strong>什么参数对应的事件发生的概率最大，我们就认为这个参数就是未知参数的估计值</strong>。通俗一点讲就是你知道了事件的观测值 $y_1,&hellip;,y_N$，然后要寻找能够让事件发生的可能性 $p(y_1,&hellip;,y_N|\theta)$ 最大的参数 $\hat{\theta}$，也就是</p>
 
 <div>$$
-\begin{aligned} \min _{x \in R^{n}} f_0(x) & \\ \text { s.t. } f_{i}(x) \leq 0, i &=1,2, \ldots, k \\ h_{j}(x)=0, j &=1,2, \ldots, l \end{aligned}
+\hat{\theta}=\arg\max_{\theta} p(y_1,...,y_N|\theta)
 $$</div>
 
-<p>这个优化命题说的是你有个函数 $f_0(x)$，它的自变量是 $x$，维度为 $n$，你想要求这个函数的最小值，同时这个自变量(优化里又叫决策变量)还需要满足 $k$ 个不等式约束 $f_i(x) \le 0$ 以及 $l$ 个等式约束 $h_j(x) = 0$。假设满足这些约束的情况下这个函数的最小值为 $p^*$。</p>
-
-<p>如果是个无约束的求极值问题，高中时我们就学过，求导并令导函数为 $0$ 便能求出函数取得极值时对应的自变量 $x^*$。 但是这里是有约束的优化问题，显然直接求导的方法不再适用，那自然的想法就是把约束去掉，拉格朗日函数就是通过将约束<strong>线性组合</strong>放入目标函数而形成的新的一个函数：</p>
-
-<p>$$
-L(x,\lambda,v) = f_0(x) + \sum_{i=1}^k \lambda_i f_i(x) + \sum_{j=1}^l v_j h_j(x)
-$$
-这里 $L(x,\lambda,v)$ 是个三元函数 $R^n \times R^k \times R^l \rightarrow R$，且 $\lambda \ge 0,v$ 称为拉格朗日向量，至于这个系数 $\lambda$ 为什么还需要满足 $\lambda \ge 0$，你先记住这是为了<strong>确保下界</strong>，后面会详细解释。</p>
-
-<h2 id="原问题的等价形式">原问题的等价形式</h2>
-
-<p>我们原来是要求函数 $f_0(x)$ 关于 $x$ 的最小值，为了不考虑原问题的约束而构造了拉格朗日函数 $L(x,\lambda,v)$。我们先将其看作是 $\lambda,v$ 的函数，然后定义函数：</p>
-
-<p>$$
-q(x) = \max_{\lambda \ge 0,v } L(x,\lambda,v)
-$$</p>
-
-<p>可以证明 $\min_{x\in R^{n}}q(x)$ 与原问题等价，即满足</p>
+<p>或者通常为了计算方便采用对数的形式</p>
 
 <div>$$
-p^* = \min_{x\in R^{n}}q(x) = \min_{x\in R^{n}}\max_{\lambda \ge 0,v}L(x,\lambda,v)
+\hat{\theta}=\arg\max_{\theta} \log p(y_1,...,y_N|\theta)
 $$</div>
 
-<p>这个证明很简单，我们只需要分类讨论一下这个<strong>无约束问题中原问题约束是否成立</strong>：</p>
-
-<ol>
-<li><p>$x$ 满足原问题约束，则 $q(x) = f_0(x)$</p></li>
-
-<li><p>$x$ 不满足原问题约束，即 $f_i(x) \ge 0$ 或 $h_j(x) \not= 0$，则 $q(x) = + \infty$</p></li>
-</ol>
-
-<p>因此 $\min_{x}q(x) = \min_{x}f_0(x)$ 且 $x$ <strong>满足原问题约束</strong>，即 $\min_{x\in R^{n}}q(x)$  <strong>等价于原问题。</strong></p>
-
-<h2 id="拉格朗日对偶函数">拉格朗日对偶函数</h2>
-
-<p>先前我们把拉格朗日函数看作是 $\lambda,v$ 的函数，现在我们将其看作是关于 $x$ 的函数，定义拉格朗日对偶函数，这只是个名字，其实就是 $L(x,\lambda,v)$ 关于 $x$ 的下界(或者理解为最小值)：</p>
-
-<p>$$
-g(\lambda,v) = \min_{x \in R^{n} } L(x,\lambda,v)
-$$</p>
-
-<p>拉格朗日对偶函数 $g(\lambda,v)$ 有两个重要的性质：</p>
-
-<ol>
-<li>这是个凹函数(这里不证明了，感兴趣的可以自查)</li>
-<li>$g(\lambda,v)\le p^*$</li>
-</ol>
-
-<p>性质2是重点！我们来证明一下，假设 $\tilde{x}$ 是原问题的可行解，说明 $\tilde{x}$ 满足原问题的不等式约束以及等式约束，将其带入 $L(x,\lambda,v)$ 中，有</p>
-
-<p>$$
-L(\tilde{x},\lambda,v) = f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x}) + \sum_{j=1}^l v_j h_j(\tilde{x})
-$$</p>
-
-<p>根据 $g(\lambda,v)$ 的定义有</p>
-
-<p>$$
-g(\lambda,v) = \min_{x} L(x,\lambda,v) \le L(\tilde{x},\lambda,v) = f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x})
-$$</p>
-
-<p>$\min_{x} L(x,\lambda,v) \le L(\tilde{x},\lambda,v)$ 是因为函数的(最小值)下界肯定小于可行解代入的值呀！</p>
-
-<p>我们知道 $\tilde{x}$ 是原问题的可行解也意味着 $f_i(x) \le 0$，进一步，如果 $\lambda_i \ge 0$ 会发生什么？也就是 $\lambda_i f_i(x) \le 0$，那么
-$$
-g(\lambda,v) \le f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x}) \le f_0(\tilde{x})
-$$
-也就是 $g(\lambda,v) \le f_0(\tilde{x})$，这是对任意可行解 $\tilde{x}$ 都成立的，那么对函数取得最小值的 $x^*$ 对应的函数值 $p^*$ 也成立。即</p>
-
-<p>$$
-g(\lambda,v) \le p^*
-$$
-这也就得到了性质2，可以理解为<strong>我们为原问题的最优值 $p^*$ 找到了一个下界函数 $g(\lambda,v)$，为了确保下界需要满足我们之前的假设 $\lambda \ge 0$，而对 $v$ 的取值则是任意的。</strong></p>
-
-<h2 id="原问题的对偶形式">原问题的对偶形式</h2>
-
-<p>前面的分析中我们看到原问题的最优值有一个函数下界，那么如果我们来优化这个函数下界，让它来逼近原问题的最优值，是不是为求解原问题提供了另一种思路呢？这就是所谓的<strong>对偶问题</strong></p>
+<p>其中 $\log p(y_1,&hellip;,y_N|\theta)$ 就称为对数似然函数，常常假设事件之间相互独立，那也就能进一步把联合概率写成独立概率乘积的形式：</p>
 
 <div>$$
-\begin{aligned} d^* =\max _{\lambda \ge 0,v} g(\lambda,v) = \max _{\lambda \ge 0,v} \min _{x \in R^n} L(x,\lambda,v)
-\end{aligned}
+\hat{\theta}=\arg\max_{\theta} \log \prod_{i=1}^N p(y_i|\theta)
 $$</div>
 
-<p>这个优化命题相当于最大化原问题的下界函数，其中 $d^*$ 为优化命题的最优值，约束 $\lambda \ge 0 $ 是用来确保下界的。根据 $g(\lambda,v)$ 是凹函数这一性质可知，这个最大化凹函数的优化问题是个<strong>凸问题</strong>，凸问题也就意味着便于求解，<strong>因此无论原问题的凹凸性如何，都可以转化为对偶问题然后通过求解这个凸问题来得到原问题的下界，甚至原问题的最优解</strong>。什么时候这个下界函数的最大值等于原问题的最优解呢？这就是下面要讨论的问题。</p>
+<p>这样一个无约束的优化问题利用极值条件(导数为0)也就能得到待估计参数的解析解了。</p>
 
-<h3 id="强对偶性与弱对偶性">强对偶性与弱对偶性</h3>
+<p>回到我们的问题<strong>为什么要用EM算法</strong>，那肯定是因为极大似然法不管用了呗，也就是当有<strong>隐变量(latent variable)</strong>存在的时候，原来的对数似然函数变为</p>
 
-<p>我们已知知道 $g(\lambda,v)$ 是原函数最小值 $p^*$ 的下界，那么说明 $g(\lambda,v)$ 的最大值也需要满足</p>
+<div>$$
+\log p(Y|\theta) = \log \sum_{Z} p(Y|Z,\theta)p(Z,\theta)
+$$</div>
 
-<p>$$
-d^* \le p^*
-$$</p>
+<p>相当于求完全数据 $Y,Z$ 的联合分布 $p(Y,Z|\theta)$ (把隐变量积分掉)的和，但是由于里面包含隐变量，直接用极大似然求解是不行滴。但是如果能够估计出隐变量 $Z$，那这个问题又回到了原来的极大似然估计。这样也就自然地与EM算法的思想挂上勾了：<strong>估计隐变量(E步)，再估计参数(M步)，不断迭代</strong>。</p>
 
-<p>这就是弱对偶性了，很自然就满足了，那么强对偶性从名字听就比较强，自然要求要严格一点，不能只是取 $\le$ 号，而是直接取等号，即</p>
+<p>现在可以回答第一个问题了：为什么要用EM算法？<strong>EM算法是用来解决含有隐变量的参数估计问题的。</strong></p>
 
-<p>$$
-d^* = p^*
-$$</p>
+<h2 id="什么是em算法">什么是EM算法？</h2>
 
-<p>对于弱对偶，我们能够通过求解原问题的对偶问题得到原问题最小值的下界，而如果满足强对偶性，我们直接就得到原问题的最优解了！意味着<strong>我们能够通过求解对偶问题来避免直接求解原问题同时获得原问题的最优函数值</strong>。</p>
-
-<h3 id="强对偶性">强对偶性</h3>
-
-<p>如何才能判断原问题是否满足强对偶性呢？</p>
-
-<p><strong>凸问题通常but not always满足强对偶性</strong>
-也就是说凸问题中有部分满足强对偶性，那对这些部分约束一下就是slater条件：</p>
-
-<blockquote>
-<p>存在 $x$ 严格可行：$f_i(x) &lt; 0,i=1,&hellip;,k$</p>
-</blockquote>
-
-<p>当不等式约束为仿射函数时，这个条件可以弱化为</p>
-
-<blockquote>
-<p>存在 $x$ 满足部分严格可行：$f_i(x) \le 0,i=1,&hellip;,m;f_i(x) &lt; 0,i=m+1,&hellip;,k$</p>
-</blockquote>
-
-<p>那么有
-$$
-\text{凸问题} + \text{Slater条件} = \text{强对偶性}
-$$</p>
-
-<p>进一步探究一下当原问题满足强对偶性时，原问题和对偶问题的最优解满足哪些性质，首先从 $p^* = d^*$ 看起，利用函数的表达式描述这一关系有：</p>
+<p>那么这个所谓的迭代算法是怎么迭代的呢？我们还是先回到对数似然函数，可以将其表示为</p>
 
 <div>$$
 \begin{aligned}
-f_0(x^*) &= g(\lambda^*,v^*)\\
-&= \min_x (f_0(x) + \sum_{i=1}^k \lambda_i^* f_i(x) + \sum_{j=1}^l v_j^* h_j(x))\\
-&\le f_0(x^*) + \sum_{i=1}^k \lambda_i^* f_i(x^*) + \sum_{j=1}^l v_j^* h_j(x^*)\\
-&\le f_0(x^*)
-\end{aligned}   
+\log p(Y|\theta) &= \log p(Y,Z|\theta) - \log p(Z|Y,\theta)\\
+&=\log \frac{p(Y,Z|\theta)}{q(Z)}-\log \frac{p(Z|Y,\theta)}{q(Z)}
+\end{aligned}
 $$</div>
 
-<p>第一行到第二行是根据 $g(\lambda,v)$ 的函数定义，第二行到第三行是根据函数的下界小于 $x$ 取任意值对应的函数值，这里 $x = x^*$，第三行到第四行是根据 $x^*$ 满足原问题的约束条件 $f_i(x) \le 0, h_j(x) =0$。所以<strong>不等号同时取等号</strong>，并可以得出以下两条结论：</p>
+<p>第一行公式(完整数据减去后验)根据条件概率公式可得，第二行公式相当于减去一个 $\log q(Z)$ 再加上一个 $\log q(Z)$ 恒等变换。这里假设 $q(Z)$ 是 $Z$ 的一个概率分布 ($\int_Z q(Z) dZ = 1$)。</p>
 
-<ol>
-<li><p>极值条件：$x^*$ 是使 $L(x,\lambda^*,v^*)$ 取得下界的点，即 $x^*$ 是使 $\nabla_x L(x,\lambda^*,v^*) = 0$ 的点</p></li>
+<p>然后<strong>同时对两侧对$q(Z)$求期望</strong></p>
 
-<li><p>松弛互补条件：$\sum_{i=1}^k \lambda_i^*f_i(x^*)=0$</p></li>
-</ol>
+<p>左边积分还是它本身：</p>
 
-<h3 id="kkt条件">KKT条件</h3>
+<div>$$
+\int_Z q(Z) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z q(Z) dZ = \log p(Y|\theta)
+$$</div>
 
-<p>KKT也就是原问题和对偶问题的最优点 $x^*,\lambda^*,v^*$ 满足的几个条件：</p>
+<p>右边积分则是</p>
 
-<ol>
-<li>原问题的约束条件：$f_i(x^*) \le 0,h_j(x^*)=0$</li>
-<li>对偶问题的约束条件：$\lambda_i^* \ge 0$</li>
-<li>松弛互补条件：$\sum_{i=1}^k \lambda_i^*f_i(x^*)=0$</li>
-<li>极值条件：
-$\nabla_x f_0(x^*) + \sum_{i=1}^k \lambda_i^* \nabla_x f_i(x^*) + \sum_{j=1}^l v_j^* \nabla_x h_j(x^*) = 0$</li>
-</ol>
+<div>$$
+\int_z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ - \int_Z q(Z) \log \frac{p(Z|Y,\theta)}{q(Z)}
+$$</div>
 
-<p><strong>如果原问题是凸问题，则KKT条件为充要条件，也就是说满足KKT条件的点也就是原问题和对偶问题的最优解，那就能够在满足KKT条件下用求解对偶问题来替代求解原问题，使得问题求解更加容易。</strong></p>
+<p>左边等于右边即</p>
+
+<div>$$
+\log p(Y|\theta) = \text{ELBO} + \text{KL}(q(Z)||p(Z|Y,\theta))
+$$</div>
+
+<blockquote>
+<p>KL divergence的概念</p>
+
+<div>$$
+D_{\mathrm{KL}}(P \| Q)=-\sum_{i} P(i) \ln \frac{Q(i)}{P(i)} \ge 0
+$$</div>
+
+<p>由吉布斯不等式可知，当且仅当 $P = Q$ 时 $D_{KL}(P||Q)$为零。</p>
+</blockquote>
+
+<p><strong>因为相对熵大于等于0的性质，所以 ELBO 为 $\log p(Y|\theta)$ 提供了下界，所以EM算法的想法就是想让ELBO不断变大从而让对数似然变大</strong>，并且只有当 $q(Z) = p(Z|Y,\theta^{(t)})$ 时ELBO等于对数似然， 即</p>
+
+<div>$$
+\begin{aligned}
+\theta^{(t+1)} = \hat{\theta} &= \arg \max_{\theta} \text{ELBO}\\
+&= \arg \max_{\theta} \int_Z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ\\
+&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Y,Z|\theta)}{p(Z|Y,\theta^{(t)})} dZ\\
+&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) [\log p(Y,Z|\theta) - \log p(Z|Y,\theta^{(t)})] dZ\\
+&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)  dZ
+\end{aligned}
+$$</div>
+
+<p>这也就解释了EM算法是怎么来的啦，<strong>当 $q(Z)$ 等于后验 $p(Z|Y,\theta^{{t}})$ 时，ELBO 等于log likelihood，先固定 $\theta^{(t)}$ 得到后验，然后求 ELBO (关于后验的期望)，滑动 $\theta$ 得到期望的最大值，最大期望对应的 $\theta$ 就是 $\theta^{(t+1)}$</strong></p>
+
+<p>从思路上是能说通了，你可能会疑惑为什么这么迭代求解就能得到最优解呢？或者说 $\theta_{t}$ 到最后会收敛吗？我们回到最初的目标最大化对数似然 $\log p(Y|\theta)$，那如果我们每次迭代求解都能使得对应的对数似然函数的值增加，最后是不是也就说明能向似然函数的最大值靠近了呢，也就是我们希望看到的结果是</p>
+
+<div>
+    $$
+    \log p(Y|\theta^{(t)}) \le \log p(Y|\theta^{(t+1)})
+    $$
+</div>
+
+<p>事实也说明了这是成立的，我们再回到对数似然函数的表达式</p>
+
+<div>
+$$
+\log p(Y|\theta) = \log p(Y,Z|\theta) - \log p(Z|Y,\theta)
+$$
+</div>
+
+<p>两边求关于后验 $p(Z|Y,\theta^{(t)})$ 的期望，也就是求积分</p>
+
+<p>左边积分还是它本身：</p>
+
+<div>$$
+\int_Z p(Z|Y,\theta^{(t)}) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z p(Z|Y,\theta^{(t)}) dZ=\log p(Y|\theta) 
+$$</div>
+
+<p>右边积分则是：</p>
+
+<div>
+    $$
+    Q(\theta,\theta^{(t)}) - H(\theta,\theta^{(t)})
+    $$
+</div>
+
+<p>其中，$Q(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta) dZ, H(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Z|Y,\theta) dZ$</p>
+
+<p>那要使得迭代收敛需要满足的条件就变为了</p>
+
+<div>
+    $$
+    Q(\theta^{(t)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t+1)},\theta^{(t)})
+    $$
+</div>
+
+<p>因为 $Q(\theta,\theta^{(t)})$ 对应的就是EM的迭代公式，那根据最大化问题可以得到 $Q(\theta,\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那也就有 $Q(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那再根据<strong>放缩</strong>的思想，只要我们能证明 $H(\theta^{(t)},\theta^{(t)}) \ge H(\theta^{(t+1)},\theta^{(t)})$，那一切就都顺理成章了。</p>
+
+<p>直接对这两项作差</p>
+
+<div>
+    $$
+    H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Z|Y,\theta^{(t+1)})}{p(Z|Y,\theta^{(t)})} dZ
+    $$
+</div>
+
+<p>看出点什么没有，不然再回到上面 KL 散度的定义看看，这结果不就是 $-D_{\text{KL}}(p(Z|Y,\theta^{(t)})||p(Z|Y,\theta^{(t+1)}))$，根据散度大于等于0的性质，可以得到 $H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le 0$，这也就得证了<strong>EM迭代求解每次得到的似然函数值总是非减的( $\theta^{(t)}$ 会逐渐收敛)，那最终也就会取到最大似然咯，需要注意这并不能保证找到全局最优解的。</strong></p>
+
+<h2 id="怎么用em算法">怎么用EM算法？</h2>
+
+<p>看到这里的话想必你对算法的原理也有了大概的认识，但是大家最关心的应该是在认识原理后如何去应用，这里根据李航老师的《统计学习方法》里的例子介绍一下算法的应用和实现。</p>
+
+<p>三硬币模型：有A，B，C三枚硬币，它们正面向上的概率分别为 $a,b,c$，进行如下试验：先掷硬币 A，如果正面则再掷 B，如果反面则掷 C，掷硬币的结果正面记为1反面为0，独立重复10次试验，结果为1，1，0，1，0，0，1，0，1，1。我们只知道最终掷硬币的结果并不能观测掷硬币的过程，那么如何估计三枚硬币正面向上的概率呢？</p>
+
+<p>这个例子里观测变量 $y_i$ 也就是掷硬币的结果0或1，要估计的参数为概率 $\theta=(a,b,c)$，由于我们不知道掷A的结果导致这一问题不能直接采用极大似然来估计，因此我们引入隐变量 $z$ 来表示掷 A的结果。</p>
+
+<p>观测数据 $y_1,&hellip;,y_N$
+由以下模型生成</p>
+
+<div>
+    $$
+    p(y|\theta) = ab^{y}(1-b)^{(1-{y})} + (1-a)c^{y}(1-c)^{(1-{y})}
+    $$
+</div>
+
+<p>隐变量 $z_i = 1$ 表示第 $i$ 个观测来自掷硬币B的结果，$z_i = 0$ 表示第 $i$ 个观测来自掷硬币C的结果。</p>
+
+<p>于是可以写出完全数据的似然函数：</p>
+
+<div>$$
+    \begin{aligned}
+p(Y,Z|\theta) &= \prod_{i=1}^N p(y_i,z_i
+|\theta)\\
+&=\prod_{i=1}^N [ab^{y_i}(1-b)^{(1-{y_i})}]^{z_i} \cdot [(1-a)c^{y_i}(1-c)^{(1-{y_i})}]^{1-z_i}
+\end{aligned}
+$$</div>
+
+<p>那么，完全数据的对数似然函数为</p>
+
+<div>$$
+\log p(Y,Z|\theta) = \sum_{i=1}^N  z_i (\log a + y_i \log b + (1-y_i) \log(1-b)) + (1-z_i) (\log(1-a) + y_i \log c + (1-y_i) \log(1-c)) 
+$$</div>
+
+<p>按照我上面说的<strong>先固定 $\theta^{(t)}$ 计算后验：</strong></p>
+
+<div>
+    $$
+    \begin{aligned}
+    p(z_i=1|y_i,\theta^{(t)}) &= \frac{p(z=1,y_i|\theta^{(t)})}{p(z_i=1,y_i|\theta^{(t)}) + p(z_i=0,y_i|\theta^{(t)})}\\
+    &=\frac{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)})}{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)}) + p(y_i|z=0,\theta^{(t)}) p(z=0|\theta^{(t)})}\\
+    &=\frac{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)}}{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)} + (1-a^{(t)})(c^{(t)})^{y_i}(1-c^{(t)})^{(1-y_i)}}\\
+    p(z_i=0|y_i,\theta^{(t)}) &= 1- p(z_i=1|y_i,\theta^{(t)}) 
+    \end{aligned}
+    $$
+</div>
+
+<p><strong>有了隐变量的后验分布后，在对完全数据的对数似然函数求最大期望</strong></p>
+
+<div>
+    $$
+    \begin{aligned}
+    \theta^{(t+1)} &= \arg \max_{\theta} Q(\theta)\\ 
+    &= \arg \max_{\theta} \sum_{Z} p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)\\
+    &= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \log p(y_i,z_i=1|\theta) + p(z_i=0|y_i,\theta^{(t)}) \log p(y_i,z_i=0|\theta)\\
+    &= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) [\log a + y_i \log b + (1-y_i)\log (1-b)] \\ & + p(z_i=0|y_i,\theta^{(t)})[ \log (1-a) + y_i \log c + (1-y_i) \log (1-c)]
+    \end{aligned}
+    $$
+</div>
+
+<p>又回到这个极大似然的问题，现在相当于隐变量已知咯，那直接按照传统的套路利用极值条件求导获得待参数的解析解。</p>
+
+<p>对于参数 $a$，令 $\partial Q(\theta)/ \partial a = 0$</p>
+
+<div>$$
+\frac{\partial L}{\partial a} = \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \frac{1}{a} - p(z_i=0|y_i,\theta^{(t)}) (-\frac{1}{1-a})=0
+$$</div>
+
+<p>可得</p>
+
+<div>
+    $$
+    a^{(t+1)} = \frac{1}{N} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) 
+    $$
+</div>
+
+<p>同理可得</p>
+
+<div>$$
+b^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) }}
+$$</div>
+
+<div>$$
+c^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) }}
+$$</div>
+
+<h3 id="matlab-实现em算法">matlab 实现EM算法</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">% 给定观测结果
+y = [1;1;0;1;0;0;1;0;1;1];
+N = length(y);
+% 先随便假设个初始参数 
+a_old = 0.4;
+b_old = 0.6;
+c_old = 0.7;
+theta0 = [a_old;b_old;c_old];
+% 隐变量z=1的后验概率的初始值
+p_z  = zeros(N,1);
+% 用于存储更新后的参数
+a_new = 0.0;
+b_new = 0.0;
+c_new = 0.0;
+theta = [a_new;b_new;c_new];
+% 给EM算法的迭代设置个终止条件
+epsilon = 0.01;
+% 迭代更新参数
+while norm(theta - theta0) &gt; epsilon
+% E步，计算隐变量的后验
+	for i = 1:N
+		p_z(i) = (a_old*b_old^y(i)*(1-b_old)^(1-y(i)))/((a_old*(b_old)^y(i)*(1-b_old)^(1-y(i))) + ((1-a_old)*c_old^y(i)*(1-c_old)^(1-y(i))));
+	end
+	theta0 = [a_old;b_old;c_old];
+% M步，极大似然更新待估计参数 
+	a_new = 1/N*sum(p_z);
+	b_new = p_z&#39;*y/sum(p_z);
+	c_new = (1-p_z)&#39;*y/sum(1-p_z);
+	theta = [a_new;b_new;c_new];
+	a_old = a_new;
+	b_old = b_new;
+	c_old = c_new;
+end</pre></td></tr></table>
+</div>
+</div>
+<h2 id="本文小结">本文小结</h2>
+
+<p>首先从为什么需要用EM算法说起：<strong>含有隐变量的参数估计问题</strong>，然后从<strong>最大化ELBO的角度</strong>推导了EM算法迭代公式的由来并证明了算法的收敛性，最后以三硬币模型为例介绍了EM算法的使用以及matlab实现。</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
