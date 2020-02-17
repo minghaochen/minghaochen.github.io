@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-14T11:07:59&#43;08:00"/>
+<meta property="og:updated_time" content="2020-02-17T10:02:33&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,330 +115,49 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/">「机器学习」EM算法</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/">美音发音技巧——末尾s的发音</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-22 </span>
+      <span class="post-time"> 2019-08-23 </span>
       <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          <a href="/categories/english/"> English </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>期望最大(EM)算法的大名想必大家都听过，说来惭愧，大概两年前就学过用过这个算法，但是到后来只记得EM这个名字，把算法的原理都给忘光光了，这几天重新捡起来，总结一下，也希望对想了解这个算法的人有点启发。</p>
+      <p>不知道你会不会傻傻分不清楚</p>
 
-<p>对我EM算法我总结为三点：<strong>为什么</strong>、<strong>是什么</strong>、<strong>怎么用</strong>。</p>
+<p>likes  /s/ 还是 /z/？</p>
 
-<h2 id="为什么要用em算法">为什么要用EM算法？</h2>
+<p>lives /s/ 还是 /z/？</p>
 
-<p>会看到这篇博客的大家想必都知道，EM算法是用来<strong>估计参数</strong>的，并且是以<strong>迭代</strong>的方式进行。看到估计参数这个字眼，你脑子里首先会想到什么方法？毫无疑问就是极大似然法吧，再帮大家回忆一下极大似然法的思想：<strong>什么参数对应的事件发生的概率最大，我们就认为这个参数就是未知参数的估计值</strong>。通俗一点讲就是你知道了事件的观测值 $y_1,&hellip;,y_N$，然后要寻找能够让事件发生的可能性 $p(y_1,&hellip;,y_N|\theta)$ 最大的参数 $\hat{\theta}$，也就是</p>
+<p>首先说说 /s/ 和 /z/ 的发音，需要注意的是这个 /z/ 的发音其实和 /s/ 是一样的！只是在 /s/ 的基础上加上了声带的震动， <strong>不是中文拼音里的 z，是中文拼音里的 z，是中文拼音里的 z</strong>！！！ 重要的事情说三遍，很多小伙伴很可能都是按照拼音的 ‘zi’ 来发音(包括我之前也是)那就要好好改改咯。</p>
 
-<div>$$
-\hat{\theta}=\arg\max_{\theta} p(y_1,...,y_N|\theta)
-$$</div>
+<p>知道了怎么发音我们再来看几个单词，你试着读读看？</p>
 
-<p>或者通常为了计算方便采用对数的形式</p>
+<p>Set 1: likes/books/laughs/mats</p>
 
-<div>$$
-\hat{\theta}=\arg\max_{\theta} \log p(y_1,...,y_N|\theta)
-$$</div>
+<p>Set 2: lives/feels/cares</p>
 
-<p>其中 $\log p(y_1,&hellip;,y_N|\theta)$ 就称为对数似然函数，常常假设事件之间相互独立，那也就能进一步把联合概率写成独立概率乘积的形式：</p>
+<p>Set 3: is/has/was/these/because</p>
 
-<div>$$
-\hat{\theta}=\arg\max_{\theta} \log \prod_{i=1}^N p(y_i|\theta)
-$$</div>
+<p>答案揭晓：<strong>第一组都发 /s/，第二组都发 /z/，第三组都发 /z/</strong></p>
 
-<p>这样一个无约束的优化问题利用极值条件(导数为0)也就能得到待估计参数的解析解了。</p>
+<p>不知道你发对了没有还是 /s/ 和 /z/ 胡乱发一通，搞不清楚也没关系，我们先来找找规律，第一组 s 前都是什么？对！是以<strong>清辅音</strong> 结尾的；第二组呢？是以<strong>浊辅音</strong>结尾的，第三组则是<strong>元音</strong>结尾的。</p>
 
-<p>回到我们的问题<strong>为什么要用EM算法</strong>，那肯定是因为极大似然法不管用了呗，也就是当有<strong>隐变量(latent variable)</strong>存在的时候，原来的对数似然函数变为</p>
+<p>那你就记住：<strong>/s/ 是清辅音，那就接在清辅音后面，/z/ 是浊辅音那就接在浊辅音后面，元音后面通常跟 /z/</strong>，OK，再试试把上面三组单词读一遍感受一下。</p>
 
-<div>$$
-\log p(Y|\theta) = \log \sum_{Z} p(Y|Z,\theta)p(Z,\theta)
-$$</div>
+<p>问题又来了，有的小伙伴会问什么是清辅音，什么是浊辅音，这个很好判断，你摸着你的声带，发音时感受到声带的就是浊辅音，比如/b/,/d/,/g/,/v/,/z/，不震动的就是清辅音，比如/p/,/t/,/k/,/f/,/s/。</p>
 
-<p>相当于求完全数据 $Y,Z$ 的联合分布 $p(Y,Z|\theta)$ (把隐变量积分掉)的和，但是由于里面包含隐变量，直接用极大似然求解是不行滴。但是如果能够估计出隐变量 $Z$，那这个问题又回到了原来的极大似然估计。这样也就自然地与EM算法的思想挂上勾了：<strong>估计隐变量(E步)，再估计参数(M步)，不断迭代</strong>。</p>
+<p>还有一个关于浊辅音和清辅音的技巧就是：<strong>浊辅音前的元音发音更“长”一点</strong></p>
 
-<p>现在可以回答第一个问题了：为什么要用EM算法？<strong>EM算法是用来解决含有隐变量的参数估计问题的。</strong></p>
+<p>不信你对比一下以下几组单词： back 和 bag; safe 和save; pick 和 pig; lock 和 log; cup 和 cub</p>
 
-<h2 id="什么是em算法">什么是EM算法？</h2>
-
-<p>那么这个所谓的迭代算法是怎么迭代的呢？我们还是先回到对数似然函数，可以将其表示为</p>
-
-<div>$$
-\begin{aligned}
-\log p(Y|\theta) &= \log p(Y,Z|\theta) - \log p(Z|Y,\theta)\\
-&=\log \frac{p(Y,Z|\theta)}{q(Z)}-\log \frac{p(Z|Y,\theta)}{q(Z)}
-\end{aligned}
-$$</div>
-
-<p>第一行公式(完整数据减去后验)根据条件概率公式可得，第二行公式相当于减去一个 $\log q(Z)$ 再加上一个 $\log q(Z)$ 恒等变换。这里假设 $q(Z)$ 是 $Z$ 的一个概率分布 ($\int_Z q(Z) dZ = 1$)。</p>
-
-<p>然后<strong>同时对两侧对$q(Z)$求期望</strong></p>
-
-<p>左边积分还是它本身：</p>
-
-<div>$$
-\int_Z q(Z) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z q(Z) dZ = \log p(Y|\theta)
-$$</div>
-
-<p>右边积分则是</p>
-
-<div>$$
-\int_z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ - \int_Z q(Z) \log \frac{p(Z|Y,\theta)}{q(Z)}
-$$</div>
-
-<p>左边等于右边即</p>
-
-<div>$$
-\log p(Y|\theta) = \text{ELBO} + \text{KL}(q(Z)||p(Z|Y,\theta))
-$$</div>
-
-<blockquote>
-<p>KL divergence的概念</p>
-
-<div>$$
-D_{\mathrm{KL}}(P \| Q)=-\sum_{i} P(i) \ln \frac{Q(i)}{P(i)} \ge 0
-$$</div>
-
-<p>由吉布斯不等式可知，当且仅当 $P = Q$ 时 $D_{KL}(P||Q)$为零。</p>
-</blockquote>
-
-<p><strong>因为相对熵大于等于0的性质，所以 ELBO 为 $\log p(Y|\theta)$ 提供了下界，所以EM算法的想法就是想让ELBO不断变大从而让对数似然变大</strong>，并且只有当 $q(Z) = p(Z|Y,\theta^{(t)})$ 时ELBO等于对数似然， 即</p>
-
-<div>$$
-\begin{aligned}
-\theta^{(t+1)} = \hat{\theta} &= \arg \max_{\theta} \text{ELBO}\\
-&= \arg \max_{\theta} \int_Z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ\\
-&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Y,Z|\theta)}{p(Z|Y,\theta^{(t)})} dZ\\
-&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) [\log p(Y,Z|\theta) - \log p(Z|Y,\theta^{(t)})] dZ\\
-&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)  dZ
-\end{aligned}
-$$</div>
-
-<p>这也就解释了EM算法是怎么来的啦，<strong>当 $q(Z)$ 等于后验 $p(Z|Y,\theta^{{t}})$ 时，ELBO 等于log likelihood，先固定 $\theta^{(t)}$ 得到后验，然后求 ELBO (关于后验的期望)，滑动 $\theta$ 得到期望的最大值，最大期望对应的 $\theta$ 就是 $\theta^{(t+1)}$</strong></p>
-
-<p>从思路上是能说通了，你可能会疑惑为什么这么迭代求解就能得到最优解呢？或者说 $\theta_{t}$ 到最后会收敛吗？我们回到最初的目标最大化对数似然 $\log p(Y|\theta)$，那如果我们每次迭代求解都能使得对应的对数似然函数的值增加，最后是不是也就说明能向似然函数的最大值靠近了呢，也就是我们希望看到的结果是</p>
-
-<div>
-    $$
-    \log p(Y|\theta^{(t)}) \le \log p(Y|\theta^{(t+1)})
-    $$
-</div>
-
-<p>事实也说明了这是成立的，我们再回到对数似然函数的表达式</p>
-
-<div>
-$$
-\log p(Y|\theta) = \log p(Y,Z|\theta) - \log p(Z|Y,\theta)
-$$
-</div>
-
-<p>两边求关于后验 $p(Z|Y,\theta^{(t)})$ 的期望，也就是求积分</p>
-
-<p>左边积分还是它本身：</p>
-
-<div>$$
-\int_Z p(Z|Y,\theta^{(t)}) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z p(Z|Y,\theta^{(t)}) dZ=\log p(Y|\theta) 
-$$</div>
-
-<p>右边积分则是：</p>
-
-<div>
-    $$
-    Q(\theta,\theta^{(t)}) - H(\theta,\theta^{(t)})
-    $$
-</div>
-
-<p>其中，$Q(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta) dZ, H(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Z|Y,\theta) dZ$</p>
-
-<p>那要使得迭代收敛需要满足的条件就变为了</p>
-
-<div>
-    $$
-    Q(\theta^{(t)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t+1)},\theta^{(t)})
-    $$
-</div>
-
-<p>因为 $Q(\theta,\theta^{(t)})$ 对应的就是EM的迭代公式，那根据最大化问题可以得到 $Q(\theta,\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那也就有 $Q(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那再根据<strong>放缩</strong>的思想，只要我们能证明 $H(\theta^{(t)},\theta^{(t)}) \ge H(\theta^{(t+1)},\theta^{(t)})$，那一切就都顺理成章了。</p>
-
-<p>直接对这两项作差</p>
-
-<div>
-    $$
-    H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Z|Y,\theta^{(t+1)})}{p(Z|Y,\theta^{(t)})} dZ
-    $$
-</div>
-
-<p>看出点什么没有，不然再回到上面 KL 散度的定义看看，这结果不就是 $-D_{\text{KL}}(p(Z|Y,\theta^{(t)})||p(Z|Y,\theta^{(t+1)}))$，根据散度大于等于0的性质，可以得到 $H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le 0$，这也就得证了<strong>EM迭代求解每次得到的似然函数值总是非减的( $\theta^{(t)}$ 会逐渐收敛)，那最终也就会取到最大似然咯，需要注意这并不能保证找到全局最优解的。</strong></p>
-
-<h2 id="怎么用em算法">怎么用EM算法？</h2>
-
-<p>看到这里的话想必你对算法的原理也有了大概的认识，但是大家最关心的应该是在认识原理后如何去应用，这里根据李航老师的《统计学习方法》里的例子介绍一下算法的应用和实现。</p>
-
-<p>三硬币模型：有A，B，C三枚硬币，它们正面向上的概率分别为 $a,b,c$，进行如下试验：先掷硬币 A，如果正面则再掷 B，如果反面则掷 C，掷硬币的结果正面记为1反面为0，独立重复10次试验，结果为1，1，0，1，0，0，1，0，1，1。我们只知道最终掷硬币的结果并不能观测掷硬币的过程，那么如何估计三枚硬币正面向上的概率呢？</p>
-
-<p>这个例子里观测变量 $y_i$ 也就是掷硬币的结果0或1，要估计的参数为概率 $\theta=(a,b,c)$，由于我们不知道掷A的结果导致这一问题不能直接采用极大似然来估计，因此我们引入隐变量 $z$ 来表示掷 A的结果。</p>
-
-<p>观测数据 $y_1,&hellip;,y_N$
-由以下模型生成</p>
-
-<div>
-    $$
-    p(y|\theta) = ab^{y}(1-b)^{(1-{y})} + (1-a)c^{y}(1-c)^{(1-{y})}
-    $$
-</div>
-
-<p>隐变量 $z_i = 1$ 表示第 $i$ 个观测来自掷硬币B的结果，$z_i = 0$ 表示第 $i$ 个观测来自掷硬币C的结果。</p>
-
-<p>于是可以写出完全数据的似然函数：</p>
-
-<div>$$
-    \begin{aligned}
-p(Y,Z|\theta) &= \prod_{i=1}^N p(y_i,z_i
-|\theta)\\
-&=\prod_{i=1}^N [ab^{y_i}(1-b)^{(1-{y_i})}]^{z_i} \cdot [(1-a)c^{y_i}(1-c)^{(1-{y_i})}]^{1-z_i}
-\end{aligned}
-$$</div>
-
-<p>那么，完全数据的对数似然函数为</p>
-
-<div>$$
-\log p(Y,Z|\theta) = \sum_{i=1}^N  z_i (\log a + y_i \log b + (1-y_i) \log(1-b)) + (1-z_i) (\log(1-a) + y_i \log c + (1-y_i) \log(1-c)) 
-$$</div>
-
-<p>按照我上面说的<strong>先固定 $\theta^{(t)}$ 计算后验：</strong></p>
-
-<div>
-    $$
-    \begin{aligned}
-    p(z_i=1|y_i,\theta^{(t)}) &= \frac{p(z=1,y_i|\theta^{(t)})}{p(z_i=1,y_i|\theta^{(t)}) + p(z_i=0,y_i|\theta^{(t)})}\\
-    &=\frac{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)})}{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)}) + p(y_i|z=0,\theta^{(t)}) p(z=0|\theta^{(t)})}\\
-    &=\frac{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)}}{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)} + (1-a^{(t)})(c^{(t)})^{y_i}(1-c^{(t)})^{(1-y_i)}}\\
-    p(z_i=0|y_i,\theta^{(t)}) &= 1- p(z_i=1|y_i,\theta^{(t)}) 
-    \end{aligned}
-    $$
-</div>
-
-<p><strong>有了隐变量的后验分布后，在对完全数据的对数似然函数求最大期望</strong></p>
-
-<div>
-    $$
-    \begin{aligned}
-    \theta^{(t+1)} &= \arg \max_{\theta} Q(\theta)\\ 
-    &= \arg \max_{\theta} \sum_{Z} p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)\\
-    &= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \log p(y_i,z_i=1|\theta) + p(z_i=0|y_i,\theta^{(t)}) \log p(y_i,z_i=0|\theta)\\
-    &= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) [\log a + y_i \log b + (1-y_i)\log (1-b)] \\ & + p(z_i=0|y_i,\theta^{(t)})[ \log (1-a) + y_i \log c + (1-y_i) \log (1-c)]
-    \end{aligned}
-    $$
-</div>
-
-<p>又回到这个极大似然的问题，现在相当于隐变量已知咯，那直接按照传统的套路利用极值条件求导获得待参数的解析解。</p>
-
-<p>对于参数 $a$，令 $\partial Q(\theta)/ \partial a = 0$</p>
-
-<div>$$
-\frac{\partial L}{\partial a} = \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \frac{1}{a} - p(z_i=0|y_i,\theta^{(t)}) (-\frac{1}{1-a})=0
-$$</div>
-
-<p>可得</p>
-
-<div>
-    $$
-    a^{(t+1)} = \frac{1}{N} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) 
-    $$
-</div>
-
-<p>同理可得</p>
-
-<div>$$
-b^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) }}
-$$</div>
-
-<div>$$
-c^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) }}
-$$</div>
-
-<h3 id="matlab-实现em算法">matlab 实现EM算法</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">% 给定观测结果
-y = [1;1;0;1;0;0;1;0;1;1];
-N = length(y);
-% 先随便假设个初始参数 
-a_old = 0.4;
-b_old = 0.6;
-c_old = 0.7;
-theta0 = [a_old;b_old;c_old];
-% 隐变量z=1的后验概率的初始值
-p_z  = zeros(N,1);
-% 用于存储更新后的参数
-a_new = 0.0;
-b_new = 0.0;
-c_new = 0.0;
-theta = [a_new;b_new;c_new];
-% 给EM算法的迭代设置个终止条件
-epsilon = 0.01;
-% 迭代更新参数
-while norm(theta - theta0) &gt; epsilon
-% E步，计算隐变量的后验
-	for i = 1:N
-		p_z(i) = (a_old*b_old^y(i)*(1-b_old)^(1-y(i)))/((a_old*(b_old)^y(i)*(1-b_old)^(1-y(i))) + ((1-a_old)*c_old^y(i)*(1-c_old)^(1-y(i))));
-	end
-	theta0 = [a_old;b_old;c_old];
-% M步，极大似然更新待估计参数 
-	a_new = 1/N*sum(p_z);
-	b_new = p_z&#39;*y/sum(p_z);
-	c_new = (1-p_z)&#39;*y/sum(1-p_z);
-	theta = [a_new;b_new;c_new];
-	a_old = a_new;
-	b_old = b_new;
-	c_old = c_new;
-end</pre></td></tr></table>
-</div>
-</div>
-<h2 id="本文小结">本文小结</h2>
-
-<p>首先从为什么需要用EM算法说起：<strong>含有隐变量的参数估计问题</strong>，然后从<strong>最大化ELBO的角度</strong>推导了EM算法迭代公式的由来并证明了算法的收敛性，最后以三硬币模型为例介绍了EM算法的使用以及matlab实现。</p>
+<p>是不是发音每组单词中后面那个单词的元音都拉得比较长呢，那就对了！</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/" class="read-more-link">Read more...</a>
+      <a href="/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
