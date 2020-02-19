@@ -6,10 +6,283 @@
     <description>Recent content in 机器学习 on MH&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 05 Aug 2019 11:22:25 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 19 Feb 2020 16:16:04 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>基于matlab平台的libsvm回归</title>
+      <link>https://minghaochen.github.io/post/%E5%9F%BA%E4%BA%8Ematlab%E5%B9%B3%E5%8F%B0%E7%9A%84libsvm%E5%9B%9E%E5%BD%92/</link>
+      <pubDate>Wed, 19 Feb 2020 16:16:04 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E5%9F%BA%E4%BA%8Ematlab%E5%B9%B3%E5%8F%B0%E7%9A%84libsvm%E5%9B%9E%E5%BD%92/</guid>
+      <description>&lt;p&gt;由于项目需要建立一个SVR模型，记录一下libsvm的使用流程。&lt;/p&gt;
+
+&lt;p&gt;因为要做的是回归，所以我们应该有一些输入$x$（每一行代表一个样本），输出$y$，从而得到$y=f(x)$的关系用于预测；当$y$为多维时，逐维进行回归。&lt;/p&gt;
+
+&lt;h1 id=&#34;step-1-对数据进行scaleing-训练数据和测试数据都需要&#34;&gt;Step 1 对数据进行scaleing，训练数据和测试数据都需要！&lt;/h1&gt;
+
+&lt;p&gt;这里提供一个自己写的scaling函数&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt; 2020/02/19 by Minghao Chen, this function is used to scale the data; 
+ 
+ %Usage: 
+ %for traindata: [traindata,minimums,ranges] = svm_scale(traindata),
+ %it will return the minimums and ranges of traindata, which will be needed 
+ %in testdata scaling
+ %For testdata:  [testdata,minimums,ranges] = svm_scale(testdata,minimums,ranges)
+ 
+ function [data,minimums,ranges] = svm_scale(data,minimums,ranges)
+    if nargin == 1
+        minimums = min(data, [], 1);
+        ranges = max(data, [], 1) - minimums;
+        data = (data - repmat(minimums, size(data, 1), 1)) ./ repmat(ranges, size(data, 1), 1);
+    else
+        data = (data - repmat(minimums, size(data, 1), 1)) ./ repmat(ranges, size(data, 1), 1);
+    end&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h1 id=&#34;step-2-首先考虑rbf核函数-通过grid-search进行参数-c-gamma-寻优-可以先粗后细-大区间到小区间&#34;&gt;Step 2 首先考虑RBF核函数，通过grid search进行参数$C, \gamma$寻优，可以先粗后细（大区间到小区间）&lt;/h1&gt;
+
+&lt;p&gt;在进行参数搜索时可以用交叉验证，中途会涉及数据的划分，这里提供一个自己写的数据划分的程序&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;function [train_data,train_target,valid_data,valid_target] = data_split(data,target,k)
+    N = size(data,1);
+    p = randperm(N)&amp;#39;;
+    train_data = data(p(1:round(k*N)),:);
+    valid_data = data(p(1+round(k*N):end),:);
+    train_target = target(p(1:round(k*N)),:);
+    valid_target = target(p(1+round(k*N):end),:);&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;其中data放的就是$x$，target放的就是$y$，参数$k$取值$(0,1)$表示你要拿多少的数据用于训练&lt;/p&gt;
+
+&lt;h1 id=&#34;step-3-用最优的超参数来训练模型&#34;&gt;Step 3 用最优的超参数来训练模型&lt;/h1&gt;
+
+&lt;p&gt;这里就需要用到libsvm里的训练函数了：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;model = svmtrain(train_y,train_x,&amp;lsquo;options&amp;rsquo;)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;需要注意的是&amp;rsquo;options&amp;rsquo;，
+直接给个例子在解释吧，比如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;model = svmtrain(train_y,train_x,&amp;#39;-s 3 -t 2 -p 0.01 -c 2 -g 2&amp;#39;)&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;其中各个缩写表示的含义为：&lt;/p&gt;
+
+&lt;p&gt;-s 类型 : set type of SVM (default 0)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;0 -- C-SVC
+
+1 -- nu-SVC
+
+2 -- one-class SVM
+
+3 -- epsilon-SVR
+
+4 -- nu-SVR&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;-t 核函数 : set type of kernel function (default 2)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;0 -- linear
+
+1 -- polynomial
+
+2 -- radial basis function: $exp(-\gamma*|u-v|^2)$
+
+3 -- sigmoid&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;-g gamma : set gamma in kernel function (default 1/num_features)&lt;/p&gt;
+
+&lt;p&gt;-c cost : set the parameter C of C-SVC, epsilon-SVR, and nu-SVR (default 1)&lt;/p&gt;
+
+&lt;p&gt;-p epsilon : set the epsilon in loss function of epsilon-SVR (default 0.1)&lt;/p&gt;
+
+&lt;h1 id=&#34;step-4-模型训练好可以直接保存下来-是个结构体的形式&#34;&gt;Step 4 模型训练好可以直接保存下来，是个结构体的形式&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;save RegressModel.mat model&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;step-5-如果有测试数据就可以进一步进行验证了&#34;&gt;Step 5 如果有测试数据就可以进一步进行验证了&lt;/h1&gt;
+
+&lt;p&gt;这里涉及libsvm的预测函数&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;[predict_y,accuracy,dec_value] = svmpredict(test_y,test_x,model)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;其中，test_y如果没有可以用任意向量替代，此时输出accuracy是一个$3*1$向量，分别表示分类准确率（分类问题使用），MSE（越小越好），平方关系系数$r^2$（越接近1越好）。&lt;/p&gt;
+
+&lt;h2 id=&#34;例子&#34;&gt;例子&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;x=(-10:0.5:9.5)&amp;#39;; 
+y=-x.^2;
+
+[x_scale,minimums,ranges] = svm_scale(x);
+
+% grid search for hyperparameters
+c = [];
+g = [];
+N_grid = 11;
+for i = 1:N_grid
+    c = [c, 2^(-7+2*i)];
+    g = [g, 2^(-7+2*i)];
+end
+
+MSE = 0; 
+for i = 1:N_grid
+    for j = 1:N_grid
+        ops = [&amp;#39;-s 3 -t 2 -p 0.01 -c &amp;#39;,num2str(c(i)),&amp;#39; -g &amp;#39;,num2str(g(j))];
+        [train_data,train_target,valid_data,valid_target] = data_split(x_scale,y,0.7);
+        model = svmtrain(train_target,train_data,ops);
+        [py,mse,prob_estimates]=svmpredict(valid_target,valid_data,model); 
+        MSE(i,j) = mse(2);
+    end
+end
+[i,j]=find(MSE==min(min(MSE)));
+ops = [&amp;#39;-s 3 -t 2 -p 0.01 -c &amp;#39;,num2str(c(i)),&amp;#39; -g &amp;#39;,num2str(g(j))];
+
+% 根据网格搜索得到的最优参数进行全部数据建模
+model = svmtrain(y,x_scale,ops);
+[py,mse,prob_estimates]=svmpredict(y,x_scale,model); 
+
+% 画图 训练数据的拟合结果
+figure; 
+plot(x,y,&amp;#39;o&amp;#39;); 
+hold on 
+plot(x,py,&amp;#39;r*&amp;#39;); 
+legend(&amp;#39;原始数据&amp;#39;,&amp;#39;回归数据&amp;#39;); grid on;
+
+
+% 测试
+testx = [-16:0.2:-8]&amp;#39;; 
+testy = -testx.^2;
+[testx_scale,minimums,ranges] = svm_scale(testx,minimums,ranges);
+[ptesty,tmse,prob_estimates]=svmpredict(testy,testx_scale,model); 
+
+figure; 
+plot(testx,testy,&amp;#39;o&amp;#39;); 
+hold on 
+plot(testx,ptesty,&amp;#39;r*&amp;#39;); 
+legend(&amp;#39;原始数据&amp;#39;,&amp;#39;回归数据&amp;#39;); grid on;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>「机器学习」特征工程</title>

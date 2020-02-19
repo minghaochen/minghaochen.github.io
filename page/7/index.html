@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-18T11:13:03&#43;08:00"/>
+<meta property="og:updated_time" content="2020-02-19T16:16:04&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,252 +115,58 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E8%BF%87%E7%A8%8B/">「机器学习」狄利克雷过程</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E9%9D%92%E6%98%A5%E6%9C%9F%E7%9C%9F%E7%9A%84%E8%83%BD%E6%8A%91%E5%88%B6%E5%90%97/">《经济学人》青春期真的能抑制吗</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-09 </span>
+      <span class="post-time"> 2020-02-10 </span>
       <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          <a href="/categories/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA/"> 经济学人 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="高斯混合模型">高斯混合模型</h1>
+      <h1 id="what-to-do-about-puberty-blockers">What to do about puberty blockers</h1>
 
-<p>忘记什么是高斯过程的可以看一下之前博客，简单来说就是假设我们的数据$x_i,i=1,&hellip;,N$是由$k$个高斯分布加权而成的混合模型生成的，从而估计出这些分布的参数。但是有个tricky的问题就是这个$k$是多少往往是由人来指定或者通过一些交叉验证等方法来确定。有人可能会说把$k$也当做未知参数一起拿去估计一下不就好了，但是这样做你会发现，得到的估计结果$k=N$，也就是有$N$个数据就有$N$个类。因为每个数据点自己一类得到的似然肯定最大鸭。而我们期望的结果肯定是类别数小于数据点的个数，这样才是合理的。</p>
+<h2 id="drugs-offered-to-transgender-children-need-to-be-used-more-cautiously">Drugs offered to transgender children need to be used more cautiously</h2>
 
-<h1 id="狄利克雷过程">狄利克雷过程</h1>
+<p>Arising number of girls wish to be boys and boys wish to be girls and a rising number of them are taking drugs to block <strong>puberty</strong>(青春期). In Britain cases of children being treated for gender <strong>dysphoria</strong>(烦躁不安) by the National Health Service remain rare, but in the past decade they have climbed at a rate of $5\%$ year on year (see chart). In America the number of gender <strong>clinics</strong>(诊所) treating children has increased from just one in 2007 to perhaps 50 today.</p>
 
-<p>假设有$N$个数据$x_1,&hellip;,x_N$，每个数据对应$\theta_i$，我们假设$\theta_i$满足概率分布
-$$
-\theta_i \sim H(\theta)
-$$</p>
+<p>This has bothered lawmakers. In America several states want to ban giving puberty-blocking drugs to children (see United States section). In Britain the high court is considering the judicial review of a clinic which complainants believe has been handing out puberty blockers too freely (see Britain section).</p>
 
-<p>但是如果$H(\theta)$是个连续分布，那么采样得到的$\theta_i$都会是不同的值，也就是我们每个数据点对应的类别又都不一样了，因此我们需要$\theta_i$是从一个离散分布中采样，也就是$\theta_i$的可能情况是有限的，不同的数据点对应的$\theta_i$可以是相同的。
-那么如何得到这个离散的分布呢，最直接的想法就是把$H(\theta)$离散化一下，其实也就是狄利克雷过程了，即
-$$
-G\sim DP(\alpha,H)
-$$
-这里的$\alpha$相当于一个离散化的参数，想对这个结论有个印象，后面再继续展开：
-$\alpha$越大，离散化得到的分布$G$越密集，也就和原分布越像；$\alpha$越小越离散，$\alpha=0$对应的$G$就是一个采样值。</p>
+<p>The use of such drugs raises <strong>thorny</strong>(多刺的) questions about who decides what can happen to a child’s body and why. Put aside the culture wars, if you can. This debate should be settled in the interests of the child. Yet those can be very hard to <strong>discern</strong>(识别).</p>
 
-<h2 id="性质">性质</h2>
+<p>Puberty blockers prevent adolescents from developing secondary sexual characteristics like breasts or a beard. They almost always set off a cascade of interventions that involve “cross-sex” hormones and later may also include gender-reassignment surgery. The main purpose of puberty blockers is to bring comfort to people with gender dysphoria, by <strong>sparing</strong>(使&hellip;免遭) them the experience of, say, becoming more like a woman if they are a girl who wishes to be a boy. They also make most future surgery less severe.</p>
 
-<p>$G$从DP中采样出来是一个完整分布，因为是完整分布，所以$G$有无限个值（无限根棍子），但是如果对$G$所在的概率空间进行划分$a_1,&hellip;,a_k$，那么各个区域的测度满足
-$$
-(G(a_1),G(a_2),&hellip;,G(a_k)) \sim Dir(\alpha H(a_1),\alpha H(a_2),&hellip;,\alpha H(a_k))
-$$
-其中$G(a_i)$表示区域$a_i$上”棍子“权重的总和，</p>
+<p>However, the combination of puberty blockers and cross-sex hormones also leads to irreversible changes which, if they start early in puberty, include <strong>sterility</strong>(不育). About a dozen studies of gender-dysphoric children who did not take puberty blockers have found that most of them, if supported by counselling, are happy with their sex once they emerge from puberty. The share often cited is $85\%$ and many of them turn out to be gay. One sign that something is wrong is that more people are “detransitioning”—re-identifying with their biological sex. Most of them are girls who wanted to be boys when they were in their teens. If they took puberty blockers and then cross-sex hormones early they would be sterile for life, even if they did not have <strong>hysterectomies</strong>(子宫切除).</p>
 
-<blockquote>
-<p><strong>补充</strong>狄利克雷分布的性质</p>
+<p>As of now, there is no way to distinguish the $15\%$ or so of children who will transition successfully from the $85\%$ who might have been happy with the gender of their birth if they had received <strong>counselling</strong>(辅导) alone. Some claim that withholding puberty blockers adds to the burden on vulnerable children with gender-dysphoria and may lead to higher rates of suicide.</p>
 
-<p>如果</p>
+<p>Choosing whom to treat is a judgment of Solomon. The decision to intervene is made harder by a <strong>reckless</strong>(鲁莽的) <strong>disregard</strong>(忽视) for data. The academic studies <strong>purporting</strong>(声称) to show the higher suicide risk among trans children are <strong>unconvincing</strong>(令人难以信服的). Clinics do not publish enough studies on the effects of various treatments on their patients. Too little research compares children who have had treatment with those who have not. The field needs a better understanding of the long-term effects of puberty blockers and cross-sex hormones. Every child who is treated should be enrolled in a long-term follow-up study.</p>
 
-<div>
-$$
-(x_1,...,x_k) \sim Dir (\alpha_1,...,\alpha_k)=\frac{\prod_{i=1}^k \Gamma(\alpha_i)}{\Gamma(\sum_{i=1}^k \alpha_i)}\prod_{i=1}^k x_i^{\alpha_i - 1}
-$$</div>
+<p>This should be with their informed consent. But so should the treatment itself. Today children and parents are not always fully informed about the potentially grave consequences of starting on puberty blockers. Their effects are often described as largely reversible—and the effects of cross-sex hormones that are almost always taken with them are not.</p>
 
-<p>则其均值为</p>
+<p>To ban puberty blockers in all circumstances would be unjustified. Not only would it be harsh on some children, but it would also leave the issue permanently obscured for lack of new research. However, today’s rush into treatment <strong>smacks</strong>(打) of a <strong>fad</strong>(时尚). Many adolescents feel unhappy with the way they were made. Transitioning will be <strong>solace</strong>(安慰) for some. But for others it will be a dreadful mistake.</p>
 
-<div>
-$$
-E[x_i] = \frac{\alpha_i}{\sum_{j=1}^k\alpha_j}
-$$
-</div>
+<p><strong>take-home message</strong></p>
 
-<p>方差为</p>
-
-<div>
-$$
-Var[x_i] =\frac{E[x_i](1-E[x_i])}{1+\sum_j \alpha_j}
-$$</div>
-</blockquote>
-
-<p>将$G(a_i)$代入有均值和方差的表达式有
-$$
-E[G(a_i)]=\frac{\alpha H(a_i)}{\alpha H(\alpha_1) + &hellip; + \alpha H(a_k)} = H(\alpha_i) <br />
-$$</p>
-
-<p>$$
-Var[G(a_i)] = \frac{\alpha H(\alpha_i)(\alpha - \alpha H(a_i))}{\alpha^2(\alpha + 1)} = \frac{H(\alpha_i)(1-H(\alpha_i))}{\alpha + 1}
-$$</p>
-
-<p>可以看出$\alpha$趋于无穷，方差就趋于0，也就是采样出来的分布和原分布越像；$\alpha$趋于0，方差的表达式就是伯努利分布的方差表达式，也就是说要嘛有根棍，要嘛就没有，$G$就是$H$最离散的版本。</p>
-
-<h2 id="构造">构造</h2>
-
-<p>我们现在知道$G$本身是一个分布，同时它服从狄利克雷分布，那么要怎样去采样$G$这个分布呢，换句话就是说怎么去得到一个离散化版本的$H$。</p>
-
-<p>这时候我们借助的手段就是sticking-breaking，我们每次从原分布$H$中采样出一个$\theta_i$，然后在通过$Beta$分布生成一个$0$到$1$之间的随机数用来构造$\theta_i$的权重$\pi_i。</p>
-
-<p>比如第一次采样：
-$$
-\theta_1 \sim H, \beta_1 \sim Beta(1,\alpha), \pi_1 = \beta_1
-$$
-第二次采样：
-$$
-\theta_2 \sim H, \beta_2 \sim Beta(1,\alpha), \pi_2 = (1-\pi_1)*\beta_2
-$$
-以此类推</p>
-
-<blockquote>
-<p>补充：如果$x$服从Beta分布 $x \sim Beta(a,b)$，那么其均值为$E[x]=a/(a+b)$</p>
-</blockquote>
-
-<p>这里我们也可以观察一下$\alpha$的变化对sticking breaking的影响：$\alpha$趋于0，Beta采样出来的结果就趋于1，也就是采样极少的次数就够了（离散）；如果$\alpha$趋于无穷，Beta采样出来的权重就趋于0，那么就能产生越来越多的棍子。<strong>记住采样的权重$\sum \pi_i=1$</strong>。</p>
-
-<p>基于离散采样的观点，我们可以把$G$写成</p>
-
-<div>$$
-G = \sum_1^{\infty} \pi_i \delta_{\theta_i}
-$$</div>
-
-<p>这样我们就有了个离散的分布，回到数据$x_1,&hellip;,x_N$ 对应的$\theta_1,&hellip;,\theta_N$可以从$G$产生，即
-$$
-\theta_i \sim G , i=1,&hellip;,N
-$$</p>
-
-<p>每个数据都是通过以$\theta_i$为参数的分布产生，即$x_i \sim F(\theta_i)$。</p>
-
-<p>当我们已知$\theta_1,&hellip;,\theta_N$时，$G$的后验是什么？</p>
-
-<p>$$
-p(G|\theta_1,&hellip;,\theta_N) \propto p(\theta_1,&hellip;,\theta_N|G)p(G)
-$$
-似然就是$G$</p>
-
-<blockquote>
-<p><strong>补充</strong></p>
-
-<p>假设先验满足
-$$
-(p_1,&hellip;,p_k)\sim Dir(\alpha_1,&hellip;,\alpha_k), \sum p_i =1
-$$</p>
-
-<p>似然/数据满足多项分布
-$$
-(n_1,&hellip;,n_k)\sim Mult(p_1,&hellip;,p_k)
-$$
-后验为
-$$
-p(p_1,&hellip;,p_k|n_1,&hellip;,n_k)=Dir(\alpha_1+n_1,&hellip;,\alpha_k+n_k)
-$$</p>
-</blockquote>
-
-<p>对任意划分</p>
-
-<p>$$
-p(G(a_1),&hellip;,G(a_k)|n_1,&hellip;,n_k)
-\propto
-Likelihood \times Prior
-$$
-其中Likelihood为$Mult(n_1,&hellip;,n_k|G(a_1),&hellip;,G(a_k))$，先验是$ Dir(\alpha H(a_1),&hellip;,\alpha H(a_k))$。</p>
-
-<p>根据共轭先验的性质，我们知道$G$的后验也是狄利克雷分布。</p>
-
-<p>$$
-Dir(\alpha H(a_1)+n_1,&hellip;,\alpha H(a_k)+n_k)
-$$</p>
-
-<p>同时也能对应到一个新的狄利克雷过程</p>
-
-<div>
-$$
-DP(\alpha+n,\frac{\alpha H+\sum_{i=1}^n \delta_{\theta_i}}{\alpha +n})
-$$</div>
-
-<p>其中，$\alpha+n$来自于前一个式子狄利克雷分布各项的总和，它的base measure是由一个连续和measure和一个离散的measure组成的。叫做Spike-and-Slab。</p>
-
-<h2 id="中国餐馆过程">中国餐馆过程</h2>
-
-<p>Predictive distribution</p>
-
-<div>
-$$
-\begin{aligned}
-p(x_i|x_{-i})
-&=\int_w p(x_i,w|x_{-i})dw \\
-&=\int_w p(x_i|w,x_{-i})p(w|x_{-i})dw\\
-&=\int_w p(x_i|w)p(w|x_{-i})dw
-\end{aligned}
-$$
-</div>
-
-<p>通常 $x_{-i}$ 指训练数据，$x_{i}$ 指测试数据。这里隐含假设：我们有了模型$w$后，就不需要数据$x_{-i}$了。</p>
-
-<p>在这里我们要求$\theta$</p>
-
-<div>
-$$
-p(\theta_i|\theta_{-i})
-=\int_{G} p(\theta_i|G)p(G|\theta_{-i}) dG
-$$
-</div>
-
-<p>但其实我们对$\theta_i$是多少并不感兴趣，我们更在意的是有几个$\theta$的值是一样的。
-假设有$4$个数据$x_1,&hellip;,x_4$对应的$\theta_1=6,\theta_2=4,\theta_3=6,\theta_4=4$，那么也就是说对应的类别$z_1=z_3=1,z_2=z_4=2$，我们实际想知道的predictive distribution是</p>
-
-<div>
-$$
-p(z_i=m|z_{-i})
-$$
-</div>
-
-<p>表示我们已经知道了除了$i$以外的数据属于什么类，从而判断数据$i$属于$m$类的概率是什么。这个分布跟$H$没有关系，跟$\alpha$有关，因为$H$决定的是$\theta_i$的采样，而$\alpha$决定了类别的多少。</p>
-
-<p>我们先假设有$k$个类，然后再把$k$到无穷，也就是狄利克雷过程。</p>
-
-<div>
-$$
-\begin{aligned}
-p(z_i=m|z_{-i})
-&= \frac{p(z_i=m,z_{-i})}{p(z_{-i})}\\
-&=\frac{\int_{p_1,...,p_k}p(z_i=m,z_{-1}|p_1,...,p_k)p(p_1,...,p_k) dp_1,...,p_k }{\int_{p_1,...,p_k}p(z_{-i}|p_1,...,p_k)p(p_1,...,p_k)dp_1,...,p_k}
-\end{aligned}
-$$
-</div>
-
-<p>其中
-$$
-p(p_1,&hellip;,p_k)=Dir(\alpha/k,&hellip;,\alpha/k)
-$$</p>
-
-<blockquote>
-<p>补充</p>
-
-<p>上面我们知道了有个狄利克雷分布的先验和多项分布的似然，得到的后验也是狄利克雷分布，那么加个积分</p>
-
-<div>
-$$
-\begin{aligned}
-&\int_{p_1...p_k} p(n_1,...,n_k|p_1,...,p_k)p(p_1,...,p_k|\alpha_1,...,\alpha_k)\\
-=&\int_{p_1...p_k} Mult(n_1,...,n_k|p_1,...,p_k)Dir(p_1,...,p_k|\alpha_1,...,\alpha_k)\\
-=&\frac{n!}{n_1!...n_k!}\frac{\Gamma(\sum \alpha_i)}{\prod \Gamma(\alpha_i)} \int_{p_1,...,p_k} \prod_{i=1}^k p_i^{n_i+\alpha_i-1}\\
-=&\frac{n!}{n_1!...n_k!}\frac{\Gamma(\sum \alpha_i)}{\prod \Gamma(\alpha_i)} \frac{\prod \Gamma(\alpha_i+n_i)}{\Gamma(\sum (\alpha_i)+n )}
-\end{aligned}
-$$
-</div>
-</blockquote>
-
-<p>代入预测分布</p>
-
-<div>
-$$
-\begin{aligned}
-&p(z_i=m|z_{-i})\\
-=& \frac{n_{m,-i}}{n+\alpha-1}, existing\\
-= &\frac{\alpha}{n+\alpha-1}, new
-\end{aligned}
-$$</div>
-
-<p>其中 $n_{m,-i}$ 表示 $z_{-i}$ 里有多少是 $m$ 类的。
-也就是说有概率$\frac{n_{m,-i}}{n+\alpha-1}$属于原有的类别，有$\frac{\alpha}{n+\alpha-1}$的概率属于新的类别。</p>
+<ul>
+<li>puberty: the stage in people&rsquo;s lives when they develop from a child into an adult.</li>
+<li>dysphoria: severe unhappiness, especially a person&rsquo;s feeling of being very uncomfortable in their body or of being in the wrong body.</li>
+<li>thorny: A thorny problem or subject is difficult to deal with. e.g., the thorny issue of taxation.</li>
+<li>discern: to notice or understand something by thinking about it carefully. e.g., Officials were keen to discern how much public support there was.</li>
+<li>spare: to prevent someone from having to experience something unpleasant. e.g., Luckily, I was spared the embarrassment of having to sing in front of everyone.</li>
+<li>counselling: the job or process of listening to someone and giving that person advice about their problems.</li>
+<li>reckless: doing something dangerous and not worrying about the risks and the possible results. e.g., He was found guilty of reckless driving.</li>
+<li>disregard: the fact of showing no care or respect for something. e.h., What amazes me is her complete disregard for anyone else&rsquo;s opinion.</li>
+<li>purport: to pretend to be or to do something, especially in a way that is not easy to believe. e.g., The study purports to show an increase in the incidence of the disease.</li>
+<li>smack: to hit something hard. e.g., I never smack my children.</li>
+<li>fad: a style, activity, or interest that is very popular for a short period of time. e.g., There was a fad for wearing ripped jeans a few years ago.</li>
+<li>solace: help and comfort when you are feeling sad or worried. e.g., Music was a great solace to me.</li>
+</ul>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E8%BF%87%E7%A8%8B/" class="read-more-link">Read more...</a>
+      <a href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E9%9D%92%E6%98%A5%E6%9C%9F%E7%9C%9F%E7%9A%84%E8%83%BD%E6%8A%91%E5%88%B6%E5%90%97/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

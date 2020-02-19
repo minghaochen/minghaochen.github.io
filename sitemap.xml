@@ -10,18 +10,55 @@
   
   <url>
     <loc>https://minghaochen.github.io/categories/</loc>
-    <lastmod>2020-02-18T11:13:03+08:00</lastmod>
+    <lastmod>2020-02-19T16:16:04+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/</loc>
-    <lastmod>2020-02-18T11:13:03+08:00</lastmod>
+    <lastmod>2020-02-19T16:16:04+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/post/</loc>
+    <lastmod>2020-02-19T16:16:04+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/tags/</loc>
+    <lastmod>2020-02-19T16:16:04+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/tags/matlab/</loc>
+    <lastmod>2020-02-19T16:16:04+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/post/%E5%9F%BA%E4%BA%8Ematlab%E5%B9%B3%E5%8F%B0%E7%9A%84libsvm%E5%9B%9E%E5%BD%92/</loc>
+    <lastmod>2020-02-19T16:16:04+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2020-02-19T16:16:04+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2020-02-19T16:16:04+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/categories/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA/</loc>
     <lastmod>2020-02-18T11:13:03+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -31,12 +68,6 @@
     <lastmod>2020-02-18T11:13:03+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://minghaochen.github.io/categories/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA/</loc>
-    <lastmod>2020-02-18T11:13:03+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -88,19 +119,7 @@
   </url>
   
   <url>
-    <loc>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2020-02-09T21:30:13+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://minghaochen.github.io/categories/english/</loc>
-    <lastmod>2020-02-08T21:20:52+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://minghaochen.github.io/tags/</loc>
     <lastmod>2020-02-08T21:20:52+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -215,12 +234,6 @@
   </url>
   
   <url>
-    <loc>https://minghaochen.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2019-08-05T11:22:25+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://minghaochen.github.io/post/%E7%BE%8E%E9%9F%B3%E4%B8%ADt%E7%9A%84%E5%8F%91%E9%9F%B3/</loc>
     <lastmod>2019-08-04T18:33:34+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -239,12 +252,6 @@
     <lastmod>2019-07-25T15:27:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://minghaochen.github.io/tags/matlab/</loc>
-    <lastmod>2019-07-23T19:35:03+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
