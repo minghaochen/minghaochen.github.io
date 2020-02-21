@@ -10,31 +10,44 @@
   
   <url>
     <loc>https://minghaochen.github.io/categories/</loc>
-    <lastmod>2020-02-20T18:44:46+08:00</lastmod>
+    <lastmod>2020-02-21T22:45:39+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/categories/english/</loc>
-    <lastmod>2020-02-20T18:44:46+08:00</lastmod>
+    <lastmod>2020-02-21T22:45:39+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/</loc>
-    <lastmod>2020-02-20T18:44:46+08:00</lastmod>
+    <lastmod>2020-02-21T22:45:39+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/post/</loc>
-    <lastmod>2020-02-20T18:44:46+08:00</lastmod>
+    <lastmod>2020-02-21T22:45:39+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/tags/</loc>
-    <lastmod>2020-02-20T18:44:46+08:00</lastmod>
+    <lastmod>2020-02-21T22:45:39+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/post/%E6%96%B0%E6%A6%82%E5%BF%B544~6/</loc>
+    <lastmod>2020-02-21T22:45:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/tags/%E6%96%B0%E6%A6%82%E5%BF%B5/</loc>
+    <lastmod>2020-02-21T22:45:39+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -46,16 +59,16 @@
   </url>
   
   <url>
-    <loc>https://minghaochen.github.io/tags/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA/</loc>
-    <lastmod>2020-02-20T18:44:46+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://minghaochen.github.io/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E5%A1%94%E5%B0%94%E7%81%AB%E5%B1%B1%E5%96%B7%E5%8F%91/</loc>
     <lastmod>2020-02-19T23:56:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/tags/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA/</loc>
+    <lastmod>2020-02-19T23:56:48+08:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
