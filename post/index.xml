@@ -6,10 +6,179 @@
     <description>Recent content in Posts on MH&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 21 Feb 2020 22:45:39 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 23 Feb 2020 21:57:37 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>「机器学习」MCMC</title>
+      <link>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0mcmc/</link>
+      <pubDate>Sun, 23 Feb 2020 21:57:37 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0mcmc/</guid>
+      <description>&lt;p&gt;参考资料：
+1. 刘建平的博客
+2. LDA数学八卦&lt;/p&gt;
+
+&lt;h1 id=&#34;随机模拟&#34;&gt;随机模拟&lt;/h1&gt;
+
+&lt;p&gt;统计中有个常遇到的问题是给定一个概率分布$p(x)$，如何在计算机中生成它的样本。一般而言均匀分布 Uniform(0,1) 的样本相对容易生成。通过线性同余发生器可以生成伪随机数，而常见的概率分布都可以基于均匀分布的样本生成，例如正态分布可以通过 Box-Muller 变换得到。这些基础的概率分布的样本生成这里不再赘述，我们现在关注的是如何对一个复杂形式的概率分布函数$p(x)$（比如有积分无法显式计算，或者高维的分布）进行采样。此时就需要更加复杂的随机模拟方法来生成样本，比如现代贝叶斯分析中被广泛使用的马尔科夫链蒙特卡洛（MCMC）。&lt;/p&gt;
+
+&lt;h1 id=&#34;马氏链及其平稳分布&#34;&gt;马氏链及其平稳分布&lt;/h1&gt;
+
+&lt;p&gt;马氏链的定义很简单&lt;/p&gt;
+
+&lt;div&gt;
+$$
+P(X_{t+1}=x|X_t,X_{t-1},...)=P(X_{t+1}=x|X_t)
+$$&lt;/div&gt;
+
+&lt;p&gt;也就是状态转移的概率&lt;strong&gt;只依赖于前一个状态&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;假设有转移概率矩阵$P$，以及初始概率分布向量 $\pi_0=[\pi_0(1),\pi_0(2),\pi_0(3)]$，经过$n$次传递后，$\pi_n=\pi_0P^n$。当状态转移概率矩阵满足一定性质时，不论初始概率分布向量是多少，最终这个分布都会收敛。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;定理&lt;/strong&gt;：如果一个非周期马氏链具有转移概率矩阵$P$，且它的任意两个状态是连通的，那么有&lt;/p&gt;
+
+&lt;div&gt;$$\lim_{n\rightarrow \infty}P_{ij}^n = \pi(j)$$&lt;/div&gt;
+
+&lt;ol&gt;
+&lt;li&gt;矩阵$P^n$的极限收敛到一个稳定分布，即矩阵的每一行都相等。&lt;/li&gt;
+&lt;li&gt;$\pi(j)=\sum_{i=0}^{\infty}\pi(i)P_{ij}$&lt;/li&gt;
+&lt;li&gt;$\pi$ 是方程$\pi P= \pi$的唯一非负解，其中$\pi=[\pi(1),&amp;hellip;,\pi(j),&amp;hellip;]$称为马氏链的平稳分布。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;从初始概率分布$\pi_0$出发，记$X_i$的概率分布为$\pi_i$，则有&lt;/p&gt;
+
+&lt;div&gt;$$
+\begin{aligned}
+X_0\sim \pi_0(x)\\
+X_1\sim \pi_1(x)\\
+...\\
+X_n\sim \pi_n(x)=\pi(x)\\
+X_{n+1}\sim \pi(x)\\
+...
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;所以 $X_n,X_{n+1},&amp;hellip;\sim \pi(x)$ 都是同分布的独立随机变量。如果我们从一个具体的初始状态$x_0$开始，得到一个转移序列 $x_0,x_1,&amp;hellip;,x_n,x_{n+1},&amp;hellip;$，那么 $x_n,x_{n+1},&amp;hellip;$ 都将是平稳分布 $\pi(x)$ 的样本。&lt;/p&gt;
+
+&lt;h1 id=&#34;mcmc&#34;&gt;MCMC&lt;/h1&gt;
+
+&lt;p&gt;如果我们能够构造一个转移矩阵为 $P$ 的马氏链，使得该马氏链的平稳分布正好是我们想要采样的复杂概率分布 $p(x)$，那么从任何一个初始状态出发沿着马氏链转移，如果马氏链在第 $n$ 步已经收敛，我们就能够得到 $\pi(x)$ 的样本$x_n,x_{n+1},&amp;hellip;$&lt;/p&gt;
+
+&lt;h2 id=&#34;metropolis-hastings算法&#34;&gt;Metropolis-Hastings算法&lt;/h2&gt;
+
+&lt;p&gt;我们已经知道了马氏链的收敛性质是由转移矩阵 $P$ 决定，所以现在的关键在于如何构造转移矩阵 $P$，使得平稳分布恰好是我们想要采样的分布 $p(x)$。这里需要使用的就是下面这个定理：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;定理&lt;/strong&gt;：（细致平稳条件）如果非周期马氏链的转移矩阵 $P$ 和分布 $\pi(x)$ 满足&lt;/p&gt;
+
+&lt;p&gt;$$
+\pi(i)P_{ij}=\pi(j)P_{ji},\quad for \quad all\quad i,j
+$$
+则 $\pi(x)$ 是马氏链的平稳分布。从物理意义理解：对于任意两个状态 $i,j$，从 $i$ 转移出去到 $j$ 而丢失的概率质量，恰好会被从 $j$ 转移回到$i$的概率质量补充回来。&lt;/p&gt;
+
+&lt;p&gt;假设我们已经有一个转移矩阵为$Q$的马氏链（$q(i,j)$表示状态$i$转移到状态$j$的概率，也可以写成$q(j|i)$或者$q(i\rightarrow j)$）通常情况下&lt;/p&gt;
+
+&lt;p&gt;$$
+p(i)q(i,j)\neq p(j)q(j,i)
+$$&lt;/p&gt;
+
+&lt;p&gt;也就是细致平稳条件不成立，所以 $p(x)$ 不太可能是这个马氏链的平稳分布，所以我们对上式进行改造，引入 $\alpha(i,j)$&lt;/p&gt;
+
+&lt;p&gt;$$
+p(i)q(i,j)\alpha(i,j) = p(j)q(j,i)\alpha(j,i)
+$$&lt;/p&gt;
+
+&lt;p&gt;取什么样的 $\alpha(i,j)$ 才能使上式成立呢，最简单的就是按照对称性取&lt;/p&gt;
+
+&lt;p&gt;$$
+\alpha(i,j)=p(j)q(j,i), \alpha(j,i)=p(i)q(i,j)
+$$&lt;/p&gt;
+
+&lt;p&gt;令$Q&amp;rsquo;(i,j)=q(i,j)\alpha(i,j),Q&amp;rsquo;(j,i)=q(j,i)\alpha(j,i)$，所以有$Q&amp;rsquo;$满足细致平稳条件，且其平稳分布就是 $p(x)$。从物理意义的角度理解就是在原来的马氏链$Q$上，从状态 $i$ 以 $q(i,j)$ 的概率转移到状态 $j$ 时，我们以 $\alpha(i,j)$ 的概率接受这个转移。&lt;/p&gt;
+
+&lt;p&gt;但是这样的MCMC算法有个小问题就是接受率可能偏小，我们可以把细致平稳条件中的 $\alpha(i,j),\alpha(j,i)$ 同比例放大，使最大的一个放大到1，即&lt;/p&gt;
+
+&lt;p&gt;$$
+\alpha(i,j) = min(\frac{p(j)q(j,i)}{p(i)q(i,j)},1)
+$$&lt;/p&gt;
+
+&lt;p&gt;这样就得到了M-H算法了。&lt;/p&gt;
+
+&lt;h1 id=&#34;gibbs-sampling&#34;&gt;Gibbs Sampling&lt;/h1&gt;
+
+&lt;p&gt;对于高维的情况，由于接受率小于1，M-H采样的效率还是不够高，因此想要找一个转移矩阵 $Q$ 使得接受率为1。&lt;/p&gt;
+
+&lt;p&gt;看个二维的情况，假设有一个概率分布 $p(x,y)$，考察 $x$ 坐标相同的两个点$A(x_1,y_1),B(x_1,y_2)$，我们发现&lt;/p&gt;
+
+&lt;div&gt;
+$$
+\begin{aligned}
+p(x_1,y_1)p(y_2|x_1) = p(x_1)p(y_1|x_1)p(y_2|x_1)\\
+p(x_1,y_2)p(y_1|x_1) = p(x_1)p(y_2|x_1)p(y_1|x_1)
+\end{aligned}
+$$
+&lt;/div&gt;
+
+&lt;p&gt;可以得到&lt;/p&gt;
+
+&lt;p&gt;$$
+p(x_1,y_1)p(y_2|x_1) = p(x_1,y_2)p(y_1|x_1)
+$$&lt;/p&gt;
+
+&lt;p&gt;即&lt;/p&gt;
+
+&lt;p&gt;$$
+P(A)p(y_2|x_1) = p(B)p(y_1|x_1)
+$$&lt;/p&gt;
+
+&lt;p&gt;我们发现，在$x=x_1$这条平行于 $y$ 轴的直线上，如果使用条件分布 $p(y|x_1)$ 作为任何两点之间的转移概率，那么任何两点之间的转移满足细致平稳条件。同样取$A(x_1,y_1),B(x_2,y_1)$，也有&lt;/p&gt;
+
+&lt;p&gt;$$
+P(A)p(x_2|y_1) = p(B)p(x_1|y_1)
+$$&lt;/p&gt;
+
+&lt;p&gt;于是我们可以构造平面上任意两点之间的转移概率矩阵$Q$&lt;/p&gt;
+
+&lt;div&gt;
+$$
+\begin{aligned}
+Q(A -&gt; B)&amp;=p(y_B|x_1),\quad if\quad x_A=x_B=x_1\\
+Q(A -&gt; C)&amp;=p(x_C|y_1),\quad if\quad y_A=y_C=y_1\\
+Q(A -&gt; D)&amp;=0,\quad others
+\end{aligned}
+$$&lt;/div&gt;
+
+&lt;p&gt;这样对于平面上任意两点$X,Y$满足细致平稳条件&lt;/p&gt;
+
+&lt;p&gt;$$
+p(X)Q(X-&amp;gt;Y)=P(Y)Q(Y-&amp;gt;X)
+$$&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;算法描述&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;随机初始化 $x_i,i=1,&amp;hellip;,n$&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;对 $t=0,1,2,&amp;hellip;$，循环采样&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;$x_1^{t+1}\sim p(x_1|x_2^{t},x_3^t&amp;hellip;,x_n^{t})$&lt;/li&gt;
+&lt;li&gt;$x_2^{t+1}\sim p(x_2|x_1^{t+1},x_3^t&amp;hellip;,x_n^{t})$&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;li&gt;$x_n^{t+1}\sim p(x_n|x_1^{t+1},x_2^{t+1}&amp;hellip;,x_{n-1}^{t+1})$&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;举例说明&#34;&gt;举例说明&lt;/h2&gt;
+
+&lt;p&gt;假设我们要对一个二维分布 $p(x_1,x_2)$ 进行采样，直接采样不可行，对应的 Gibbs Sampler 就是交替地从条件概率 $p(x_1|x_2)$ 和 $p(x_2|x_1)$ 中进行采样。&lt;/p&gt;
+
+&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
+
+&lt;p&gt;一般来说 MCMC 现在指的都是吉布斯采样（Gibbs Sampling），通过每次&lt;strong&gt;只采样一维变量固定其他维变量&lt;/strong&gt;（把联合概率转换为从条件概率进行采样）来满足细致平稳条件，因此只要经过一定次数的迭代后，马氏链收敛，采样得到的也就是目标采样值（从联合分布中的采样）。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>《新概念4》4~6</title>
