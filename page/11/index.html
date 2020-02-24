@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-23T21:57:37&#43;08:00"/>
+<meta property="og:updated_time" content="2020-02-24T19:12:26&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,58 +115,56 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E9%9D%92%E6%98%A5%E6%9C%9F%E7%9C%9F%E7%9A%84%E8%83%BD%E6%8A%91%E5%88%B6%E5%90%97/">《经济学人》青春期真的能抑制吗</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%A7%81%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/">「概率基础」常见概率分布</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-02-10 </span>
       <div class="post-category">
-          <a href="/categories/english/"> English </a>
+          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="what-to-do-about-puberty-blockers">What to do about puberty blockers</h1>
+      <p>本文主要总结一些基础的概率分布，便于遗忘时查阅。</p>
 
-<h2 id="drugs-offered-to-transgender-children-need-to-be-used-more-cautiously">Drugs offered to transgender children need to be used more cautiously</h2>
+<p>从最基础的抛硬币开始吧~</p>
 
-<p>Arising number of girls wish to be boys and boys wish to be girls and a rising number of them are taking drugs to block <strong>puberty</strong>(青春期). In Britain cases of children being treated for gender <strong>dysphoria</strong>(烦躁不安) by the National Health Service remain rare, but in the past decade they have climbed at a rate of $5\%$ year on year (see chart). In America the number of gender <strong>clinics</strong>(诊所) treating children has increased from just one in 2007 to perhaps 50 today.</p>
+<p>大家都知道一枚硬币只有正面和反面两种可能情况，用随机变量$X$来表示抛硬币的结果，那么$X$的可能情况为$X=1$（表示正面）或$X=0$（表示反面），<strong>伯努利试验</strong>也就指抛一次硬币的结果，即</p>
 
-<p>This has bothered lawmakers. In America several states want to ban giving puberty-blocking drugs to children (see United States section). In Britain the high court is considering the judicial review of a clinic which complainants believe has been handing out puberty blockers too freely (see Britain section).</p>
+<p>$$
+P(X=k) = p^k(1-p)^{1-k}, k=0,1
+$$
+其中$p$代表的就是硬币为正面的概率。我们也称$X$满足参数为$p$的伯努利分布，$X\sim Ber(p)$</p>
 
-<p>The use of such drugs raises <strong>thorny</strong>(多刺的) questions about who decides what can happen to a child’s body and why. Put aside the culture wars, if you can. This debate should be settled in the interests of the child. Yet those can be very hard to <strong>discern</strong>(识别).</p>
+<p>到这里我们只抛了一次硬币，那么如果多抛几次呢，那就是<strong>二项分布</strong>，即独立重复$n$次抛硬币（伯努利试验）。而原来的随机变量$X$表示的就是$n$次试验中正面朝上的次数，因此$X$的可能取值也就是$0,1,&hellip;,n$，出现$k$次正面的概率为</p>
 
-<p>Puberty blockers prevent adolescents from developing secondary sexual characteristics like breasts or a beard. They almost always set off a cascade of interventions that involve “cross-sex” hormones and later may also include gender-reassignment surgery. The main purpose of puberty blockers is to bring comfort to people with gender dysphoria, by <strong>sparing</strong>(使&hellip;免遭) them the experience of, say, becoming more like a woman if they are a girl who wishes to be a boy. They also make most future surgery less severe.</p>
+<p>$$
+P(X=k)=C_n^k p^k(1-p)^{n-k}
+$$
+其中$C_n^k=\frac{n!}{k!(n-k)!}$为二项系数。
+我们也称$X$满足参数为$(n,p)$的二项分布$X\sim B(n,p)$， 二项分布具有期望$E[X]=np$和方差$Var[X]=np(1-p)$。</p>
 
-<p>However, the combination of puberty blockers and cross-sex hormones also leads to irreversible changes which, if they start early in puberty, include <strong>sterility</strong>(不育). About a dozen studies of gender-dysphoric children who did not take puberty blockers have found that most of them, if supported by counselling, are happy with their sex once they emerge from puberty. The share often cited is $85\%$ and many of them turn out to be gay. One sign that something is wrong is that more people are “detransitioning”—re-identifying with their biological sex. Most of them are girls who wanted to be boys when they were in their teens. If they took puberty blockers and then cross-sex hormones early they would be sterile for life, even if they did not have <strong>hysterectomies</strong>(子宫切除).</p>
+<p>有人会觉得抛硬币不过瘾，结果就两种情况，想要探索更多的情况我们进入到掷骰子，而且是一个不均匀的筛子，也就是不用面发生的可能性是不一样的，假设各个面发生的概率为$p=[p_1,&hellip;,p_6],\sum p_i=1$，并且引入$X=[X_1,&hellip;,X_6]$来表示各个面的情况，也就是说$X_i$里只有一个是$1$其他都是$0$，比如你筛子是3朝上，那么$X_3=1$，$X_1,X_2,X_4,X_5,X_6$均为$0$。这时候我们就可以表示$X$这个随机向量的概率了：</p>
 
-<p>As of now, there is no way to distinguish the $15\%$ or so of children who will transition successfully from the $85\%$ who might have been happy with the gender of their birth if they had received <strong>counselling</strong>(辅导) alone. Some claim that withholding puberty blockers adds to the burden on vulnerable children with gender-dysphoria and may lead to higher rates of suicide.</p>
+<p>$$
+P(X|p)=\prod_{i=1}^{6}p_i^{X_i}
+$$</p>
 
-<p>Choosing whom to treat is a judgment of Solomon. The decision to intervene is made harder by a <strong>reckless</strong>(鲁莽的) <strong>disregard</strong>(忽视) for data. The academic studies <strong>purporting</strong>(声称) to show the higher suicide risk among trans children are <strong>unconvincing</strong>(令人难以信服的). Clinics do not publish enough studies on the effects of various treatments on their patients. Too little research compares children who have had treatment with those who have not. The field needs a better understanding of the long-term effects of puberty blockers and cross-sex hormones. Every child who is treated should be enrolled in a long-term follow-up study.</p>
+<p>那如果掷骰子$n$次呢，$X=[X_1,&hellip;,X_6]$这时候表示的就是$n$次试验中某个面向上的次数。
+我们记第$i$面朝上的次数为$m_i$且满足$\sum m_i=n$，那么这时候$X$满足的就是<strong>多项分布</strong>：</p>
 
-<p>This should be with their informed consent. But so should the treatment itself. Today children and parents are not always fully informed about the potentially grave consequences of starting on puberty blockers. Their effects are often described as largely reversible—and the effects of cross-sex hormones that are almost always taken with them are not.</p>
+<div>
+$$
+P(X_1=m_1,...,X_6=m_6)=Multi(n; p_1,...,p_6)=\frac{n!}{m_1!...m_6!}\prod_{i=1}^6p_i^{m_i}
+$$</div>
 
-<p>To ban puberty blockers in all circumstances would be unjustified. Not only would it be harsh on some children, but it would also leave the issue permanently obscured for lack of new research. However, today’s rush into treatment <strong>smacks</strong>(打) of a <strong>fad</strong>(时尚). Many adolescents feel unhappy with the way they were made. Transitioning will be <strong>solace</strong>(安慰) for some. But for others it will be a dreadful mistake.</p>
+<p>记做$X\sim Multi(n,p)$一句话概括多项分布就是<strong>一个多种可能情况的事件独立发生$n$次，各种可能情况发生次数的联合分布</strong>。</p>
 
-<p><strong>take-home message</strong></p>
-
-<ul>
-<li>puberty: the stage in people&rsquo;s lives when they develop from a child into an adult.</li>
-<li>dysphoria: severe unhappiness, especially a person&rsquo;s feeling of being very uncomfortable in their body or of being in the wrong body.</li>
-<li>thorny: A thorny problem or subject is difficult to deal with. e.g., the thorny issue of taxation.</li>
-<li>discern: to notice or understand something by thinking about it carefully. e.g., Officials were keen to discern how much public support there was.</li>
-<li>spare: to prevent someone from having to experience something unpleasant. e.g., Luckily, I was spared the embarrassment of having to sing in front of everyone.</li>
-<li>counselling: the job or process of listening to someone and giving that person advice about their problems.</li>
-<li>reckless: doing something dangerous and not worrying about the risks and the possible results. e.g., He was found guilty of reckless driving.</li>
-<li>disregard: the fact of showing no care or respect for something. e.h., What amazes me is her complete disregard for anyone else&rsquo;s opinion.</li>
-<li>purport: to pretend to be or to do something, especially in a way that is not easy to believe. e.g., The study purports to show an increase in the incidence of the disease.</li>
-<li>smack: to hit something hard. e.g., I never smack my children.</li>
-<li>fad: a style, activity, or interest that is very popular for a short period of time. e.g., There was a fad for wearing ripped jeans a few years ago.</li>
-<li>solace: help and comfort when you are feeling sad or worried. e.g., Music was a great solace to me.</li>
-</ul>
+<p>多项分布的统计量满足$E[X_i]=Np_i$，$Var[X_i]=Np_i(1-p_i)$，$Cov(X_i,X_j)=-Np_ip_j$</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E9%9D%92%E6%98%A5%E6%9C%9F%E7%9C%9F%E7%9A%84%E8%83%BD%E6%8A%91%E5%88%B6%E5%90%97/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%A7%81%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
