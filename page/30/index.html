@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-25T23:54:50&#43;08:00"/>
+<meta property="og:updated_time" content="2020-02-26T22:15:56&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,140 +115,208 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/">Chol分解与SVD分解</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">「机器学习」高斯过程</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-07-25 </span>
+      <span class="post-time"> 2019-07-26 </span>
       <div class="post-category">
-          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>今天说说两个整天见却整天忘的矩阵分解，一个是Chol分解，一个是SVD分解</p>
+      <p>网上机器学习的算法铺天盖地，高斯过程却显得不那么起眼，它与其他大多数算法不一样的地方在于，它提供了<strong>不确定性</strong>的估计，这篇文章争取在不涉及数学推导的情况下给大家一个直观的理解。</p>
 
-<h1 id="chol分解">Chol分解</h1>
+<h1 id="什么是不确定性">什么是不确定性？</h1>
 
-<p>对于Chol分解，首先要知道它针对的对象是什么，也就是<strong>埃尔米特矩阵（Hermitian matrix）</strong>，听着有点难懂，其实就是共轭对称矩阵，再简单点说，我们常见的实对称矩阵就是埃尔米特矩阵的特例。</p>
+<p>我觉得最能代表不确定性的应该就是概率分布（probability distribution）了，不了解概率分布也没关系，骰子摇过吧，一个六面均匀的骰子，摇到任一数字的概率是多少？答案是显然的: $\frac{1}{6}$，这就是一个离散的概率分布，有六种可能的结果（朝上的面为1、2、3、4、5或6），每种结果的可能性为 $\frac{1}{6}$。进一步延伸一下，离散概率分布的升级版就是连续概率分布，它的可能结果可就不是简单几种情况那么简单了，可以是任意实数，比如人的身高，中国男性的身高统计出来画一下，你就能看到一个中间高两边低的正态分布的样子了。</p>
 
-<p>那么这个Chol分解分解得到的是什么东西？是干嘛用的呢？
-我们先来回答第一个问题，Chol分解是将一个矩阵分解成两个矩阵的乘积，即
-$$
-A = LL^*
-$$
-其中，$L$ 是一个<strong>下三角</strong>矩阵，$L^*$ 是 $L$ 的共轭转置，如果实数那就是转置（i.e., $L^T$）</p>
+<p>那么已知概率分布后，如何采样呢？很简单呀，比如骰子你摇一次就是从这个离散概率分布中采样一次。</p>
 
-<p>分解成这个玩意干嘛用的呢？目前了解到的比较常用的两个地方</p>
+<h1 id="贝叶斯推断">贝叶斯推断</h1>
 
-<h2 id="1-解线性方程呗-比如-ax-b">1. 解线性方程呗，比如 $Ax=b$</h2>
+<p>一提到贝叶斯推断，可能要吓跑一群人，别跑！等我给你介绍完就不怕了！
+其实贝叶斯推断就是<strong>根据我们观察到的现象去更新我们脑袋里的认知。</strong>再具体点就是：我们在事情没发生前对这件事情有所认知（或者叫做先验），通常可以用一个概率分布来表示，然后在得到一些发生的事实后，我们会对这件事情的认知有所该表（就是得到了后验）；而把这些东西联系到一起的就是大名鼎鼎的<strong>贝叶斯定理</strong>。</p>
 
-<p>你可能会说直接目测方程的解就是 $x = A^{-1}b$，还需要什么Chol分解？如果矩阵 $A$ 是病态的（条件数很大），那么问题就来了，我们在用计算机求解这类问题的时候出现舍入误差可能会导致所答非所问。</p>
+<p>还是不够形象？那我们来个例子，上面说过离散概率分布了，这次我们来个连续的看看，来看看身高吧，来猜猜小陈有多高（猜对有奖哦，文末二维码随意扫随意打赏哈），你又不认识我没见过我，怎么知道我有多高呢，那直观的猜测就是小陈是个中国人，小陈的身高服从中国人身高的概率分布（假设你能得到这个概率分布咯）
+<figure>
+    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e7%94%b7%e6%80%a7%e8%ba%ab%e9%ab%98.jpg"/> 
+</figure>
 
-<p>如果对矩阵进行Chol分解再来求解方程呢，原方程需要两步求解</p>
+然后有一天你在博客上看到了小陈和朋友们的合照
+<figure>
+    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%88%e7%85%a7.jpg"/> 
+</figure>
 
-<p>Step1
-$$
-Ly=b
-$$
-Step2
-$$
-L^Tx=y
-$$
-打开Matlab感受一下？</p>
+卧槽！小陈有点高啊，在朋友中是最高的，于是你对小陈身高的概率分布的认识改变了
+<figure>
+    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%8e%e9%aa%8c%e8%ba%ab%e9%ab%98.jpg"/> 
+</figure>
+</p>
+
+<h1 id="什么是高斯过程">什么是高斯过程？</h1>
+
+<p>好了，今天的主角登场了，<strong>高斯过程其实就是函数的概率分布</strong>，既然是概率分布，再用上面贝叶斯的套路我们就也能够通过训练数据来更新它的概率分布。</p>
+
+<p>我们来理一下思路，函数是什么，最简单的回顾你初中学的 $y=f(x)$ 就是个函数（随便函数形式都行，一次二次正弦等等），把它画一下就是在 XY 平面上的一条线呗；既然是概率分布还是高斯的，那总有均值吧，总有协方差吧，在这里对应就是均值函数和协方差函数。因此高斯过程本质就是<strong>由均值函数和协方差函数决定的一个随机过程。</strong></p>
+
+<p>比如有一个sin函数，我们有五个点的训练数据
+<figure>
+    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/data.png"/> 
+</figure>
+</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span><span class="lnt">4
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">A = [5,7;7,10];
-cond(A)
-L = chol(A)&#39;;
-cond(L)</pre></td></tr></table>
+<pre class="chroma">Xtrain = np.array([-3, -2, -1, 1, 2]).reshape(5,1)
+ytrain = np.sin(Xtrain)
+pl.plot(Xtrain, ytrain, &#39;bs&#39;, ms=8)</pre></td></tr></table>
 </div>
 </div>
-<p>可以看出分解后求解的两个方程都是良态的且只需储存矩阵的下三角部分即可咯。</p>
-
-<h2 id="2-求矩阵的行列式">2. 求矩阵的行列式</h2>
-
-<p>既然Chol分解把矩阵分解成下三角阵，那么求解原矩阵的行列式自然非常容易了</p>
-
-<div>$$
-\begin{aligned} \operatorname{det} {A} &=\prod_{i=1}^{n} {L}_{i i}^{2} \\ \log \operatorname{det} {A} &=2 \sum_{i=1}^{n} \log {L}_{i i} \end{aligned}
-$$</div>
-
-<p>其中 ${L}_{i i}$ 为矩阵的对角元素。</p>
-
-<h1 id="svd分解">SVD分解</h1>
-
-<p>要说SVD分解，首先要提到特征根分解，线代学过吧？忘记了没关系，我们再来复习一下。</p>
-
-<p>首先还是要知道特征值分解的对象是什么，答案是<strong>方阵</strong>，对于方阵 $A$，有</p>
-
-<p>$$
-Av=\lambda v
-$$</p>
-
-<p>这时，$v$ 就称为特征向量，$\lambda$ 就是与之对应的特征值。</p>
-
-<p>那么这个特征值分解分解得到的是什么东西？是干嘛用的呢？</p>
-
-<p>通过特征值分解，可以把矩阵 $A$ 分解为</p>
-
-<p>$$
-A = Q\Sigma Q^{-1}
-$$</p>
-
-<p>其中 $Q$ 就是特征向量组成的矩阵，$\Sigma$ 就是对角线为对应特征值的对角阵。</p>
-
-<p>这样分解有什么用呢？我们知道矩阵的本质就是线性变换，那么分解后我不就知道<strong>变换方向的主次</strong>了，因为我们分解得到的 $\Sigma$ 是一个对角阵且特征值从大到小排列，而特征值所对应的特征向量也就是描述矩阵的变化方向，所以 $Q$ 矩阵就是<strong>按照主要变化到次要变化进行排列</strong>。那么我们就可以根据自己的需要选择特定个数的变化方向来近似原始矩阵变化，也就是<strong>提取原始矩阵中我们期望的主要特征</strong>。</p>
-
-<p>那么这些和今天的猪脚SVD有什么联系呢？（哪有猪脚，肚肚饿）</p>
-
-<p>关系可大了，你可以粗糙地把SVD也当做是特征值分解，虽然不太准确。上面说到特征值分解针对的是<strong>方阵</strong>，可是哪来那么多的方阵啊！遇到非方阵时特征值分解不就GG了，这时候SVD出场了。</p>
-
-<p>一句话概括SVD是适用<strong>任意</strong>，是<strong>任意</strong>矩阵的一种分解方法：</p>
-
-<p><div>$$
-A_{m \times n} = U_{m \times m} \Sigma_{m \times n}V_{n \times n}^T
-$$<div></p>
-
-<p>那么奇异值和特征值是怎么对应起来的呢？由于矩阵 $A$ 不一定是方阵，我们乘以它的转置就能得到方阵，那么就能特征值分解了。</p>
-
-<p>$$
-(A^TA)v_i = \lambda_iv_i
-$$</p>
-
-<p>这样求得的 $v_i$ 就组成了SVD中的右奇异矩阵 $V$，此外</p>
-
-<p>$$
-\sigma_i=\sqrt{\lambda_i},u_i=Av_i/\sigma_i
-$$</p>
-
-<p>这里的 $\sigma_i$ 就是所谓的奇异值，它在矩阵 $\Sigma$ 中也是从大到小排列的，而且<strong>减小速度非常快！</strong>，这可是个好消息，说明我们利用<strong>很少的奇异值就能近似描述原始矩阵</strong>，相当于是<strong>空间压缩</strong>，比如我们利用 $r$ 个奇异值来近似原始矩阵（$r$ 远小于 $m$ 或 $n$）</p>
-
-<p>$$
-A_{m \times n} = U_{m \times r} \Sigma_{r \times r}V_{r \times n}^T
-$$</p>
-
-<p>所以总的来说SVD就是用来提取重要特征的一个方法。SVD或者特征值分解的具体实现都有现成的函数可以调用，感兴趣可以通过matlab分解一把再观察一下。</p>
+<p>没有训练前我们对这个函数没什么认知，那就假设其均值函数为0（大部分时候也都是当做0来使用的），核函数就取SE核函数吧（这个是什么先不管啦，你就认为是个用来生成协方差矩阵的函数，主要我们是要得到它的协方差呀！核函数里一般会有超参数需要估计，为了简单起见，我直接直接给定超参数，不去估计这个参数了），在这样的先验分布下，你得到的函数会是什么样的呢？我们从这个函数的概率分布中采样三个函数出来看看。
+<figure>
+    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/prior.png"/> 
+</figure>
+</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">[Q,Sigma1] = eig(A&#39;*A)   % matlab求特征值不一定按从小到大排序的 
-[U,Sigma2,V] = svd(A)</pre></td></tr></table>
+<pre class="chroma">import numpy as np
+import matplotlib.pyplot as pl
+%matplotlib inline
+# Test data
+n = 50
+Xtest = np.linspace(-3, 3, n).reshape(-1,1)
+
+# Define the kernel function
+def kernel(a, b, param):
+    sqdist = np.sum(a**2,1).reshape(-1,1) + np.sum(b**2,1) - 2*np.dot(a, b.T)
+    return np.exp(-.5 * (1/param) * sqdist)
+
+param = 0.1
+K_ss = kernel(Xtest, Xtest, param)
+
+# Get cholesky decomposition (square root) of the
+# covariance matrix
+L = np.linalg.cholesky(K_ss + 1e-15*np.eye(n))
+# Sample 3 sets of standard normals for our test points,
+# multiply them by the square root of the covariance matrix
+f_prior = np.dot(L, np.random.normal(size=(n,3)))
+
+# Now let&#39;s plot the 3 sampled functions.
+pl.plot(Xtest, f_prior)
+pl.axis([-3, 3, -3, 3])
+pl.title(&#39;Three samples from the GP prior&#39;)
+pl.show()</pre></td></tr></table>
 </div>
 </div>
-<p>观察一下 $Q$ 和 $V$ 的关系以及 $Sigma1$ 和 $Sigma2$ 的关系，可以再根据上面给出的公式人工计算一下 $U$ 矩阵，再和matlab的结果进行比较。</p>
+<p>那再根据训练数据训练一发，也就是相当于前面提到的贝叶斯推断，就能得到函数的后验概率分布
+<figure>
+    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/posterior.png"/> 
+</figure>
+</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"># Apply the kernel function to our training points
+K = kernel(Xtrain, Xtrain, param)
+L = np.linalg.cholesky(K + 0.00005*np.eye(len(Xtrain)))
+
+# Compute the mean at our test points.
+K_s = kernel(Xtrain, Xtest, param)
+Lk = np.linalg.solve(L, K_s)
+mu = np.dot(Lk.T, np.linalg.solve(L, ytrain)).reshape((n,))
+
+# Compute the standard deviation so we can plot it
+s2 = np.diag(K_ss) - np.sum(Lk**2, axis=0)
+stdv = np.sqrt(s2)
+# Draw samples from the posterior at our test points.
+L = np.linalg.cholesky(K_ss + 1e-6*np.eye(n) - np.dot(Lk.T, Lk))
+f_post = mu.reshape(-1,1) + np.dot(L, np.random.normal(size=(n,3)))
+
+pl.plot(Xtrain, ytrain, &#39;bs&#39;, ms=8)
+pl.gca().fill_between(Xtest.flat, mu-2*stdv, mu+2*stdv, color=&#34;#dddddd&#34;)
+pl.plot(Xtest, mu, &#39;r--&#39;, lw=2)
+pl.axis([-3, 3, -3, 3])
+pl.title(&#39;GP posterior&#39;)
+pl.show()</pre></td></tr></table>
+</div>
+</div>
+<p>这个回归效果很差，主要因为核函数的超参数没估计，而且训练的数据太少了。感兴趣可以自己去改改代码试试看。详细的推导和理论可以看06年的那本《Gaussian Process for Machine Learning》</p>
+
+<h2 id="划重点">划重点</h2>
+
+<p><strong>先验 “加&rdquo; 数据得到后验；后验&rdquo;加权平均&rdquo;输出就是预测！</strong></p>
+
+<p>最后的最后上两个公式吧</p>
+
+<p><div>$$
+p(w|y,X) = \frac{p(y|X,w)p(w)}{p(y|X)}
+$$<div></p>
+
+<p><div>$$
+p\left(f_{*} | {x}_{*}, X, {y}\right)=\int p\left(f_{*} | {x}_{*}, {w}\right) p({w} | X, {y}) d \mathbf{w}
+$$<div>
+配合上面那句话好好理解消化一下！</p>
     </div>
     <div class="read-more">
-      <a href="/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
