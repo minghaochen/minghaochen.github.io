@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-26T22:15:56&#43;08:00"/>
+<meta property="og:updated_time" content="2020-02-27T11:22:24&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,49 +115,358 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/">美音发音技巧——末尾s的发音</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/">「机器学习」高斯混合模型GMM</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-23 </span>
+      <span class="post-time"> 2019-08-25 </span>
       <div class="post-category">
-          <a href="/categories/english/"> English </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>不知道你会不会傻傻分不清楚</p>
+      <p>前面总结了 EM 算法，我们知道这是一个<strong>采用迭代的方式</strong>用于解决<strong>含有隐变量</strong>的参数估计问题的算法。典型的一个应用就是今天的主角<strong>高斯混合模型</strong> (Gaussian Misture Model)。这个模型和它的名字一样直白，也就是由<strong>多个高斯分布组合而成</strong>的模型，其概率密度函数可以表示为</p>
 
-<p>likes  /s/ 还是 /z/？</p>
+<div>$$
+p(x) = \sum_{k=1}^K \alpha_k \cdot \mathcal{N}(x|\mu_k,\Sigma_k) 
+$$</div>
 
-<p>lives /s/ 还是 /z/？</p>
+<p>这不就是 $K$ 个单高斯模型 $\mathcal{N}(x|\mu_k,\Sigma_k),k=1,&hellip;,K$ 加权而成，$\alpha_k$ 则是对应单高斯模型的权重，且满足 $\sum_{k=1}^K \alpha_k = 1$。这样做很直观的原因是混合多个单一模型得到复杂模型自然能够生成更复杂的样本，并且理论上如果 $K$ 足够大且权重合理，得到的混合模型能够拟合任意分布。</p>
 
-<p>首先说说 /s/ 和 /z/ 的发音，需要注意的是这个 /z/ 的发音其实和 /s/ 是一样的！只是在 /s/ 的基础上加上了声带的震动， <strong>不是中文拼音里的 z，是中文拼音里的 z，是中文拼音里的 z</strong>！！！ 重要的事情说三遍，很多小伙伴很可能都是按照拼音的 ‘zi’ 来发音(包括我之前也是)那就要好好改改咯。</p>
+<h2 id="模型参数学习">模型参数学习</h2>
 
-<p>知道了怎么发音我们再来看几个单词，你试着读读看？</p>
+<p>对混合高斯模型，我们要确定的参数有单高斯的个数 $K$ (你要混合几个单高斯总要告诉模型吧，通常直接给定或者采用一定的评价指标来确定合适的 $K$ 值)，每个单高斯分布的均值 $\mu_k$ 和方差 $\Sigma_k$ 以及对应的权重 $\alpha_k$。也就是我们需要从观测数据 $x_1,&hellip;,x_N$ 中学习得到这些模型参数。</p>
 
-<p>Set 1: likes/books/laughs/mats</p>
+<p>对于每一个样本 $x$，从生成模型的角度来理解：<strong>以 $\alpha_k$ 的概率选择第 $k$ 个高斯元 $\mathcal{N}(x|\mu_k,\Sigma_k)$，然后进行采样</strong>。</p>
 
-<p>Set 2: lives/feels/cares</p>
+<p>但是观测数据 $x_1,&hellip;,x_N$ 并没有告诉我们每一个样本采样自哪一个单高斯分布，因此引入隐变量 $z$，其分布满足</p>
 
-<p>Set 3: is/has/was/these/because</p>
+<table>
+<thead>
+<tr>
+<th>$z$</th>
+<th>1</th>
+<th>2</th>
+<th>&hellip;</th>
+<th>$K$</th>
+</tr>
+</thead>
 
-<p>答案揭晓：<strong>第一组都发 /s/，第二组都发 /z/，第三组都发 /z/</strong></p>
+<tbody>
+<tr>
+<td>$p(z)$</td>
+<td>$p_1$</td>
+<td>$p_2$</td>
+<td>&hellip;</td>
+<td>$p_K$</td>
+</tr>
+</tbody>
+</table>
 
-<p>不知道你发对了没有还是 /s/ 和 /z/ 胡乱发一通，搞不清楚也没关系，我们先来找找规律，第一组 s 前都是什么？对！是以<strong>清辅音</strong> 结尾的；第二组呢？是以<strong>浊辅音</strong>结尾的，第三组则是<strong>元音</strong>结尾的。</p>
+<p>如果 $z_i = 1$ 表示第 $i$ 个样本 $x_i$ 采样自第 1 个单高斯分布，概率为 $p_1$ (也就相当于前面说的权重 $\alpha_1$)。</p>
 
-<p>那你就记住：<strong>/s/ 是清辅音，那就接在清辅音后面，/z/ 是浊辅音那就接在浊辅音后面，元音后面通常跟 /z/</strong>，OK，再试试把上面三组单词读一遍感受一下。</p>
+<p>定义完隐变量后，对于任意样本，完整数据 (观测数据和隐变量) 的概率密度函数可以表示为</p>
 
-<p>问题又来了，有的小伙伴会问什么是清辅音，什么是浊辅音，这个很好判断，你摸着你的声带，发音时感受到声带的就是浊辅音，比如/b/,/d/,/g/,/v/,/z/，不震动的就是清辅音，比如/p/,/t/,/k/,/f/,/s/。</p>
+<div>$$
+p(x,z) = p(z)p(x|z) = p(z) \mathcal{N}(x|\mu_z,\Sigma_z)
+$$</div> 
 
-<p>还有一个关于浊辅音和清辅音的技巧就是：<strong>浊辅音前的元音发音更“长”一点</strong></p>
+<p>假设各个样本之间相互独立，则观测数据的似然函数可以表示为</p>
 
-<p>不信你对比一下以下几组单词： back 和 bag; safe 和save; pick 和 pig; lock 和 log; cup 和 cub</p>
+<div>$$
+L(\theta) = \prod_{i=1}^N p(x_i|\theta) = \prod_{i=1}^N  \int_{z_i} p(x_i,z_i|\theta) dz_i = \prod_{i=1}^N \sum_{k=1}^K p_k \mathcal{N}(x_i | \mu_k,\Sigma_k)
+$$</div>
 
-<p>是不是发音每组单词中后面那个单词的元音都拉得比较长呢，那就对了！</p>
+<p>上式中，观测数据的概率分布通过对完整数据的概率分布进行积分操作消除隐变量，对于离散变量 $z$ 也就是转化为求和操作。</p>
+
+<p>对数似然函数为</p>
+
+<div>$$
+\ln L(\theta) = \sum_{i=1}^N \ln \sum_{k=1}^K p_k \mathcal{N}(x_i | \mu_k,\Sigma_k)
+$$</div>
+
+<p>如果要像往常一样采用求导的方式来估计参数行不通了，因为<strong>对数里面还有求和</strong>。所以就要用 EM 算法来迭代求解啦。</p>
+
+<h2 id="em-算法与-gmm">EM 算法与 GMM</h2>
+
+<p>这里直接给出参数估计的迭代公式(不清楚的可以翻翻前面关于 EM 算法的博客)</p>
+
+<div>
+    $$
+    \theta^{(t+1)} = \arg \max_{\theta} Q(\theta,\theta^{(t)}) = \arg \max_{\theta} E_{Z|X,\theta^{(t)}}[\log p(X,Z|\theta)]
+    $$
+</div>
+
+<p>即<strong>需要先求隐变量 $Z$ 的后验，然后再令期望 $Q(\theta,\theta^{(t)})$ 最大化。</strong></p>
+
+<p>进一步可以表示为</p>
+
+<div>$$
+\begin{aligned}
+Q(\theta,\theta^{(t)}) &= \int_Z \log p(X,Z|\theta) p(Z|X,\theta^{(t)}) dZ\\
+&=\sum_{z_1,...,z_N} \log \prod_{i=1}^N p(x_i,z_i|\theta) \prod_{i=1}^N p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{z_1,...,z_N} (\sum_{i=1}^N \log p(x_i,z_i|\theta)) \prod_{i=1}^N p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{z_1,...,z_N} \log p(x_1,z_1|\theta) p(z_1|x_1,\theta^{(t)}) \prod_{i=2}^N p(z_i|x_i,\theta^{(t)})\\
+&+ ... + \sum_{z_1,...,z_N} \log p(x_N,z_N|\theta) p(z_N|x_N,\theta^{(t)}) \prod_{i=1}^{N-1} p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{i=1}^N \sum_{z_i} \log p(x_i,z_i|\theta)p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{i=1}^N \sum_{k=1}^K \log p(x_i,z_i=k|\theta)p(z_i=k|x_i,\theta^{(t)})
+\end{aligned}
+$$</div>
+
+<p>其中隐变量的后验分布为</p>
+
+<div>$$
+\begin{aligned}
+p(z_i=k|x_i,\theta^{(t)}) &= \frac
+{p(z_i=k,x_i|\theta^{(t)})}{p(x_i|\theta^{(t)})}\\
+&=\frac{p^{(t)}_k \mathcal{N}(x_i|\mu^{(t)}_k,\Sigma^{(t)}_k)}{\sum_{k=1}^K p^{(t)}_k \mathcal{N}(x_i|\mu^{(t)}_k,\Sigma^{(t)}_k)} 
+\end{aligned}
+$$</div>
+
+<p>联合分布为</p>
+
+<div>$$
+\log p(x_i,z_i=k|\theta) = \log p_k + \log \mathcal{N}(x_i|\mu_k,\Sigma_k)
+$$</div>
+
+<p>即</p>
+
+<div>$$
+Q(\theta,\theta^{(t)})=\sum_{k=1}^K\sum_{i=1}^N [\log p_k +\log \mathcal{N}(x_i|\mu_k,\Sigma_k)]p(z_i=k|x_i,\theta^{(t)})
+$$</div>
+
+<p><strong>记住这里 $p(z_i=k|x_i,\theta^{(t)})$ 相当于是个常数</strong>，然后根据最大化期望函数 $Q(\theta,\theta^{(t)})$ 的原则依次求解 $p_k,u_k,\Sigma_k$，由于 $p_k$ 额外满足等式约束 $\sum_{k=1}^K p_k=1$，求解 $p_k$ 是一个带有等式约束的最大化问题需要用到拉格朗日乘子法(不清楚的也可以翻翻之前的文章)，$u_k,\Sigma_k$ 则直接对期望函数求导利用极值条件就能得到解析解。</p>
+
+<p>对于参数 $p_k$，拉格朗日函数可以表示为：</p>
+
+<div>$$
+\mathcal{L}(p_k,\lambda) = \sum_{k=1}^K\sum_{i=1}^N \log p_k p(z_i=k|x_i,\theta^{(t)}) + \lambda(\sum_{k=1}^K p_k - 1)
+$$</div>
+
+<p>令 $\partial \mathcal{L}/\partial p_k=0$</p>
+
+<div>$$
+\begin{aligned}
+\sum_{i=1}^N \frac{1}{p_k}p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)}) + p_k \lambda = 0\\
+\sum_{k=1}^K\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+\sum_{i=1}^N \sum_{k=1}^K p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+N+\lambda = 0
+\end{aligned}
+$$</div>
+
+<p>第三式到第四式利用 $\sum_{k=1}^K p_k = 1$，第三式到第四式利用<strong>离散随机变量的概率密度函数对所有可能情况求和为1</strong>，然后将最后一式代入第一式可得</p>
+
+<div>
+    $$
+p_k^{(t+1)} = \frac{1}{N} \sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)})
+    $$
+</div>
+
+<p>对于参数 $u_k$，直接对 $Q$ 函数求导，并令 $\partial Q/ \partial u_k=0$:</p>
+
+<div>$$
+\begin{aligned}
+\frac{\partial}{\partial u_k} \sum_{k=1}^K \sum_{i=1}^N \log [\frac{1}{{(2\pi)}^{(d/2)}|\Sigma_k|^{(1/2)}}\exp(-\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k) )]p(z_i=k|x_i,\theta^{(t})=0\\
+\frac{\partial}{\partial u_k} \sum_{k=1}^K \sum_{i=1}^N [-\frac{d}{2} \log 2\pi -\frac{1}{2} \log|\Sigma_k| -\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k)] p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N (x_i-u_k)^T\Sigma_k^{(-1)} p(z_i=k|x_i,\theta^{(t)})=0
+\end{aligned}
+$$</div>
+
+<p>根据最后一式可得：</p>
+
+<div>$$
+u_k^{(t+1)} = \frac{\sum_{i=1}^Nx_i p(z_i=k|x_i,\theta^{(t)})}{\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)})}
+$$</div>
+
+<p>对于参数 $\Sigma_k$，直接对 $Q$ 函数求导，并令 $\partial Q/ \partial \Sigma_k=0$:</p>
+
+<div>$$
+\begin{aligned}
+\frac{\partial}{\partial \Sigma_k} \sum_{k=1}^K \sum_{i=1}^N \log [\frac{1}{{(2\pi)}^{(d/2)}|\Sigma_k|^{(1/2)}}\exp(-\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k) )]p(z_i=k|x_i,\theta^{(t})=0\\
+\frac{\partial}{\partial \Sigma_k} \sum_{k=1}^K \sum_{i=1}^N [-\frac{d}{2} \log 2\pi -\frac{1}{2} \log |\Sigma_k| -\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k)] p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N [-\frac{1}{2}(\Sigma_k^{(-1)})^T + \frac{1}{2} \Sigma_k^{(-1)}(x_i-u_k) (x_i-u_k)^T \Sigma_k^{(-1)}]p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N [-\Sigma_k + (x_i - u_k)(x_i - u_k)^T] p(z_i=k|x_i,\theta^{(t)})=0\\
+\end{aligned}
+$$</div>
+
+<p>根据最后一式可得：</p>
+
+<div>$$
+{\Sigma_k}^{(t+1)} = \frac{\sum_{i=1}^N (x_i - u_k)(x_i - u_k)^T p(z_i=k|x_i,\theta^{(t)})}{\sum_{i=1}^N  p(z_i=k|x_i,\theta^{(t)})}
+$$</div>
+
+<h2 id="matlab实现">matlab实现</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">clear
+clear all;
+% 生成数据 由3个二元高斯分布各生成1000个样本
+mu1 = [1 2];
+Sigma1 = [2 0;0 0.5];
+mu2 = [-3 -5];
+Sigma2 = [1 0;0 1];
+mu3 = [2 -3];
+Sigma3 = [1 0;0 2];
+rng(1); % For reproducibility
+X = [mvnrnd(mu1,Sigma1,1000);mvnrnd(mu2,Sigma2,1000);mvnrnd(mu3,Sigma3,1000)];
+[N, d] = size(X); % 样本数、样本维度
+figure
+y = [0*ones(1000,1);ones(1000,1);2*ones(1000,1)];
+h = gscatter(X(:,1),X(:,2),y);
+legend(h,&#39;Gaussian 1&#39;,&#39;Gaussian 2&#39;,&#39;Gaussian 3&#39;)
+
+% 初始参数
+K     = 3; % 单高斯的个数
+p_k   = ones(K,1)*1/K; % 各个高斯元的权重系数
+mu    = rand(K, d); % 待估计的均值，每一行是一个高斯分布的均值
+sigma = zeros(d, d, K); % 待估计的协方差矩阵
+for k = 1:K
+    sigma(:, :, k) = eye(d);
+end
+
+% 概率密度函数表达式
+pdf_value = @(x,mu,Sigma) 1/((2*pi)^(d/2)*(det(Sigma))^(1/2))*exp(-0.5*(x-mu)*inv(Sigma)*(x-mu)&#39;);
+
+% EM算法估计参数
+p_z = repmat(ones(1,K)*1/K,N,1); % 隐变量的后验分布矩阵，每一个样本对应K个后验
+
+% 迭代1000次，可以自己设置各种结束迭代条件
+for iter = 1:1000
+    % E 步 计算后验
+    for i = 1:N
+        p_xi = 0; % 后验的分母p(x_i|theta^(t))
+        for j = 1:K
+            p_xi = p_xi + p_k(j)*pdf_value(X(i,:),mu(j,:),sigma(:,:,j));
+        end
+        for k = 1:K
+            p_z(i,k) = p_k(k)*pdf_value(X(i,:),mu(k,:),sigma(:,:,k))/p_xi;
+        end
+    end
+
+    % M 步
+    for k = 1:K
+        p_k(k)  = 1/N*sum(p_z(:,k)); % 更新权重
+        num = 0; % 均值的分子
+        for i = 1:N
+            num = num + X(i,:)*p_z(i,k);
+        end
+        mu(k,:) = num/sum(p_z(:,k)); % 更新均值
+    end
+    
+    for k = 1:K
+        num = 0; % 协方差的分子
+        for i = 1:N
+            num = num + (X(i,:)-mu(k,:))&#39;*(X(i,:)-mu(k,:))*p_z(i,k);
+        end
+        sigma(:,:,k) = num/sum(p_z(:,k)); % 更新协方差
+    end
+end
+
+% 画各个高斯分布的等高线
+for k = 1:K
+    x1 = -7:.2:7;
+    x2 = -9:.2:5;
+    [X1,X2] = meshgrid(x1,x2);
+    X = [X1(:) X2(:)];
+    y = mvnpdf(X,mu(k,:),sigma(:,:,k));
+    y = reshape(y,length(x2),length(x1));
+    hold on 
+    contour(x1,x2,y,[0.0001 0.001 0.01 0.05 0.15 0.25 0.35])
+    xlabel(&#39;x_1&#39;)
+    ylabel(&#39;x_2&#39;)
+end</pre></td></tr></table>
+</div>
+</div>
+<figure>
+    <img src="/images/post/%e3%80%8c%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e3%80%8d%e9%ab%98%e6%96%af%e6%b7%b7%e5%90%88%e6%a8%a1%e5%9e%8bGMM/GMM_EM.jpg"/> 
+</figure>
+
+
+<p>散点就是由三个不同的高斯分布生成的样本，等高线则是根据学习出来的三个高斯元画的。</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E6%9C%AB%E5%B0%BEs%E7%9A%84%E5%8F%91%E9%9F%B3/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
