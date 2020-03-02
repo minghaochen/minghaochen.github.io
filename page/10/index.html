@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-28T17:11:37&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-02T18:51:57&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,285 +115,89 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E5%9F%BA%E4%BA%8Ematlab%E5%B9%B3%E5%8F%B0%E7%9A%84libsvm%E5%9B%9E%E5%BD%92/">基于matlab平台的libsvm回归</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%96%B0%E6%A6%82%E5%BF%B541~3/">《新概念4》1~3</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-19 </span>
+      <span class="post-time"> 2020-02-20 </span>
       <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          <a href="/categories/english/"> English </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>由于项目需要建立一个SVR模型，记录一下libsvm的使用流程。</p>
+      <h1 id="finding-fossil-man">Finding Fossil man</h1>
 
-<p>因为要做的是回归，所以我们应该有一些输入$x$（每一行代表一个样本），输出$y$，从而得到$y=f(x)$的关系用于预测；当$y$为多维时，逐维进行回归。</p>
+<p>We can <strong>read of</strong> things that happened 5,000 years ago in the Near East, where people first learned to write. But there are some parts of the world where even now people cannot write. The only way that they can preserve their history is to <strong>recount</strong> it as sagas&ndash;legends <strong>handed down</strong> from one generation of story-tellers to another. These legends are useful because they can tell us something about migrations of people who lived long ago, but none could write down what they did. <strong>Anthropologists</strong> wondered where the remote ancestors of the Polynesian (波利尼西亚人) peoples now living in the Pacific Islands (太平洋群岛) came from. The sagas of these people explain that some of them came from Indonesia (印度尼西亚) about 2,000 years ago.</p>
 
-<h1 id="step-1-对数据进行scaleing-训练数据和测试数据都需要">Step 1 对数据进行scaleing，训练数据和测试数据都需要！</h1>
+<p>But the first people who were like ourselves lived so long ago that even their sagas, if they had any, are forgotten. So <strong>archaeologists</strong> have neither history nor legends to help them to find out where the first &lsquo;modern men&rsquo; came from. Fortunately, however, ancient men made tools of stone, especially <strong>flint</strong>, because this is easier to shape than other kinds. They may also have used wood and skins, but these have <strong>rotted away</strong>. Stone does not decay, and so the tools of long ago have remained when even the bones of the men who made them have disappeared without trace.</p>
 
-<p>这里提供一个自己写的scaling函数</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"> 2020/02/19 by Minghao Chen, this function is used to scale the data; 
- 
- %Usage: 
- %for traindata: [traindata,minimums,ranges] = svm_scale(traindata),
- %it will return the minimums and ranges of traindata, which will be needed 
- %in testdata scaling
- %For testdata:  [testdata,minimums,ranges] = svm_scale(testdata,minimums,ranges)
- 
- function [data,minimums,ranges] = svm_scale(data,minimums,ranges)
-    if nargin == 1
-        minimums = min(data, [], 1);
-        ranges = max(data, [], 1) - minimums;
-        data = (data - repmat(minimums, size(data, 1), 1)) ./ repmat(ranges, size(data, 1), 1);
-    else
-        data = (data - repmat(minimums, size(data, 1), 1)) ./ repmat(ranges, size(data, 1), 1);
-    end</pre></td></tr></table>
-</div>
-</div>
-<h1 id="step-2-首先考虑rbf核函数-通过grid-search进行参数-c-gamma-寻优-可以先粗后细-大区间到小区间">Step 2 首先考虑RBF核函数，通过grid search进行参数$C, \gamma$寻优，可以先粗后细（大区间到小区间）</h1>
+<p><strong>词汇</strong></p>
 
-<p>在进行参数搜索时可以用交叉验证，中途会涉及数据的划分，这里提供一个自己写的数据划分的程序</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">function [train_data,train_target,valid_data,valid_target] = data_split(data,target,k)
-    N = size(data,1);
-    p = randperm(N)&#39;;
-    train_data = data(p(1:round(k*N)),:);
-    valid_data = data(p(1+round(k*N):end),:);
-    train_target = target(p(1:round(k*N)),:);
-    valid_target = target(p(1+round(k*N):end),:);</pre></td></tr></table>
-</div>
-</div>
-<p>其中data放的就是$x$，target放的就是$y$，参数$k$取值$(0,1)$表示你要拿多少的数据用于训练</p>
+<ul>
+<li>recount: /rɪˈkaʊnt/ to tell someone about (something that happened).</li>
+<li>saga: /ˈsɑːgə/ a long and complicated story with many details.</li>
+<li>hand down: to pass (something) from a person who is older (such as a parent) to a person who is younger (such as a child).</li>
+<li>anthropologist: /ˌænθrəˈpɑːləʤi/ the study of human races, origins, societies, and cultures.</li>
+<li>archaeologist: /ˌɑɚkiˈɑːləʤi/  a science that deals with past human life and activities by studying the bones, tools, etc., of ancient people.</li>
+<li>flint: /ˈflɪnt/ a hard type of rock that produces a small piece of burning material.</li>
+</ul>
 
-<h1 id="step-3-用最优的超参数来训练模型">Step 3 用最优的超参数来训练模型</h1>
+<p><strong>句型</strong></p>
 
-<p>这里就需要用到libsvm里的训练函数了：</p>
+<ul>
+<li>The only way that &hellip; is</li>
+<li>These &hellip; are useful because &hellip;</li>
+<li>sth explain that &hellip;</li>
+</ul>
 
-<blockquote>
-<p>model = svmtrain(train_y,train_x,&lsquo;options&rsquo;)</p>
-</blockquote>
+<h1 id="spare-that-spider">Spare that spider</h1>
 
-<p>需要注意的是&rsquo;options&rsquo;，
-直接给个例子在解释吧，比如：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">model = svmtrain(train_y,train_x,&#39;-s 3 -t 2 -p 0.01 -c 2 -g 2&#39;)</pre></td></tr></table>
-</div>
-</div>
-<p>其中各个缩写表示的含义为：</p>
+<p>Why, you may wonder, should spiders be our friends ? Because they destroy so many insects, and insects include some of the greatest enemies of the human race. Insects would make it impossible for us to live in the world; they would <strong>devour</strong> all our crops and kill our flocks and herds, if it were not for the protection we get from insect-eating animals. We owe a lot to the birds and beasts who eat insects but all of them put together kill only <strong>a fraction of</strong> the number destroyed by spiders. Moreover, unlike some of the other insect eaters, spiders never do the least harm to us or our belongings.</p>
 
-<p>-s 类型 : set type of SVM (default 0)</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">0 -- C-SVC
+<p>Spiders are not insects, as many people think, nor even nearly related to them. One can tell the difference almost at a glance for a spider always has eight legs and an insect never more than six.</p>
 
-1 -- nu-SVC
+<p>How many spiders <strong>are engaged in</strong> this work on our behalf ? One authority on spiders made a census of the spiders in a grass field in the south of England, and he estimated that there were more than 2,250,000 in one <strong>acre</strong>, that is something like 6,000,000 spiders of different kinds on a football <strong>pitch</strong>. Spiders are busy for at least half the year in killing insects. It is impossible to make more than the wildest guess at how many they kill, but they are hungry creatures, not content with only three meals a day. It has been estimated that the weight of all the insects destroyed by spiders in Britain in one year would be greater than the total weight of all the human beings in the country.</p>
 
-2 -- one-class SVM
+<p><strong>词汇</strong></p>
 
-3 -- epsilon-SVR
+<ul>
+<li>spare: /ˈspeɚ/ to not destroy or harm.</li>
+<li>devour: /dɪˈvawɚ/  to destroy (something) completely.</li>
+<li>a fraction of</li>
+<li>be engaged in</li>
+<li>pitch: /ˈpɪtʃ/ an area that is used for playing sports.</li>
+</ul>
 
-4 -- nu-SVR</pre></td></tr></table>
-</div>
-</div>
-<p>-t 核函数 : set type of kernel function (default 2)</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">0 -- linear
+<p><strong>句型</strong></p>
 
-1 -- polynomial
+<ul>
+<li>It has been estimated that</li>
+</ul>
 
-2 -- radial basis function: $exp(-\gamma*|u-v|^2)$
+<h1 id="matterhorn-马特洪峰-man">Matterhorn (马特洪峰) man</h1>
 
-3 -- sigmoid</pre></td></tr></table>
-</div>
-</div>
-<p>-g gamma : set gamma in kernel function (default 1/num_features)</p>
+<p>Modern <strong>alpinists</strong> try to climb mountains by a route which will give them good sport, and the more difficult it is, the more highly it is regarded. In the pioneering days, however, this was not the case at all. The early climbers were looking for the easiest way to the top because the summit was the prize they sought, especially if it had never been attained before. It is true that during their explorations they often faced difficulties and dangers of the most perilous nature, equipped in a manner which would make a modern climber <strong>shudder</strong> at the thought, but they did not go out of their way to court such excitement. They had a single aim, a solitary goal&ndash;the top!</p>
 
-<p>-c cost : set the parameter C of C-SVC, epsilon-SVR, and nu-SVR (default 1)</p>
+<p>It is hard for us to realize nowadays how difficult it was for the pioneers. <strong>Except for</strong> one or two places such as Zermatt (策马特) and Chamonix (夏蒙尼), which had rapidly become popular, Alpine (阿尔卑斯山的) villages tended to be <strong>impoverished settlements</strong> cut off from civilization by the high mountains. Such <strong>inns</strong> as there were were generally dirty and <strong>flea-ridden</strong>; the food simply local cheese accompanied by bread often twelve months old, all washed down with coarse wine. Often a valley boasted no inn at all, and climbers found shelter wherever they could&ndash;sometimes with the local priest (who was usually as poor as his parishioners), sometimes with shepherds or cheesemakers. Invariably the background was the same: dirt and poverty, and very uncomfortable. For men accustomed to eating seven-course dinners and sleeping between fine <strong>linen</strong> sheets at home, the change to the Alps must have been very hard indeed.</p>
 
-<p>-p epsilon : set the epsilon in loss function of epsilon-SVR (default 0.1)</p>
+<p><strong>词汇</strong></p>
 
-<h1 id="step-4-模型训练好可以直接保存下来-是个结构体的形式">Step 4 模型训练好可以直接保存下来，是个结构体的形式</h1>
-
-<blockquote>
-<p>save RegressModel.mat model</p>
-</blockquote>
-
-<h1 id="step-5-如果有测试数据就可以进一步进行验证了">Step 5 如果有测试数据就可以进一步进行验证了</h1>
-
-<p>这里涉及libsvm的预测函数</p>
-
-<blockquote>
-<p>[predict_y,accuracy,dec_value] = svmpredict(test_y,test_x,model)</p>
-</blockquote>
-
-<p>其中，test_y如果没有可以用任意向量替代，此时输出accuracy是一个$3*1$向量，分别表示分类准确率（分类问题使用），MSE（越小越好），平方关系系数$r^2$（越接近1越好）。</p>
-
-<h2 id="例子">例子</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">x=(-10:0.5:9.5)&#39;; 
-y=-x.^2;
-
-[x_scale,minimums,ranges] = svm_scale(x);
-
-% grid search for hyperparameters
-c = [];
-g = [];
-N_grid = 11;
-for i = 1:N_grid
-    c = [c, 2^(-7+2*i)];
-    g = [g, 2^(-7+2*i)];
-end
-
-MSE = 0; 
-for i = 1:N_grid
-    for j = 1:N_grid
-        ops = [&#39;-s 3 -t 2 -p 0.01 -c &#39;,num2str(c(i)),&#39; -g &#39;,num2str(g(j))];
-        [train_data,train_target,valid_data,valid_target] = data_split(x_scale,y,0.7);
-        model = svmtrain(train_target,train_data,ops);
-        [py,mse,prob_estimates]=svmpredict(valid_target,valid_data,model); 
-        MSE(i,j) = mse(2);
-    end
-end
-[i,j]=find(MSE==min(min(MSE)));
-ops = [&#39;-s 3 -t 2 -p 0.01 -c &#39;,num2str(c(i)),&#39; -g &#39;,num2str(g(j))];
-
-% 根据网格搜索得到的最优参数进行全部数据建模
-model = svmtrain(y,x_scale,ops);
-[py,mse,prob_estimates]=svmpredict(y,x_scale,model); 
-
-% 画图 训练数据的拟合结果
-figure; 
-plot(x,y,&#39;o&#39;); 
-hold on 
-plot(x,py,&#39;r*&#39;); 
-legend(&#39;原始数据&#39;,&#39;回归数据&#39;); grid on;
-
-
-% 测试
-testx = [-16:0.2:-8]&#39;; 
-testy = -testx.^2;
-[testx_scale,minimums,ranges] = svm_scale(testx,minimums,ranges);
-[ptesty,tmse,prob_estimates]=svmpredict(testy,testx_scale,model); 
-
-figure; 
-plot(testx,testy,&#39;o&#39;); 
-hold on 
-plot(testx,ptesty,&#39;r*&#39;); 
-legend(&#39;原始数据&#39;,&#39;回归数据&#39;); grid on;</pre></td></tr></table>
-</div>
-</div>
+<ul>
+<li>alpinist</li>
+<li>shudder: /ˈʃʌdɚ/ to shake because of fear, cold, etc.</li>
+<li>except for</li>
+<li>impoverish: /ɪmˈpɑːvərɪʃ/ poor.</li>
+<li>settlement: /ˈsɛtl̟mənt/ a place where people have come to live and where few or no people lived before.</li>
+<li>cut off + from: to be separate or alone: They are cut off from (contact with) the outside world.</li>
+<li>flea: /ˈfliː/ a very small insect.</li>
+<li>ridden: /ˈrɪdn̩/ filled with or containing something unpleasant or unwanted.</li>
+<li>boast: /ˈboʊst/ to have (something that is impressive)</li>
+<li>linen: /ˈlɪnən/ a smooth, strong cloth made from flax.</li>
+</ul>
     </div>
     <div class="read-more">
-      <a href="/post/%E5%9F%BA%E4%BA%8Ematlab%E5%B9%B3%E5%8F%B0%E7%9A%84libsvm%E5%9B%9E%E5%BD%92/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%96%B0%E6%A6%82%E5%BF%B541~3/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

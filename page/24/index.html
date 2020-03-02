@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-28T17:11:37&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-02T18:51:57&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,9 +115,9 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/">「机器学习」EM算法</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/">「机器学习」高斯混合模型GMM</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-22 </span>
+      <span class="post-time"> 2019-08-25 </span>
       <div class="post-category">
           <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
@@ -126,241 +126,178 @@
   
   <div class="post-content">
     <div class="post-summary">
-      <p>期望最大(EM)算法的大名想必大家都听过，说来惭愧，大概两年前就学过用过这个算法，但是到后来只记得EM这个名字，把算法的原理都给忘光光了，这几天重新捡起来，总结一下，也希望对想了解这个算法的人有点启发。</p>
-
-<p>对我EM算法我总结为三点：<strong>为什么</strong>、<strong>是什么</strong>、<strong>怎么用</strong>。</p>
-
-<h2 id="为什么要用em算法">为什么要用EM算法？</h2>
-
-<p>会看到这篇博客的大家想必都知道，EM算法是用来<strong>估计参数</strong>的，并且是以<strong>迭代</strong>的方式进行。看到估计参数这个字眼，你脑子里首先会想到什么方法？毫无疑问就是极大似然法吧，再帮大家回忆一下极大似然法的思想：<strong>什么参数对应的事件发生的概率最大，我们就认为这个参数就是未知参数的估计值</strong>。通俗一点讲就是你知道了事件的观测值 $y_1,&hellip;,y_N$，然后要寻找能够让事件发生的可能性 $p(y_1,&hellip;,y_N|\theta)$ 最大的参数 $\hat{\theta}$，也就是</p>
+      <p>前面总结了 EM 算法，我们知道这是一个<strong>采用迭代的方式</strong>用于解决<strong>含有隐变量</strong>的参数估计问题的算法。典型的一个应用就是今天的主角<strong>高斯混合模型</strong> (Gaussian Misture Model)。这个模型和它的名字一样直白，也就是由<strong>多个高斯分布组合而成</strong>的模型，其概率密度函数可以表示为</p>
 
 <div>$$
-\hat{\theta}=\arg\max_{\theta} p(y_1,...,y_N|\theta)
+p(x) = \sum_{k=1}^K \alpha_k \cdot \mathcal{N}(x|\mu_k,\Sigma_k) 
 $$</div>
 
-<p>或者通常为了计算方便采用对数的形式</p>
+<p>这不就是 $K$ 个单高斯模型 $\mathcal{N}(x|\mu_k,\Sigma_k),k=1,&hellip;,K$ 加权而成，$\alpha_k$ 则是对应单高斯模型的权重，且满足 $\sum_{k=1}^K \alpha_k = 1$。这样做很直观的原因是混合多个单一模型得到复杂模型自然能够生成更复杂的样本，并且理论上如果 $K$ 足够大且权重合理，得到的混合模型能够拟合任意分布。</p>
+
+<h2 id="模型参数学习">模型参数学习</h2>
+
+<p>对混合高斯模型，我们要确定的参数有单高斯的个数 $K$ (你要混合几个单高斯总要告诉模型吧，通常直接给定或者采用一定的评价指标来确定合适的 $K$ 值)，每个单高斯分布的均值 $\mu_k$ 和方差 $\Sigma_k$ 以及对应的权重 $\alpha_k$。也就是我们需要从观测数据 $x_1,&hellip;,x_N$ 中学习得到这些模型参数。</p>
+
+<p>对于每一个样本 $x$，从生成模型的角度来理解：<strong>以 $\alpha_k$ 的概率选择第 $k$ 个高斯元 $\mathcal{N}(x|\mu_k,\Sigma_k)$，然后进行采样</strong>。</p>
+
+<p>但是观测数据 $x_1,&hellip;,x_N$ 并没有告诉我们每一个样本采样自哪一个单高斯分布，因此引入隐变量 $z$，其分布满足</p>
+
+<table>
+<thead>
+<tr>
+<th>$z$</th>
+<th>1</th>
+<th>2</th>
+<th>&hellip;</th>
+<th>$K$</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>$p(z)$</td>
+<td>$p_1$</td>
+<td>$p_2$</td>
+<td>&hellip;</td>
+<td>$p_K$</td>
+</tr>
+</tbody>
+</table>
+
+<p>如果 $z_i = 1$ 表示第 $i$ 个样本 $x_i$ 采样自第 1 个单高斯分布，概率为 $p_1$ (也就相当于前面说的权重 $\alpha_1$)。</p>
+
+<p>定义完隐变量后，对于任意样本，完整数据 (观测数据和隐变量) 的概率密度函数可以表示为</p>
 
 <div>$$
-\hat{\theta}=\arg\max_{\theta} \log p(y_1,...,y_N|\theta)
-$$</div>
+p(x,z) = p(z)p(x|z) = p(z) \mathcal{N}(x|\mu_z,\Sigma_z)
+$$</div> 
 
-<p>其中 $\log p(y_1,&hellip;,y_N|\theta)$ 就称为对数似然函数，常常假设事件之间相互独立，那也就能进一步把联合概率写成独立概率乘积的形式：</p>
-
-<div>$$
-\hat{\theta}=\arg\max_{\theta} \log \prod_{i=1}^N p(y_i|\theta)
-$$</div>
-
-<p>这样一个无约束的优化问题利用极值条件(导数为0)也就能得到待估计参数的解析解了。</p>
-
-<p>回到我们的问题<strong>为什么要用EM算法</strong>，那肯定是因为极大似然法不管用了呗，也就是当有<strong>隐变量(latent variable)</strong>存在的时候，原来的对数似然函数变为</p>
+<p>假设各个样本之间相互独立，则观测数据的似然函数可以表示为</p>
 
 <div>$$
-\log p(Y|\theta) = \log \sum_{Z} p(Y|Z,\theta)p(Z,\theta)
+L(\theta) = \prod_{i=1}^N p(x_i|\theta) = \prod_{i=1}^N  \int_{z_i} p(x_i,z_i|\theta) dz_i = \prod_{i=1}^N \sum_{k=1}^K p_k \mathcal{N}(x_i | \mu_k,\Sigma_k)
 $$</div>
 
-<p>相当于求完全数据 $Y,Z$ 的联合分布 $p(Y,Z|\theta)$ (把隐变量积分掉)的和，但是由于里面包含隐变量，直接用极大似然求解是不行滴。但是如果能够估计出隐变量 $Z$，那这个问题又回到了原来的极大似然估计。这样也就自然地与EM算法的思想挂上勾了：<strong>估计隐变量(E步)，再估计参数(M步)，不断迭代</strong>。</p>
+<p>上式中，观测数据的概率分布通过对完整数据的概率分布进行积分操作消除隐变量，对于离散变量 $z$ 也就是转化为求和操作。</p>
 
-<p>现在可以回答第一个问题了：为什么要用EM算法？<strong>EM算法是用来解决含有隐变量的参数估计问题的。</strong></p>
+<p>对数似然函数为</p>
 
-<h2 id="什么是em算法">什么是EM算法？</h2>
+<div>$$
+\ln L(\theta) = \sum_{i=1}^N \ln \sum_{k=1}^K p_k \mathcal{N}(x_i | \mu_k,\Sigma_k)
+$$</div>
 
-<p>那么这个所谓的迭代算法是怎么迭代的呢？我们还是先回到对数似然函数，可以将其表示为</p>
+<p>如果要像往常一样采用求导的方式来估计参数行不通了，因为<strong>对数里面还有求和</strong>。所以就要用 EM 算法来迭代求解啦。</p>
+
+<h2 id="em-算法与-gmm">EM 算法与 GMM</h2>
+
+<p>这里直接给出参数估计的迭代公式(不清楚的可以翻翻前面关于 EM 算法的博客)</p>
+
+<div>
+    $$
+    \theta^{(t+1)} = \arg \max_{\theta} Q(\theta,\theta^{(t)}) = \arg \max_{\theta} E_{Z|X,\theta^{(t)}}[\log p(X,Z|\theta)]
+    $$
+</div>
+
+<p>即<strong>需要先求隐变量 $Z$ 的后验，然后再令期望 $Q(\theta,\theta^{(t)})$ 最大化。</strong></p>
+
+<p>进一步可以表示为</p>
 
 <div>$$
 \begin{aligned}
-\log p(Y|\theta) &= \log p(Y,Z|\theta) - \log p(Z|Y,\theta)\\
-&=\log \frac{p(Y,Z|\theta)}{q(Z)}-\log \frac{p(Z|Y,\theta)}{q(Z)}
+Q(\theta,\theta^{(t)}) &= \int_Z \log p(X,Z|\theta) p(Z|X,\theta^{(t)}) dZ\\
+&=\sum_{z_1,...,z_N} \log \prod_{i=1}^N p(x_i,z_i|\theta) \prod_{i=1}^N p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{z_1,...,z_N} (\sum_{i=1}^N \log p(x_i,z_i|\theta)) \prod_{i=1}^N p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{z_1,...,z_N} \log p(x_1,z_1|\theta) p(z_1|x_1,\theta^{(t)}) \prod_{i=2}^N p(z_i|x_i,\theta^{(t)})\\
+&+ ... + \sum_{z_1,...,z_N} \log p(x_N,z_N|\theta) p(z_N|x_N,\theta^{(t)}) \prod_{i=1}^{N-1} p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{i=1}^N \sum_{z_i} \log p(x_i,z_i|\theta)p(z_i|x_i,\theta^{(t)})\\
+&=\sum_{i=1}^N \sum_{k=1}^K \log p(x_i,z_i=k|\theta)p(z_i=k|x_i,\theta^{(t)})
 \end{aligned}
 $$</div>
 
-<p>第一行公式(完整数据减去后验)根据条件概率公式可得，第二行公式相当于减去一个 $\log q(Z)$ 再加上一个 $\log q(Z)$ 恒等变换。这里假设 $q(Z)$ 是 $Z$ 的一个概率分布 ($\int_Z q(Z) dZ = 1$)。</p>
-
-<p>然后<strong>同时对两侧对$q(Z)$求期望</strong></p>
-
-<p>左边积分还是它本身：</p>
-
-<div>$$
-\int_Z q(Z) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z q(Z) dZ = \log p(Y|\theta)
-$$</div>
-
-<p>右边积分则是</p>
-
-<div>$$
-\int_z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ - \int_Z q(Z) \log \frac{p(Z|Y,\theta)}{q(Z)}
-$$</div>
-
-<p>左边等于右边即</p>
-
-<div>$$
-\log p(Y|\theta) = \text{ELBO} + \text{KL}(q(Z)||p(Z|Y,\theta))
-$$</div>
-
-<blockquote>
-<p>KL divergence的概念</p>
-
-<div>$$
-D_{\mathrm{KL}}(P \| Q)=-\sum_{i} P(i) \ln \frac{Q(i)}{P(i)} \ge 0
-$$</div>
-
-<p>由吉布斯不等式可知，当且仅当 $P = Q$ 时 $D_{KL}(P||Q)$为零。</p>
-</blockquote>
-
-<p><strong>因为相对熵大于等于0的性质，所以 ELBO 为 $\log p(Y|\theta)$ 提供了下界，所以EM算法的想法就是想让ELBO不断变大从而让对数似然变大</strong>，并且只有当 $q(Z) = p(Z|Y,\theta^{(t)})$ 时ELBO等于对数似然， 即</p>
+<p>其中隐变量的后验分布为</p>
 
 <div>$$
 \begin{aligned}
-\theta^{(t+1)} = \hat{\theta} &= \arg \max_{\theta} \text{ELBO}\\
-&= \arg \max_{\theta} \int_Z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ\\
-&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Y,Z|\theta)}{p(Z|Y,\theta^{(t)})} dZ\\
-&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) [\log p(Y,Z|\theta) - \log p(Z|Y,\theta^{(t)})] dZ\\
-&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)  dZ
+p(z_i=k|x_i,\theta^{(t)}) &= \frac
+{p(z_i=k,x_i|\theta^{(t)})}{p(x_i|\theta^{(t)})}\\
+&=\frac{p^{(t)}_k \mathcal{N}(x_i|\mu^{(t)}_k,\Sigma^{(t)}_k)}{\sum_{k=1}^K p^{(t)}_k \mathcal{N}(x_i|\mu^{(t)}_k,\Sigma^{(t)}_k)} 
 \end{aligned}
 $$</div>
 
-<p>这也就解释了EM算法是怎么来的啦，<strong>当 $q(Z)$ 等于后验 $p(Z|Y,\theta^{{t}})$ 时，ELBO 等于log likelihood，先固定 $\theta^{(t)}$ 得到后验，然后求 ELBO (关于后验的期望)，滑动 $\theta$ 得到期望的最大值，最大期望对应的 $\theta$ 就是 $\theta^{(t+1)}$</strong></p>
-
-<p>从思路上是能说通了，你可能会疑惑为什么这么迭代求解就能得到最优解呢？或者说 $\theta_{t}$ 到最后会收敛吗？我们回到最初的目标最大化对数似然 $\log p(Y|\theta)$，那如果我们每次迭代求解都能使得对应的对数似然函数的值增加，最后是不是也就说明能向似然函数的最大值靠近了呢，也就是我们希望看到的结果是</p>
-
-<div>
-    $$
-    \log p(Y|\theta^{(t)}) \le \log p(Y|\theta^{(t+1)})
-    $$
-</div>
-
-<p>事实也说明了这是成立的，我们再回到对数似然函数的表达式</p>
-
-<div>
-$$
-\log p(Y|\theta) = \log p(Y,Z|\theta) - \log p(Z|Y,\theta)
-$$
-</div>
-
-<p>两边求关于后验 $p(Z|Y,\theta^{(t)})$ 的期望，也就是求积分</p>
-
-<p>左边积分还是它本身：</p>
+<p>联合分布为</p>
 
 <div>$$
-\int_Z p(Z|Y,\theta^{(t)}) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z p(Z|Y,\theta^{(t)}) dZ=\log p(Y|\theta) 
+\log p(x_i,z_i=k|\theta) = \log p_k + \log \mathcal{N}(x_i|\mu_k,\Sigma_k)
 $$</div>
 
-<p>右边积分则是：</p>
-
-<div>
-    $$
-    Q(\theta,\theta^{(t)}) - H(\theta,\theta^{(t)})
-    $$
-</div>
-
-<p>其中，$Q(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta) dZ, H(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Z|Y,\theta) dZ$</p>
-
-<p>那要使得迭代收敛需要满足的条件就变为了</p>
-
-<div>
-    $$
-    Q(\theta^{(t)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t+1)},\theta^{(t)})
-    $$
-</div>
-
-<p>因为 $Q(\theta,\theta^{(t)})$ 对应的就是EM的迭代公式，那根据最大化问题可以得到 $Q(\theta,\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那也就有 $Q(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那再根据<strong>放缩</strong>的思想，只要我们能证明 $H(\theta^{(t)},\theta^{(t)}) \ge H(\theta^{(t+1)},\theta^{(t)})$，那一切就都顺理成章了。</p>
-
-<p>直接对这两项作差</p>
-
-<div>
-    $$
-    H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Z|Y,\theta^{(t+1)})}{p(Z|Y,\theta^{(t)})} dZ
-    $$
-</div>
-
-<p>看出点什么没有，不然再回到上面 KL 散度的定义看看，这结果不就是 $-D_{\text{KL}}(p(Z|Y,\theta^{(t)})||p(Z|Y,\theta^{(t+1)}))$，根据散度大于等于0的性质，可以得到 $H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le 0$，这也就得证了<strong>EM迭代求解每次得到的似然函数值总是非减的( $\theta^{(t)}$ 会逐渐收敛)，那最终也就会取到最大似然咯，需要注意这并不能保证找到全局最优解的。</strong></p>
-
-<h2 id="怎么用em算法">怎么用EM算法？</h2>
-
-<p>看到这里的话想必你对算法的原理也有了大概的认识，但是大家最关心的应该是在认识原理后如何去应用，这里根据李航老师的《统计学习方法》里的例子介绍一下算法的应用和实现。</p>
-
-<p>三硬币模型：有A，B，C三枚硬币，它们正面向上的概率分别为 $a,b,c$，进行如下试验：先掷硬币 A，如果正面则再掷 B，如果反面则掷 C，掷硬币的结果正面记为1反面为0，独立重复10次试验，结果为1，1，0，1，0，0，1，0，1，1。我们只知道最终掷硬币的结果并不能观测掷硬币的过程，那么如何估计三枚硬币正面向上的概率呢？</p>
-
-<p>这个例子里观测变量 $y_i$ 也就是掷硬币的结果0或1，要估计的参数为概率 $\theta=(a,b,c)$，由于我们不知道掷A的结果导致这一问题不能直接采用极大似然来估计，因此我们引入隐变量 $z$ 来表示掷 A的结果。</p>
-
-<p>观测数据 $y_1,&hellip;,y_N$
-由以下模型生成</p>
-
-<div>
-    $$
-    p(y|\theta) = ab^{y}(1-b)^{(1-{y})} + (1-a)c^{y}(1-c)^{(1-{y})}
-    $$
-</div>
-
-<p>隐变量 $z_i = 1$ 表示第 $i$ 个观测来自掷硬币B的结果，$z_i = 0$ 表示第 $i$ 个观测来自掷硬币C的结果。</p>
-
-<p>于是可以写出完全数据的似然函数：</p>
+<p>即</p>
 
 <div>$$
-    \begin{aligned}
-p(Y,Z|\theta) &= \prod_{i=1}^N p(y_i,z_i
-|\theta)\\
-&=\prod_{i=1}^N [ab^{y_i}(1-b)^{(1-{y_i})}]^{z_i} \cdot [(1-a)c^{y_i}(1-c)^{(1-{y_i})}]^{1-z_i}
+Q(\theta,\theta^{(t)})=\sum_{k=1}^K\sum_{i=1}^N [\log p_k +\log \mathcal{N}(x_i|\mu_k,\Sigma_k)]p(z_i=k|x_i,\theta^{(t)})
+$$</div>
+
+<p><strong>记住这里 $p(z_i=k|x_i,\theta^{(t)})$ 相当于是个常数</strong>，然后根据最大化期望函数 $Q(\theta,\theta^{(t)})$ 的原则依次求解 $p_k,u_k,\Sigma_k$，由于 $p_k$ 额外满足等式约束 $\sum_{k=1}^K p_k=1$，求解 $p_k$ 是一个带有等式约束的最大化问题需要用到拉格朗日乘子法(不清楚的也可以翻翻之前的文章)，$u_k,\Sigma_k$ 则直接对期望函数求导利用极值条件就能得到解析解。</p>
+
+<p>对于参数 $p_k$，拉格朗日函数可以表示为：</p>
+
+<div>$$
+\mathcal{L}(p_k,\lambda) = \sum_{k=1}^K\sum_{i=1}^N \log p_k p(z_i=k|x_i,\theta^{(t)}) + \lambda(\sum_{k=1}^K p_k - 1)
+$$</div>
+
+<p>令 $\partial \mathcal{L}/\partial p_k=0$</p>
+
+<div>$$
+\begin{aligned}
+\sum_{i=1}^N \frac{1}{p_k}p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)}) + p_k \lambda = 0\\
+\sum_{k=1}^K\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+\sum_{i=1}^N \sum_{k=1}^K p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
+N+\lambda = 0
 \end{aligned}
 $$</div>
 
-<p>那么，完全数据的对数似然函数为</p>
-
-<div>$$
-\log p(Y,Z|\theta) = \sum_{i=1}^N  z_i (\log a + y_i \log b + (1-y_i) \log(1-b)) + (1-z_i) (\log(1-a) + y_i \log c + (1-y_i) \log(1-c)) 
-$$</div>
-
-<p>按照我上面说的<strong>先固定 $\theta^{(t)}$ 计算后验：</strong></p>
+<p>第三式到第四式利用 $\sum_{k=1}^K p_k = 1$，第三式到第四式利用<strong>离散随机变量的概率密度函数对所有可能情况求和为1</strong>，然后将最后一式代入第一式可得</p>
 
 <div>
     $$
-    \begin{aligned}
-    p(z_i=1|y_i,\theta^{(t)}) &= \frac{p(z=1,y_i|\theta^{(t)})}{p(z_i=1,y_i|\theta^{(t)}) + p(z_i=0,y_i|\theta^{(t)})}\\
-    &=\frac{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)})}{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)}) + p(y_i|z=0,\theta^{(t)}) p(z=0|\theta^{(t)})}\\
-    &=\frac{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)}}{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)} + (1-a^{(t)})(c^{(t)})^{y_i}(1-c^{(t)})^{(1-y_i)}}\\
-    p(z_i=0|y_i,\theta^{(t)}) &= 1- p(z_i=1|y_i,\theta^{(t)}) 
-    \end{aligned}
+p_k^{(t+1)} = \frac{1}{N} \sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)})
     $$
 </div>
 
-<p><strong>有了隐变量的后验分布后，在对完全数据的对数似然函数求最大期望</strong></p>
-
-<div>
-    $$
-    \begin{aligned}
-    \theta^{(t+1)} &= \arg \max_{\theta} Q(\theta)\\ 
-    &= \arg \max_{\theta} \sum_{Z} p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)\\
-    &= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \log p(y_i,z_i=1|\theta) + p(z_i=0|y_i,\theta^{(t)}) \log p(y_i,z_i=0|\theta)\\
-    &= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) [\log a + y_i \log b + (1-y_i)\log (1-b)] \\ & + p(z_i=0|y_i,\theta^{(t)})[ \log (1-a) + y_i \log c + (1-y_i) \log (1-c)]
-    \end{aligned}
-    $$
-</div>
-
-<p>又回到这个极大似然的问题，现在相当于隐变量已知咯，那直接按照传统的套路利用极值条件求导获得待参数的解析解。</p>
-
-<p>对于参数 $a$，令 $\partial Q(\theta)/ \partial a = 0$</p>
+<p>对于参数 $u_k$，直接对 $Q$ 函数求导，并令 $\partial Q/ \partial u_k=0$:</p>
 
 <div>$$
-\frac{\partial L}{\partial a} = \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \frac{1}{a} - p(z_i=0|y_i,\theta^{(t)}) (-\frac{1}{1-a})=0
+\begin{aligned}
+\frac{\partial}{\partial u_k} \sum_{k=1}^K \sum_{i=1}^N \log [\frac{1}{{(2\pi)}^{(d/2)}|\Sigma_k|^{(1/2)}}\exp(-\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k) )]p(z_i=k|x_i,\theta^{(t})=0\\
+\frac{\partial}{\partial u_k} \sum_{k=1}^K \sum_{i=1}^N [-\frac{d}{2} \log 2\pi -\frac{1}{2} \log|\Sigma_k| -\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k)] p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N (x_i-u_k)^T\Sigma_k^{(-1)} p(z_i=k|x_i,\theta^{(t)})=0
+\end{aligned}
 $$</div>
 
-<p>可得</p>
-
-<div>
-    $$
-    a^{(t+1)} = \frac{1}{N} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) 
-    $$
-</div>
-
-<p>同理可得</p>
+<p>根据最后一式可得：</p>
 
 <div>$$
-b^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) }}
+u_k^{(t+1)} = \frac{\sum_{i=1}^Nx_i p(z_i=k|x_i,\theta^{(t)})}{\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)})}
 $$</div>
+
+<p>对于参数 $\Sigma_k$，直接对 $Q$ 函数求导，并令 $\partial Q/ \partial \Sigma_k=0$:</p>
 
 <div>$$
-c^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) }}
+\begin{aligned}
+\frac{\partial}{\partial \Sigma_k} \sum_{k=1}^K \sum_{i=1}^N \log [\frac{1}{{(2\pi)}^{(d/2)}|\Sigma_k|^{(1/2)}}\exp(-\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k) )]p(z_i=k|x_i,\theta^{(t})=0\\
+\frac{\partial}{\partial \Sigma_k} \sum_{k=1}^K \sum_{i=1}^N [-\frac{d}{2} \log 2\pi -\frac{1}{2} \log |\Sigma_k| -\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k)] p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N [-\frac{1}{2}(\Sigma_k^{(-1)})^T + \frac{1}{2} \Sigma_k^{(-1)}(x_i-u_k) (x_i-u_k)^T \Sigma_k^{(-1)}]p(z_i=k|x_i,\theta^{(t)})=0\\
+\sum_{i=1}^N [-\Sigma_k + (x_i - u_k)(x_i - u_k)^T] p(z_i=k|x_i,\theta^{(t)})=0\\
+\end{aligned}
 $$</div>
 
-<h3 id="matlab-实现em算法">matlab 实现EM算法</h3>
+<p>根据最后一式可得：</p>
+
+<div>$$
+{\Sigma_k}^{(t+1)} = \frac{\sum_{i=1}^N (x_i - u_k)(x_i - u_k)^T p(z_i=k|x_i,\theta^{(t)})}{\sum_{i=1}^N  p(z_i=k|x_i,\theta^{(t)})}
+$$</div>
+
+<h2 id="matlab实现">matlab实现</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><span class="lnt"> 1
@@ -396,49 +333,140 @@ $$</div>
 </span><span class="lnt">31
 </span><span class="lnt">32
 </span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">% 给定观测结果
-y = [1;1;0;1;0;0;1;0;1;1];
-N = length(y);
-% 先随便假设个初始参数 
-a_old = 0.4;
-b_old = 0.6;
-c_old = 0.7;
-theta0 = [a_old;b_old;c_old];
-% 隐变量z=1的后验概率的初始值
-p_z  = zeros(N,1);
-% 用于存储更新后的参数
-a_new = 0.0;
-b_new = 0.0;
-c_new = 0.0;
-theta = [a_new;b_new;c_new];
-% 给EM算法的迭代设置个终止条件
-epsilon = 0.01;
-% 迭代更新参数
-while norm(theta - theta0) &gt; epsilon
-% E步，计算隐变量的后验
-	for i = 1:N
-		p_z(i) = (a_old*b_old^y(i)*(1-b_old)^(1-y(i)))/((a_old*(b_old)^y(i)*(1-b_old)^(1-y(i))) + ((1-a_old)*c_old^y(i)*(1-c_old)^(1-y(i))));
-	end
-	theta0 = [a_old;b_old;c_old];
-% M步，极大似然更新待估计参数 
-	a_new = 1/N*sum(p_z);
-	b_new = p_z&#39;*y/sum(p_z);
-	c_new = (1-p_z)&#39;*y/sum(1-p_z);
-	theta = [a_new;b_new;c_new];
-	a_old = a_new;
-	b_old = b_new;
-	c_old = c_new;
+<pre class="chroma">clear
+clear all;
+% 生成数据 由3个二元高斯分布各生成1000个样本
+mu1 = [1 2];
+Sigma1 = [2 0;0 0.5];
+mu2 = [-3 -5];
+Sigma2 = [1 0;0 1];
+mu3 = [2 -3];
+Sigma3 = [1 0;0 2];
+rng(1); % For reproducibility
+X = [mvnrnd(mu1,Sigma1,1000);mvnrnd(mu2,Sigma2,1000);mvnrnd(mu3,Sigma3,1000)];
+[N, d] = size(X); % 样本数、样本维度
+figure
+y = [0*ones(1000,1);ones(1000,1);2*ones(1000,1)];
+h = gscatter(X(:,1),X(:,2),y);
+legend(h,&#39;Gaussian 1&#39;,&#39;Gaussian 2&#39;,&#39;Gaussian 3&#39;)
+
+% 初始参数
+K     = 3; % 单高斯的个数
+p_k   = ones(K,1)*1/K; % 各个高斯元的权重系数
+mu    = rand(K, d); % 待估计的均值，每一行是一个高斯分布的均值
+sigma = zeros(d, d, K); % 待估计的协方差矩阵
+for k = 1:K
+    sigma(:, :, k) = eye(d);
+end
+
+% 概率密度函数表达式
+pdf_value = @(x,mu,Sigma) 1/((2*pi)^(d/2)*(det(Sigma))^(1/2))*exp(-0.5*(x-mu)*inv(Sigma)*(x-mu)&#39;);
+
+% EM算法估计参数
+p_z = repmat(ones(1,K)*1/K,N,1); % 隐变量的后验分布矩阵，每一个样本对应K个后验
+
+% 迭代1000次，可以自己设置各种结束迭代条件
+for iter = 1:1000
+    % E 步 计算后验
+    for i = 1:N
+        p_xi = 0; % 后验的分母p(x_i|theta^(t))
+        for j = 1:K
+            p_xi = p_xi + p_k(j)*pdf_value(X(i,:),mu(j,:),sigma(:,:,j));
+        end
+        for k = 1:K
+            p_z(i,k) = p_k(k)*pdf_value(X(i,:),mu(k,:),sigma(:,:,k))/p_xi;
+        end
+    end
+
+    % M 步
+    for k = 1:K
+        p_k(k)  = 1/N*sum(p_z(:,k)); % 更新权重
+        num = 0; % 均值的分子
+        for i = 1:N
+            num = num + X(i,:)*p_z(i,k);
+        end
+        mu(k,:) = num/sum(p_z(:,k)); % 更新均值
+    end
+    
+    for k = 1:K
+        num = 0; % 协方差的分子
+        for i = 1:N
+            num = num + (X(i,:)-mu(k,:))&#39;*(X(i,:)-mu(k,:))*p_z(i,k);
+        end
+        sigma(:,:,k) = num/sum(p_z(:,k)); % 更新协方差
+    end
+end
+
+% 画各个高斯分布的等高线
+for k = 1:K
+    x1 = -7:.2:7;
+    x2 = -9:.2:5;
+    [X1,X2] = meshgrid(x1,x2);
+    X = [X1(:) X2(:)];
+    y = mvnpdf(X,mu(k,:),sigma(:,:,k));
+    y = reshape(y,length(x2),length(x1));
+    hold on 
+    contour(x1,x2,y,[0.0001 0.001 0.01 0.05 0.15 0.25 0.35])
+    xlabel(&#39;x_1&#39;)
+    ylabel(&#39;x_2&#39;)
 end</pre></td></tr></table>
 </div>
 </div>
-<h2 id="本文小结">本文小结</h2>
+<figure>
+    <img src="/images/post/%e3%80%8c%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e3%80%8d%e9%ab%98%e6%96%af%e6%b7%b7%e5%90%88%e6%a8%a1%e5%9e%8bGMM/GMM_EM.jpg"/> 
+</figure>
 
-<p>首先从为什么需要用EM算法说起：<strong>含有隐变量的参数估计问题</strong>，然后从<strong>最大化ELBO的角度</strong>推导了EM算法迭代公式的由来并证明了算法的收敛性，最后以三硬币模型为例介绍了EM算法的使用以及matlab实现。</p>
+
+<p>散点就是由三个不同的高斯分布生成的样本，等高线则是根据学习出来的三个高斯元画的。</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

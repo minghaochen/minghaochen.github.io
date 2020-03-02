@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-28T17:11:37&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-02T18:51:57&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,189 +115,197 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/">「机器学习」高斯混合模型GMM</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/">概率基础「高斯分布」</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-25 </span>
+      <span class="post-time"> 2019-08-31 </span>
       <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/"> ‘数据基础’ </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>前面总结了 EM 算法，我们知道这是一个<strong>采用迭代的方式</strong>用于解决<strong>含有隐变量</strong>的参数估计问题的算法。典型的一个应用就是今天的主角<strong>高斯混合模型</strong> (Gaussian Misture Model)。这个模型和它的名字一样直白，也就是由<strong>多个高斯分布组合而成</strong>的模型，其概率密度函数可以表示为</p>
+      <p>今天补充一些<strong>有关均值方差的公式</strong>和<strong>高斯分布</strong>的一些性质。</p>
+
+<h2 id="some-formulas-of-mean-and-variance">Some Formulas of Mean and Variance</h2>
+
+<p><strong>定理一</strong>：
+We consider two random variables $X$ and $Y$</p>
 
 <div>$$
-p(x) = \sum_{k=1}^K \alpha_k \cdot \mathcal{N}(x|\mu_k,\Sigma_k) 
+\begin{aligned}
+E(X+Y) &= E(X) + E(Y)\\
+V(X\pm Y) &= V(X) \pm 2Cov(X,Y)+V(Y)\\
+Cov(X,Y)&=E(XY)-E(X)E(Y)
+\end{aligned}
 $$</div>
 
-<p>这不就是 $K$ 个单高斯模型 $\mathcal{N}(x|\mu_k,\Sigma_k),k=1,&hellip;,K$ 加权而成，$\alpha_k$ 则是对应单高斯模型的权重，且满足 $\sum_{k=1}^K \alpha_k = 1$。这样做很直观的原因是混合多个单一模型得到复杂模型自然能够生成更复杂的样本，并且理论上如果 $K$ 足够大且权重合理，得到的混合模型能够拟合任意分布。</p>
-
-<h2 id="模型参数学习">模型参数学习</h2>
-
-<p>对混合高斯模型，我们要确定的参数有单高斯的个数 $K$ (你要混合几个单高斯总要告诉模型吧，通常直接给定或者采用一定的评价指标来确定合适的 $K$ 值)，每个单高斯分布的均值 $\mu_k$ 和方差 $\Sigma_k$ 以及对应的权重 $\alpha_k$。也就是我们需要从观测数据 $x_1,&hellip;,x_N$ 中学习得到这些模型参数。</p>
-
-<p>对于每一个样本 $x$，从生成模型的角度来理解：<strong>以 $\alpha_k$ 的概率选择第 $k$ 个高斯元 $\mathcal{N}(x|\mu_k,\Sigma_k)$，然后进行采样</strong>。</p>
-
-<p>但是观测数据 $x_1,&hellip;,x_N$ 并没有告诉我们每一个样本采样自哪一个单高斯分布，因此引入隐变量 $z$，其分布满足</p>
-
-<table>
-<thead>
-<tr>
-<th>$z$</th>
-<th>1</th>
-<th>2</th>
-<th>&hellip;</th>
-<th>$K$</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>$p(z)$</td>
-<td>$p_1$</td>
-<td>$p_2$</td>
-<td>&hellip;</td>
-<td>$p_K$</td>
-</tr>
-</tbody>
-</table>
-
-<p>如果 $z_i = 1$ 表示第 $i$ 个样本 $x_i$ 采样自第 1 个单高斯分布，概率为 $p_1$ (也就相当于前面说的权重 $\alpha_1$)。</p>
-
-<p>定义完隐变量后，对于任意样本，完整数据 (观测数据和隐变量) 的概率密度函数可以表示为</p>
+<p><strong>定理二</strong>：
+When $X$ is indenpendent of $Y$</p>
 
 <div>$$
-p(x,z) = p(z)p(x|z) = p(z) \mathcal{N}(x|\mu_z,\Sigma_z)
-$$</div> 
-
-<p>假设各个样本之间相互独立，则观测数据的似然函数可以表示为</p>
-
-<div>$$
-L(\theta) = \prod_{i=1}^N p(x_i|\theta) = \prod_{i=1}^N  \int_{z_i} p(x_i,z_i|\theta) dz_i = \prod_{i=1}^N \sum_{k=1}^K p_k \mathcal{N}(x_i | \mu_k,\Sigma_k)
+\begin{aligned}
+E(XY) &= E(X)E(Y)\\
+V(X \pm Y) &= V(X) + V(Y)\\
+Cov(X,Y)&=0
+\end{aligned}
 $$</div>
 
-<p>上式中，观测数据的概率分布通过对完整数据的概率分布进行积分操作消除隐变量，对于离散变量 $z$ 也就是转化为求和操作。</p>
-
-<p>对数似然函数为</p>
+<p><strong>定理三</strong>：
+For $n$ random variables $X_1,&hellip;,X_n$</p>
 
 <div>$$
-\ln L(\theta) = \sum_{i=1}^N \ln \sum_{k=1}^K p_k \mathcal{N}(x_i | \mu_k,\Sigma_k)
+\begin{aligned} 
+E(\sum_{i}a_iX_i) &= \sum_{i}a_i\mu_i\\
+V(\sum_{i}a_iX_i) &= \sum_{i}\sum_{j}a_ia_jCov(X_i,X_j)
+\end{aligned}
 $$</div>
 
-<p>如果要像往常一样采用求导的方式来估计参数行不通了，因为<strong>对数里面还有求和</strong>。所以就要用 EM 算法来迭代求解啦。</p>
+<p>where $E(X_i)=\mu_i$ and $a_i$ is a constant value. When $X_1,&hellip;,X_n$ are mutually independent, we have the following:</p>
 
-<h2 id="em-算法与-gmm">EM 算法与 GMM</h2>
+<div>$$
+V(\sum_{i}a_iX_i) = \sum_{i}a_i^2V(X_i)
+$$</div>
 
-<p>这里直接给出参数估计的迭代公式(不清楚的可以翻翻前面关于 EM 算法的博客)</p>
+<h2 id="transformation-of-variables">Transformation of Variables</h2>
+
+<p>When a distribution of $X$ is known, we can find a distribution of $Y$ using the transformation of variables, where $Y$ is a function of $X$.</p>
+
+<p><strong>定理四</strong>：
+Distribution of $Y = \phi^{(-1)}(X)$: Let $f_x(x)$ be the pdf of $X$ and $X=\phi(Y)$ be a one-to-one transformation, then the pdf of $Y$ is given by</p>
+
+<div>$$
+f_y(y) = |\phi'(y)|f_x(\phi(y))
+$$</div>
+
+<p>Example: $X\sim N(0,1),Y = \mu + \sigma X$</p>
+
+<p>Since we have</p>
+
+<p>$$
+X = \phi(Y) = \frac{Y-\mu}{\sigma},f_x(x)=\frac{1}{\sqrt{2\pi}}exp(-\frac{1}{2}x^2)
+$$</p>
+
+<p>then $\phi&rsquo;(y)=1/\sigma$</p>
+
+<div>$$
+f_y(y) = \frac{1}{\sqrt{2\pi}|\sigma|}exp(-\frac{(y-\mu)^2}{2\sigma^2})
+$$</div>
+
+<p>which indicates the normal distribution with mean $\mu$ and variance $\sigma^2$, denoted by $N(\mu,\sigma^2)$.</p>
+
+<p><strong>Multivariate Case</strong></p>
+
+<p>Let $f_x(x_1,&hellip;,x_n)$ be a joint pdf of $(X_1,&hellip;,X_n)$, and a one-to-one transformation from ($X_1,&hellip;,X_n$) to ($Y_1,&hellip;,Y_n$) is given by</p>
+
+<div>$$
+\begin{aligned}
+X_1 &=\phi_1(Y_1,...,Y_n)\\
+&...\\
+X_n &=\phi_n(Y_1,...,Y_n)
+\end{aligned}
+$$</div>
+
+<p>then we obtain a joint pdf of $Y_1,&hellip;,Y_n$</p>
+
+<div>$$
+f_y(y_1,...,y_n) = |J|f_x(\phi_1(y_1,...,y_n),...,\phi_n(y_1,...,y_n))
+$$</div>
+
+<p>where $J$ is the Jacobian of the transformation.</p>
 
 <div>
     $$
-    \theta^{(t+1)} = \arg \max_{\theta} Q(\theta,\theta^{(t)}) = \arg \max_{\theta} E_{Z|X,\theta^{(t)}}[\log p(X,Z|\theta)]
-    $$
+J=\left|\begin{array}{cccc}{\frac{\partial x_{1}}{\partial y_{1}}} & {\frac{\partial x_{1}}{\partial y_{2}}} & {\cdots} & {\frac{\partial x_{1}}{\partial y_{n}}} \\ {\frac{\partial x_{2}}{\partial y_{1}}} & {\frac{\partial x_{2}}{\partial y_{2}}} & {\cdots} & {\frac{\partial x_{2}}{\partial y_{n}}} \\ {\vdots} & {\vdots} & {\ddots} & {\vdots} \\ {\frac{\partial x_{n}}{\partial y_{1}}} & {\frac{\partial x_{n}}{\partial y_{2}}} & {\cdots} & {\frac{\partial x_{n}}{\partial y_{n}}}\end{array}\right|
+$$
 </div>
 
-<p>即<strong>需要先求隐变量 $Z$ 的后验，然后再令期望 $Q(\theta,\theta^{(t)})$ 最大化。</strong></p>
+<h1 id="gaussian-distribution">Gaussian Distribution</h1>
 
-<p>进一步可以表示为</p>
+<h2 id="极大似然估计">极大似然估计</h2>
+
+<p>说起高斯分布大家都很熟悉了，假设一个 $p$ 维变量 $x \in R^p$ 满足高斯分布 $N(\mu,\Sigma)$，则其概率密度函数可以表示为</p>
+
+<div>$$
+p(x)=\frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}} exp(-\frac{1}{2}(x-\mu)^T \Sigma^{-1}(x-\mu))
+$$</div>
+
+<p>当有样本数据 $X_{N \times p}=(x_1,&hellip;,x_N)^T$ 时，我们能通过极大似然法估计高斯分布的均值和方差，即</p>
+
+<div>$$
+\theta_{MLE}=\arg\max_{\theta}p(X|\theta)
+$$</div>
+
+<p>假设 $x_i$ 服从独立同分布 (i.i.d)，则</p>
+
+<div>$$
+\log p(X|\theta) = \sum_{i=1}^N \log p(x_i|\theta)
+$$</div>
+
+<p>为了便于计算假设 $p=1$ 且真实高斯分布为 $N(\mu,\sigma^2)$，通过极值条件 (令导数为0) 可以得到</p>
 
 <div>$$
 \begin{aligned}
-Q(\theta,\theta^{(t)}) &= \int_Z \log p(X,Z|\theta) p(Z|X,\theta^{(t)}) dZ\\
-&=\sum_{z_1,...,z_N} \log \prod_{i=1}^N p(x_i,z_i|\theta) \prod_{i=1}^N p(z_i|x_i,\theta^{(t)})\\
-&=\sum_{z_1,...,z_N} (\sum_{i=1}^N \log p(x_i,z_i|\theta)) \prod_{i=1}^N p(z_i|x_i,\theta^{(t)})\\
-&=\sum_{z_1,...,z_N} \log p(x_1,z_1|\theta) p(z_1|x_1,\theta^{(t)}) \prod_{i=2}^N p(z_i|x_i,\theta^{(t)})\\
-&+ ... + \sum_{z_1,...,z_N} \log p(x_N,z_N|\theta) p(z_N|x_N,\theta^{(t)}) \prod_{i=1}^{N-1} p(z_i|x_i,\theta^{(t)})\\
-&=\sum_{i=1}^N \sum_{z_i} \log p(x_i,z_i|\theta)p(z_i|x_i,\theta^{(t)})\\
-&=\sum_{i=1}^N \sum_{k=1}^K \log p(x_i,z_i=k|\theta)p(z_i=k|x_i,\theta^{(t)})
+\mu_{MLE}&=\frac{1}{N}\sum_{i=1}^Nx_i\\
+\sigma^2_{MLE}&=\frac{1}{N}\sum_{i=1}^N(x_i-\mu_{MLE})^2
 \end{aligned}
 $$</div>
 
-<p>其中隐变量的后验分布为</p>
+<p>其中,</p>
 
-<div>$$
-\begin{aligned}
-p(z_i=k|x_i,\theta^{(t)}) &= \frac
-{p(z_i=k,x_i|\theta^{(t)})}{p(x_i|\theta^{(t)})}\\
-&=\frac{p^{(t)}_k \mathcal{N}(x_i|\mu^{(t)}_k,\Sigma^{(t)}_k)}{\sum_{k=1}^K p^{(t)}_k \mathcal{N}(x_i|\mu^{(t)}_k,\Sigma^{(t)}_k)} 
-\end{aligned}
-$$</div>
+<p>均值是无偏估计 $E(\mu_{MLE}) = \mu$</p>
 
-<p>联合分布为</p>
+<p>方差是有偏估计 $E(\sigma_{MLE}^2)=\frac{N-1}{N}\sigma^2$，也就是说极大似然估计出来的高斯分布的<strong>方差是偏小的</strong>。</p>
 
-<div>$$
-\log p(x_i,z_i=k|\theta) = \log p_k + \log \mathcal{N}(x_i|\mu_k,\Sigma_k)
-$$</div>
+<h2 id="从概率密度函数的角度看高斯分布">从概率密度函数的角度看高斯分布</h2>
 
-<p>即</p>
-
-<div>$$
-Q(\theta,\theta^{(t)})=\sum_{k=1}^K\sum_{i=1}^N [\log p_k +\log \mathcal{N}(x_i|\mu_k,\Sigma_k)]p(z_i=k|x_i,\theta^{(t)})
-$$</div>
-
-<p><strong>记住这里 $p(z_i=k|x_i,\theta^{(t)})$ 相当于是个常数</strong>，然后根据最大化期望函数 $Q(\theta,\theta^{(t)})$ 的原则依次求解 $p_k,u_k,\Sigma_k$，由于 $p_k$ 额外满足等式约束 $\sum_{k=1}^K p_k=1$，求解 $p_k$ 是一个带有等式约束的最大化问题需要用到拉格朗日乘子法(不清楚的也可以翻翻之前的文章)，$u_k,\Sigma_k$ 则直接对期望函数求导利用极值条件就能得到解析解。</p>
-
-<p>对于参数 $p_k$，拉格朗日函数可以表示为：</p>
-
-<div>$$
-\mathcal{L}(p_k,\lambda) = \sum_{k=1}^K\sum_{i=1}^N \log p_k p(z_i=k|x_i,\theta^{(t)}) + \lambda(\sum_{k=1}^K p_k - 1)
-$$</div>
-
-<p>令 $\partial \mathcal{L}/\partial p_k=0$</p>
-
-<div>$$
-\begin{aligned}
-\sum_{i=1}^N \frac{1}{p_k}p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
-\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)}) + p_k \lambda = 0\\
-\sum_{k=1}^K\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
-\sum_{i=1}^N \sum_{k=1}^K p(z_i=k|x_i,\theta^{(t)}) + \lambda = 0\\
-N+\lambda = 0
-\end{aligned}
-$$</div>
-
-<p>第三式到第四式利用 $\sum_{k=1}^K p_k = 1$，第三式到第四式利用<strong>离散随机变量的概率密度函数对所有可能情况求和为1</strong>，然后将最后一式代入第一式可得</p>
+<p>注意到高斯分布的概率密度函数 $p(x)$ 本质是关于 $x$ 的函数，且和 $x$ 有关的部分为：</p>
 
 <div>
     $$
-p_k^{(t+1)} = \frac{1}{N} \sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)})
+    \Phi \triangleq (x-\mu)^T\Sigma^{-1}(x-\mu)
     $$
 </div>
 
-<p>对于参数 $u_k$，直接对 $Q$ 函数求导，并令 $\partial Q/ \partial u_k=0$:</p>
+<p>一般来说 $\Sigma$ 是半正定矩阵，为了便于分析其性质，这里假设其为正定矩阵，对其进行特征值分解：</p>
+
+<div>
+    $$
+    \Sigma=U\Lambda U^T=\sum_{i=1}
+^pu_i\lambda_iu_i^T $$
+</div>
+
+<p>其中，$U=(u_1,&hellip;,u_p),UU^T=U^TU=I,\Lambda=diag(\lambda_i)$</p>
+
+<p>则方差矩阵的逆为</p>
 
 <div>$$
-\begin{aligned}
-\frac{\partial}{\partial u_k} \sum_{k=1}^K \sum_{i=1}^N \log [\frac{1}{{(2\pi)}^{(d/2)}|\Sigma_k|^{(1/2)}}\exp(-\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k) )]p(z_i=k|x_i,\theta^{(t})=0\\
-\frac{\partial}{\partial u_k} \sum_{k=1}^K \sum_{i=1}^N [-\frac{d}{2} \log 2\pi -\frac{1}{2} \log|\Sigma_k| -\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k)] p(z_i=k|x_i,\theta^{(t)})=0\\
-\sum_{i=1}^N (x_i-u_k)^T\Sigma_k^{(-1)} p(z_i=k|x_i,\theta^{(t)})=0
-\end{aligned}
+\Sigma^{-1}=(U\Lambda U^T)^{-1}=U\Lambda^{-1}U^T=\sum_{i=1}^pu_i\frac{1}{\lambda_i}u_i^T
 $$</div>
 
-<p>根据最后一式可得：</p>
+<p>定义 $y_i=(x-\mu)^Tu_i$，可以将 $y_i$ 看作是 $x$ 去均值后在向量 $u_i$ 上的<strong>投影</strong>，则 $\Phi$ 可以表示为</p>
 
 <div>$$
-u_k^{(t+1)} = \frac{\sum_{i=1}^Nx_i p(z_i=k|x_i,\theta^{(t)})}{\sum_{i=1}^N p(z_i=k|x_i,\theta^{(t)})}
+\Phi = (x-\mu)^T\Sigma^{-1}(x-\mu)=(x-\mu)^T\sum_{i=1}^pu_i\frac{1}{\lambda_i}u_i^T(x-\mu)=\sum_{i=1}^p\frac{y_i^2}{\lambda_i}
 $$</div>
 
-<p>对于参数 $\Sigma_k$，直接对 $Q$ 函数求导，并令 $\partial Q/ \partial \Sigma_k=0$:</p>
+<p>为了便于展示我们取 $p=2$，并令 $\Phi=1$ 可以发现</p>
 
 <div>$$
-\begin{aligned}
-\frac{\partial}{\partial \Sigma_k} \sum_{k=1}^K \sum_{i=1}^N \log [\frac{1}{{(2\pi)}^{(d/2)}|\Sigma_k|^{(1/2)}}\exp(-\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k) )]p(z_i=k|x_i,\theta^{(t})=0\\
-\frac{\partial}{\partial \Sigma_k} \sum_{k=1}^K \sum_{i=1}^N [-\frac{d}{2} \log 2\pi -\frac{1}{2} \log |\Sigma_k| -\frac{1}{2} (x_i - u_k)^T \Sigma_k^{(-1)}(x_i -u_k)] p(z_i=k|x_i,\theta^{(t)})=0\\
-\sum_{i=1}^N [-\frac{1}{2}(\Sigma_k^{(-1)})^T + \frac{1}{2} \Sigma_k^{(-1)}(x_i-u_k) (x_i-u_k)^T \Sigma_k^{(-1)}]p(z_i=k|x_i,\theta^{(t)})=0\\
-\sum_{i=1}^N [-\Sigma_k + (x_i - u_k)(x_i - u_k)^T] p(z_i=k|x_i,\theta^{(t)})=0\\
-\end{aligned}
+\frac{y_1^2}{\lambda_1}+\frac{y_2^2}{\lambda_2} = 1
 $$</div>
 
-<p>根据最后一式可得：</p>
+<p><strong>竟然是一个椭圆！</strong></p>
 
-<div>$$
-{\Sigma_k}^{(t+1)} = \frac{\sum_{i=1}^N (x_i - u_k)(x_i - u_k)^T p(z_i=k|x_i,\theta^{(t)})}{\sum_{i=1}^N  p(z_i=k|x_i,\theta^{(t)})}
-$$</div>
+<figure>
+    <img src="/images/post/%e3%80%8c%e6%a6%82%e7%8e%87%e5%9f%ba%e7%a1%80%e3%80%8d%e9%ab%98%e6%96%af%e5%88%86%e5%b8%83/Gaussian1.jpg"/> 
+</figure>
 
-<h2 id="matlab实现">matlab实现</h2>
+
+<p>也就是说指定了 $\Phi$ 的值，相当于能够得到高斯分布的等高线。</p>
+
+<p>Matlab code</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><span class="lnt"> 1
@@ -360,113 +368,193 @@ $$</div>
 </span><span class="lnt">58
 </span><span class="lnt">59
 </span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">clear
-clear all;
-% 生成数据 由3个二元高斯分布各生成1000个样本
-mu1 = [1 2];
-Sigma1 = [2 0;0 0.5];
-mu2 = [-3 -5];
-Sigma2 = [1 0;0 1];
-mu3 = [2 -3];
-Sigma3 = [1 0;0 2];
-rng(1); % For reproducibility
-X = [mvnrnd(mu1,Sigma1,1000);mvnrnd(mu2,Sigma2,1000);mvnrnd(mu3,Sigma3,1000)];
-[N, d] = size(X); % 样本数、样本维度
-figure
-y = [0*ones(1000,1);ones(1000,1);2*ones(1000,1)];
-h = gscatter(X(:,1),X(:,2),y);
-legend(h,&#39;Gaussian 1&#39;,&#39;Gaussian 2&#39;,&#39;Gaussian 3&#39;)
+<pre class="chroma"> clear;
+ clear all;
+ clf
 
-% 初始参数
-K     = 3; % 单高斯的个数
-p_k   = ones(K,1)*1/K; % 各个高斯元的权重系数
-mu    = rand(K, d); % 待估计的均值，每一行是一个高斯分布的均值
-sigma = zeros(d, d, K); % 待估计的协方差矩阵
-for k = 1:K
-    sigma(:, :, k) = eye(d);
-end
+ mu = [1,2];
+ Sigma = [1,0.5;0.5,2];
+ X = mvnrnd(mu,Sigma,500); % 从高斯分布中生成样本
+ scatter(X(:,1),X(:,2))
+ [U,Lambda] = eig(Sigma)；
+ u1 = U(:,1); % 对应博客中的投影向量
+ u2 = U(:,2);
+ lambda1 = Lambda(1,1); % 对应博客中的椭圆长短轴
+ lambda2 = Lambda(2,2);
 
-% 概率密度函数表达式
-pdf_value = @(x,mu,Sigma) 1/((2*pi)^(d/2)*(det(Sigma))^(1/2))*exp(-0.5*(x-mu)*inv(Sigma)*(x-mu)&#39;);
+ X1 = [];
+ X2 = [];
+ % 采用暴力搜索来获取使得\Phi = 1的横纵坐标
+ for x1 = -3:.01:5
+     for x2 = -4:.01:5
+         phi = (([x1,x2] - mu)*u1)^2/lambda1 + (([x1,x2] - mu)*u2)^2/lambda2;
+         if phi &lt;= 1.01 &amp;&amp; phi &gt;= 0.99
+             X1 = [X1;x1];
+             X2 = [X2;x2];
+         end
+     end
+ end
+             
+ hold on 
+ scatter(X1,X2)
 
-% EM算法估计参数
-p_z = repmat(ones(1,K)*1/K,N,1); % 隐变量的后验分布矩阵，每一个样本对应K个后验
+ X1 = [];
+ X2 = [];
+ % 采用暴力搜索来获取使得\Phi = 2的横纵坐标
+ for x1 = -3:.01:5
+     for x2 = -4:.01:5
+         phi = (([x1,x2] - mu)*u1)^2/lambda1 + (([x1,x2] - mu)*u2)^2/lambda2;
+         if phi &lt;= 2.01 &amp;&amp; phi &gt;= 1.99
+             X1 = [X1;x1];
+             X2 = [X2;x2];
+         end
+     end
+ end
+             
+ hold on 
+ scatter(X1,X2)
 
-% 迭代1000次，可以自己设置各种结束迭代条件
-for iter = 1:1000
-    % E 步 计算后验
-    for i = 1:N
-        p_xi = 0; % 后验的分母p(x_i|theta^(t))
-        for j = 1:K
-            p_xi = p_xi + p_k(j)*pdf_value(X(i,:),mu(j,:),sigma(:,:,j));
-        end
-        for k = 1:K
-            p_z(i,k) = p_k(k)*pdf_value(X(i,:),mu(k,:),sigma(:,:,k))/p_xi;
-        end
-    end
-
-    % M 步
-    for k = 1:K
-        p_k(k)  = 1/N*sum(p_z(:,k)); % 更新权重
-        num = 0; % 均值的分子
-        for i = 1:N
-            num = num + X(i,:)*p_z(i,k);
-        end
-        mu(k,:) = num/sum(p_z(:,k)); % 更新均值
-    end
-    
-    for k = 1:K
-        num = 0; % 协方差的分子
-        for i = 1:N
-            num = num + (X(i,:)-mu(k,:))&#39;*(X(i,:)-mu(k,:))*p_z(i,k);
-        end
-        sigma(:,:,k) = num/sum(p_z(:,k)); % 更新协方差
-    end
-end
-
-% 画各个高斯分布的等高线
-for k = 1:K
-    x1 = -7:.2:7;
-    x2 = -9:.2:5;
-    [X1,X2] = meshgrid(x1,x2);
-    X = [X1(:) X2(:)];
-    y = mvnpdf(X,mu(k,:),sigma(:,:,k));
-    y = reshape(y,length(x2),length(x1));
-    hold on 
-    contour(x1,x2,y,[0.0001 0.001 0.01 0.05 0.15 0.25 0.35])
-    xlabel(&#39;x_1&#39;)
-    ylabel(&#39;x_2&#39;)
-end</pre></td></tr></table>
+ % 画出投影向量
+ x = 1:2:3;
+ k1 = u1(2)/u1(1);
+ k2 = u2(2)/u2(1);
+ y1 = k1*(x-mu(1))+mu(2);
+ y2 = k2*(x-mu(1))+mu(2);
+ plot(x&#39;,y1&#39;,&#39;LineWidth&#39;,2)
+ plot(x&#39;,y2&#39;,&#39;LineWidth&#39;,2)
+ xlim([-2, 5]);
+ ylim([-2, 5]);
+ axis square
+ legend(&#39;data&#39;,&#39;\Phi=1&#39;,&#39;\Phi=2&#39;,&#39;u1&#39;,&#39;u2&#39;)
+ xlabel(&#39;x1&#39;)
+ ylabel(&#39;x2&#39;)</pre></td></tr></table>
 </div>
 </div>
-<figure>
-    <img src="/images/post/%e3%80%8c%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0%e3%80%8d%e9%ab%98%e6%96%af%e6%b7%b7%e5%90%88%e6%a8%a1%e5%9e%8bGMM/GMM_EM.jpg"/> 
-</figure>
+<h2 id="高斯分布的局限性">高斯分布的局限性</h2>
 
+<ol>
+<li><p>协方差矩阵 $\Sigma$ 中的参数个数太多 $p(p+1)/2 = O(p^2)$；可以采用<strong>对角化</strong>或<strong>各向同性</strong>的假设。</p></li>
 
-<p>散点就是由三个不同的高斯分布生成的样本，等高线则是根据学习出来的三个高斯元画的。</p>
+<li><p>单高斯分布来拟合数据不合理；可以采用<strong>混合高斯模型</strong>。</p></li>
+</ol>
+
+<h2 id="已知联合概率求边缘概率和条件概率">已知联合概率求边缘概率和条件概率</h2>
+
+<p>已知</p>
+
+<div>$$
+x=\left(\begin{array}{l}{x_{a}} \\ {x_{b}}\end{array}\right),
+\mu=\left(\begin{array}{l}{\mu_{a}} \\ {\mu_{b}}\end{array}\right),\Sigma=\left(\begin{array}{ll}{\Sigma_{a a}} & {\Sigma_{a b}} \\ {\Sigma_{b a}} & {\Sigma_{b b}}\end{array}\right)
+$$</div>
+
+<p>求 $p(x_a),p(x_b|x_a)$。可以采用配方法(见PRML，过于复杂)，这里采用构造定义法。</p>
+
+<p>定义 $A = (I_m \quad 0)$，则 $x_a = Ax$</p>
+
+<div>$$
+\begin{aligned}
+E[x_a]&=AE[x]=\mu_a\\
+Var[x_a]&=A\Sigma A^T=\Sigma_{aa}
+\end{aligned}
+$$</div>
+
+<p>所以<strong>边缘概率分布为</strong></p>
+
+<div>$$x_a \sim N(\mu_a,\Sigma_{aa})$$</div>
+
+<p>定义</p>
+
+<div>$$x_{b.a}=x_b-\Sigma_{ba}\Sigma_{aa}^{-1}x_a$$</div>
+
+<div>$$A=(-\Sigma_{ba}\Sigma_{aa}^{-1} \quad I)$$</div>
+
+<p>则 $x_{b.a}=Ax$</p>
+
+<div>$$
+    \begin{aligned}
+E[x_{b.a}]&=AE[x]=\mu_b-\Sigma_{ba}\Sigma_{aa}^{-1}\mu_a\\
+Var[x_{b.a}]&=A\Sigma A^T = \Sigma_{bb}-\Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab}
+    \end{aligned}
+$$</div>
+
+<p>则可以得到 $x_{b.a}$ 的分布，又因为</p>
+
+<div>$$x_b=x_{b.a}+\Sigma_{ba}\Sigma_{aa}^{-1}x_a$$</div>
+
+<p>条件分布的均值和方差可以表示为</p>
+
+<div>$$
+\begin{aligned}
+E[x_b|x_a] &= E[x_{b.a}] + \Sigma_{ba}\Sigma_{aa}^{-1}x_a\\
+Var[x_b|x_a] &= Var[x_{b.a}] 
+\end{aligned}
+$$</div>
+
+<p>因此<strong>条件概率分布</strong>为</p>
+
+<div>$$
+x_b|x_a \sim N(\mu_b+\Sigma_{ba}\Sigma_{aa}^{-1}(x_a-\mu_a),\Sigma_{bb}-\Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab})
+$$</div>
+
+<h2 id="已知边缘概率和条件概率求联合概率">已知边缘概率和条件概率求联合概率</h2>
+
+<p>已知</p>
+
+<div>$$
+\begin{aligned}
+p(x)&=N(x|\mu,\Lambda^{-1})\\
+p(y|x)&=N(y|Ax+b,L^{-1})
+\end{aligned}
+$$</div>
+
+<p>求 $p(y),p(x|y)$</p>
+
+<p>定义 $y=Ax+b+\epsilon,\epsilon \sim N(0,L^{-1})$</p>
+
+<p>则 $y$ 的边缘概率为</p>
+
+<div>$$
+\begin{aligned}
+E[y]&=E[Ax+b] + E[\epsilon] = A\mu+b\\
+Var[y]&=Var[Ax+b]+Var[\epsilon]=A\Lambda^{-1}A^T+L^{-1}
+\end{aligned}
+$$</div>
+
+<p>即</p>
+
+<div>$$
+y \sim N(A \mu +b, A\Lambda^{-1}A^T+L^{-1})
+$$</div>
+
+<p>要求 $p(x|y)$ 可以构造联合分布，在利用联合概率求条件概率</p>
+
+<p>构造</p>
+
+<div>$$
+Z=\left(\begin{array}{l}{x} \\ {y}\end{array}\right) \sim \mathcal{N}\left(\left[\begin{array}{c}{\mu} \\ {A \mu+b}\end{array}\right],\left[\begin{array}{cc}{\Lambda^{-1}} & {\Delta} \\ {\Delta} & {L^{-1}+A \Lambda^{-1} A^{T}}\end{array}\right]\right)
+$$</div>
+
+<p>也就是只要求出 $x$ 和 $y$ 之间的协方差 $\Delta$ 就能够知道它们的联合分布了。根据协方差的定义来求解</p>
+
+<div>$$
+\begin{aligned}
+\Delta &= Cov(x,y)\\
+&=E[(x-E[x])(y-E[y])^T]\\
+&=E[(x-\mu)(Ax+b+\epsilon-(A\mu+b))^T]\\
+&=E[(x-\mu)(Ax-A\mu+\epsilon)^T]\\
+&=E[(x-\mu)(Ax-A\mu)^T+(x-\mu)\epsilon^T]\\
+&=E[(x-\mu)(x-\mu)^T]A^T+E[(x-\mu)]E[\epsilon]\\
+&=Var[x]A^T+0\\
+&=\Lambda^{-1}A^T
+\end{aligned}
+$$</div>
+
+<p>这样完整的联合分布就得到了，代入上一节 $x_b|x_a$ 的公式即可得到 $p(x|y)$ 的概率分布了。</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgmm/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

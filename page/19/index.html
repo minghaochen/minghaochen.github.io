@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-02-28T17:11:37&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-02T18:51:57&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,128 +115,252 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E6%AD%A6%E6%B1%89%E6%96%B0%E5%9E%8B%E8%82%BA%E7%82%8E/">《经济学人》武汉新型肺炎</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E8%BF%87%E7%A8%8B/">「机器学习」狄利克雷过程</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-05 </span>
+      <span class="post-time"> 2020-02-09 </span>
       <div class="post-category">
-          <a href="/categories/english/"> ’English‘ </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="title">Title</h1>
+      <h1 id="高斯混合模型">高斯混合模型</h1>
 
-<p>Will the Wuhan virus become a pandemic?
-Probably. But public health services can help determine how severe it turns out to be</p>
+<p>忘记什么是高斯过程的可以看一下之前博客，简单来说就是假设我们的数据$x_i,i=1,&hellip;,N$是由$k$个高斯分布加权而成的混合模型生成的，从而估计出这些分布的参数。但是有个tricky的问题就是这个$k$是多少往往是由人来指定或者通过一些交叉验证等方法来确定。有人可能会说把$k$也当做未知参数一起拿去估计一下不就好了，但是这样做你会发现，得到的估计结果$k=N$，也就是有$N$个数据就有$N$个类。因为每个数据点自己一类得到的似然肯定最大鸭。而我们期望的结果肯定是类别数小于数据点的个数，这样才是合理的。</p>
 
-<ul>
-<li>Pandemic: a disease that affects people over a very large area or the whole world</li>
-</ul>
+<h1 id="狄利克雷过程">狄利克雷过程</h1>
 
-<h1 id="paragraph-1">Paragraph 1</h1>
+<p>假设有$N$个数据$x_1,&hellip;,x_N$，每个数据对应$\theta_i$，我们假设$\theta_i$满足概率分布
+$$
+\theta_i \sim H(\theta)
+$$</p>
 
-<p>Two things explain why a new infectious disease is so alarming. One is that, at first, it spreads exponentially. As tens of cases become hundreds and hundreds become thousands, the mathematics run away with you, conjuring speculation about a health-care collapse, social and economic upheaval and a deadly pandemic. The other is profound uncertainty. Sparse data and conflicting reports mean that scientists can not rule out the worst case—and that lets bad information thrive.</p>
+<p>但是如果$H(\theta)$是个连续分布，那么采样得到的$\theta_i$都会是不同的值，也就是我们每个数据点对应的类别又都不一样了，因此我们需要$\theta_i$是从一个离散分布中采样，也就是$\theta_i$的可能情况是有限的，不同的数据点对应的$\theta_i$可以是相同的。
+那么如何得到这个离散的分布呢，最直接的想法就是把$H(\theta)$离散化一下，其实也就是狄利克雷过程了，即
+$$
+G\sim DP(\alpha,H)
+$$
+这里的$\alpha$相当于一个离散化的参数，想对这个结论有个印象，后面再继续展开：
+$\alpha$越大，离散化得到的分布$G$越密集，也就和原分布越像；$\alpha$越小越离散，$\alpha=0$对应的$G$就是一个采样值。</p>
 
-<ul>
-<li>Conjure: to make something appear or happen in a way which is not expected</li>
-<li>Speculation: when you guess about the possible causes or effects of something without knowing all the facts. 例：There is speculation that the president is ill.</li>
-<li>Upheaval: a very big change that often causes problems</li>
-</ul>
+<h2 id="性质">性质</h2>
 
-<h1 id="paragraph-2">Paragraph 2</h1>
+<p>$G$从DP中采样出来是一个完整分布，因为是完整分布，所以$G$有无限个值（无限根棍子），但是如果对$G$所在的概率空间进行划分$a_1,&hellip;,a_k$，那么各个区域的测度满足
+$$
+(G(a_1),G(a_2),&hellip;,G(a_k)) \sim Dir(\alpha H(a_1),\alpha H(a_2),&hellip;,\alpha H(a_k))
+$$
+其中$G(a_i)$表示区域$a_i$上”棍子“权重的总和，</p>
 
-<p>So it is with a new coronavirus, known as2019-nCoV, which has struck in China. The number of reported cases grew from 282 on January 20th to almost 7,800 just nine days later. In that time four reported cases outside mainland China have multiplied to 105 in 19 territories. Doubt clouds fundamental properties of the disease, including how it is passed on and what share of infected people die. Amid the uncertainty, a simulation of a coronavirus outbreak by Johns Hopkins University in October, in which 65m people lost their lives, was put about as a prediction. It is not.</p>
+<blockquote>
+<p><strong>补充</strong>狄利克雷分布的性质</p>
 
-<ul>
-<li>Strike: 类似于hit</li>
-<li>Cloud: 云延伸出来就是“使模糊”</li>
-</ul>
+<p>如果</p>
 
-<h1 id="paragraph-3">Paragraph 3</h1>
+<div>
+$$
+(x_1,...,x_k) \sim Dir (\alpha_1,...,\alpha_k)=\frac{\prod_{i=1}^k \Gamma(\alpha_i)}{\Gamma(\sum_{i=1}^k \alpha_i)}\prod_{i=1}^k x_i^{\alpha_i - 1}
+$$</div>
 
-<p>Those are the right questions, though: will the new virus become a global disease? And how deadly will it be? A definite answer is weeks or months away, but public-health authorities have to plan today. The best guess is that the disease has taken hold in China and there is a high risk that it spreads around the world—it may even become a recurrent seasonal infection. It may turn out to be no more lethal than seasonal influenza, but that would still count as serious. In the short term that would hit the world economy and, depending on how the outbreak is handled, it could also have political effects in China.</p>
+<p>则其均值为</p>
 
-<ul>
-<li>Take hold: to start to have a definite effect</li>
-<li>Lethal: causing death, or able to cause death</li>
-</ul>
+<div>
+$$
+E[x_i] = \frac{\alpha_i}{\sum_{j=1}^k\alpha_j}
+$$
+</div>
 
-<h1 id="paragraph-4">Paragraph 4</h1>
+<p>方差为</p>
 
-<p>The outbreak began in December. The repeated mingling of people and animals in China means that viral mutations that infect humans are likely to arise there; and mass migration to cities means that they are likely to spread between people. This virus probably originated in bats and passed through mammals, such as palm civets (果子狸) or ferret badgers (鼬獾), ending up in Wuhan’s wet market, where wild animals were on sale. Symptoms resemble flu, but can include pneumonia, which may be fatal. About 20\% of reported cases are severe, and need hospital care; about 2\% of them have been fatal. As yet, there is no vaccine or antiviral treatment.</p>
+<div>
+$$
+Var[x_i] =\frac{E[x_i](1-E[x_i])}{1+\sum_j \alpha_j}
+$$</div>
+</blockquote>
 
-<ul>
-<li>Mingling: if two feelings, sounds, smells etc mingle, they mix together with each other</li>
-<li>Wet market: 指的是传统市场，卖生鲜的这种</li>
-<li>Pneumonia: 肺炎</li>
-<li>Vaccine: 疫苗</li>
-<li>Antiviral: 复合词的结构，抗病毒</li>
-</ul>
+<p>将$G(a_i)$代入有均值和方差的表达式有
+$$
+E[G(a_i)]=\frac{\alpha H(a_i)}{\alpha H(\alpha_1) + &hellip; + \alpha H(a_k)} = H(\alpha_i) <br />
+$$</p>
 
-<h1 id="paragraph-5">Paragraph 5</h1>
+<p>$$
+Var[G(a_i)] = \frac{\alpha H(\alpha_i)(\alpha - \alpha H(a_i))}{\alpha^2(\alpha + 1)} = \frac{H(\alpha_i)(1-H(\alpha_i))}{\alpha + 1}
+$$</p>
 
-<p>The greatest uncertainty is how many cases have gone unrecorded. Primary health care is rudimentary in China and some of the ill either avoided or were turned away from busy hospitals. Many more may have such mild symptoms that they do not realise they have the disease. Modelling by academics in Hong Kong suggests that, as of January 25th, tens of thousands of people have already been infected and that the epidemic will peak in a few months’ time. If so, the virus is more widespread than thought, and hence will be harder to contain within China. But it will also prove less lethal, because the number of deaths should be measured against a much larger base of infections. As with flu, a lot of people could die nonetheless. In 2017-18 a bad flu season saw symptoms in 45m Americans, and 61,000 deaths.</p>
+<p>可以看出$\alpha$趋于无穷，方差就趋于0，也就是采样出来的分布和原分布越像；$\alpha$趋于0，方差的表达式就是伯努利分布的方差表达式，也就是说要嘛有根棍，要嘛就没有，$G$就是$H$最离散的版本。</p>
 
-<ul>
-<li>Rudimentary: simple and basic</li>
-</ul>
+<h2 id="构造">构造</h2>
 
-<h1 id="paragraph-6">Paragraph 6</h1>
+<p>我们现在知道$G$本身是一个分布，同时它服从狄利克雷分布，那么要怎样去采样$G$这个分布呢，换句话就是说怎么去得到一个离散化版本的$H$。</p>
 
-<p>Scientists have started work on vaccines and on treatments to make infections less severe. These are six to 12 months away, so the world must fall back on public-health measures. In China that has led to the biggest quarantine in history, as Wuhan and the rest of Hubei province have been sealed off. The impact of such draconian measures has rippled throughout China. The spring holiday has been extended, keeping schools and businesses closed. The economy is running on the home-delivery of food and goods.</p>
+<p>这时候我们借助的手段就是sticking-breaking，我们每次从原分布$H$中采样出一个$\theta_i$，然后在通过$Beta$分布生成一个$0$到$1$之间的随机数用来构造$\theta_i$的权重$\pi_i。</p>
 
-<ul>
-<li>Quarantine: a period of time when a person or animal is kept apart from others in case they are carrying a disease</li>
-<li>Draconian: very strict and cruel</li>
-<li>Ripple: to pass from one person to another like a wave. 例：Panic rippled through Hollywood as the murders were discovered.</li>
-</ul>
+<p>比如第一次采样：
+$$
+\theta_1 \sim H, \beta_1 \sim Beta(1,\alpha), \pi_1 = \beta_1
+$$
+第二次采样：
+$$
+\theta_2 \sim H, \beta_2 \sim Beta(1,\alpha), \pi_2 = (1-\pi_1)*\beta_2
+$$
+以此类推</p>
 
-<h1 id="paragraph-7">Paragraph 7</h1>
+<blockquote>
+<p>补充：如果$x$服从Beta分布 $x \sim Beta(a,b)$，那么其均值为$E[x]=a/(a+b)$</p>
+</blockquote>
 
-<p>Many experts praise China’s efforts. Certainly, its scientists have coped better with the Wuhan virus than they did with SARS in 2003, rapidly detecting it, sequencing its genome (基因测序), licensing diagnostic kits (诊断试剂) and informing international bodies. China’s politicians come off less well. They left alone the cramped markets filled with wild animals that spawned SARS. With the new virus, local officials in Wuhan first played down the science and then, when the disease had taken hold, enacted the draconian quarantine fully eight hours after announcing it, allowing perhaps 1m potentially infectious people to leave the city first.</p>
+<p>这里我们也可以观察一下$\alpha$的变化对sticking breaking的影响：$\alpha$趋于0，Beta采样出来的结果就趋于1，也就是采样极少的次数就够了（离散）；如果$\alpha$趋于无穷，Beta采样出来的权重就趋于0，那么就能产生越来越多的棍子。<strong>记住采样的权重$\sum \pi_i=1$</strong>。</p>
 
-<ul>
-<li>Cramped: not have enough space. 例：The kitchen was small and cramped.</li>
-<li>Spawn: to make a series of things happen or start to exist</li>
-<li>Enact: to make a proposal into a law. 例：Congress refused to enact the bill.</li>
-</ul>
+<p>基于离散采样的观点，我们可以把$G$写成</p>
 
-<h1 id="paragraph-8">Paragraph 8</h1>
+<div>$$
+G = \sum_1^{\infty} \pi_i \delta_{\theta_i}
+$$</div>
 
-<p>That may have undermined a measure which is taking a substantial toll. China’s growth in the first quarter could fall to as little as 2\%, from 6\% before the outbreak. As China accounts for almost a fifth of world output, there will probably be a noticeable dent on global growth. Though the economy will bounce back when the virus fades, the reputation of the Communist Party and even of Xi Jinping may be more lastingly affected. The party claims that, armed with science, it is more efficient at governing than democracies. The heavy-handed failure to contain the virus suggests otherwise.</p>
+<p>这样我们就有了个离散的分布，回到数据$x_1,&hellip;,x_N$ 对应的$\theta_1,&hellip;,\theta_N$可以从$G$产生，即
+$$
+\theta_i \sim G , i=1,&hellip;,N
+$$</p>
 
-<ul>
-<li>Substantial: large in amount or number; considerable</li>
-<li>Dent: a reduction in the amount of something</li>
-<li>Contain: to stop something from spreading or escaping. 例：Doctors are struggling to contain the epidemic.</li>
-</ul>
+<p>每个数据都是通过以$\theta_i$为参数的分布产生，即$x_i \sim F(\theta_i)$。</p>
 
-<h1 id="paragraph-9">Paragraph 9</h1>
+<p>当我们已知$\theta_1,&hellip;,\theta_N$时，$G$的后验是什么？</p>
 
-<p>Outside China such quarantines are unthinkable. The medical and economic cost will depend on governments slowing the disease’s spread. The way to do this is by isolating cases as soon as they crop up and tracing and quarantining people that victims have been in contact with—indeed, if the disease burns out in China, that might yet stop the pandemic altogether. If, by contrast, that proves inadequate, they could shut schools, discourage travel and urge the cancellation of public events. Buying time in this way has advantages even if it does not completely stop the disease. Health-care systems would have a greater chance to prepare for the onslaught, and to empty beds that are now full of people with seasonal flu.</p>
+<p>$$
+p(G|\theta_1,&hellip;,\theta_N) \propto p(\theta_1,&hellip;,\theta_N|G)p(G)
+$$
+似然就是$G$</p>
 
-<ul>
-<li>Crop up: if a problem crops up, it happens or appears suddenly and in an unexpected way; arise. 例：if anything crops up, give me a call.</li>
-</ul>
+<blockquote>
+<p><strong>补充</strong></p>
 
-<h1 id="paragraph-10">Paragraph 10</h1>
+<p>假设先验满足
+$$
+(p_1,&hellip;,p_k)\sim Dir(\alpha_1,&hellip;,\alpha_k), \sum p_i =1
+$$</p>
 
-<p>Despite all those efforts the epidemic could still be severe. Some health systems, in Africa and the slums of Asia’s vast cities, will not be able to isolate patients and trace contacts. Much depends on whether people are infectious when their symptoms are mild (or before they show any at all, as some reports suggest), because such people are hard to spot. And also on whether the virus mutates to become more transmissible or lethal.</p>
+<p>似然/数据满足多项分布
+$$
+(n_1,&hellip;,n_k)\sim Mult(p_1,&hellip;,p_k)
+$$
+后验为
+$$
+p(p_1,&hellip;,p_k|n_1,&hellip;,n_k)=Dir(\alpha_1+n_1,&hellip;,\alpha_k+n_k)
+$$</p>
+</blockquote>
 
-<ul>
-<li>Slum: an area that is in bad condition, where very poor people live</li>
-<li>Spot: to notice someone or something, especially when they are difficult to see or recognize. 例：I spotted a police car behind us.</li>
-<li>Mutate: a change in genetic structure. 例：Simple organisms like bacteria mutate rapidly.</li>
-</ul>
+<p>对任意划分</p>
 
-<h1 id="paragraph-11">Paragraph 11</h1>
+<p>$$
+p(G(a_1),&hellip;,G(a_k)|n_1,&hellip;,n_k)
+\propto
+Likelihood \times Prior
+$$
+其中Likelihood为$Mult(n_1,&hellip;,n_k|G(a_1),&hellip;,G(a_k))$，先验是$ Dir(\alpha H(a_1),&hellip;,\alpha H(a_k))$。</p>
 
-<p>The world has never responded as rapidly to a disease as it has to 2019-nCoV. Even so, the virus may still do great harm. As humans encroach on new habitats, farm more animals, gather in cities, travel and warm the planet, new diseases will become more common. One estimate puts their cost at $60bn a year. SARS, MERS, Nipah, Zika, Mexican swine flu: the fever from Wuhan is the latest of a bad bunch. It will not be the last.</p>
+<p>根据共轭先验的性质，我们知道$G$的后验也是狄利克雷分布。</p>
+
+<p>$$
+Dir(\alpha H(a_1)+n_1,&hellip;,\alpha H(a_k)+n_k)
+$$</p>
+
+<p>同时也能对应到一个新的狄利克雷过程</p>
+
+<div>
+$$
+DP(\alpha+n,\frac{\alpha H+\sum_{i=1}^n \delta_{\theta_i}}{\alpha +n})
+$$</div>
+
+<p>其中，$\alpha+n$来自于前一个式子狄利克雷分布各项的总和，它的base measure是由一个连续和measure和一个离散的measure组成的。叫做Spike-and-Slab。</p>
+
+<h2 id="中国餐馆过程">中国餐馆过程</h2>
+
+<p>Predictive distribution</p>
+
+<div>
+$$
+\begin{aligned}
+p(x_i|x_{-i})
+&=\int_w p(x_i,w|x_{-i})dw \\
+&=\int_w p(x_i|w,x_{-i})p(w|x_{-i})dw\\
+&=\int_w p(x_i|w)p(w|x_{-i})dw
+\end{aligned}
+$$
+</div>
+
+<p>通常 $x_{-i}$ 指训练数据，$x_{i}$ 指测试数据。这里隐含假设：我们有了模型$w$后，就不需要数据$x_{-i}$了。</p>
+
+<p>在这里我们要求$\theta$</p>
+
+<div>
+$$
+p(\theta_i|\theta_{-i})
+=\int_{G} p(\theta_i|G)p(G|\theta_{-i}) dG
+$$
+</div>
+
+<p>但其实我们对$\theta_i$是多少并不感兴趣，我们更在意的是有几个$\theta$的值是一样的。
+假设有$4$个数据$x_1,&hellip;,x_4$对应的$\theta_1=6,\theta_2=4,\theta_3=6,\theta_4=4$，那么也就是说对应的类别$z_1=z_3=1,z_2=z_4=2$，我们实际想知道的predictive distribution是</p>
+
+<div>
+$$
+p(z_i=m|z_{-i})
+$$
+</div>
+
+<p>表示我们已经知道了除了$i$以外的数据属于什么类，从而判断数据$i$属于$m$类的概率是什么。这个分布跟$H$没有关系，跟$\alpha$有关，因为$H$决定的是$\theta_i$的采样，而$\alpha$决定了类别的多少。</p>
+
+<p>我们先假设有$k$个类，然后再把$k$到无穷，也就是狄利克雷过程。</p>
+
+<div>
+$$
+\begin{aligned}
+p(z_i=m|z_{-i})
+&= \frac{p(z_i=m,z_{-i})}{p(z_{-i})}\\
+&=\frac{\int_{p_1,...,p_k}p(z_i=m,z_{-1}|p_1,...,p_k)p(p_1,...,p_k) dp_1,...,p_k }{\int_{p_1,...,p_k}p(z_{-i}|p_1,...,p_k)p(p_1,...,p_k)dp_1,...,p_k}
+\end{aligned}
+$$
+</div>
+
+<p>其中
+$$
+p(p_1,&hellip;,p_k)=Dir(\alpha/k,&hellip;,\alpha/k)
+$$</p>
+
+<blockquote>
+<p>补充</p>
+
+<p>上面我们知道了有个狄利克雷分布的先验和多项分布的似然，得到的后验也是狄利克雷分布，那么加个积分</p>
+
+<div>
+$$
+\begin{aligned}
+&\int_{p_1...p_k} p(n_1,...,n_k|p_1,...,p_k)p(p_1,...,p_k|\alpha_1,...,\alpha_k)\\
+=&\int_{p_1...p_k} Mult(n_1,...,n_k|p_1,...,p_k)Dir(p_1,...,p_k|\alpha_1,...,\alpha_k)\\
+=&\frac{n!}{n_1!...n_k!}\frac{\Gamma(\sum \alpha_i)}{\prod \Gamma(\alpha_i)} \int_{p_1,...,p_k} \prod_{i=1}^k p_i^{n_i+\alpha_i-1}\\
+=&\frac{n!}{n_1!...n_k!}\frac{\Gamma(\sum \alpha_i)}{\prod \Gamma(\alpha_i)} \frac{\prod \Gamma(\alpha_i+n_i)}{\Gamma(\sum (\alpha_i)+n )}
+\end{aligned}
+$$
+</div>
+</blockquote>
+
+<p>代入预测分布</p>
+
+<div>
+$$
+\begin{aligned}
+&p(z_i=m|z_{-i})\\
+=& \frac{n_{m,-i}}{n+\alpha-1}, existing\\
+= &\frac{\alpha}{n+\alpha-1}, new
+\end{aligned}
+$$</div>
+
+<p>其中 $n_{m,-i}$ 表示 $z_{-i}$ 里有多少是 $m$ 类的。
+也就是说有概率$\frac{n_{m,-i}}{n+\alpha-1}$属于原有的类别，有$\frac{\alpha}{n+\alpha-1}$的概率属于新的类别。</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E6%AD%A6%E6%B1%89%E6%96%B0%E5%9E%8B%E8%82%BA%E7%82%8E/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%8B%84%E5%88%A9%E5%85%8B%E9%9B%B7%E8%BF%87%E7%A8%8B/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

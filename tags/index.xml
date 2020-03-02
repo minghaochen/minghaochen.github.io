@@ -6,10 +6,28 @@
     <description>Recent content in Tags on MH&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 28 Feb 2020 17:11:37 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 02 Mar 2020 18:51:57 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>新概念</title>
+      <link>https://minghaochen.github.io/tags/%E6%96%B0%E6%A6%82%E5%BF%B5/</link>
+      <pubDate>Mon, 02 Mar 2020 18:51:57 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/tags/%E6%96%B0%E6%A6%82%E5%BF%B5/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>‘系统辨识’</title>
+      <link>https://minghaochen.github.io/tags/%E7%B3%BB%E7%BB%9F%E8%BE%A8%E8%AF%86/</link>
+      <pubDate>Sun, 01 Mar 2020 18:36:11 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/tags/%E7%B3%BB%E7%BB%9F%E8%BE%A8%E8%AF%86/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>English</title>
@@ -17,15 +35,6 @@
       <pubDate>Fri, 28 Feb 2020 17:11:37 +0800</pubDate>
       
       <guid>https://minghaochen.github.io/tags/english/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>新概念</title>
-      <link>https://minghaochen.github.io/tags/%E6%96%B0%E6%A6%82%E5%BF%B5/</link>
-      <pubDate>Thu, 27 Feb 2020 11:22:24 +0800</pubDate>
-      
-      <guid>https://minghaochen.github.io/tags/%E6%96%B0%E6%A6%82%E5%BF%B5/</guid>
       <description></description>
     </item>
     
@@ -39,7 +48,7 @@
     </item>
     
     <item>
-      <title>matlab</title>
+      <title>Matlab</title>
       <link>https://minghaochen.github.io/tags/matlab/</link>
       <pubDate>Wed, 19 Feb 2020 16:16:04 +0800</pubDate>
       
