@@ -115,60 +115,104 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5421/">《新概念4》21</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/">如何搭建hugo博客</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-03-03 </span>
+      <span class="post-time"> 2019-07-22 </span>
       <div class="post-category">
-          <a href="/categories/english/"> English </a>
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/"> 技术贴 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="william-s-hart-and-the-early-western-film">William S. Hart and the early ‘Western’ film</h1>
+      <ol>
+<li>安装git</li>
+<li>安装brew</li>
 
-<p>William S. Hart was, perhaps, the greatest of all Western stars, for unlike Gary Cooper and John Wayne he appeared in nothing but Westerns. From 1914 to 1924 he was supreme and unchallenged. It was Hart who created the basic formula of the Western film, and devised the protagonist he played in every film he made, the good-bad man, the accidental, noble-<strong>outlaw</strong>, or the honest-but-framed cowboy, or the <strong>sheriff</strong> made suspect by vicious gossip; in short, the individual in conflict with himself and his frontier environment.</p>
+<li><p>安装Hugo，建立博客</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo new site myblog</pre></td></tr></table>
+</div>
+</div></li>
 
-<ul>
-<li>protagonist / prəʊˈtæɡənɪst / A protagonist in a play, novel, or real event is one of the main people in it. (戏剧、小说或真实事件里的) 主人公</li>
-<li>outlaw / ˈaʊtˌlɔː /   An outlaw is a criminal who is hiding from the authorities. 逃犯u</li>
-<li>frame  / freɪm /  If someone frames an innocent person, they make other people think that that person is guilty of a crime, by lying or inventing evidence. 诬陷</li>
-<li>sheriff  / ˈʃɛrɪf /   In the United States, a sheriff is a person who is elected to make sure that the law is obeyed in a particular county. (美国的) 县治安官</li>
-<li>vicious  / ˈvɪʃəs / A vicious remark is cruel and intended to upset someone. 恶毒的</li>
-<li>nothing but xxx 只在xxx</li>
-<li>made suspect by xxx 被怀疑</li>
-</ul>
+<li><p>下载主题</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">cd myblog
+git clone https://github.com/olOwOlo/hugo-theme-even themes/even</pre></td></tr></table>
+</div>
+</div></li>
 
-<p>Unlike most of his <strong>contemporaries</strong> in Hollywood, Hart actually knew something of the old West. He had lived in it as a child when it was already disappearing, and his hero was firmly rooted in his memories and experiences, and in both the history and the mythology of the vanished frontier. And although no period or place in American history has been more absurdly romanticized, myth and reality did join hands in at least one <strong>arena</strong>, the conflict between the individual and <strong>encroaching</strong> civilization.</p>
+<li><p>本地启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo server -t even --buildDrafts </pre></td></tr></table>
+</div>
+</div></li>
 
-<ul>
-<li>contemporary / kənˈtɛmprərɪ / Someone&rsquo;s contemporary is a person who is or was alive at the same time as them. 同时代的人</li>
-<li>mythology  / mɪˈθɒlədʒɪ / Mythology is a group of myths, especially all the myths from a particular country, religion, or culture. 神话</li>
-<li>arena  / əˈriːnə /    An arena is a place where sports, entertainments, and other public events take place. It has seats around it where people sit and watch. 竞技场</li>
-<li>encroach  / ɪnˈkrəʊtʃ / If one thing encroaches on another, the first thing spreads or becomes stronger, and slowly begins to restrict the power, range, or effectiveness of the second thing. 逐步侵犯</li>
-<li>firmly rooted in xxx 深深地扎根</li>
-</ul>
+<li><p>创建一个文章</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo new post/new.md</pre></td></tr></table>
+</div>
+</div></li>
 
-<p>Men accustomed to struggling for survival against the elements and Indian were <strong>bewildered</strong> by politicians, bankers and business-men, and <strong>unhorsed</strong> by fences, laws and alien <strong>taboos</strong>. Hart&rsquo;s good-bad man was always an outsider, always one of the <strong>disinherited</strong>, and if he found it necessary to shoot a sheriff or rob a bank along the way, his early audiences found it easy to understand and forgive, especially when it was Hart who, in the end, overcame the attacking Indians.</p>
+<li><p>部署到github</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo --theme=even --baseUrl=“https://minghaochen.github.io/“ --buildDrafts
+cd public/
+git init
+git add .
+git commit -m “first commit”
+git remote add origin https://github.com/minghaochen/minghaochen.github.io.git
+git push -u origin master</pre></td></tr></table>
+</div>
+</div></li>
 
-<ul>
-<li>bewilder / bɪˈwɪldə / If something bewilders you, it is so confusing or difficult that you cannot understand it. 使迷惑</li>
-<li>unhorse  / ʌnˈhɔːs / to knock or throw from a horse 把人推(扔)下马</li>
-<li>taboo  / təˈbuː / A taboo against a subject or activity is a social custom to avoid doing that activity or talking about that subject, because people find them embarrassing or offensive. 禁忌</li>
-<li>disinherit  / ˌdɪsɪnˈhɛrɪt / If you disinherit someone such as your son or daughter, you arrange that they will not become the owner of your money and property after your death, usually because they have done something that you do not approve of. 剥夺财产继承权</li>
-</ul>
-
-<p>Audiences in the second decade of the twentieth century found it pleasant to escape to a time when life, though hard, was relatively simple. We still do; living in a world in which undeclared aggression, war, <strong>hypocrisy</strong>, <strong>chicanery</strong>, anarchy and <strong>impending</strong> <strong>immolation</strong> are part of our daily lives, we all want a code to live by.</p>
-
-<ul>
-<li>hypocrisy  / hɪˈpɒkrəsɪ / If you accuse someone of hypocrisy, you mean that they pretend to have qualities, beliefs, or feelings that they do not really have. 虚伪</li>
-<li>chicanery  / ʃɪˈkeɪnərɪ / Chicanery is using cleverness to cheat people. 耍花招对他人的哄骗</li>
-<li>impending  / ɪmˈpɛndɪŋ / An impending event is one that is going to happen very soon. 即将发生的 [正式]</li>
-</ul>
+<li><p>本地写完新博客后更新到github上</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">cd public/
+git add -A
+git commit -m &#34;update&#34;
+git push origin master</pre></td></tr></table>
+</div>
+</div></li>
+</ol>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5421/" class="read-more-link">Read more...</a>
+      <a href="/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -176,11 +220,11 @@
     </section>
   
   <nav class="pagination">
-    
-    <a class="next" href="/page/2/">
-        <span class="next-text">Next</span>
-        <i class="iconfont icon-right"></i>
+    <a class="prev" href="/page/38/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
       </a>
+    
   </nav>
         </div>
         
