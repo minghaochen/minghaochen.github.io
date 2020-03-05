@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>MH&#39;s Blog</title>
+  <title>English · MH&#39;s Blog</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -26,9 +26,9 @@
 <meta name="generator" content="Hugo 0.55.6 with theme even" />
 
 
-<link rel="canonical" href="https://minghaochen.github.io/" />
-  <link href="https://minghaochen.github.io/index.xml" rel="alternate" type="application/rss+xml" title="MH&#39;s Blog" />
-  <link href="https://minghaochen.github.io/index.xml" rel="feed" type="application/rss+xml" title="MH&#39;s Blog" />
+<link rel="canonical" href="https://minghaochen.github.io/categories/english/" />
+  <link href="https://minghaochen.github.io/categories/english/index.xml" rel="alternate" type="application/rss+xml" title="MH&#39;s Blog" />
+  <link href="https://minghaochen.github.io/categories/english/index.xml" rel="feed" type="application/rss+xml" title="MH&#39;s Blog" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -40,18 +40,18 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="MH&#39;s Blog" />
+<meta property="og:title" content="English" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://minghaochen.github.io/" />
+<meta property="og:url" content="https://minghaochen.github.io/categories/english/" />
 
 <meta property="og:updated_time" content="2020-03-05T21:02:44&#43;08:00"/>
 
-<meta itemprop="name" content="MH&#39;s Blog">
+<meta itemprop="name" content="English">
 <meta itemprop="description" content="">
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="MH&#39;s Blog"/>
+<meta name="twitter:title" content="English"/>
 <meta name="twitter:description" content=""/>
 
 <!--[if lte IE 9]>
@@ -112,75 +112,28 @@
     <main id="main" class="main">
       <div class="content-wrapper">
         <div id="content" class="content">
-          <section id="posts" class="posts">
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%A7%81%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/">「概率基础」常见概率分布</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-02-10 </span>
-      <div class="post-category">
-          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
-          </div>
-    </div>
-  </header>
+          <section id="archive" class="archive">
   
-  <div class="post-content">
-    <div class="post-summary">
-      <p>本文主要总结一些基础的概率分布，便于遗忘时查阅。</p>
 
-<p>从最基础的抛硬币开始吧~</p>
-
-<p>大家都知道一枚硬币只有正面和反面两种可能情况，用随机变量$X$来表示抛硬币的结果，那么$X$的可能情况为$X=1$（表示正面）或$X=0$（表示反面），<strong>伯努利试验</strong>也就指抛一次硬币的结果，即</p>
-
-<p>$$
-P(X=k) = p^k(1-p)^{1-k}, k=0,1
-$$
-其中$p$代表的就是硬币为正面的概率。我们也称$X$满足参数为$p$的伯努利分布，$X\sim Ber(p)$</p>
-
-<p>到这里我们只抛了一次硬币，那么如果多抛几次呢，那就是<strong>二项分布</strong>，即独立重复$n$次抛硬币（伯努利试验）。而原来的随机变量$X$表示的就是$n$次试验中正面朝上的次数，因此$X$的可能取值也就是$0,1,&hellip;,n$，出现$k$次正面的概率为</p>
-
-<p>$$
-P(X=k)=C_n^k p^k(1-p)^{n-k}
-$$
-其中$C_n^k=\frac{n!}{k!(n-k)!}$为二项系数。
-我们也称$X$满足参数为$(n,p)$的二项分布$X\sim B(n,p)$， 二项分布具有期望$E[X]=np$和方差$Var[X]=np(1-p)$。</p>
-
-<p>有人会觉得抛硬币不过瘾，结果就两种情况，想要探索更多的情况我们进入到掷骰子，而且是一个不均匀的筛子，也就是不用面发生的可能性是不一样的，假设各个面发生的概率为$p=[p_1,&hellip;,p_6],\sum p_i=1$，并且引入$X=[X_1,&hellip;,X_6]$来表示各个面的情况，也就是说$X_i$里只有一个是$1$其他都是$0$，比如你筛子是3朝上，那么$X_3=1$，$X_1,X_2,X_4,X_5,X_6$均为$0$。这时候我们就可以表示$X$这个随机向量的概率了：</p>
-
-<p>$$
-P(X|p)=\prod_{i=1}^{6}p_i^{X_i}
-$$</p>
-
-<p>那如果掷骰子$n$次呢，$X=[X_1,&hellip;,X_6]$这时候表示的就是$n$次试验中某个面向上的次数。
-我们记第$i$面朝上的次数为$m_i$且满足$\sum m_i=n$，那么这时候$X$满足的就是<strong>多项分布</strong>：</p>
-
-<div>
-$$
-P(X_1=m_1,...,X_6=m_6)=Multi(n; p_1,...,p_6)=\frac{n!}{m_1!...m_6!}\prod_{i=1}^6p_i^{m_i}
-$$</div>
-
-<p>记做$X\sim Multi(n,p)$一句话概括多项分布就是<strong>一个多种可能情况的事件独立发生$n$次，各种可能情况发生次数的联合分布</strong>。</p>
-
-<p>多项分布的统计量满足$E[X_i]=Np_i$，$Var[X_i]=Np_i(1-p_i)$，$Cov(X_i,X_j)=-Np_ip_j$</p>
+  <div class="archive-post">
+      <span class="archive-post-time">
+        2019-07-22
+      </span>
+      <span class="archive-post-title">
+        <a href="/post/%E7%BE%8E%E9%9F%B3%E5%8F%91%E9%9F%B3%E6%8A%80%E5%B7%A7%E8%BF%9E%E8%AF%BB/" class="archive-post-link">
+          美音发音技巧——连读
+        </a>
+      </span>
     </div>
-    <div class="read-more">
-      <a href="/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%A7%81%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
+</section>
 
-    </section>
+<nav class="pagination">
+  <a class="prev" href="/categories/english/page/2/">
+      <i class="iconfont icon-left"></i>
+      <span class="prev-text">Prev</span>
+    </a>
   
-  <nav class="pagination">
-    <a class="prev" href="/page/18/">
-        <i class="iconfont icon-left"></i>
-        <span class="prev-text">Prev</span>
-      </a>
-    <a class="next" href="/page/20/">
-        <span class="next-text">Next</span>
-        <i class="iconfont icon-right"></i>
-      </a>
-  </nav>
+</nav>
         </div>
         
 
@@ -226,14 +179,6 @@ $$</div>
   <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
-  <script type="text/javascript">
-    window.MathJax = {
-      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-      showProcessingMessages: false,
-      messageStyle: 'none'
-    };
-  </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 
 
 
