@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-05T21:02:44&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-06T09:38:00&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,133 +115,216 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/">核函数与再生核希尔伯特空间</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/">「机器学习」指数族分布</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-15 </span>
+      <span class="post-time"> 2019-08-17 </span>
       <div class="post-category">
-          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>说到核方法，很多人第一反应就是SVM，其实不然，其应用很广，但核心思想均是<strong>用在原始空间计算核函数的值来避免直接求解高维特征空间的内积</strong>；说到核函数往往还会带上一个吓人的概念“再生核希尔伯特空间”，先揭秘一下什么是希尔伯特空间，希尔伯特空间其实就是<strong>函数空间</strong>(或者可以把函数理解为无限维的向量)，函数空间里任意一个元素都表示一个函数，而再加上“再生核”这个限定词相当于就是特定的函数空间，就是具有再生性的函数空间，那什么是再生性听我慢慢道来。</p>
-
-<p>假设有原始空间样本 $x_i \in \mathbb{R}^p, i=1,&hellip;,N$，通常为了<strong>在高维空间寻找线性关系</strong>我们会将其通过函数映射 $\phi(\cdot)$ 到高维空间 $\phi(x_i) \in \mathbb{R}^n$，但是这样也意味着如果原始空间求内积 $&lt;x_i,x_j&gt;$ 对应到特征空间为 $&lt;\phi(x_i),\phi(x_j)&gt;$，直接求解高维空间的内积计算量是很大的，同时我们可能并不知道这个映射函数 $\phi(\cdot)$ 怎么选择才是合适的。核函数则提供了另一种求解的思路。</p>
-
-<p><strong>核函数的定义</strong></p>
-
-<p>$$
-\kappa(\cdot,\cdot):\mathbb{R}^p \times \mathbb{R}^p \rightarrow \mathbb{R}
-$$</p>
-
-<p>则特征空间的内积可以表示为</p>
-
-<p>$$
-&lt;\phi(x_i),\phi(x_j)&gt; = \kappa(x_i,x_j)
-$$</p>
-
-<p>此外，特征空间的距离和角度也可以用核函数来表示。</p>
-
-<p>同时有 Mercer 定理告诉我们怎么样的函数能称为核函数</p>
-
-<blockquote>
-<p>任何正半定函数均可以作为核函数，即由 $\kappa(\cdot,\cdot)$ 构成的核矩阵 $K$ 是正半定的：$a^TKa\ge 0$，其中 $K_{ij} = \kappa(x_i,x_j)$</p>
-</blockquote>
-
-<p><strong>这也就说明了只要我们构造出一个正定核(往往是应用现成的)，那么就不需要显式地定义特征空间和映射函数，并且能够利用已有的线性方法来解决非线性问题</strong>。<strong>同时，核函数还可以理解为用来衡量两个向量的相似度(因为内积可以一定程度反应两个样本之间的相似度)</strong></p>
-
-<p>因为核函数可以总结为：<strong>映射、内积、相似度</strong></p>
-
-<p><strong>再生核希尔伯特空间的定义</strong></p>
-
-<p>有了核函数，那么就会至少有一个与之对应的再生核希尔伯特空间 $\mathcal{H}$，它满足</p>
-
-<ol>
-<li><p>固定任意 $x_0$，则 $\kappa(\cdot,x_0):\mathbb{R^p} \rightarrow \mathbb{R}$ (这是个函数！) 属于 $\mathcal{H}$ (这是个函数空间！)</p></li>
-
-<li><p>再生性：</p></li>
-</ol>
+      <p>听到指数族分布这个名字可能会觉得有点抽象，甚至你可能之前都没听过(反正我以前是没听过的)，但是如果说<strong>高斯分布、伯努利分布、二项分布、泊松分布、beta分布、Dirichlet分布、gamma分布</strong>这些分布，那我想你应该大部分都听过而且可能对其中部分还很熟悉了。其实呢，指数族分布就是这些分布的统称啦，也就是说这些分布的概率密度函数都能写成一个统一的形式，而这个统一的形式就是：</p>
 
 <div>$$
 \begin{aligned}
-<\kappa(\cdot,x),f> &= f(x),f \in \mathcal{H} \\
-<\kappa(\cdot,x),\kappa(\cdot,z)> &= \kappa(x,z) = \kappa(z,x)
+p(x|\eta) &= h(x)exp(\eta^T\phi(x)-A(\eta)) \\
+&=\frac{1}{exp(A(\eta))}h(x)exp(\eta^T\phi(x))
 \end{aligned}
 $$</div>
 
-<p>给定核函数如何确定映射以及对应的希尔伯特空间？</p>
+<p>其中，$\eta$ 为参数向量；你看 $exp(A(\eta))$ 看着是不是就像归一化的作用，再取个对数就是 $A(\eta)$ 因此 $A(\eta)$ 也就是所谓的对数配分函数；$\phi(x)$ 则称为<strong>充分统计量</strong>，这是关于样本的函数，充分的意思呢就是有了它就相当于可以丢掉样本了，比如正态分布里的均值和方差。$h(x)$ 就不怎么重要了通常取 1。</p>
 
-<p>定义再生核map $\Phi:\mathbb{R}^p \rightarrow \mathbb{R}^{\mathbb{R}^p}$ 且 $\Phi(z)=\kappa(\cdot,z)$，相当于将 $z\in \mathbb{R}^p$ 映射成一个函数 $\kappa(\cdot,z):\mathbb{R}^p \rightarrow \mathbb{R}$，则</p>
+<p>指数族分布可以总结为 <strong>3 个特性和 3 个地位</strong>。</p>
 
-<p>$$
-\kappa(x,z) = &lt;\kappa(\cdot,x),\kappa(\cdot,z)&gt;=&lt;\Phi(x),\Phi(z)&gt;
-$$</p>
-
-<p>即通过核函数可以找到对应的映射，而对应的希尔伯特空间可以表示为由 $\Phi(\cdot)$ 组成的向量空间。</p>
-
-<p>给定映射关系如何确定核函数？</p>
-
-<p>直接令 $\kappa(x,z) = &lt;\Phi(x),\Phi(z)&gt;$，然后验证 Mercer 定理即可。</p>
-
-<h2 id="各种空间的定义补充">各种空间的定义补充</h2>
-
-<p>各种空间之间的关系其实有点<strong>从抽象到具体的过程</strong>。我们给空间<strong>赋予一些属性或者制定一些规则</strong>就能得到特定的空间。</p>
-
-<p>比如大家熟悉的<strong>向量空间</strong>，那就是满足加减法和数乘的空间，很好理解，空间内任意元素都可以用一组基通过加减和数乘(线性组合)表示。</p>
-
-<p>比如赋予距离的空间称为<strong>度量空间</strong>，定义距离时需要遵守三条公理：</p>
+<p>3 个特性：</p>
 
 <ol>
-<li><p>非负性，同一性：距离都是非负的，自己到自己的距离当然是 0 了</p></li>
+<li><p><strong>充分统计量</strong>：online learning时不必要保存所有样本信息</p></li>
 
-<li><p>对称性：你走向我的距离等于我走向你的距离</p></li>
+<li><p><strong>共轭</strong>：指数族分布具有共轭先验，在贝叶斯理论中，若先验为似然函数的共轭先验，则后验与先验具有相同的形式，避免了求积分常数的困难</p></li>
 
-<li><p>三角不等式：你从 A 走到 B 在走到 C 的距离肯定大于等于直接从 A 到 C 的距离</p></li>
+<li><p><strong>最大熵</strong>：指数族分布满足最大熵原理，在所有可能的概率模型(分布)中，熵最大的模型是最好的模型</p></li>
 </ol>
 
-<p>比如赋予范数的空间称为<strong>赋范空间</strong>，范数可以理解为一个元素到 0 的距离，同时它比距离的定义<strong>更具体了一步</strong>，因为它还需要额外满足</p>
-
-<p>$$
-||ax|| = |a| \times||x||
-$$</p>
-
-<p>那么我们在定义了范数后自然能用范数来定义距离了，比如 $d(x,y) = ||x-y||$，但是不能用距离来定义范数哦，因为<strong>波霸奶茶是奶茶，但不是所有奶茶都叫波霸奶茶</strong></p>
-
-<p>有了范数来定义距离了有时候还不够，我们有时候会需要<strong>角度</strong>信息，这时候就<strong>再给波霸奶茶加点料</strong>，于是赋予了内积的向量空间称为<strong>内积空间</strong>，定义内积需要遵守三条公理：</p>
+<p>3 个地位：</p>
 
 <ol>
-<li><p>对称性</p></li>
-
-<li><p>第一元素线性：
-$$&lt;ax,y&gt;=a&lt;x,y&gt;,&lt;x+y,z&gt;=&lt;x,z&gt;+&lt;y,z&gt;$$ 这不就是向量空间的数乘和加减运算嘛</p></li>
-
-<li><p>正定性</p></li>
+<li><strong>广义线性模型</strong>：通过三个假设将指数分布族转换成对应的机器学习模型，如线性回归、logistic 回归、Softmax模型等</li>
 </ol>
-
-<p>那么定义了内积后自然也能用<strong>加了仙草的波霸奶茶来定义波霸奶茶</strong>(用内积来定义范数)，比如</p>
-
-<p>$$||x||=\sqrt{&lt;x,x&gt;}$$</p>
-
-<p>还有个比较难以描述的<strong>完备空间</strong>，可以理解为极限操作不会跑出自己的空间就称为完备的，<strong>奶茶只要三分糖，太甜了就超出能承受的甜度极限了呗</strong>。</p>
-
-<p>有了这么一步步的具体化后，<strong>希尔伯特空间</strong>就可以出来了，它就是<strong>一杯三分糖的加了仙草的波霸奶茶</strong>，呸，它就是<strong>一个完备的内积空间</strong></p>
 
 <blockquote>
-<p>总结来说：</p>
+<p>广义线性模型的三个假设：</p>
 
 <ol>
-<li><p>赋范线性空间就是赋予了范数的向量空间，也是度量空间（具有线性结构的度量空间）</p></li>
+<li><p>$y$ 的条件概率属于指数族分布</p></li>
 
-<li><p>内积空间是赋范线性空间</p></li>
+<li><p>$y$ 的估计值 $h(x,\theta)=E(y|x,\theta)$</p></li>
 
-<li><p>希尔伯特空间就是完备的内积空间，同时需要注意的是希尔伯特空间中的元素一般是函数，一个函数可以视为一个无穷维的向量。如果大家熟悉傅里叶变换或者泰勒展开，便能自然的想到这个空间的基底是什么。没错，也是一组无限多的函数。</p></li>
+<li><p>线性预测算子 $\eta=\theta^Tx$</p></li>
 </ol>
 </blockquote>
+
+<ol>
+<li><p><strong>概率图模型</strong>：无向图RBM(这个目前我也还不了解，后续学习到了再补充吧)</p></li>
+
+<li><p><strong>变分推断</strong>：后续补充</p></li>
+</ol>
+
+<h2 id="高斯分布的指数族形式">高斯分布的指数族形式</h2>
+
+<p>上面光说了那么多分布都属于指数族分布，那么我们现在来推一个看看，将大家最熟悉的高斯分布转化为指数族分布的形式，假设单变量高斯分布的均值为 $\mu$，方差为 $\sigma^2$，其概率密度可以表示为：</p>
+
+<div>$$
+\begin{aligned}
+p(x|\mu,\sigma)&=\frac{1}{\sqrt{2\pi \sigma^2}}exp\{-\frac{(x-\mu)^2}{2\sigma^2}\}\\
+&=\frac{1}{\sqrt{2\pi \sigma^2}}exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x + \mu^2)\}\\
+&=exp\{\log(2\pi \sigma^2)^{-1/2}\}exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x) - \frac{\mu^2}{2\sigma^2}\}\\
+&=exp\{-\frac{1}{2\sigma^2}(x^2-2\mu x) -(\frac{\mu^2}{2\sigma^2} + \frac{1}{2}\log(2 \pi \sigma^2)) \}
+\end{aligned}
+$$</div>
+
+<p>令</p>
+
+<div>$$
+\eta=\left(\begin{array}{l}{\eta_{1}} \\ {\eta_{2}}\end{array}\right) 
+=\left(\begin{array}{c}{\frac{u}{\sigma^{2}}} \\ {-\frac{1}{2 \sigma^2}}\end{array}\right),\phi(x) = \left(\begin{array}{l}{x} \\ {x^2}\end{array}\right) 
+$$</div>
+
+<p>眼尖的你是不是发现高斯分布的概率密度函数表示成了指数族分布的形式了。其他分布也可以这样表示，这里就不详细推导了。</p>
+
+<h2 id="对数配分函数与充分统计量的关系">对数配分函数与充分统计量的关系</h2>
+
+<p>对数配分函数在指数族分布里的表现形式为 $exp(A(\eta))$，进一步可以表示为积分的形式：</p>
+
+<p>$$
+exp(A(\eta)) = \int h(x) \cdot \exp \left(\eta^T\phi(x)\right) d x
+$$</p>
+
+<p>两边同时对 $\eta$ 求导</p>
+
+<blockquote>
+<p>牛顿莱布尼兹
+$$
+\frac{\partial}{\partial \eta} \int=\int \frac{\partial}{\partial \eta}
+$$</p>
+</blockquote>
+
+<p>可得</p>
+
+<p>$$
+exp(A(\eta))A&rsquo;(\eta)=\int h(x) \cdot exp(\eta^T\phi(x)) \cdot \phi(x) dx
+$$</p>
+
+<p>将 $exp(A(\eta)$ 移到右边</p>
+
+<p>$$
+A&rsquo;(\eta) = \frac{\int h(x) \cdot exp(\eta^T\phi(x)) \cdot \phi(x) dx}{exp(A(\eta))}=\int h(x) \cdot exp(\eta^T\phi(x) - A(\eta)) \cdot \phi(x) dx
+$$</p>
+
+<p>即</p>
+
+<p>$$
+A&rsquo;(\eta) = \int p(x|\eta) \cdot \phi(x) dx = E_{p(x|\eta)}[\phi(x)]
+$$</p>
+
+<p>还可以推导出</p>
+
+<p>$$
+A^{\prime \prime}(\eta) = Var[\phi(x)]
+$$</p>
+
+<p>进一步也说明了 $A(\eta)$ 是个凸函数。这里告诉了我们<strong>对数配分函数是个凸函数，且它的一阶导数和二阶导数分别对应着充分统计量的期望和方差。</strong></p>
+
+<h2 id="极大似然估计与充分统计量的关系">极大似然估计与充分统计量的关系</h2>
+
+<p>既然 $\eta$ 是参数，我们在learning的时候当然是需要将其估计出来的，很自然的想法就是用极大似然估计来估计 $\eta$，假设有数据 $x_1,&hellip;,x_N$，则</p>
+
+<div>$$
+\begin{aligned}
+\eta_{MLE}&=\arg\max\log p(x_1,...,p_N|\eta)\\
+&=\arg\max\log \prod_{i=1}^{N} p(x_i|\eta)\\
+&=\arg\max\ \sum_{i=1}^N \log p(x_i|\eta)\\
+&=\arg\max\ \sum_{i=1}^N [\log h(x_i) + \eta^T\phi(x_i) - A(\eta)]
+\end{aligned}
+$$</div>
+
+<p>目标函数对 $\eta$ 求导并令导函数为0</p>
+
+<div>$$
+\frac{\partial}{\partial \eta} \sum_{i=1}^N [\log h(x_i) + \eta^T\phi(x_i) - A(\eta)] = \sum_{i=1}^N \phi(x_i) - N \cdot A'(\eta) = 0
+$$</div>
+
+<p>可得到 $A&rsquo;(\eta_{MLE})$ 可以表示为</p>
+
+<div>$$
+A'(\eta_{MLE}) = \frac{1}{N} \sum_{i=1}^N\phi(x_i)
+$$</div>
+
+<p>又因为 $A(\eta)$ 是 $\eta$ 的函数，$A&rsquo;(\eta)$ 也是 $\eta$ 的函数，那么就可以通过 $A&rsquo;(\eta)$ 的反函数求解出 $\eta$ 的估计值 $\eta_{MLE}$，同时这也表现了充分统计量的性质，<strong>不需要保存所有样本信息，只需要通过充分统计量就能得到参数的估计值</strong>。</p>
+
+<h2 id="最大熵原理与指数族分布">最大熵原理与指数族分布</h2>
+
+<p>一言不合甩结论：<strong>在给定的约束条件下，指数族分布是信息熵(微分熵)最大的分布。</strong></p>
+
+<p>很多人可能对熵的概念都还不清楚，那我们从信息量说起，信息量就是你对一个事件的不确定程度的认识，我们直观地来理解一下，一个事件发生的概率越大，那就是越确定这个事件会发生，那他的不确定性就越小，包含的信息可能就越少，那他的信息量就比较小，也就是说信息量和事件发生的概率成反比，信息量的定义为：</p>
+
+<p>$$
+I(X)=-\log p(X)
+$$</p>
+
+<p>一个事件发生的可能有好几种可能情况，那么我们就会希望知道平均意义下这个事件的信息量有多少，这就得到了信息熵的概念，其实是信息量的期望:</p>
+
+<p>$$
+H(X)=E(I(X))
+$$</p>
+
+<p>当 $X$ 为离散时，期望就是求和</p>
+
+<p>$$
+H(X)=-\sum_{x} p(x) \log p(x)
+$$</p>
+
+<p>其中，$p(x)=p(X=x)$，那如果 $X$ 是连续的，那信息熵就是个积分的形式了。</p>
+
+<p>介绍了半天熵，那么最大熵有什么好处呢？答案是：<strong>在学习概率模型时，在所有可能的概率模型(分布)中，熵最大的模型是最好的模型。</strong></p>
+
+<p><strong>在没有任何已知的情况下</strong></p>
+
+<p>最大熵可以用优化命题表示为：</p>
+
+<div>$$
+    $$
+\begin{array}{cl}{\max_{p}} & {-\sum_{i=1}^{K} p\left(x_{i}\right) \log p\left(x_{i}\right)} \\ {\text { s.t. }} & {\sum_{i=1}^K p\left(x_{i}\right) = 1}\end{array}
+$$
+$$</div>
+
+<p>利用拉格朗日乘子法可得：$\hat{p}(x_i)=\frac{1}{K}$</p>
+
+<p>也就是说<strong>在没有任何已知的情况下均匀分布的熵最大。(离散型)</strong></p>
+
+<p><strong>满足已知事实(约束)的情况下</strong></p>
+
+<p>最大熵可以用优化命题表示为：</p>
+
+<div>$$
+    $$
+\begin{array}{cl}{\max_{p}} & {-\sum_{i=1}^{K} p\left(x_{i}\right) \log p\left(x_{i}\right)} \\ {\text { s.t. }} & {\sum_{i=1}^K p\left(x_{i}\right) = 1} \\
+{} & {E_{p(x)}[f(x)]= E_{\hat{p}(x)}[f(x)] = \Delta}
+\end{array}
+$$
+$$</div>
+
+<p>其中，$\hat{p}(x)$ 为经验分布，$f(x)$ 为任意关于 $x$ 的函数向量(可以理解为将已知事实或者先验信息写成约束的形式)。</p>
+
+<p>同样利用拉格朗日乘子法可以得到 $p(x)$ 的表达式符合指数族分布的一般形式。</p>
+
+<p>也就是说<strong>在满足已知事实(约束)的情况下指数族分布的熵最大。(离散型)</strong></p>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E6%95%B0%E6%97%8F%E5%88%86%E5%B8%83/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
