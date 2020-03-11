@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-10T11:42:04&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-11T20:18:16&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,194 +115,199 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/">对偶理论</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/">「机器学习」支持向量机SVM</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-11 </span>
+      <span class="post-time"> 2019-08-14 </span>
       <div class="post-category">
-          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>在求解一个优化命题时，如果其对偶形式便于求解，常常可以通过求解对偶问题来避免直接对原问题进行求解。比如机器学习中典型的SVM就涉及到对偶理论，以及拉格朗日乘子法、KKT条件等概念。</p>
+      <p>SVM（Support Vector Machine）又称为支持向量机，是一种用于机器学习的算法，不仅支持线性分类，结合核方法还可以用于非线性分类。其思想主要为<strong>最大间隔</strong>，推导依赖于<strong>对偶理论</strong>，因此可以将SVM归结于：间隔、对偶、核方法。</p>
 
-<p>首先简单通俗地说说这几个概念是干嘛的</p>
+<h2 id="间隔">间隔</h2>
 
-<ol>
-<li><p>对偶理论：对偶也就是孪生双胞胎，一个优化命题也就有其对应的兄弟优化命题。</p></li>
-
-<li><p>拉格朗日函数：将原本优化命题的目标函数和约束整合成一个函数。</p></li>
-
-<li><p>KKT条件：函数的最优值满足的性质。</p></li>
-</ol>
-
-<p>上面的解释可能不够准确，但希望对这些概念有个初步的认识，接下来从优化命题的角度来解释一下这些东西。</p>
-
-<p>首先是原问题</p>
+<p>简单举例一个二分类问题，假设有线性可分的两堆点</p>
 
 <div>$$
-\begin{aligned} \min _{x \in R^{n}} f_0(x) & \\ \text { s.t. } f_{i}(x) \leq 0, i &=1,2, \ldots, k \\ h_{j}(x)=0, j &=1,2, \ldots, l \end{aligned}
+\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1}^{N}， x_{i} \in \mathbb{R}^{p}, y_{j} \in\{-1,1\}
 $$</div>
 
-<p>这个优化命题说的是你有个函数 $f_0(x)$，它的自变量是 $x$，维度为 $n$，你想要求这个函数的最小值，同时这个自变量(优化里又叫决策变量)还需要满足 $k$ 个不等式约束 $f_i(x) \le 0$ 以及 $l$ 个等式约束 $h_j(x) = 0$。假设满足这些约束的情况下这个函数的最小值为 $p^*$。</p>
+<p>要将它们分开的超平面有很多种，<strong>SVM做的相当于要寻找一个最优的超平面 $w^Tx+b=0$ 来分开不同类别的样本点</strong>，因此首先需要定义什么样的超平面是最优的，<strong>也就是所有样本点到超平面的最短距离是最大的</strong>，假设两个类别中距离分隔超平面最近的点所在的超平面分别为 $w^Tx + b =1$ 和 $w^Tx+b = -1$(这里的 $1,-1$ 只是为了方便推导，不影响优化的结果，因为你总是可以对超平面乘以一个系数然后做变量替换得到$w^Tx + b =1$ 和 $w^Tx+b = -1$)，SVM要最大化的间隔就是<strong>这两个平面之间的距离</strong>。</p>
 
-<p>如果是个无约束的求极值问题，高中时我们就学过，求导并令导函数为 $0$ 便能求出函数取得极值时对应的自变量 $x^*$。 但是这里是有约束的优化问题，显然直接求导的方法不再适用，那自然的想法就是把约束去掉，拉格朗日函数就是通过将约束<strong>线性组合</strong>放入目标函数而形成的新的一个函数：</p>
+<p>你可能要问两个平面的距离怎么求？回忆下高中的两条平行直线的距离公式，对于直线 $ax+by+c_1 = 0$ 和 $ax + by +c_2 = 0$，距离公式为
+$$d = \frac{|c_1-c_2|}{\sqrt{a^2+b^2}}$$</p>
 
-<p>$$
-L(x,\lambda,v) = f_0(x) + \sum_{i=1}^k \lambda_i f_i(x) + \sum_{j=1}^l v_j h_j(x)
+<p>(莫名的亲切感有没有)那平面的距离公式类比下就可以得到：
 $$
-这里 $L(x,\lambda,v)$ 是个三元函数 $R^n \times R^k \times R^l \rightarrow R$，且 $\lambda \ge 0,v$ 称为拉格朗日向量，至于这个系数 $\lambda$ 为什么还需要满足 $\lambda \ge 0$，你先记住这是为了<strong>确保下界</strong>，后面会详细解释。</p>
-
-<h2 id="原问题的等价形式">原问题的等价形式</h2>
-
-<p>我们原来是要求函数 $f_0(x)$ 关于 $x$ 的最小值，为了不考虑原问题的约束而构造了拉格朗日函数 $L(x,\lambda,v)$。我们先将其看作是 $\lambda,v$ 的函数，然后定义函数：</p>
-
-<p>$$
-q(x) = \max_{\lambda \ge 0,v } L(x,\lambda,v)
+\text{margin} = \frac{1 - (-1)}{\sqrt{w_1^2+w_2^2+ &hellip; + w_p^2}} = \frac{2}{||w||}
 $$</p>
 
-<p>可以证明 $\min_{x\in R^{n}}q(x)$ 与原问题等价，即满足</p>
-
-<div>$$
-p^* = \min_{x\in R^{n}}q(x) = \min_{x\in R^{n}}\max_{\lambda \ge 0,v}L(x,\lambda,v)
-$$</div>
-
-<p>这个证明很简单，我们只需要分类讨论一下这个<strong>无约束问题中原问题约束是否成立</strong>：</p>
-
-<ol>
-<li><p>$x$ 满足原问题约束，则 $q(x) = f_0(x)$</p></li>
-
-<li><p>$x$ 不满足原问题约束，即 $f_i(x) \ge 0$ 或 $h_j(x) \not= 0$，则 $q(x) = + \infty$</p></li>
-</ol>
-
-<p>因此 $\min_{x}q(x) = \min_{x}f_0(x)$ 且 $x$ <strong>满足原问题约束</strong>，即 $\min_{x\in R^{n}}q(x)$  <strong>等价于原问题。</strong></p>
-
-<h2 id="拉格朗日对偶函数">拉格朗日对偶函数</h2>
-
-<p>先前我们把拉格朗日函数看作是 $\lambda,v$ 的函数，现在我们将其看作是关于 $x$ 的函数，定义拉格朗日对偶函数，这只是个名字，其实就是 $L(x,\lambda,v)$ 关于 $x$ 的下界(或者理解为最小值)：</p>
-
-<p>$$
-g(\lambda,v) = \min_{x \in R^{n} } L(x,\lambda,v)
-$$</p>
-
-<p>拉格朗日对偶函数 $g(\lambda,v)$ 有两个重要的性质：</p>
-
-<ol>
-<li>这是个凹函数(这里不证明了，感兴趣的可以自查)</li>
-<li>$g(\lambda,v)\le p^*$</li>
-</ol>
-
-<p>性质2是重点！我们来证明一下，假设 $\tilde{x}$ 是原问题的可行解，说明 $\tilde{x}$ 满足原问题的不等式约束以及等式约束，将其带入 $L(x,\lambda,v)$ 中，有</p>
-
-<p>$$
-L(\tilde{x},\lambda,v) = f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x}) + \sum_{j=1}^l v_j h_j(\tilde{x})
-$$</p>
-
-<p>根据 $g(\lambda,v)$ 的定义有</p>
-
-<p>$$
-g(\lambda,v) = \min_{x} L(x,\lambda,v) \le L(\tilde{x},\lambda,v) = f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x})
-$$</p>
-
-<p>$\min_{x} L(x,\lambda,v) \le L(\tilde{x},\lambda,v)$ 是因为函数的(最小值)下界肯定小于可行解代入的值呀！</p>
-
-<p>我们知道 $\tilde{x}$ 是原问题的可行解也意味着 $f_i(x) \le 0$，进一步，如果 $\lambda_i \ge 0$ 会发生什么？也就是 $\lambda_i f_i(x) \le 0$，那么
-$$
-g(\lambda,v) \le f_0(\tilde{x}) + \sum_{i=1}^k \lambda_i f_i(\tilde{x}) \le f_0(\tilde{x})
-$$
-也就是 $g(\lambda,v) \le f_0(\tilde{x})$，这是对任意可行解 $\tilde{x}$ 都成立的，那么对函数取得最小值的 $x^*$ 对应的函数值 $p^*$ 也成立。即</p>
-
-<p>$$
-g(\lambda,v) \le p^*
-$$
-这也就得到了性质2，可以理解为<strong>我们为原问题的最优值 $p^*$ 找到了一个下界函数 $g(\lambda,v)$，为了确保下界需要满足我们之前的假设 $\lambda \ge 0$，而对 $v$ 的取值则是任意的。</strong></p>
-
-<h2 id="原问题的对偶形式">原问题的对偶形式</h2>
-
-<p>前面的分析中我们看到原问题的最优值有一个函数下界，那么如果我们来优化这个函数下界，让它来逼近原问题的最优值，是不是为求解原问题提供了另一种思路呢？这就是所谓的<strong>对偶问题</strong></p>
-
-<div>$$
-\begin{aligned} d^* =\max _{\lambda \ge 0,v} g(\lambda,v) = \max _{\lambda \ge 0,v} \min _{x \in R^n} L(x,\lambda,v)
-\end{aligned}
-$$</div>
-
-<p>这个优化命题相当于最大化原问题的下界函数，其中 $d^*$ 为优化命题的最优值，约束 $\lambda \ge 0 $ 是用来确保下界的。根据 $g(\lambda,v)$ 是凹函数这一性质可知，这个最大化凹函数的优化问题是个<strong>凸问题</strong>，凸问题也就意味着便于求解，<strong>因此无论原问题的凹凸性如何，都可以转化为对偶问题然后通过求解这个凸问题来得到原问题的下界，甚至原问题的最优解</strong>。什么时候这个下界函数的最大值等于原问题的最优解呢？这就是下面要讨论的问题。</p>
-
-<h3 id="强对偶性与弱对偶性">强对偶性与弱对偶性</h3>
-
-<p>我们已知知道 $g(\lambda,v)$ 是原函数最小值 $p^*$ 的下界，那么说明 $g(\lambda,v)$ 的最大值也需要满足</p>
-
-<p>$$
-d^* \le p^*
-$$</p>
-
-<p>这就是弱对偶性了，很自然就满足了，那么强对偶性从名字听就比较强，自然要求要严格一点，不能只是取 $\le$ 号，而是直接取等号，即</p>
-
-<p>$$
-d^* = p^*
-$$</p>
-
-<p>对于弱对偶，我们能够通过求解原问题的对偶问题得到原问题最小值的下界，而如果满足强对偶性，我们直接就得到原问题的最优解了！意味着<strong>我们能够通过求解对偶问题来避免直接求解原问题同时获得原问题的最优函数值</strong>。</p>
-
-<h3 id="强对偶性">强对偶性</h3>
-
-<p>如何才能判断原问题是否满足强对偶性呢？</p>
-
-<p><strong>凸问题通常but not always满足强对偶性</strong>
-也就是说凸问题中有部分满足强对偶性，那对这些部分约束一下就是slater条件：</p>
-
-<blockquote>
-<p>存在 $x$ 严格可行：$f_i(x) &lt; 0,i=1,&hellip;,k$</p>
-</blockquote>
-
-<p>当不等式约束为仿射函数时，这个条件可以弱化为</p>
-
-<blockquote>
-<p>存在 $x$ 满足部分严格可行：$f_i(x) \le 0,i=1,&hellip;,m;f_i(x) &lt; 0,i=m+1,&hellip;,k$</p>
-</blockquote>
-
-<p>那么有
-$$
-\text{凸问题} + \text{Slater条件} = \text{强对偶性}
-$$</p>
-
-<p>进一步探究一下当原问题满足强对偶性时，原问题和对偶问题的最优解满足哪些性质，首先从 $p^* = d^*$ 看起，利用函数的表达式描述这一关系有：</p>
+<p>$w$ 的维度为 $p$, $w_i$ 表示 $w$ 的第 $i$ 个元素。SVM的目标就是最大化这个margin，那需要满足什么约束呢？首先分类要准确吧这可是分类器的初衷，即</p>
 
 <div>$$
 \begin{aligned}
-f_0(x^*) &= g(\lambda^*,v^*)\\
-&= \min_x (f_0(x) + \sum_{i=1}^k \lambda_i^* f_i(x) + \sum_{j=1}^l v_j^* h_j(x))\\
-&\le f_0(x^*) + \sum_{i=1}^k \lambda_i^* f_i(x^*) + \sum_{j=1}^l v_j^* h_j(x^*)\\
-&\le f_0(x^*)
-\end{aligned}   
+w^Tx_i+b \ge +1 &\text{ if } y_i= +1\\
+w^Tx_i+b \le -1 &\text{ if } y_i= -1\\
+\end{aligned}
 $$</div>
 
-<p>第一行到第二行是根据 $g(\lambda,v)$ 的函数定义，第二行到第三行是根据函数的下界小于 $x$ 取任意值对应的函数值，这里 $x = x^*$，第三行到第四行是根据 $x^*$ 满足原问题的约束条件 $f_i(x) \le 0, h_j(x) =0$。所以<strong>不等号同时取等号</strong>，并可以得出以下两条结论：</p>
+<p>上面两个式子的直观解释就是样本点在超平面 $w^Tx + b \ge +1$ 和 $w^Tx +b \le -1$ 的两侧。可以进一步合并为
+$$
+y_i(w^Tx_i+b) \ge +1, \forall i = 1,&hellip;,N
+$$</p>
+
+<p>那么我们要求解相当于是一个目标函数为最大化间隔且满足分类约束的优化命题：</p>
+
+<div>$$
+\begin{array}{ll}{\text { max }} & {J(w)= \frac{2}{||w||} }\\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
+$$</div>
+
+<p>等价于最小化问题(目标函数取倒数)</p>
+
+<div>$$
+\begin{array}{ll}{\text { min }} & {\Phi(w)= \frac{1}{2} w^{T} w} \\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
+$$</div>
+
+<h2 id="对偶">对偶</h2>
+
+<p>我们已经将SVM的思想表达为优化命题的形式，接下来考虑如何对其进行求解，对于一个含约束的优化命题可以通过拉格朗日乘子法转化为无约束问题，然后通过求解对偶问题来间接求解原问题。</p>
+
+<p>对于上述SVM的最小化问题，构造拉格朗日函数</p>
+
+<div>$$
+L(w, b, \alpha)=\frac{1}{2} w^{T} w-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1\right]
+$$</div>
+
+<p>原问题的拉格朗日形式为：</p>
+
+<div>$$
+\min_{w,b}\max_{\alpha_i \ge 0 }L(w,b,\alpha)
+$$</div>
+
+<p>对偶问题为</p>
+
+<div>$$
+\max_{\alpha_i \ge 0 }\min_{w,b}L(w,b,\alpha)
+$$</div>
+
+<p>先看对偶问题的内层 $\min_{w,b}L(w,b,\alpha)$，对于这个无约束最小化问题，直接求导</p>
+
+<div>
+$$
+\begin{array}{l}{\frac{\partial L(w, b, \alpha)}{\partial w}=0 \Rightarrow w(\alpha)=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial L(w, b, \alpha)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0}\end{array}
+$$
+</div>
+
+<p>再将求导得到的结果带入拉格朗日函数 $L(w,b,\alpha)$ 得到外层的最大化问题为：</p>
+
+<div>
+$$
+\begin{aligned}
+\max_{\alpha} &\sum_{i=1}^{N} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j} x_{i}^T x_{j}\\
+\text{s.t. }& \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
+& \alpha_i \ge 0, \forall i= 1,...,N
+\end{aligned}
+$$
+</div>
+
+<p>这样得到的是一个二次规划问题，很多求解器可以完美解决，但如果样本数过多，则计算量过大。序列最小最优化SMO算法是高效求解这个问题的算法代表。SMO算法的思想与坐标上升算法的思想类似。坐标上升算法每次通过更新多元函数中的一维，经过多次迭代直到收敛来达到优化函数的目的，SMO则是每次选择尽量少的变量来优化，不断迭代直到函数收敛到最优值。</p>
+
+<p>在求解得到 $\alpha^*$ 后，如何求解原问题的 $w^*,b^*$ 呢？</p>
+
+<p>对于 $w$，直接带入求解对偶问题内层最小化问题的极值条件：</p>
+
+<div>$$
+w^*=\sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}
+$$</div>
+
+<p><strong>可以看出 $w$ 仅由 $\alpha_i^*$ 大于0 的元素对应的 $x_i$ 构成，这些 $x_i$ 也称为支持向量。</strong></p>
+
+<p>对于 $b$，找到 $\alpha_t^* &gt; 0$ 的点，然后根据KKT条件中的松弛互补条件</p>
+
+<div>$$
+\alpha_{t}^{*}\left(y_{t}\left(w^{* T} x_{t}+b^{*}\right)-1\right)=0
+$$</div>
+
+<p>可以得到 $x_t$ 在margin上且</p>
+
+<p>$$
+{w^*}^Tx_t + b^* = y_t
+$$</p>
+
+<p>所以</p>
+
+<div>$$
+b^* = y_t - {w^*}^Tx_t = y_t - \sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}^T x_t
+$$</div>
+
+<p>这样就得到了用于分类的超平面了，对于测试样本，只需要带入超平面检验其正负(在超平面的哪一侧)就能进行分类。</p>
+
+<p>总结一下SVM的套路：<strong>首先根据最大间隔(max问题)的思想确定目标函数(min问题)，将原问题(带约束)表示为拉格朗日函数的形式(minmax问题，无约束)，转换为对偶问题(maxmin问题)，对于内层无约束min问题，求导并将极值条件代入拉格朗日函数，可以得到外层max问题是一个二次规划，求解得到拉格朗日乘子的最优解 $\alpha^*$ 后反求超平面参数 $w^*,b^*$，其中 $b^*$ 需要利用KKT松弛互补条件求解。</strong></p>
+
+<h2 id="核方法">核方法</h2>
+
+<p>对于线性不可分的样本，我们可以对原始样本 $x_i \in \mathbb{R}^p$ 进行非线性变换 $\phi(x_i) \in \mathbb{R}^q$ (通常 $q&gt;p$) 得到高维特征空间，在特征空间中寻找一个超平面 $w^T\phi(x) + b = 0$ 来划分不同类别的样本点。推导思路与上面一致，只是原来 $x_i$ 的位置需要用 $\phi(x_i)$ 替代，并且 $\phi(x_i)^T\phi(x_j)$ 可以用核函数表示为 $\kappa(x_i,x_j)$。</p>
+
+<h2 id="soft-margin-svm">Soft Margin SVM</h2>
+
+<p>上面讲述的Hard Margin SVM可能出现两个问题：</p>
 
 <ol>
-<li><p>极值条件：$x^*$ 是使 $L(x,\lambda^*,v^*)$ 取得下界的点，即 $x^*$ 是使 $\nabla_x L(x,\lambda^*,v^*) = 0$ 的点</p></li>
+<li><p>投影到高维空间仍然不可分</p></li>
 
-<li><p>松弛互补条件：$\sum_{i=1}^k \lambda_i^*f_i(x^*)=0$</p></li>
+<li><p>过拟合</p></li>
 </ol>
 
-<h3 id="kkt条件">KKT条件</h3>
+<p>改进方法：<strong>加入软约束</strong>，原来我们要求分类必须准确，即</p>
 
-<p>KKT也就是原问题和对偶问题的最优点 $x^*,\lambda^*,v^*$ 满足的几个条件：</p>
+<p>$$
+y_i(w^Tx_i +b) \ge 1, \forall i=1,&hellip;,N
+$$</p>
+
+<p>现在我们允许一些异常点的出现，也就是说异常点不一定需要满足分类约束(异常点可以在超平面 $w^Tx+b = 1$ 和 $w^Tx + b =-1$ 之间)，与超平面的距离假设为 $\epsilon_i$，同时我们需要对 $\epsilon_i$ 进行惩罚，这样才能确保分类的准确性。可以理解为我们期望正常情况下 $\epsilon_i$ 都为 0，只有在异常点出现时 $\epsilon_i$ 才是个大于零的实数。对应的优化命题可以改写为</p>
+
+<div>$$
+\begin{array}{ll}{\text { min }} & {\Phi(w,\epsilon)= \frac{1}{2} w^{T} w} + C \sum_{i=1}^N \epsilon_i \\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 - \epsilon_i,\forall i=1, \ldots, N} \\
+&\epsilon_i \ge 0
+\end{array}
+$$</div>
+
+<p>其中 $C\ge 0$ 是可调参数，表示对异常点的惩罚程度，$\epsilon_i$ 表示软约束。</p>
+
+<p>相比于原来hard margin的SVM，这一优化命题多了 $N$ 条关于 $\epsilon_i$ 的不等式约束，还是跟先前一样的套路，写成拉格朗日函数</p>
+
+<div>$$
+L(w,b,\epsilon,\alpha,\beta) = \frac{1}{2} w^{T} w+C \sum_{i=1}^{N} \epsilon_{i}-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1+\epsilon_{i}\right]-\sum_{i=1}^{N} \beta_{i} \epsilon_{i}
+$$</div>
+
+<p>转化为对偶问题，内层的最小化问题求导得到极值条件</p>
+
+<div>$$
+\begin{array}{l}{\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial w}=0 \Rightarrow w=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial \epsilon_i}=0 \Rightarrow C-\alpha_{i}-\beta_{i}=0 \Rightarrow\left\{\begin{array}{l}{\alpha_{i}=C-\beta_{i}} \\ {\beta_{i}=C-\alpha_{i}}\end{array} \Rightarrow 0 \leq \alpha_{i}, \beta_{i} \leq C\right.}\end{array}
+$$</div>
+
+<p>然后代入 $L(w,b,\epsilon,\alpha,\beta)$ 并求解外层max问题，最后来根据KKT条件求解超平面参数。</p>
+
+<h2 id="多类别问题">多类别问题</h2>
+
+<p>两种策略(假设共有K个类别)</p>
 
 <ol>
-<li>原问题的约束条件：$f_i(x^*) \le 0,h_j(x^*)=0$</li>
-<li>对偶问题的约束条件：$\lambda_i^* \ge 0$</li>
-<li>松弛互补条件：$\sum_{i=1}^k \lambda_i^*f_i(x^*)=0$</li>
-<li>极值条件：
-$\nabla_x f_0(x^*) + \sum_{i=1}^k \lambda_i^* \nabla_x f_i(x^*) + \sum_{j=1}^l v_j^* \nabla_x h_j(x^*) = 0$</li>
+<li><p>一对一 (one-against-one)：所有类别两两之间进行分类得到 $C_K^2$ 个超平面，对于测试数据代入所有超平面进行判断，然后采用<strong>投票表决</strong>进行分类。</p></li>
+
+<li><p>一对所有 (one-against-all)：针对一个类别和剩下所有类别进行分类得到 $K-1$ 个超平面，对于测试数据，代入超平面方程，选择结果最大的那个超平面对应的类别作为分类结果。</p></li>
 </ol>
 
-<p><strong>如果原问题是凸问题，则KKT条件为充要条件，也就是说满足KKT条件的点也就是原问题和对偶问题的最优解，那就能够在满足KKT条件下用求解对偶问题来替代求解原问题，使得问题求解更加容易。</strong></p>
+<div>$$
+k^{*}=\underset{k}{\arg \max }\left(w_{k}^{T} x+b\right)
+$$</div>
     </div>
     <div class="read-more">
-      <a href="/post/%E5%AF%B9%E5%81%B6%E7%90%86%E8%AE%BA/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

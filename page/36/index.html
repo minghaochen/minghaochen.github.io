@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-10T11:42:04&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-11T20:18:16&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,43 +115,211 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/">「机器学习」特征工程</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/">「机器学习」主成分分析PCA</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-05 </span>
+      <span class="post-time"> 2019-08-09 </span>
       <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> ‘机器学习’ </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p><strong>数据和特征决定了机器学习的上限，而模型和算法只是逼近这个上限而已。</strong></p>
+      <h1 id="为什么要降维">为什么要降维</h1>
 
-<p>那么我们需要怎么来抬高这一上限呢，特征工程的流程还是比较常规的，这里讲一下主要的思路，只要思路理清了，具体的实现调调包一般就OK啦。（sklearn统统搞定~）</p>
+<p>要说到降维的目的，主要是用来解决过拟合这一问题的，降维的方式主要有三种</p>
 
-<p>当你拿到一堆数据时，你的第一反应想干嘛？</p>
+<ul>
+<li>直接降维—特征选择</li>
+<li>线性降维—PCA(今日份猪脚)，MDS多维尺度法</li>
+<li>非线性降维—流形学习ISOMAP，LLE(Locally Linear Embedding)</li>
+</ul>
 
-<p>肯定想画几个特征看看它们长什么样吧，那如果不同特征之间规格都不一样，假设你把它们画在同一坐标轴也观察比较不了，而且也会影响后续的训练效率，所以很自然的想法就是先把数据的规格统一一下，那就是所谓的无量纲化；</p>
+<h1 id="数据矩阵描述">数据矩阵描述</h1>
 
-<p>那你在无量纲化难免遇到缺失数据，这时候当然是要补全数据啦，最直接的做法就是拿平均值来替代一下；</p>
+<p>数据：$X=(x_1,x_2,&hellip;,x_N)^T_{N \times P }, x_i \in \mathbb{R}^P $，为了便于后续推导我们将均值和方差表示为矩阵形式，思路就是<strong>把连加符号改写成矩阵乘积的形式</strong>。</p>
 
-<p>还有可能需要做的就是针对不同的算法进行特征的转化，算法中有的需要定性特征有的需要定量特征，转化的思想有点“分类”的思想，比如根据阈值将定量特征“分类”为0或1（大于某个阈值为1否则为0），再比如根据定性数据的值“分类”，有几个值就分几类，相当于拓展几个特征，只有对应特征的值为1，其他特征的值为0，这也叫做哑编码（比如一个特征的值有1、2、3三种可能情况；那就可以拓展为3个特征，原特征值为1时，对应新特征”1“的位置为1，其他位置为0）。</p>
+<p>采样均值为：
+$$
+\bar{x} = \frac{1}{N}\sum_{i=1}^N x_i = \frac{1}{N}(x_1,x_2,&hellip;,x_N)\mathbb{1}_{N} = \frac{1}{N}X^T\mathbb{1}_N
+$$
+采样方差为
+$$
+S = \frac{1}{N}\sum_{i=1}^N (x_i-\bar{x}) (x_i-\bar{x})^T = \frac{1}{N}X^THH^TX =  \frac{1}{N}X^THX
+$$
+其中 $H = I_N - \frac{1}{N}\mathbb{1}_N\mathbb{1}_N^T$ 为中心矩阵，作用可以理解为<strong>去均值</strong>，这里可以中心均镇的转置等于本身，中心矩阵的平方 $HH^T$ 等于中心矩阵 $H$ 本身。</p>
 
-<p>以及还有按照一定规则进行特征转化的，比如多项式、或者自定义规则。以上这些过程呢也称为<strong>数据预处理</strong>。</p>
+<h1 id="pca的主要思想">PCA的主要思想</h1>
 
-<p>当你把手头上的数据处理一波后，起码这些数据能够拿来进行训练了，但是还是要进一步提高所谓的<strong>上限</strong>呀，你拿到的数据可能特征非常多，含有很多无用特征，自然的想法就是把那些无用的特征剔除掉，选择有用的特征来训练，这就是<strong>特征选择</strong>的过程，那什么样的数据称为”有用“呢，一般来说两个基本原则吧：发散就是说方差要大，如果一个特征没什么变化，那肯定反应不出目标的变化；相关就很直白了，和目标关系越大的特征当然越有用了。</p>
+<ul>
+<li>一个中心：原始特征空间的重构</li>
+<li>两个基本点： 1. 最大投影方差 2. 最小重构代价</li>
+</ul>
 
-<p>当你把有用的特征选择出来后，结果还是发现特征维度还是太高了，这会影响你的训练效率，维度高的解决办法很自然就是降低维度啊，那就轮到降维算法出场了，主要有PCA和LDA，降维的目标相当于用较低维度的数据来表征原始数据的特征，也就是<strong>特征提取</strong>啦。</p>
+<p>首先将数据进行中心化，即 $x_i - \bar{x}$</p>
 
-<p>OK了，经过<strong>数据预处理、特征选择、特征提取</strong>，现在你手上有的就是<strong>较低维度的有用数据</strong>了吧，快拿去train一发试试！</p>
+<h2 id="最大投影方差角度">最大投影方差角度</h2>
 
-<figure>
-    <img src="/images/post/%e7%89%b9%e5%be%81%e5%b7%a5%e7%a8%8b/%e7%89%b9%e5%be%81%e5%b7%a5%e7%a8%8b.svg"/> 
-</figure>
+<p>假设有单位投影向量 $u_1,||u_1||_2 = 1$，向量 $x_i - \bar{x}$ 在 $u_1$ 上的投影为 $(x_i - \bar{x})^Tu_1$ 且均值为0，那么目标函数最大化投影方差可以直接表示为
+$$
+\max J=\frac{1}{N} \sum_{i=1}^N((x_i - \bar{x})^Tu_1)^2 = u_1^T\cdot S\cdot u_1  \quad s.t. u_1^Tu_1 = 1
+$$
+这是一个等式约束的最优化问题，直接拉格朗日乘子法写开</p>
+
+<div>$$
+\begin{array}{l} \mathcal{L}\left(u_{1}, \lambda\right)=u_{1}^{T} S u_{1}+\lambda\left(1-u_{1}^{T} u\right)\\ {\frac{\partial \mathcal{L}}{\partial u_{1}}=2 S \cdot u_{1}-\lambda \cdot 2 u_{1}=0}\end{array}
+$$</div>
+
+<p>即
+$$
+Su_1 = \lambda u_1
+$$
+转化成<strong>特征值分解</strong>的问题，所谓的主成分也就是特征向量矩阵，用最大的 $q$ 个特征值对应的特征向量来重构数据矩阵就是特征空间的重构。</p>
+
+<h2 id="最小重构代价角度">最小重构代价角度</h2>
+
+<p>何谓重构代价？我们先来看下在重构空间中原始数据的表示为
+$$
+x_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_p)\cdot u_p = \sum_{k=1}^p (x_i^T\cdot u_k) \cdot u_k
+$$
+$x_i^Tu_k$ 可以理解成各个投影，$u_k$ 为投影方向。
+如果将特征进行压缩，用 $q$ 个特征来表示原始特征空间，则
+$$
+\hat{x}_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_q)\cdot u_q = \sum_{k=1}^q (x_i^T\cdot u_k) \cdot u_k
+$$
+上面两个式子均假设 $x_i$ 中心化过了。那么重构代价很直观的理解就是 $x_i - \hat{x}_i$，目标函数就能表示为
+$$
+\min J = \sum_{i=1}^N ||x_i - \hat{x}_i ||^2=\sum_{k=q+1}^p u_k^T \cdot S \cdot u_k \quad s.t. u_k^T\cdot u_k =1
+$$
+由于 $u_k$ 之间是无关的，所以这个优化问题可以拆成单个的优化问题逐一求解。也就转化成<strong>特征值求解</strong>问题，即求得最小 $p-q$ 个特征值所对应的特征向量。</p>
+
+<h2 id="svd角度">SVD角度</h2>
+
+<p>前面的两个基本点相当于都是从<strong>方差矩阵 $S$ 进行特征值分解</strong>来获得主成分的。下面来看看如果直接对数据矩阵进行奇异值分解，两者之间会有什么样的联系。</p>
+
+<p>对中心化后的数据进行SVD分解：
+$$
+HX = U \Sigma V^T
+$$
+原来的方差矩阵可以表示为
+$$
+S = X^THX=X^TH^THX = V\Sigma U^TU\Sigma V^T=V\Sigma^2V^T
+$$
+也就是说<strong>对 $HX$ 进行奇异值分解得到的 $V$ 矩阵就是对方差矩阵进行特征值分解得到的特征矩阵，奇异值分解得到到奇异值矩阵的平方就是特征值分解得到的特征值矩阵。</strong></p>
+
+<p>构造矩阵
+$$T =HXX^TH=U\Sigma V^TV\Sigma U^T=U\Sigma^2U^T$$
+可以看出 $T$ 和 $S$ 具有<strong>相同的特征值。</strong>
+要获得重构空间的坐标有两个思路：</p>
+
+<ol>
+<li><p>内积求投影：$HX\cdot V$</p></li>
+
+<li><p>对矩阵 $T$ 进行特征分解：
+$$
+TU\Sigma = U\Sigma^2U^TU\Sigma= U\Sigma^3 = \Sigma^2\cdot U\Sigma
+$$
+$$
+HX \cdot V=U \Sigma V^T V= U \Sigma
+$$</p></li>
+</ol>
+
+<p><strong>因此在遇到原始数据特征空间较高时($P$ 大于 $N$)，可以采用 $T$ 矩阵进行特征分解直接获得坐标，也称为主坐标分解(PCoA)</strong></p>
+
+<h2 id="概率主成分分析-p-pca">概率主成分分析(P-PCA)</h2>
+
+<p>从概率的角度来看则是将观测数据 $x \in \mathcal{R}^p$ 作为观测变量(observed variable)，重构特征空间 $z \in \mathcal{R}^q$ 作为隐变量(latent variable)，我们降维的过程则相当于从观测变量去求得隐变量的过程
+<strong>假设</strong></p>
+
+<div>$$
+\begin{equation}
+\begin{aligned}
+z &\in \mathcal{N}(0,I_q)\\
+x &= Wz + \mu + \epsilon\\
+\epsilon &\in \mathcal{N}(0,\sigma^2 I_p)
+\end{aligned}
+\end{equation}
+$$</div>
+
+<p>且 $z$ 和 $\epsilon$ 相互独立。这是一个线性高斯模型，相当于我们有了 $z, x|z, x$ 要求 $z|x$。</p>
+
+<p>第一步就是Inference求后验 $z|x$ (通过构造 $x,z$ 的联合概率求条件概率)</p>
+
+<p>第二步就是Learning参数 $W, \mu, \sigma$（比如采用EM算法）</p>
+
+<p><strong>P-PCA与GMM的区别</strong>：P-PCA的隐变量是连续的，而GMM的隐变量是离散的。</p>
+
+<h2 id="matlab-实现">Matlab 实现</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">% Data 两个特征线性关系加点噪声
+X1 = [1,2,3,4,5,6]&#39;;
+X2 = [X1] + rand(6,1);
+X = [X1,X2];
+plot(X1,X2)
+N = size(X,1);
+
+% 矩阵描述
+x_bar = 1/N*X&#39;*ones(N,1);
+H = eye(N) - 1/N*ones(N,1)*ones(N,1)&#39;;
+S = 1/N*X&#39;*H*X;
+
+% 根据采样方差特征值分解
+[G,K] = eig(S);
+
+% 根据中心化的数据进行奇异值分解
+[U,Sigma,V] = svd(H*X);
+
+% 方差矩阵的特征值与奇异值分解的奇异值的关系
+Sigma.^2/N
+K
+% 观察V矩阵和G矩阵的关系
+G
+V
+
+% 主坐标分析
+T = H*X*X&#39;*H&#39;;
+[G2,K2] = eig(T);
+% 观察非零特征值对应特征向量也就是主坐标与HXV的关系
+H*X*V</pre></td></tr></table>
+</div>
+</div>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
