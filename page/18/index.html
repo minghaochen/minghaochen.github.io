@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-11T20:18:16&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-14T19:59:01&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,60 +115,285 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E5%8D%B0%E5%BA%A6%E4%B8%9C%E5%8C%97%E9%83%A8%E7%9A%84%E5%92%8C%E5%B9%B3%E5%8F%91%E5%B1%95/">《经济学人》印度东北部的和平发展</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E5%9F%BA%E4%BA%8Ematlab%E5%B9%B3%E5%8F%B0%E7%9A%84libsvm%E5%9B%9E%E5%BD%92/">基于matlab平台的libsvm回归</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-18 </span>
+      <span class="post-time"> 2020-02-19 </span>
       <div class="post-category">
-          <a href="/categories/english/"> English </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h3 id="a-restive-难驾驭的-corner-of-india-is-becoming-more-peaceful">A <strong>restive</strong>(难驾驭的) corner of India is becoming more peaceful</h3>
+      <p>由于项目需要建立一个SVR模型，记录一下libsvm的使用流程。</p>
 
-<p>“But for every group that is <strong>placated</strong>(抚慰) there are new <strong>malcontents</strong>(不满者)”</p>
+<p>因为要做的是回归，所以我们应该有一些输入$x$（每一行代表一个样本），输出$y$，从而得到$y=f(x)$的关系用于预测；当$y$为多维时，逐维进行回归。</p>
 
-<p>How to divide India into administrative units is a question that has <strong>vexed</strong>(使烦恼) all its governments. For a time the main focus was to rationalise, as hundreds of <strong>feudal</strong>(封建制度的) “princely” states were <strong>swept into</strong> the bigger provinces of the Indian republic. But since 1960 the number of states and territories has been rising, as different groups have successfully lobbied for their own unit, on the basis of language, <strong>ethnicity</strong>(种族划分) or administrative convenience. There were 20 in 1956; now there are 36.</p>
+<h1 id="step-1-对数据进行scaleing-训练数据和测试数据都需要">Step 1 对数据进行scaleing，训练数据和测试数据都需要！</h1>
 
-<p>Few areas have seen as much <strong>upheaval</strong>(动乱) as the north-east, an ethnically mixed region of 50m people that was almost cut off from the rest of the country by the creation of East Pakistan (now Bangladesh) in 1947. It began as a single state, Assam, plus two <strong>principalities</strong>(侯国), Manipur and Tripura. It has since <strong>splintered</strong>(分裂) into seven states, as Arunachal Pradesh, Meghalaya, Mizoram and Nagaland have been <strong>hived</strong> off(脱离) Assam (see map). The region is still <strong>replete</strong>(充满的) with <strong>disgruntled</strong>(不满的) factions(派别), however: it has spawned more than 125 <strong>insurgencies</strong>(叛乱) since the 1950s. Their varied struggles for statehood, independence or simply to <strong>clobber</strong>(击倒) rival groups—many of these micro-conflicts have <strong>pitted</strong>(使竞争) “natives” against migrants—have left perhaps 40,000 dead.</p>
+<p>这里提供一个自己写的scaling函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"> 2020/02/19 by Minghao Chen, this function is used to scale the data; 
+ 
+ %Usage: 
+ %for traindata: [traindata,minimums,ranges] = svm_scale(traindata),
+ %it will return the minimums and ranges of traindata, which will be needed 
+ %in testdata scaling
+ %For testdata:  [testdata,minimums,ranges] = svm_scale(testdata,minimums,ranges)
+ 
+ function [data,minimums,ranges] = svm_scale(data,minimums,ranges)
+    if nargin == 1
+        minimums = min(data, [], 1);
+        ranges = max(data, [], 1) - minimums;
+        data = (data - repmat(minimums, size(data, 1), 1)) ./ repmat(ranges, size(data, 1), 1);
+    else
+        data = (data - repmat(minimums, size(data, 1), 1)) ./ repmat(ranges, size(data, 1), 1);
+    end</pre></td></tr></table>
+</div>
+</div>
+<h1 id="step-2-首先考虑rbf核函数-通过grid-search进行参数-c-gamma-寻优-可以先粗后细-大区间到小区间">Step 2 首先考虑RBF核函数，通过grid search进行参数$C, \gamma$寻优，可以先粗后细（大区间到小区间）</h1>
 
-<p>Only recently have years of patient <strong>carrot</strong>-and-stick efforts by the central government, helped by better intelligence, tougher military tactics and stronger co-operation from neighbouring Bangladesh and Myanmar, begun to pay off. <strong>Casualties</strong>(意外事故) have declined steeply, from a high of almost 1,700 deaths in 2000 to just 17 last year. That has allowed the government to exempt some states from a controversial law that protects soldiers from prosecution for human-rights offences, and prompted the army to begin shifting resources away from internal security.</p>
+<p>在进行参数搜索时可以用交叉验证，中途会涉及数据的划分，这里提供一个自己写的数据划分的程序</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">function [train_data,train_target,valid_data,valid_target] = data_split(data,target,k)
+    N = size(data,1);
+    p = randperm(N)&#39;;
+    train_data = data(p(1:round(k*N)),:);
+    valid_data = data(p(1+round(k*N):end),:);
+    train_target = target(p(1:round(k*N)),:);
+    valid_target = target(p(1+round(k*N):end),:);</pre></td></tr></table>
+</div>
+</div>
+<p>其中data放的就是$x$，target放的就是$y$，参数$k$取值$(0,1)$表示你要拿多少的数据用于训练</p>
 
-<p>Underpinning all this has been a series of peace agreements with assorted <strong>rebel</strong> groups. Ongoing talks with insurgents in Nagaland have made significant progress, with at least one of the state’s main <strong>guerrilla</strong>(游击战) factions agreeing to lay down arms. In Assam some 644 fighters from various groups recently surrendered their guns. And in January alone Mr Modi’s government <strong>inked</strong>(签署) two important deals. One, in Tripura, allows for the resettlement in the state of some 34,000 ethnic Bru refugees from neighbouring Mizoram. This should end a 23-year stand-off, as the <strong>destitute</strong>(穷困的) Brus had rejected efforts to send them back to areas from which they had been violently expelled.</p>
+<h1 id="step-3-用最优的超参数来训练模型">Step 3 用最优的超参数来训练模型</h1>
 
-<p>Of bigger import is a deal signed on January 27th with several factions of the National Democratic Front of Bodoland. For Bodos, who speak a language related to Tibetan and Burmese and who number some 1.3m, the terms look generous. In exchange for some 1,500 rebels laying down arms, the Bodos will get a <strong>sweeping</strong>(规模大的) <strong>amnesty</strong>(大赦), an extra $225m in government funding, more schools, colleges and sports facilities, and a much fuller form of autonomy within their homeland in the western part of Assam, along India’s border with Bhutan. What is more, the boundaries of Bodoland will be redrawn, village by village, to ensure Bodos form a majority within it.</p>
+<p>这里就需要用到libsvm里的训练函数了：</p>
 
-<p>The deal is also good for Mr Modi. Government sources reckon the Bodo insurgency has left some 4,000 dead since 1987, including 88 killed in a series of bomb blasts in the state capital, Guwahati, in 2008. The violence also rendered tens of thousands of non-Bodos homeless as waves of refugees fled repeated <strong>massacres</strong>(大屠杀) that targeted Bengali-speaking Muslim farmers in the <strong>floodplains</strong> of the Brahmaputra River and rival <strong>tribal</strong>(部落的) groups in the hills. Aside from putting a stop to such <strong>mayhem</strong>(骚乱), the deal will almost certainly prompt a large vote swing among the small but influential Bodo community towards Mr Modi’s Bharatiya Janata Party (BJP). Its hold in Assam has weakened in recent months due to protests against a controversial new citizenship law. With state elections looming in 2021, the BJP is resorting to “vote-bank” politics.</p>
+<blockquote>
+<p>model = svmtrain(train_y,train_x,&lsquo;options&rsquo;)</p>
+</blockquote>
 
-<p>Of course, the Bodoland deal is clearly not so good for non-Bodos who, despite the insurgents’ efforts at ethnic cleansing, constitute up to two-thirds of the population of the Bodoland region as currently defined. Naba Kumar Sarania, who represents the region in the national parliament, told the Hindu newspaper: “We are not against the peace process, but this <strong>accord</strong>(协议) has ignored the interests of the other ethnic communities in the area.”</p>
+<p>需要注意的是&rsquo;options&rsquo;，
+直接给个例子在解释吧，比如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">model = svmtrain(train_y,train_x,&#39;-s 3 -t 2 -p 0.01 -c 2 -g 2&#39;)</pre></td></tr></table>
+</div>
+</div>
+<p>其中各个缩写表示的含义为：</p>
 
-<p><strong>take-home message</strong></p>
+<p>-s 类型 : set type of SVM (default 0)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">0 -- C-SVC
 
-<ul>
-<li>restive: feeling bored or impatient while waiting for something to happen or change. e.g., a restive audience.</li>
-<li>placate: to cause (someone) to feel less angry about something. e.g., The angry customer was not placated by the clerk&rsquo;s apology.</li>
-<li>vex: to annoy or worry (someone). e.g., We were vexed by the delay.</li>
-<li>sweep into: to move something into something or some place by sweeping. e.g., He swept the crumbs into the dish.</li>
-<li>upheaval: a major change or period of change that causes a lot of conflict, confusion, anger, etc. e.g., a period of cultural and social upheavals.</li>
-<li>splinter: to break (something) into small pieces or splinters.</li>
-<li>hive off: to separate (someone or something) from a group. e.g., They hived off the youngest campers into another room.</li>
-<li>replete: having much or plenty of something : filled with something. e.g., he book is replete with photographs.</li>
-<li>insurgency: a usually violent attempt to take control of a government : a rebellion or uprising.</li>
-<li>clobber: to hit (someone) very hard. e.g., Some guy was clobbering [=beating] him in the parking lot.</li>
-<li>pit against: to cause (someone or something) to fight or compete against (another person or thing). e.g., Tonight&rsquo;s game will pit Smith against Johnson for the championship.</li>
-<li>Casualty: a person who is hurt or killed during an accident, war, etc.</li>
-<li>ink: to sign (a document). e.g., They just inked a new partnership agreement/deal.</li>
-<li>destitute: extremely poor.</li>
-<li>sweeping: including or involving many things : wide in range or amount. e.g., sweeping changes/reforms.</li>
-<li>massacre: the violent killing of many people.</li>
-<li>accord: a formal or official agreement. e.g., a peace accord.</li>
-<li>mayhem: a scene or situation that involves a lot of violence.</li>
-</ul>
+1 -- nu-SVC
+
+2 -- one-class SVM
+
+3 -- epsilon-SVR
+
+4 -- nu-SVR</pre></td></tr></table>
+</div>
+</div>
+<p>-t 核函数 : set type of kernel function (default 2)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">0 -- linear
+
+1 -- polynomial
+
+2 -- radial basis function: $exp(-\gamma*|u-v|^2)$
+
+3 -- sigmoid</pre></td></tr></table>
+</div>
+</div>
+<p>-g gamma : set gamma in kernel function (default 1/num_features)</p>
+
+<p>-c cost : set the parameter C of C-SVC, epsilon-SVR, and nu-SVR (default 1)</p>
+
+<p>-p epsilon : set the epsilon in loss function of epsilon-SVR (default 0.1)</p>
+
+<h1 id="step-4-模型训练好可以直接保存下来-是个结构体的形式">Step 4 模型训练好可以直接保存下来，是个结构体的形式</h1>
+
+<blockquote>
+<p>save RegressModel.mat model</p>
+</blockquote>
+
+<h1 id="step-5-如果有测试数据就可以进一步进行验证了">Step 5 如果有测试数据就可以进一步进行验证了</h1>
+
+<p>这里涉及libsvm的预测函数</p>
+
+<blockquote>
+<p>[predict_y,accuracy,dec_value] = svmpredict(test_y,test_x,model)</p>
+</blockquote>
+
+<p>其中，test_y如果没有可以用任意向量替代，此时输出accuracy是一个$3*1$向量，分别表示分类准确率（分类问题使用），MSE（越小越好），平方关系系数$r^2$（越接近1越好）。</p>
+
+<h2 id="例子">例子</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">x=(-10:0.5:9.5)&#39;; 
+y=-x.^2;
+
+[x_scale,minimums,ranges] = svm_scale(x);
+
+% grid search for hyperparameters
+c = [];
+g = [];
+N_grid = 11;
+for i = 1:N_grid
+    c = [c, 2^(-7+2*i)];
+    g = [g, 2^(-7+2*i)];
+end
+
+MSE = 0; 
+for i = 1:N_grid
+    for j = 1:N_grid
+        ops = [&#39;-s 3 -t 2 -p 0.01 -c &#39;,num2str(c(i)),&#39; -g &#39;,num2str(g(j))];
+        [train_data,train_target,valid_data,valid_target] = data_split(x_scale,y,0.7);
+        model = svmtrain(train_target,train_data,ops);
+        [py,mse,prob_estimates]=svmpredict(valid_target,valid_data,model); 
+        MSE(i,j) = mse(2);
+    end
+end
+[i,j]=find(MSE==min(min(MSE)));
+ops = [&#39;-s 3 -t 2 -p 0.01 -c &#39;,num2str(c(i)),&#39; -g &#39;,num2str(g(j))];
+
+% 根据网格搜索得到的最优参数进行全部数据建模
+model = svmtrain(y,x_scale,ops);
+[py,mse,prob_estimates]=svmpredict(y,x_scale,model); 
+
+% 画图 训练数据的拟合结果
+figure; 
+plot(x,y,&#39;o&#39;); 
+hold on 
+plot(x,py,&#39;r*&#39;); 
+legend(&#39;原始数据&#39;,&#39;回归数据&#39;); grid on;
+
+
+% 测试
+testx = [-16:0.2:-8]&#39;; 
+testy = -testx.^2;
+[testx_scale,minimums,ranges] = svm_scale(testx,minimums,ranges);
+[ptesty,tmse,prob_estimates]=svmpredict(testy,testx_scale,model); 
+
+figure; 
+plot(testx,testy,&#39;o&#39;); 
+hold on 
+plot(testx,ptesty,&#39;r*&#39;); 
+legend(&#39;原始数据&#39;,&#39;回归数据&#39;); grid on;</pre></td></tr></table>
+</div>
+</div>
     </div>
     <div class="read-more">
-      <a href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E5%8D%B0%E5%BA%A6%E4%B8%9C%E5%8C%97%E9%83%A8%E7%9A%84%E5%92%8C%E5%B9%B3%E5%8F%91%E5%B1%95/" class="read-more-link">Read more...</a>
+      <a href="/post/%E5%9F%BA%E4%BA%8Ematlab%E5%B9%B3%E5%8F%B0%E7%9A%84libsvm%E5%9B%9E%E5%BD%92/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

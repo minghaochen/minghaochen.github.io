@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-11T20:18:16&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-14T19:59:01&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,199 +115,133 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/">「机器学习」支持向量机SVM</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/">核函数与再生核希尔伯特空间</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-14 </span>
+      <span class="post-time"> 2019-08-15 </span>
       <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>SVM（Support Vector Machine）又称为支持向量机，是一种用于机器学习的算法，不仅支持线性分类，结合核方法还可以用于非线性分类。其思想主要为<strong>最大间隔</strong>，推导依赖于<strong>对偶理论</strong>，因此可以将SVM归结于：间隔、对偶、核方法。</p>
+      <p>说到核方法，很多人第一反应就是SVM，其实不然，其应用很广，但核心思想均是<strong>用在原始空间计算核函数的值来避免直接求解高维特征空间的内积</strong>；说到核函数往往还会带上一个吓人的概念“再生核希尔伯特空间”，先揭秘一下什么是希尔伯特空间，希尔伯特空间其实就是<strong>函数空间</strong>(或者可以把函数理解为无限维的向量)，函数空间里任意一个元素都表示一个函数，而再加上“再生核”这个限定词相当于就是特定的函数空间，就是具有再生性的函数空间，那什么是再生性听我慢慢道来。</p>
 
-<h2 id="间隔">间隔</h2>
+<p>假设有原始空间样本 $x_i \in \mathbb{R}^p, i=1,&hellip;,N$，通常为了<strong>在高维空间寻找线性关系</strong>我们会将其通过函数映射 $\phi(\cdot)$ 到高维空间 $\phi(x_i) \in \mathbb{R}^n$，但是这样也意味着如果原始空间求内积 $&lt;x_i,x_j&gt;$ 对应到特征空间为 $&lt;\phi(x_i),\phi(x_j)&gt;$，直接求解高维空间的内积计算量是很大的，同时我们可能并不知道这个映射函数 $\phi(\cdot)$ 怎么选择才是合适的。核函数则提供了另一种求解的思路。</p>
 
-<p>简单举例一个二分类问题，假设有线性可分的两堆点</p>
-
-<div>$$
-\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1}^{N}， x_{i} \in \mathbb{R}^{p}, y_{j} \in\{-1,1\}
-$$</div>
-
-<p>要将它们分开的超平面有很多种，<strong>SVM做的相当于要寻找一个最优的超平面 $w^Tx+b=0$ 来分开不同类别的样本点</strong>，因此首先需要定义什么样的超平面是最优的，<strong>也就是所有样本点到超平面的最短距离是最大的</strong>，假设两个类别中距离分隔超平面最近的点所在的超平面分别为 $w^Tx + b =1$ 和 $w^Tx+b = -1$(这里的 $1,-1$ 只是为了方便推导，不影响优化的结果，因为你总是可以对超平面乘以一个系数然后做变量替换得到$w^Tx + b =1$ 和 $w^Tx+b = -1$)，SVM要最大化的间隔就是<strong>这两个平面之间的距离</strong>。</p>
-
-<p>你可能要问两个平面的距离怎么求？回忆下高中的两条平行直线的距离公式，对于直线 $ax+by+c_1 = 0$ 和 $ax + by +c_2 = 0$，距离公式为
-$$d = \frac{|c_1-c_2|}{\sqrt{a^2+b^2}}$$</p>
-
-<p>(莫名的亲切感有没有)那平面的距离公式类比下就可以得到：
-$$
-\text{margin} = \frac{1 - (-1)}{\sqrt{w_1^2+w_2^2+ &hellip; + w_p^2}} = \frac{2}{||w||}
-$$</p>
-
-<p>$w$ 的维度为 $p$, $w_i$ 表示 $w$ 的第 $i$ 个元素。SVM的目标就是最大化这个margin，那需要满足什么约束呢？首先分类要准确吧这可是分类器的初衷，即</p>
-
-<div>$$
-\begin{aligned}
-w^Tx_i+b \ge +1 &\text{ if } y_i= +1\\
-w^Tx_i+b \le -1 &\text{ if } y_i= -1\\
-\end{aligned}
-$$</div>
-
-<p>上面两个式子的直观解释就是样本点在超平面 $w^Tx + b \ge +1$ 和 $w^Tx +b \le -1$ 的两侧。可以进一步合并为
-$$
-y_i(w^Tx_i+b) \ge +1, \forall i = 1,&hellip;,N
-$$</p>
-
-<p>那么我们要求解相当于是一个目标函数为最大化间隔且满足分类约束的优化命题：</p>
-
-<div>$$
-\begin{array}{ll}{\text { max }} & {J(w)= \frac{2}{||w||} }\\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
-$$</div>
-
-<p>等价于最小化问题(目标函数取倒数)</p>
-
-<div>$$
-\begin{array}{ll}{\text { min }} & {\Phi(w)= \frac{1}{2} w^{T} w} \\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
-$$</div>
-
-<h2 id="对偶">对偶</h2>
-
-<p>我们已经将SVM的思想表达为优化命题的形式，接下来考虑如何对其进行求解，对于一个含约束的优化命题可以通过拉格朗日乘子法转化为无约束问题，然后通过求解对偶问题来间接求解原问题。</p>
-
-<p>对于上述SVM的最小化问题，构造拉格朗日函数</p>
-
-<div>$$
-L(w, b, \alpha)=\frac{1}{2} w^{T} w-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1\right]
-$$</div>
-
-<p>原问题的拉格朗日形式为：</p>
-
-<div>$$
-\min_{w,b}\max_{\alpha_i \ge 0 }L(w,b,\alpha)
-$$</div>
-
-<p>对偶问题为</p>
-
-<div>$$
-\max_{\alpha_i \ge 0 }\min_{w,b}L(w,b,\alpha)
-$$</div>
-
-<p>先看对偶问题的内层 $\min_{w,b}L(w,b,\alpha)$，对于这个无约束最小化问题，直接求导</p>
-
-<div>
-$$
-\begin{array}{l}{\frac{\partial L(w, b, \alpha)}{\partial w}=0 \Rightarrow w(\alpha)=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial L(w, b, \alpha)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0}\end{array}
-$$
-</div>
-
-<p>再将求导得到的结果带入拉格朗日函数 $L(w,b,\alpha)$ 得到外层的最大化问题为：</p>
-
-<div>
-$$
-\begin{aligned}
-\max_{\alpha} &\sum_{i=1}^{N} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j} x_{i}^T x_{j}\\
-\text{s.t. }& \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
-& \alpha_i \ge 0, \forall i= 1,...,N
-\end{aligned}
-$$
-</div>
-
-<p>这样得到的是一个二次规划问题，很多求解器可以完美解决，但如果样本数过多，则计算量过大。序列最小最优化SMO算法是高效求解这个问题的算法代表。SMO算法的思想与坐标上升算法的思想类似。坐标上升算法每次通过更新多元函数中的一维，经过多次迭代直到收敛来达到优化函数的目的，SMO则是每次选择尽量少的变量来优化，不断迭代直到函数收敛到最优值。</p>
-
-<p>在求解得到 $\alpha^*$ 后，如何求解原问题的 $w^*,b^*$ 呢？</p>
-
-<p>对于 $w$，直接带入求解对偶问题内层最小化问题的极值条件：</p>
-
-<div>$$
-w^*=\sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}
-$$</div>
-
-<p><strong>可以看出 $w$ 仅由 $\alpha_i^*$ 大于0 的元素对应的 $x_i$ 构成，这些 $x_i$ 也称为支持向量。</strong></p>
-
-<p>对于 $b$，找到 $\alpha_t^* &gt; 0$ 的点，然后根据KKT条件中的松弛互补条件</p>
-
-<div>$$
-\alpha_{t}^{*}\left(y_{t}\left(w^{* T} x_{t}+b^{*}\right)-1\right)=0
-$$</div>
-
-<p>可以得到 $x_t$ 在margin上且</p>
+<p><strong>核函数的定义</strong></p>
 
 <p>$$
-{w^*}^Tx_t + b^* = y_t
+\kappa(\cdot,\cdot):\mathbb{R}^p \times \mathbb{R}^p \rightarrow \mathbb{R}
 $$</p>
 
-<p>所以</p>
-
-<div>$$
-b^* = y_t - {w^*}^Tx_t = y_t - \sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}^T x_t
-$$</div>
-
-<p>这样就得到了用于分类的超平面了，对于测试样本，只需要带入超平面检验其正负(在超平面的哪一侧)就能进行分类。</p>
-
-<p>总结一下SVM的套路：<strong>首先根据最大间隔(max问题)的思想确定目标函数(min问题)，将原问题(带约束)表示为拉格朗日函数的形式(minmax问题，无约束)，转换为对偶问题(maxmin问题)，对于内层无约束min问题，求导并将极值条件代入拉格朗日函数，可以得到外层max问题是一个二次规划，求解得到拉格朗日乘子的最优解 $\alpha^*$ 后反求超平面参数 $w^*,b^*$，其中 $b^*$ 需要利用KKT松弛互补条件求解。</strong></p>
-
-<h2 id="核方法">核方法</h2>
-
-<p>对于线性不可分的样本，我们可以对原始样本 $x_i \in \mathbb{R}^p$ 进行非线性变换 $\phi(x_i) \in \mathbb{R}^q$ (通常 $q&gt;p$) 得到高维特征空间，在特征空间中寻找一个超平面 $w^T\phi(x) + b = 0$ 来划分不同类别的样本点。推导思路与上面一致，只是原来 $x_i$ 的位置需要用 $\phi(x_i)$ 替代，并且 $\phi(x_i)^T\phi(x_j)$ 可以用核函数表示为 $\kappa(x_i,x_j)$。</p>
-
-<h2 id="soft-margin-svm">Soft Margin SVM</h2>
-
-<p>上面讲述的Hard Margin SVM可能出现两个问题：</p>
-
-<ol>
-<li><p>投影到高维空间仍然不可分</p></li>
-
-<li><p>过拟合</p></li>
-</ol>
-
-<p>改进方法：<strong>加入软约束</strong>，原来我们要求分类必须准确，即</p>
+<p>则特征空间的内积可以表示为</p>
 
 <p>$$
-y_i(w^Tx_i +b) \ge 1, \forall i=1,&hellip;,N
+&lt;\phi(x_i),\phi(x_j)&gt; = \kappa(x_i,x_j)
 $$</p>
 
-<p>现在我们允许一些异常点的出现，也就是说异常点不一定需要满足分类约束(异常点可以在超平面 $w^Tx+b = 1$ 和 $w^Tx + b =-1$ 之间)，与超平面的距离假设为 $\epsilon_i$，同时我们需要对 $\epsilon_i$ 进行惩罚，这样才能确保分类的准确性。可以理解为我们期望正常情况下 $\epsilon_i$ 都为 0，只有在异常点出现时 $\epsilon_i$ 才是个大于零的实数。对应的优化命题可以改写为</p>
+<p>此外，特征空间的距离和角度也可以用核函数来表示。</p>
 
-<div>$$
-\begin{array}{ll}{\text { min }} & {\Phi(w,\epsilon)= \frac{1}{2} w^{T} w} + C \sum_{i=1}^N \epsilon_i \\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 - \epsilon_i,\forall i=1, \ldots, N} \\
-&\epsilon_i \ge 0
-\end{array}
-$$</div>
+<p>同时有 Mercer 定理告诉我们怎么样的函数能称为核函数</p>
 
-<p>其中 $C\ge 0$ 是可调参数，表示对异常点的惩罚程度，$\epsilon_i$ 表示软约束。</p>
+<blockquote>
+<p>任何正半定函数均可以作为核函数，即由 $\kappa(\cdot,\cdot)$ 构成的核矩阵 $K$ 是正半定的：$a^TKa\ge 0$，其中 $K_{ij} = \kappa(x_i,x_j)$</p>
+</blockquote>
 
-<p>相比于原来hard margin的SVM，这一优化命题多了 $N$ 条关于 $\epsilon_i$ 的不等式约束，还是跟先前一样的套路，写成拉格朗日函数</p>
+<p><strong>这也就说明了只要我们构造出一个正定核(往往是应用现成的)，那么就不需要显式地定义特征空间和映射函数，并且能够利用已有的线性方法来解决非线性问题</strong>。<strong>同时，核函数还可以理解为用来衡量两个向量的相似度(因为内积可以一定程度反应两个样本之间的相似度)</strong></p>
 
-<div>$$
-L(w,b,\epsilon,\alpha,\beta) = \frac{1}{2} w^{T} w+C \sum_{i=1}^{N} \epsilon_{i}-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1+\epsilon_{i}\right]-\sum_{i=1}^{N} \beta_{i} \epsilon_{i}
-$$</div>
+<p>因为核函数可以总结为：<strong>映射、内积、相似度</strong></p>
 
-<p>转化为对偶问题，内层的最小化问题求导得到极值条件</p>
+<p><strong>再生核希尔伯特空间的定义</strong></p>
 
-<div>$$
-\begin{array}{l}{\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial w}=0 \Rightarrow w=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial \epsilon_i}=0 \Rightarrow C-\alpha_{i}-\beta_{i}=0 \Rightarrow\left\{\begin{array}{l}{\alpha_{i}=C-\beta_{i}} \\ {\beta_{i}=C-\alpha_{i}}\end{array} \Rightarrow 0 \leq \alpha_{i}, \beta_{i} \leq C\right.}\end{array}
-$$</div>
-
-<p>然后代入 $L(w,b,\epsilon,\alpha,\beta)$ 并求解外层max问题，最后来根据KKT条件求解超平面参数。</p>
-
-<h2 id="多类别问题">多类别问题</h2>
-
-<p>两种策略(假设共有K个类别)</p>
+<p>有了核函数，那么就会至少有一个与之对应的再生核希尔伯特空间 $\mathcal{H}$，它满足</p>
 
 <ol>
-<li><p>一对一 (one-against-one)：所有类别两两之间进行分类得到 $C_K^2$ 个超平面，对于测试数据代入所有超平面进行判断，然后采用<strong>投票表决</strong>进行分类。</p></li>
+<li><p>固定任意 $x_0$，则 $\kappa(\cdot,x_0):\mathbb{R^p} \rightarrow \mathbb{R}$ (这是个函数！) 属于 $\mathcal{H}$ (这是个函数空间！)</p></li>
 
-<li><p>一对所有 (one-against-all)：针对一个类别和剩下所有类别进行分类得到 $K-1$ 个超平面，对于测试数据，代入超平面方程，选择结果最大的那个超平面对应的类别作为分类结果。</p></li>
+<li><p>再生性：</p></li>
 </ol>
 
 <div>$$
-k^{*}=\underset{k}{\arg \max }\left(w_{k}^{T} x+b\right)
+\begin{aligned}
+<\kappa(\cdot,x),f> &= f(x),f \in \mathcal{H} \\
+<\kappa(\cdot,x),\kappa(\cdot,z)> &= \kappa(x,z) = \kappa(z,x)
+\end{aligned}
 $$</div>
+
+<p>给定核函数如何确定映射以及对应的希尔伯特空间？</p>
+
+<p>定义再生核map $\Phi:\mathbb{R}^p \rightarrow \mathbb{R}^{\mathbb{R}^p}$ 且 $\Phi(z)=\kappa(\cdot,z)$，相当于将 $z\in \mathbb{R}^p$ 映射成一个函数 $\kappa(\cdot,z):\mathbb{R}^p \rightarrow \mathbb{R}$，则</p>
+
+<p>$$
+\kappa(x,z) = &lt;\kappa(\cdot,x),\kappa(\cdot,z)&gt;=&lt;\Phi(x),\Phi(z)&gt;
+$$</p>
+
+<p>即通过核函数可以找到对应的映射，而对应的希尔伯特空间可以表示为由 $\Phi(\cdot)$ 组成的向量空间。</p>
+
+<p>给定映射关系如何确定核函数？</p>
+
+<p>直接令 $\kappa(x,z) = &lt;\Phi(x),\Phi(z)&gt;$，然后验证 Mercer 定理即可。</p>
+
+<h2 id="各种空间的定义补充">各种空间的定义补充</h2>
+
+<p>各种空间之间的关系其实有点<strong>从抽象到具体的过程</strong>。我们给空间<strong>赋予一些属性或者制定一些规则</strong>就能得到特定的空间。</p>
+
+<p>比如大家熟悉的<strong>向量空间</strong>，那就是满足加减法和数乘的空间，很好理解，空间内任意元素都可以用一组基通过加减和数乘(线性组合)表示。</p>
+
+<p>比如赋予距离的空间称为<strong>度量空间</strong>，定义距离时需要遵守三条公理：</p>
+
+<ol>
+<li><p>非负性，同一性：距离都是非负的，自己到自己的距离当然是 0 了</p></li>
+
+<li><p>对称性：你走向我的距离等于我走向你的距离</p></li>
+
+<li><p>三角不等式：你从 A 走到 B 在走到 C 的距离肯定大于等于直接从 A 到 C 的距离</p></li>
+</ol>
+
+<p>比如赋予范数的空间称为<strong>赋范空间</strong>，范数可以理解为一个元素到 0 的距离，同时它比距离的定义<strong>更具体了一步</strong>，因为它还需要额外满足</p>
+
+<p>$$
+||ax|| = |a| \times||x||
+$$</p>
+
+<p>那么我们在定义了范数后自然能用范数来定义距离了，比如 $d(x,y) = ||x-y||$，但是不能用距离来定义范数哦，因为<strong>波霸奶茶是奶茶，但不是所有奶茶都叫波霸奶茶</strong></p>
+
+<p>有了范数来定义距离了有时候还不够，我们有时候会需要<strong>角度</strong>信息，这时候就<strong>再给波霸奶茶加点料</strong>，于是赋予了内积的向量空间称为<strong>内积空间</strong>，定义内积需要遵守三条公理：</p>
+
+<ol>
+<li><p>对称性</p></li>
+
+<li><p>第一元素线性：
+$$&lt;ax,y&gt;=a&lt;x,y&gt;,&lt;x+y,z&gt;=&lt;x,z&gt;+&lt;y,z&gt;$$ 这不就是向量空间的数乘和加减运算嘛</p></li>
+
+<li><p>正定性</p></li>
+</ol>
+
+<p>那么定义了内积后自然也能用<strong>加了仙草的波霸奶茶来定义波霸奶茶</strong>(用内积来定义范数)，比如</p>
+
+<p>$$||x||=\sqrt{&lt;x,x&gt;}$$</p>
+
+<p>还有个比较难以描述的<strong>完备空间</strong>，可以理解为极限操作不会跑出自己的空间就称为完备的，<strong>奶茶只要三分糖，太甜了就超出能承受的甜度极限了呗</strong>。</p>
+
+<p>有了这么一步步的具体化后，<strong>希尔伯特空间</strong>就可以出来了，它就是<strong>一杯三分糖的加了仙草的波霸奶茶</strong>，呸，它就是<strong>一个完备的内积空间</strong></p>
+
+<blockquote>
+<p>总结来说：</p>
+
+<ol>
+<li><p>赋范线性空间就是赋予了范数的向量空间，也是度量空间（具有线性结构的度量空间）</p></li>
+
+<li><p>内积空间是赋范线性空间</p></li>
+
+<li><p>希尔伯特空间就是完备的内积空间，同时需要注意的是希尔伯特空间中的元素一般是函数，一个函数可以视为一个无穷维的向量。如果大家熟悉傅里叶变换或者泰勒展开，便能自然的想到这个空间的基底是什么。没错，也是一组无限多的函数。</p></li>
+</ol>
+</blockquote>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
