@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-14T19:59:01&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-18T17:01:09&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,9 +115,9 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/">「机器学习」高斯过程</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/">「机器学习」主成分分析PCA</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-07-26 </span>
+      <span class="post-time"> 2019-08-09 </span>
       <div class="post-category">
           <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
@@ -126,63 +126,131 @@
   
   <div class="post-content">
     <div class="post-summary">
-      <p>网上机器学习的算法铺天盖地，高斯过程却显得不那么起眼，它与其他大多数算法不一样的地方在于，它提供了<strong>不确定性</strong>的估计，这篇文章争取在不涉及数学推导的情况下给大家一个直观的理解。</p>
+      <h1 id="为什么要降维">为什么要降维</h1>
 
-<h1 id="什么是不确定性">什么是不确定性？</h1>
+<p>要说到降维的目的，主要是用来解决过拟合这一问题的，降维的方式主要有三种</p>
 
-<p>我觉得最能代表不确定性的应该就是概率分布（probability distribution）了，不了解概率分布也没关系，骰子摇过吧，一个六面均匀的骰子，摇到任一数字的概率是多少？答案是显然的: $\frac{1}{6}$，这就是一个离散的概率分布，有六种可能的结果（朝上的面为1、2、3、4、5或6），每种结果的可能性为 $\frac{1}{6}$。进一步延伸一下，离散概率分布的升级版就是连续概率分布，它的可能结果可就不是简单几种情况那么简单了，可以是任意实数，比如人的身高，中国男性的身高统计出来画一下，你就能看到一个中间高两边低的正态分布的样子了。</p>
+<ul>
+<li>直接降维—特征选择</li>
+<li>线性降维—PCA(今日份猪脚)，MDS多维尺度法</li>
+<li>非线性降维—流形学习ISOMAP，LLE(Locally Linear Embedding)</li>
+</ul>
 
-<p>那么已知概率分布后，如何采样呢？很简单呀，比如骰子你摇一次就是从这个离散概率分布中采样一次。</p>
+<h1 id="数据矩阵描述">数据矩阵描述</h1>
 
-<h1 id="贝叶斯推断">贝叶斯推断</h1>
+<p>数据：$X=(x_1,x_2,&hellip;,x_N)^T_{N \times P }, x_i \in \mathbb{R}^P $，为了便于后续推导我们将均值和方差表示为矩阵形式，思路就是<strong>把连加符号改写成矩阵乘积的形式</strong>。</p>
 
-<p>一提到贝叶斯推断，可能要吓跑一群人，别跑！等我给你介绍完就不怕了！
-其实贝叶斯推断就是<strong>根据我们观察到的现象去更新我们脑袋里的认知。</strong>再具体点就是：我们在事情没发生前对这件事情有所认知（或者叫做先验），通常可以用一个概率分布来表示，然后在得到一些发生的事实后，我们会对这件事情的认知有所该表（就是得到了后验）；而把这些东西联系到一起的就是大名鼎鼎的<strong>贝叶斯定理</strong>。</p>
+<p>采样均值为：
+$$
+\bar{x} = \frac{1}{N}\sum_{i=1}^N x_i = \frac{1}{N}(x_1,x_2,&hellip;,x_N)\mathbb{1}_{N} = \frac{1}{N}X^T\mathbb{1}_N
+$$
+采样方差为
+$$
+S = \frac{1}{N}\sum_{i=1}^N (x_i-\bar{x}) (x_i-\bar{x})^T = \frac{1}{N}X^THH^TX =  \frac{1}{N}X^THX
+$$
+其中 $H = I_N - \frac{1}{N}\mathbb{1}_N\mathbb{1}_N^T$ 为中心矩阵，作用可以理解为<strong>去均值</strong>，这里可以中心均镇的转置等于本身，中心矩阵的平方 $HH^T$ 等于中心矩阵 $H$ 本身。</p>
 
-<p>还是不够形象？那我们来个例子，上面说过离散概率分布了，这次我们来个连续的看看，来看看身高吧，来猜猜小陈有多高（猜对有奖哦，文末二维码随意扫随意打赏哈），你又不认识我没见过我，怎么知道我有多高呢，那直观的猜测就是小陈是个中国人，小陈的身高服从中国人身高的概率分布（假设你能得到这个概率分布咯）
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e7%94%b7%e6%80%a7%e8%ba%ab%e9%ab%98.jpg"/> 
-</figure>
+<h1 id="pca的主要思想">PCA的主要思想</h1>
 
-然后有一天你在博客上看到了小陈和朋友们的合照
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%88%e7%85%a7.jpg"/> 
-</figure>
+<ul>
+<li>一个中心：原始特征空间的重构</li>
+<li>两个基本点： 1. 最大投影方差 2. 最小重构代价</li>
+</ul>
 
-卧槽！小陈有点高啊，在朋友中是最高的，于是你对小陈身高的概率分布的认识改变了
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/%e5%90%8e%e9%aa%8c%e8%ba%ab%e9%ab%98.jpg"/> 
-</figure>
-</p>
+<p>首先将数据进行中心化，即 $x_i - \bar{x}$</p>
 
-<h1 id="什么是高斯过程">什么是高斯过程？</h1>
+<h2 id="最大投影方差角度">最大投影方差角度</h2>
 
-<p>好了，今天的主角登场了，<strong>高斯过程其实就是函数的概率分布</strong>，既然是概率分布，再用上面贝叶斯的套路我们就也能够通过训练数据来更新它的概率分布。</p>
+<p>假设有单位投影向量 $u_1,||u_1||_2 = 1$，向量 $x_i - \bar{x}$ 在 $u_1$ 上的投影为 $(x_i - \bar{x})^Tu_1$ 且均值为0，那么目标函数最大化投影方差可以直接表示为
+$$
+\max J=\frac{1}{N} \sum_{i=1}^N((x_i - \bar{x})^Tu_1)^2 = u_1^T\cdot S\cdot u_1  \quad s.t. u_1^Tu_1 = 1
+$$
+这是一个等式约束的最优化问题，直接拉格朗日乘子法写开</p>
 
-<p>我们来理一下思路，函数是什么，最简单的回顾你初中学的 $y=f(x)$ 就是个函数（随便函数形式都行，一次二次正弦等等），把它画一下就是在 XY 平面上的一条线呗；既然是概率分布还是高斯的，那总有均值吧，总有协方差吧，在这里对应就是均值函数和协方差函数。因此高斯过程本质就是<strong>由均值函数和协方差函数决定的一个随机过程。</strong></p>
+<div>$$
+\begin{array}{l} \mathcal{L}\left(u_{1}, \lambda\right)=u_{1}^{T} S u_{1}+\lambda\left(1-u_{1}^{T} u\right)\\ {\frac{\partial \mathcal{L}}{\partial u_{1}}=2 S \cdot u_{1}-\lambda \cdot 2 u_{1}=0}\end{array}
+$$</div>
 
-<p>比如有一个sin函数，我们有五个点的训练数据
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/data.png"/> 
-</figure>
-</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">Xtrain = np.array([-3, -2, -1, 1, 2]).reshape(5,1)
-ytrain = np.sin(Xtrain)
-pl.plot(Xtrain, ytrain, &#39;bs&#39;, ms=8)</pre></td></tr></table>
-</div>
-</div>
-<p>没有训练前我们对这个函数没什么认知，那就假设其均值函数为0（大部分时候也都是当做0来使用的），核函数就取SE核函数吧（这个是什么先不管啦，你就认为是个用来生成协方差矩阵的函数，主要我们是要得到它的协方差呀！核函数里一般会有超参数需要估计，为了简单起见，我直接直接给定超参数，不去估计这个参数了），在这样的先验分布下，你得到的函数会是什么样的呢？我们从这个函数的概率分布中采样三个函数出来看看。
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/prior.png"/> 
-</figure>
-</p>
+<p>即
+$$
+Su_1 = \lambda u_1
+$$
+转化成<strong>特征值分解</strong>的问题，所谓的主成分也就是特征向量矩阵，用最大的 $q$ 个特征值对应的特征向量来重构数据矩阵就是特征空间的重构。</p>
+
+<h2 id="最小重构代价角度">最小重构代价角度</h2>
+
+<p>何谓重构代价？我们先来看下在重构空间中原始数据的表示为
+$$
+x_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_p)\cdot u_p = \sum_{k=1}^p (x_i^T\cdot u_k) \cdot u_k
+$$
+$x_i^Tu_k$ 可以理解成各个投影，$u_k$ 为投影方向。
+如果将特征进行压缩，用 $q$ 个特征来表示原始特征空间，则
+$$
+\hat{x}_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_q)\cdot u_q = \sum_{k=1}^q (x_i^T\cdot u_k) \cdot u_k
+$$
+上面两个式子均假设 $x_i$ 中心化过了。那么重构代价很直观的理解就是 $x_i - \hat{x}_i$，目标函数就能表示为
+$$
+\min J = \sum_{i=1}^N ||x_i - \hat{x}_i ||^2=\sum_{k=q+1}^p u_k^T \cdot S \cdot u_k \quad s.t. u_k^T\cdot u_k =1
+$$
+由于 $u_k$ 之间是无关的，所以这个优化问题可以拆成单个的优化问题逐一求解。也就转化成<strong>特征值求解</strong>问题，即求得最小 $p-q$ 个特征值所对应的特征向量。</p>
+
+<h2 id="svd角度">SVD角度</h2>
+
+<p>前面的两个基本点相当于都是从<strong>方差矩阵 $S$ 进行特征值分解</strong>来获得主成分的。下面来看看如果直接对数据矩阵进行奇异值分解，两者之间会有什么样的联系。</p>
+
+<p>对中心化后的数据进行SVD分解：
+$$
+HX = U \Sigma V^T
+$$
+原来的方差矩阵可以表示为
+$$
+S = X^THX=X^TH^THX = V\Sigma U^TU\Sigma V^T=V\Sigma^2V^T
+$$
+也就是说<strong>对 $HX$ 进行奇异值分解得到的 $V$ 矩阵就是对方差矩阵进行特征值分解得到的特征矩阵，奇异值分解得到到奇异值矩阵的平方就是特征值分解得到的特征值矩阵。</strong></p>
+
+<p>构造矩阵
+$$T =HXX^TH=U\Sigma V^TV\Sigma U^T=U\Sigma^2U^T$$
+可以看出 $T$ 和 $S$ 具有<strong>相同的特征值。</strong>
+要获得重构空间的坐标有两个思路：</p>
+
+<ol>
+<li><p>内积求投影：$HX\cdot V$</p></li>
+
+<li><p>对矩阵 $T$ 进行特征分解：
+$$
+TU\Sigma = U\Sigma^2U^TU\Sigma= U\Sigma^3 = \Sigma^2\cdot U\Sigma
+$$
+$$
+HX \cdot V=U \Sigma V^T V= U \Sigma
+$$</p></li>
+</ol>
+
+<p><strong>因此在遇到原始数据特征空间较高时($P$ 大于 $N$)，可以采用 $T$ 矩阵进行特征分解直接获得坐标，也称为主坐标分解(PCoA)</strong></p>
+
+<h2 id="概率主成分分析-p-pca">概率主成分分析(P-PCA)</h2>
+
+<p>从概率的角度来看则是将观测数据 $x \in \mathcal{R}^p$ 作为观测变量(observed variable)，重构特征空间 $z \in \mathcal{R}^q$ 作为隐变量(latent variable)，我们降维的过程则相当于从观测变量去求得隐变量的过程
+<strong>假设</strong></p>
+
+<div>$$
+\begin{equation}
+\begin{aligned}
+z &\in \mathcal{N}(0,I_q)\\
+x &= Wz + \mu + \epsilon\\
+\epsilon &\in \mathcal{N}(0,\sigma^2 I_p)
+\end{aligned}
+\end{equation}
+$$</div>
+
+<p>且 $z$ 和 $\epsilon$ 相互独立。这是一个线性高斯模型，相当于我们有了 $z, x|z, x$ 要求 $z|x$。</p>
+
+<p>第一步就是Inference求后验 $z|x$ (通过构造 $x,z$ 的联合概率求条件概率)</p>
+
+<p>第二步就是Learning参数 $W, \mu, \sigma$（比如采用EM算法）</p>
+
+<p><strong>P-PCA与GMM的区别</strong>：P-PCA的隐变量是连续的，而GMM的隐变量是离散的。</p>
+
+<h2 id="matlab-实现">Matlab 实现</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><span class="lnt"> 1
@@ -212,111 +280,46 @@ pl.plot(Xtrain, ytrain, &#39;bs&#39;, ms=8)</pre></td></tr></table>
 </span><span class="lnt">25
 </span><span class="lnt">26
 </span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">import numpy as np
-import matplotlib.pyplot as pl
-%matplotlib inline
-# Test data
-n = 50
-Xtest = np.linspace(-3, 3, n).reshape(-1,1)
+<pre class="chroma">% Data 两个特征线性关系加点噪声
+X1 = [1,2,3,4,5,6]&#39;;
+X2 = [X1] + rand(6,1);
+X = [X1,X2];
+plot(X1,X2)
+N = size(X,1);
 
-# Define the kernel function
-def kernel(a, b, param):
-    sqdist = np.sum(a**2,1).reshape(-1,1) + np.sum(b**2,1) - 2*np.dot(a, b.T)
-    return np.exp(-.5 * (1/param) * sqdist)
+% 矩阵描述
+x_bar = 1/N*X&#39;*ones(N,1);
+H = eye(N) - 1/N*ones(N,1)*ones(N,1)&#39;;
+S = 1/N*X&#39;*H*X;
 
-param = 0.1
-K_ss = kernel(Xtest, Xtest, param)
+% 根据采样方差特征值分解
+[G,K] = eig(S);
 
-# Get cholesky decomposition (square root) of the
-# covariance matrix
-L = np.linalg.cholesky(K_ss + 1e-15*np.eye(n))
-# Sample 3 sets of standard normals for our test points,
-# multiply them by the square root of the covariance matrix
-f_prior = np.dot(L, np.random.normal(size=(n,3)))
+% 根据中心化的数据进行奇异值分解
+[U,Sigma,V] = svd(H*X);
 
-# Now let&#39;s plot the 3 sampled functions.
-pl.plot(Xtest, f_prior)
-pl.axis([-3, 3, -3, 3])
-pl.title(&#39;Three samples from the GP prior&#39;)
-pl.show()</pre></td></tr></table>
+% 方差矩阵的特征值与奇异值分解的奇异值的关系
+Sigma.^2/N
+K
+% 观察V矩阵和G矩阵的关系
+G
+V
+
+% 主坐标分析
+T = H*X*X&#39;*H&#39;;
+[G2,K2] = eig(T);
+% 观察非零特征值对应特征向量也就是主坐标与HXV的关系
+H*X*V</pre></td></tr></table>
 </div>
 </div>
-<p>那再根据训练数据训练一发，也就是相当于前面提到的贝叶斯推断，就能得到函数的后验概率分布
-<figure>
-    <img src="/images/post/%e9%ab%98%e6%96%af%e8%bf%87%e7%a8%8b/posterior.png"/> 
-</figure>
-</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"># Apply the kernel function to our training points
-K = kernel(Xtrain, Xtrain, param)
-L = np.linalg.cholesky(K + 0.00005*np.eye(len(Xtrain)))
-
-# Compute the mean at our test points.
-K_s = kernel(Xtrain, Xtest, param)
-Lk = np.linalg.solve(L, K_s)
-mu = np.dot(Lk.T, np.linalg.solve(L, ytrain)).reshape((n,))
-
-# Compute the standard deviation so we can plot it
-s2 = np.diag(K_ss) - np.sum(Lk**2, axis=0)
-stdv = np.sqrt(s2)
-# Draw samples from the posterior at our test points.
-L = np.linalg.cholesky(K_ss + 1e-6*np.eye(n) - np.dot(Lk.T, Lk))
-f_post = mu.reshape(-1,1) + np.dot(L, np.random.normal(size=(n,3)))
-
-pl.plot(Xtrain, ytrain, &#39;bs&#39;, ms=8)
-pl.gca().fill_between(Xtest.flat, mu-2*stdv, mu+2*stdv, color=&#34;#dddddd&#34;)
-pl.plot(Xtest, mu, &#39;r--&#39;, lw=2)
-pl.axis([-3, 3, -3, 3])
-pl.title(&#39;GP posterior&#39;)
-pl.show()</pre></td></tr></table>
-</div>
-</div>
-<p>这个回归效果很差，主要因为核函数的超参数没估计，而且训练的数据太少了。感兴趣可以自己去改改代码试试看。详细的推导和理论可以看06年的那本《Gaussian Process for Machine Learning》</p>
-
-<h2 id="划重点">划重点</h2>
-
-<p><strong>先验 “加&rdquo; 数据得到后验；后验&rdquo;加权平均&rdquo;输出就是预测！</strong></p>
-
-<p>最后的最后上两个公式吧</p>
-
-<p><div>$$
-p(w|y,X) = \frac{p(y|X,w)p(w)}{p(y|X)}
-$$<div></p>
-
-<p><div>$$
-p\left(f_{*} | {x}_{*}, X, {y}\right)=\int p\left(f_{*} | {x}_{*}, {w}\right) p({w} | X, {y}) d \mathbf{w}
-$$<div>
-配合上面那句话好好理解消化一下！</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E9%AB%98%E6%96%AF%E8%BF%87%E7%A8%8B/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

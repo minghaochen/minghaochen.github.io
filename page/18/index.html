@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-14T19:59:01&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-18T17:01:09&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,285 +115,81 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E5%9F%BA%E4%BA%8Ematlab%E5%B9%B3%E5%8F%B0%E7%9A%84libsvm%E5%9B%9E%E5%BD%92/">基于matlab平台的libsvm回归</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%96%B0%E6%A6%82%E5%BF%B544~6/">《新概念4》4~6</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-19 </span>
+      <span class="post-time"> 2020-02-21 </span>
       <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          <a href="/categories/english/"> English </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>由于项目需要建立一个SVR模型，记录一下libsvm的使用流程。</p>
+      <h1 id="lesson-4-seeing-hands">Lesson 4 Seeing hands</h1>
 
-<p>因为要做的是回归，所以我们应该有一些输入$x$（每一行代表一个样本），输出$y$，从而得到$y=f(x)$的关系用于预测；当$y$为多维时，逐维进行回归。</p>
+<p>In the Soviet Union several cases have been reported recently of people who can read and detect colours with their fingers, and even <strong>see through</strong> solid doors and walls. One case <strong>concerns</strong> an &lsquo;eleven-year-old schoolgirl, Vera Petrova, who has normal vision but who can also <strong>perceive</strong> things with different parts of her skin, and through solid walls. This ability was first noticed by her father. One day she came into his office and <strong>happened</strong> to put her hands on the door of a locked safe. Suddenly she asked her father why he kept so many old newspapers locked away there, and even described the way they were <strong>done up</strong> in <strong>bundles</strong>. Vera&rsquo;s curious talent was brought to the notice of a scientific research institute in the town of UIyanovsk, near where she lives, and in April she was given a series of tests by a special <strong>commission</strong> of the Ministry of Health of the Russian Federal Republic. During these tests she was able to read a newspaper through an opaque screen and, stranger still, by moving her elbow over a child&rsquo;s game of Lotto she was able to describe the figures and colours printed on it; and, in another instance, wearing stockings and slippers, to <strong>make out</strong> with her foot the outlines and colours of a picture hidden under a <strong>carpet</strong>. Other experiments showed that her knees and shoulders had a similar sensitivity. During all these tests Vera was <strong>blindfold</strong>; and, indeed, except when blindfold she lacked the ability to perceive things with her skin. lt was also found that although she could perceive things with her fingers this ability ceased the moment her hands were wet.</p>
 
-<h1 id="step-1-对数据进行scaleing-训练数据和测试数据都需要">Step 1 对数据进行scaleing，训练数据和测试数据都需要！</h1>
+<p><strong>词汇</strong></p>
 
-<p>这里提供一个自己写的scaling函数</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"> 2020/02/19 by Minghao Chen, this function is used to scale the data; 
- 
- %Usage: 
- %for traindata: [traindata,minimums,ranges] = svm_scale(traindata),
- %it will return the minimums and ranges of traindata, which will be needed 
- %in testdata scaling
- %For testdata:  [testdata,minimums,ranges] = svm_scale(testdata,minimums,ranges)
- 
- function [data,minimums,ranges] = svm_scale(data,minimums,ranges)
-    if nargin == 1
-        minimums = min(data, [], 1);
-        ranges = max(data, [], 1) - minimums;
-        data = (data - repmat(minimums, size(data, 1), 1)) ./ repmat(ranges, size(data, 1), 1);
-    else
-        data = (data - repmat(minimums, size(data, 1), 1)) ./ repmat(ranges, size(data, 1), 1);
-    end</pre></td></tr></table>
-</div>
-</div>
-<h1 id="step-2-首先考虑rbf核函数-通过grid-search进行参数-c-gamma-寻优-可以先粗后细-大区间到小区间">Step 2 首先考虑RBF核函数，通过grid search进行参数$C, \gamma$寻优，可以先粗后细（大区间到小区间）</h1>
+<ul>
+<li>concern: /kənˈsɚn/ to relate to (something or someone)</li>
+<li>perceive /pɚˈsiːv/ to notice or become aware of (something)</li>
+<li>happen: /ˈhæpən/ to do or be something by chance</li>
+<li>do up:  to wrap (something).</li>
+<li>bundle: /ˈbʌndəl/ a group of things that are fastened, tied, or wrapped together</li>
+<li>commission: /kəˈmɪʃən/ a group of people who have been given the official job of finding information about something or controlling something</li>
+<li>make out: to see and identify (something)</li>
+<li>carpet: /ˈkɑɚpət/ a thick covering : a thick layer of something</li>
+<li>blindfold: /ˈblaɪndˌfoʊld/ cover the eyes</li>
+</ul>
 
-<p>在进行参数搜索时可以用交叉验证，中途会涉及数据的划分，这里提供一个自己写的数据划分的程序</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">function [train_data,train_target,valid_data,valid_target] = data_split(data,target,k)
-    N = size(data,1);
-    p = randperm(N)&#39;;
-    train_data = data(p(1:round(k*N)),:);
-    valid_data = data(p(1+round(k*N):end),:);
-    train_target = target(p(1:round(k*N)),:);
-    valid_target = target(p(1+round(k*N):end),:);</pre></td></tr></table>
-</div>
-</div>
-<p>其中data放的就是$x$，target放的就是$y$，参数$k$取值$(0,1)$表示你要拿多少的数据用于训练</p>
+<h1 id="lesson-5-youth">Lesson 5 Youth</h1>
 
-<h1 id="step-3-用最优的超参数来训练模型">Step 3 用最优的超参数来训练模型</h1>
+<p>People are always talking about &lsquo;the problem of youth&rsquo;. If there is one&ndash;which I take leave to doubt&ndash;then it is older people who create it, not the young themselves. Let us <strong>get down to</strong> fundamentals and agree that the young are after all human beings&ndash;people just like their elders. There is only one difference between an old man and a young one: the young man has a glorious future before him and the old one has a splendid future behind him: and maybe that is where the <strong>rub</strong> is.
+When I was a teenager, I felt that I was just young and uncertain&ndash;that I was a new boy in a huge school, and I would have been very pleased to be regarded as something so interesting as a problem. For one thing, being a problem gives you a certain identity, and that is one of the things the young are busily engaged in seeking.
+I find young people exciting. They have an air of freedom, and they have not a <strong>dreary</strong> commitment to mean ambitions or love of comfort. They are not anxious social climbers, and they have <strong>no devotion to</strong> material things. All this seems to me to link them with life, and the origins of things. It&rsquo;s as if they were in some sense cosmic beings in <strong>violent</strong> and lovely contrast with us <strong>suburban</strong> creatures. All that is in my mind when I meet a young person. He may be <strong>conceited</strong>, ill-mannered, <strong>presumptuous</strong> or <strong>fatuous</strong>, but I do not turn for protection to <strong>dreary</strong> <strong>clichés</strong> about respect for elders&ndash;as if mere age were a reason for respect. I accept that we are equals, and I will argue with him, as an equal, if I think he is wrong.</p>
 
-<p>这里就需要用到libsvm里的训练函数了：</p>
+<p><strong>词汇</strong></p>
 
-<blockquote>
-<p>model = svmtrain(train_y,train_x,&lsquo;options&rsquo;)</p>
-</blockquote>
+<ul>
+<li>get down to: to start doing something that is difficult or needs a lot of time or energy</li>
+<li>rub: /ˈrʌb/ something that causes a difficulty or problem</li>
+<li>dreary: /ˈdriri/ dull and making you feel sad or bored</li>
+<li>violent: /ˈvajələnt/ very forceful or intense</li>
+<li>suburban: /səˈbɚbən/ boring and typical of people</li>
+<li>conceited: /kənˈsiːtəd/ having or showing too much pride in your own worth or goodness</li>
+<li>presumptuous: /prɪˈzʌmptʃuəs/ doing something that you have no right to do and that seems rude</li>
+<li>fatuous: /ˈfætʃuəs/ very silly or stupid</li>
+<li>clichés: an idea or phrase that has been used so much that it is not effective or does not have any meaning any longer</li>
+</ul>
 
-<p>需要注意的是&rsquo;options&rsquo;，
-直接给个例子在解释吧，比如：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">model = svmtrain(train_y,train_x,&#39;-s 3 -t 2 -p 0.01 -c 2 -g 2&#39;)</pre></td></tr></table>
-</div>
-</div>
-<p>其中各个缩写表示的含义为：</p>
+<h1 id="lesson-6-the-sporting-spirit">Lesson 6 The sporting spirit</h1>
 
-<p>-s 类型 : set type of SVM (default 0)</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">0 -- C-SVC
+<p>I am always amazed when I hear people saying that sport creates <strong>goodwill</strong> between the nations, and that if only the common peoples of the world could meet one another at football or cricket, they would have no <strong>inclination</strong> to meet on the battlefield. Even if one didn&rsquo;t know from concrete examples (the 1936 Olympic Games, for instance) that international sporting contests lead to <strong>orgies</strong> of hatred, one could <strong>deduce</strong> it from general principles. Nearly all the sports practised nowadays are competitive. You play to win, and the game has little meaning unless you do your utmost to win. On the village green, where you <strong>pick up sides</strong> and no feeling of local <strong>patriotism</strong> is involved, it is possible to play simply for the fun and exercise: but as soon as the question of <strong>prestige</strong> arises, as soon as you feel that you and some larger unit will be <strong>disgraced</strong> if you lose, the most <strong>savage</strong> combative instincts are <strong>aroused</strong>. Anyone who has played even in a school football match knows this. At the international level sport is frankly mimic <strong>warfare</strong>. But the significant thing is not the behaviour of the players but the attitude of the <strong>spectators</strong>: and, behind the spectators, of the nations who work themselves into <strong>furies</strong> over these <strong>absurd</strong> contests, and seriously believe&ndash;<strong>at any rate</strong> for short periods&ndash;that running, jumping and kicking a ball are tests of national <strong>virtue</strong>.</p>
 
-1 -- nu-SVC
+<p><strong>词汇</strong></p>
 
-2 -- one-class SVM
-
-3 -- epsilon-SVR
-
-4 -- nu-SVR</pre></td></tr></table>
-</div>
-</div>
-<p>-t 核函数 : set type of kernel function (default 2)</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">0 -- linear
-
-1 -- polynomial
-
-2 -- radial basis function: $exp(-\gamma*|u-v|^2)$
-
-3 -- sigmoid</pre></td></tr></table>
-</div>
-</div>
-<p>-g gamma : set gamma in kernel function (default 1/num_features)</p>
-
-<p>-c cost : set the parameter C of C-SVC, epsilon-SVR, and nu-SVR (default 1)</p>
-
-<p>-p epsilon : set the epsilon in loss function of epsilon-SVR (default 0.1)</p>
-
-<h1 id="step-4-模型训练好可以直接保存下来-是个结构体的形式">Step 4 模型训练好可以直接保存下来，是个结构体的形式</h1>
-
-<blockquote>
-<p>save RegressModel.mat model</p>
-</blockquote>
-
-<h1 id="step-5-如果有测试数据就可以进一步进行验证了">Step 5 如果有测试数据就可以进一步进行验证了</h1>
-
-<p>这里涉及libsvm的预测函数</p>
-
-<blockquote>
-<p>[predict_y,accuracy,dec_value] = svmpredict(test_y,test_x,model)</p>
-</blockquote>
-
-<p>其中，test_y如果没有可以用任意向量替代，此时输出accuracy是一个$3*1$向量，分别表示分类准确率（分类问题使用），MSE（越小越好），平方关系系数$r^2$（越接近1越好）。</p>
-
-<h2 id="例子">例子</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">x=(-10:0.5:9.5)&#39;; 
-y=-x.^2;
-
-[x_scale,minimums,ranges] = svm_scale(x);
-
-% grid search for hyperparameters
-c = [];
-g = [];
-N_grid = 11;
-for i = 1:N_grid
-    c = [c, 2^(-7+2*i)];
-    g = [g, 2^(-7+2*i)];
-end
-
-MSE = 0; 
-for i = 1:N_grid
-    for j = 1:N_grid
-        ops = [&#39;-s 3 -t 2 -p 0.01 -c &#39;,num2str(c(i)),&#39; -g &#39;,num2str(g(j))];
-        [train_data,train_target,valid_data,valid_target] = data_split(x_scale,y,0.7);
-        model = svmtrain(train_target,train_data,ops);
-        [py,mse,prob_estimates]=svmpredict(valid_target,valid_data,model); 
-        MSE(i,j) = mse(2);
-    end
-end
-[i,j]=find(MSE==min(min(MSE)));
-ops = [&#39;-s 3 -t 2 -p 0.01 -c &#39;,num2str(c(i)),&#39; -g &#39;,num2str(g(j))];
-
-% 根据网格搜索得到的最优参数进行全部数据建模
-model = svmtrain(y,x_scale,ops);
-[py,mse,prob_estimates]=svmpredict(y,x_scale,model); 
-
-% 画图 训练数据的拟合结果
-figure; 
-plot(x,y,&#39;o&#39;); 
-hold on 
-plot(x,py,&#39;r*&#39;); 
-legend(&#39;原始数据&#39;,&#39;回归数据&#39;); grid on;
-
-
-% 测试
-testx = [-16:0.2:-8]&#39;; 
-testy = -testx.^2;
-[testx_scale,minimums,ranges] = svm_scale(testx,minimums,ranges);
-[ptesty,tmse,prob_estimates]=svmpredict(testy,testx_scale,model); 
-
-figure; 
-plot(testx,testy,&#39;o&#39;); 
-hold on 
-plot(testx,ptesty,&#39;r*&#39;); 
-legend(&#39;原始数据&#39;,&#39;回归数据&#39;); grid on;</pre></td></tr></table>
-</div>
-</div>
+<ul>
+<li>goodwill: /ˌgʊdˈwɪl/ a kind, helpful, or friendly feeling or attitude</li>
+<li>inclination: /ˌɪnkləˈneɪʃən/  a feeling of wanting to do something : a tendency to do something</li>
+<li>orgy: /ˈoɚʤi/ something that is done too much and in a wild way</li>
+<li>deduce: /dɪˈduːs/ to use logic or reason to form (a conclusion or opinion about something)</li>
+<li>side: a sports team</li>
+<li>prestige: /prɛˈstiːʒ/ the respect and admiration that someone or something gets for being successful or important</li>
+<li>disgrace: /dɪˈskreɪs/ to cause (someone) to feel ashamed</li>
+<li>savage: /ˈsævɪʤ/ very cruel or violent</li>
+<li>arouse: /əˈraʊz/ to cause (an emotional or mental state)</li>
+<li>warfare: /ˈwoɚˌfeɚ/ military fighting in a war</li>
+<li>spectator: someone who is watching an event or game</li>
+<li>fury: /ˈfjuri/ violent anger</li>
+<li>absurd: /əbˈsɚd/ extremely silly, foolish, or unreasonable : completely ridiculous</li>
+<li>at any rate: anyway</li>
+<li>virtue: /ˈvɚtʃu/ morally good behavior or character</li>
+</ul>
     </div>
     <div class="read-more">
-      <a href="/post/%E5%9F%BA%E4%BA%8Ematlab%E5%B9%B3%E5%8F%B0%E7%9A%84libsvm%E5%9B%9E%E5%BD%92/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%96%B0%E6%A6%82%E5%BF%B544~6/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

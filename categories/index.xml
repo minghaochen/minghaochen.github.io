@@ -6,7 +6,7 @@
     <description>Recent content in Categories on MH&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 14 Mar 2020 19:59:01 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 18 Mar 2020 17:01:09 +0800</lastBuildDate>
     
 	<atom:link href="https://minghaochen.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,18 @@
     <item>
       <title>English</title>
       <link>https://minghaochen.github.io/categories/english/</link>
-      <pubDate>Sat, 14 Mar 2020 19:59:01 +0800</pubDate>
+      <pubDate>Wed, 18 Mar 2020 17:01:09 +0800</pubDate>
       
       <guid>https://minghaochen.github.io/categories/english/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>机器学习</title>
+      <link>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Mon, 16 Mar 2020 09:28:21 +0800</pubDate>
+      
+      <guid>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
       <description></description>
     </item>
     
@@ -26,15 +35,6 @@
       <pubDate>Sun, 01 Mar 2020 18:36:11 +0800</pubDate>
       
       <guid>https://minghaochen.github.io/categories/%E7%A7%91%E7%A0%94/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>机器学习</title>
-      <link>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
-      <pubDate>Sun, 23 Feb 2020 21:57:37 +0800</pubDate>
-      
-      <guid>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
       <description></description>
     </item>
     

@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-14T19:59:01&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-18T17:01:09&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,37 +115,56 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E5%B7%9D%E6%99%AE%E7%9A%84%E5%92%8C%E5%B9%B3%E8%AE%A1%E5%88%92/">《经济学人》川普的和平计划</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%A7%81%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/">「概率基础」常见概率分布</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-08 </span>
+      <span class="post-time"> 2020-02-10 </span>
       <div class="post-category">
-          <a href="/categories/english/"> English </a>
+          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="dead-on-arrival">Dead on arrival</h1>
+      <p>本文主要总结一些基础的概率分布，便于遗忘时查阅。</p>
 
-<p>A one-sided deal highlights the need for new leadership on all sides</p>
+<p>从最基础的抛硬币开始吧~</p>
 
-<p>THE <strong>PROSPECT</strong>(前景) of peace between Israel and the Palestinians has grown so <strong>dim</strong>(暗淡的), it is easy to forget that President Donald Trump’s efforts to end the conflict began with much promise. The dealmaker-in-chief vowed to bring fresh thinking to the decades-old <strong>feud</strong>(不和). “As with any successful negotiation, both sides will have to make compromises,” he told Binyamin Netanyahu, Israel(以色列)’s prime minister, in 2017. Mr Trump’s meeting with Mahmoud Abbas, a few months later, ended with the Palestinian(巴勒斯坦的) president <strong>gushing</strong>(涌出): “With you we have hope.</p>
+<p>大家都知道一枚硬币只有正面和反面两种可能情况，用随机变量$X$来表示抛硬币的结果，那么$X$的可能情况为$X=1$（表示正面）或$X=0$（表示反面），<strong>伯努利试验</strong>也就指抛一次硬币的结果，即</p>
 
-<p>What followed, though, was neither bold thinking nor any demand for sacrifices on both sides. Rather, Mr Trump showered Mr Netanyahu, a fellow populist(平民党党员), with political gifts. He recognised the disputed <strong>holy</strong> city of Jerusalem耶路撒冷(以色列首都) as Israel’s capital. His State Department declared that Israeli settlements in the West Bank are lawful. (Few legal scholars agree.) Mr Trump cut aid to the Palestinians, even for health and education, and closed their diplomatic mission in Washington. All this delighted his pro-Israel supporters back home, but enraged Palestinians.</p>
+<p>$$
+P(X=k) = p^k(1-p)^{1-k}, k=0,1
+$$
+其中$p$代表的就是硬币为正面的概率。我们也称$X$满足参数为$p$的伯努利分布，$X\sim Ber(p)$</p>
 
-<p>Such is the context for Mr Trump’s unveiling of his long-awaited peace plan with Mr Netanyahu on January 28th (see article). It will not bring peace. But it may <strong>spell</strong>(导致) the end of the two-state solution—the idea that a Palestinian state and a Jewish one might agree to co-exist.</p>
+<p>到这里我们只抛了一次硬币，那么如果多抛几次呢，那就是<strong>二项分布</strong>，即独立重复$n$次抛硬币（伯努利试验）。而原来的随机变量$X$表示的就是$n$次试验中正面朝上的次数，因此$X$的可能取值也就是$0,1,&hellip;,n$，出现$k$次正面的概率为</p>
 
-<p>At a different time, under a different president, the proposal might have been the starting-point for more talks. Not an <strong>evenhanded</strong>(公平的) starting-point, mind. The plan favours Israeli hardliners as no previous American plan has done. It lets Israel formally <strong>annex</strong>(获得) the settlements, hang on to the Jordan valley, maintain control of holy sites and reject Palestinian refugees. For the Palestinians, there are conditional promises of something like a state at some point in the future, with a capital on the <strong>outskirts</strong>(市郊) of Jerusalem, plus billions of dollars of investment and an Israeli promise to freeze some settlement-building. If they negotiate, they might get a better deal, suggests the Trump administration.</p>
+<p>$$
+P(X=k)=C_n^k p^k(1-p)^{n-k}
+$$
+其中$C_n^k=\frac{n!}{k!(n-k)!}$为二项系数。
+我们也称$X$满足参数为$(n,p)$的二项分布$X\sim B(n,p)$， 二项分布具有期望$E[X]=np$和方差$Var[X]=np(1-p)$。</p>
 
-<p>The Palestinians do not believe it. If Mr Trump were serious about <strong>peacemaking</strong>(调解), why did he try to <strong>woo</strong>(追求) only one side? No Palestinian leader could have accepted the deal, let alone one as weak as Mr Abbas. Mr Trump did not even invite him to the unveiling, which anyway seemed designed to distract Americans from <strong>impeachment</strong>(怀疑) (see article), and Israelis from corruption charges against Mr Netanyahu. The prime minister appears eager to end the Palestinian dream of statehood. He has already asked his cabinet to vote on annexing parts of the West Bank, and is <strong>whipping</strong>(鞭打) up <strong>hawkish</strong>(强硬派的) voters ahead of a tough election on March 2nd.</p>
+<p>有人会觉得抛硬币不过瘾，结果就两种情况，想要探索更多的情况我们进入到掷骰子，而且是一个不均匀的筛子，也就是不用面发生的可能性是不一样的，假设各个面发生的概率为$p=[p_1,&hellip;,p_6],\sum p_i=1$，并且引入$X=[X_1,&hellip;,X_6]$来表示各个面的情况，也就是说$X_i$里只有一个是$1$其他都是$0$，比如你筛子是3朝上，那么$X_3=1$，$X_1,X_2,X_4,X_5,X_6$均为$0$。这时候我们就可以表示$X$这个随机向量的概率了：</p>
 
-<p>Should Mr Netanyahu win another term, he will undoubtedly move ahead with annexation(合并). His main challenger, Benny Gantz, will face pressure to do the same if he is <strong>victorious</strong>. Far from easing the conflict, Mr Trump has pushed it down a <strong>perilous</strong>(危险的) path. He has given Israel a green light to take so much territory that a coherent Palestinian state is all but impossible. And he offers no viable alternative to the two-state solution. That may soon leave Israel with a choice: give the Palestinians equal rights and watch as they multiply and outvote Jews, or treat them as second-class citizens and formally become an <strong>apartheid</strong>(种族隔离) state.</p>
+<p>$$
+P(X|p)=\prod_{i=1}^{6}p_i^{X_i}
+$$</p>
 
-<p>The best that can be said of the Trump plan is that it acknowledges the Oslo peace process is <strong>moribund</strong>(停滞不前的) and a new approach is needed. But a successful peace deal means not only discarding what has not worked, but also coming up with what will: a plan that demands <strong>concessions</strong>(让步) from both sides as well as fair-minded leaders to implement it. This is not that plan. And Mr Trump, Mr Netanyahu and Mr Abbas are not those leaders.</p>
+<p>那如果掷骰子$n$次呢，$X=[X_1,&hellip;,X_6]$这时候表示的就是$n$次试验中某个面向上的次数。
+我们记第$i$面朝上的次数为$m_i$且满足$\sum m_i=n$，那么这时候$X$满足的就是<strong>多项分布</strong>：</p>
+
+<div>
+$$
+P(X_1=m_1,...,X_6=m_6)=Multi(n; p_1,...,p_6)=\frac{n!}{m_1!...m_6!}\prod_{i=1}^6p_i^{m_i}
+$$</div>
+
+<p>记做$X\sim Multi(n,p)$一句话概括多项分布就是<strong>一个多种可能情况的事件独立发生$n$次，各种可能情况发生次数的联合分布</strong>。</p>
+
+<p>多项分布的统计量满足$E[X_i]=Np_i$，$Var[X_i]=Np_i(1-p_i)$，$Cov(X_i,X_j)=-Np_ip_j$</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E4%BA%BA%E5%B7%9D%E6%99%AE%E7%9A%84%E5%92%8C%E5%B9%B3%E8%AE%A1%E5%88%92/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%A6%82%E7%8E%87%E5%9F%BA%E7%A1%80%E5%B8%B8%E8%A7%81%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
