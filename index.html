@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-18T17:01:09&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-26T15:20:39&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,52 +115,228 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5431/">《新概念4》31</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0rbf%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">「机器学习」RBF神经网络</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-03-18 </span>
+      <span class="post-time"> 2020-03-26 </span>
       <div class="post-category">
-          <a href="/categories/english/"> English </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="the-sculptor-speaks">The sculptor speaks</h1>
+      <h1 id="前言">前言</h1>
 
-<p>Appreciation of sculpture depends upon the ability to respond to form in three dimensions. That is perhaps why sculpture has been described as the most difficult of all arts; certainly it is more difficult than the arts which involve appreciation of flat forms, shape in only two dimensions. Many more people are &lsquo;form-blind&rsquo; than colour-blind. The child learning to see, first distinguishes only two-dimensional shape; it cannot judge distances,depths. Later, for its personal safety and practical needs, it has to develop(partly by means of touch) the ability to judge roughly three-dimensional distances. But having satisfied the requirements of practical necessity, most people go no further.
-Though they may attain considerable accuracy in the perception of flat form, they do not make the further intellectual and emotional effort needed to comprehend form in its full spatial existence.
-this is what the sculptor must do. He must strive continually to think of, and
-use, form in its full spatial completeness. He gets the solid shape, as it were, inside his head&ndash;he thinks of it, whatever its size, as if he were holding it completely enclosed in the <strong>hollow</strong> of his hand.</p>
+<p>之前做的项目尝试对一个对象的增益进行拟合，采用支持向量机回归的效果不太理想，进而打算用 RBF 神经网络来试试看效果。</p>
+
+<h1 id="网络介绍">网络介绍</h1>
+
+<p>RBF网络是人工神经网络的一种，它采用径向基函数作为激活函数。
+网络的形式为三层：</p>
+
+<ol>
+<li><p>输入层</p></li>
+
+<li><p>隐藏层（RBF函数）</p></li>
+
+<li><p>线性输出层</p></li>
+</ol>
+
+<p>给定输入 $x\in \mathbb{R}^n$，网络的输出为</p>
+
+<p>$$
+\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||)
+$$
+其中 $N$ 为隐藏层神经元的个数，$c_i$ 为第$i$个神经元的中心向量，$\alpha_i$为第$i$个神经元对线性输出层的权重。径向基函数通常采用高斯函数形式，即</p>
+
+<p>$$
+\rho (||x-c_i||) = exp[-\beta_i ||x-c_i||^2]
+$$</p>
+
+<p><strong>含有足够多的隐藏层神经元的RBF网络能以任意精度近似任意连续函数</strong></p>
+
+<p>网络中需要确定的参数有：</p>
+
+<ol>
+<li><p>权重$\alpha_i$</p></li>
+
+<li><p>基函数中心$c_i$</p></li>
+
+<li><p>基函数的方差$\beta_i$</p></li>
+</ol>
+
+<h1 id="训练">训练</h1>
+
+<p>RBF网络的训练通常采用两步法：</p>
+
+<p>step 1：选择中心向量$c_i$，几种常见的做法like：随机从样本中抽取，k均值聚类。</p>
+
+<p>step 2：训练权重系数，比如最小化预测值的MSE，也可以加入正则化项来确保光滑性。</p>
+
+<h1 id="应用">应用</h1>
+
+<h2 id="内插">内插</h2>
+
+<p>RBF网络可以用来内插函数，给定$N$个样本，每一个训练样本都作为一个径向基和中心，计算核矩阵$K_{N,N}$，则有$KW=Y$，权重向量可以直接矩阵求逆得到。</p>
+
+<h2 id="函数近似">函数近似</h2>
+
+<p>RBF的宽度可以固定为某个常数（正比于所选中心的最大距离）。</p>
+
+<p>当中心固定后，RBF网络具有显示的解析解，伪逆：$W=G^+Y$</p>
+
+<h2 id="梯度下降训练权重">梯度下降训练权重</h2>
+
+<p>这几个概念需要理清楚：</p>
 
 <ul>
-<li>hollow /&lsquo;hɑlo/ 空的；中空的</li>
+<li>导数（单变量函数）</li>
+<li>偏导数（多变量函数）</li>
+<li>导数方向（任意方向的导数）</li>
+<li>梯度（变化最大方向的导数方向）</li>
 </ul>
 
-<p>He mentally visualizes a complex form from all round itself; he knows while he looks at one side what the other side is like;
-he identifies himself with its centre of gravity, its mass, its weight; he realizes
-its volume, as the space that the shape displaces in the air.
-And the sensitive observer of sculpture must also learn to feel shape simply as shape, not as description or <strong>reminiscence</strong>.</p>
+<h1 id="matlab仿真">MATLAB仿真</h1>
 
-<ul>
-<li>reminiscence /&lsquo;rɛmə&rsquo;nɪsns/ Someone&rsquo;s reminiscences are things that they remember from the past, and which they talk or write about. 回忆</li>
-</ul>
+<p>下面根据上述算法进行RBF神经网络的训练</p>
 
-<p>He must, for example, perceive an
-egg as a simple single solid shape, quite apart from its significance as food,or from the literary idea that it will become a bird. And so with solids such as a
-shell, a nut, a plum, a pear, a <strong>tadpole</strong>, a mushroom, a mountain peak, a kidney, a carrot, a tree-trunk, a bird, a bud, a lark, a ladybird, a <strong>bulrush</strong>, a bone. From
-these he can go on to appreciate more complex forms of combinations of several forms.</p>
+<p>首先生成数据，$x$为输入，$y$为目标值，也就是要训练$y=f(x)$</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">% generate data from Logistic map
+% x(t+1) = 4x(t)(1-x(t))
+z = zeros(201,1);
+x = zeros(200,1);
+y = zeros(200,1);
+z(1) = 0.1;
+for t = 2:201
+    z(t) = 4*z(t-1)*(1-z(t-1)); 
+end
+y = z(2:201);
+x = z(1:200);</pre></td></tr></table>
+</div>
+</div>
+<p>假设神经元的个数、方差和基向量事先定好</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">N = 7; % the number of neuron
+beta = 5; % predefine the variance of RBF function
+c = x(1:30:181); % random select the centers</pre></td></tr></table>
+</div>
+</div>
+<p>定义RBF函数和梯度向量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">rbfoutput = @(x,a,c) a(1)*exp(-5*(x-c(1)).^2)+a(2)*exp(-5*(x-c(2)).^2)+...
+    a(3)*exp(-5*(x-c(3)).^2)+a(4)*exp(-5*(x-c(4)).^2)+a(5)*exp(-5*(x-c(5)).^2)...
+    +a(6)*exp(-5*(x-c(6)).^2)+a(7)*exp(-5*(x-c(7)).^2);
+rbf_grad = @(x,c) [exp(-5*(x-c(1)).^2);exp(-5*(x-c(2)).^2);exp(-5*(x-c(3)).^2);...
+    exp(-5*(x-c(4)).^2);exp(-5*(x-c(5)).^2);exp(-5*(x-c(6)).^2);...
+    exp(-5*(x-c(7)).^2)];</pre></td></tr></table>
+</div>
+</div>
+<p>采用随机梯度下降进行线性权重的寻优，即每次从样本中随机挑选一个样本进行训练</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">a = 0.01*ones(N,1);
+for i = 1:10000000
+    t = unidrnd(200);
+    a = a - 0.01 * (rbfoutput(x(t),a,c)-y(t))* rbf_grad(x(t),c);
+end</pre></td></tr></table>
+</div>
+</div>
+<p>作图比较实际数据和RBF神经网络的预测输出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">figure
+scatter(x,y,&#39;o&#39;);
+hold on
+x_test = (0:0.01:1);
+scatter(x_test,rbfoutput(x_test,a,c),&#39;*&#39;)
+legend(&#39;true function&#39;,&#39;approximation&#39;)
+xlabel(&#39;x(t)&#39;)
+ylabel(&#39;x(t+1)&#39;)</pre></td></tr></table>
+</div>
+</div>
+<h2 id="newrb函数的使用">newrb函数的使用</h2>
 
-<ul>
-<li>tadpole /&lsquo;tæd&rsquo;pol/ 蝌蚪</li>
-<li>bud /bʌd/ A bud is a small pointed lump that appears on a tree or plant and develops into a leaf or flower. 芽; 花蕾</li>
-<li>lark /lɑrk/ 云雀</li>
-<li>ladybird /&lsquo;ledɪbɝd/ 瓢虫</li>
-<li>bulrush /&lsquo;bʊlrʌʃ/ 芦苇</li>
-</ul>
+<p>MATLAB也自带了RBF神经网络函数，不过它采用的隐藏层略微不同，方差多了个平方同时输出层多了个偏置项。</p>
+
+<p>$$
+\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||) + bias
+$$</p>
+
+<p>$$
+\rho (||x-c_i||) = exp[-(\beta_i ||x-c_i||^2)^2]
+$$</p>
+
+<p>训练则很简单了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">net = newrb(x&#39;,y&#39;,error,spread,MN,DF)</pre></td></tr></table>
+</div>
+</div>
+<p>其中$x,y$为训练数据，一列为一个样本；error为期望的误差，spread为径向基函数的扩展速度，它决定了基函数围绕中心点的宽度（The larger spread is, the smoother the function approximation）其实就是控制方差，MN为神经元的最大个数，DF为两次显示之间所添加的神经元数目,默认值为25。</p>
+
+<p>训练结束后进行预测直接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">y_test=sim(net,x_test)</pre></td></tr></table>
+</div>
+</div>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5431/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0rbf%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

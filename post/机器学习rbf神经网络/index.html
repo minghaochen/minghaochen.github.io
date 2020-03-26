@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>「机器学习」RBF神经网络 - MH&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="MinghaoChen" /><meta name="description" content="前言 之前做的项目尝试对一个对象的增益进行拟合，采用支持向量机回归的效果不太理想，进而打算用 RBF 神经网络来试试看效果。
+网络介绍 RBF网络是人工神经网络的一种，它采用径向基函数作为激活函数。 网络的形式为三层：
+ 输入层
+ 隐藏层（RBF函数）
+ 线性输出层
+  给定输入 $x\in \mathbb{R}^n$，网络的输出为
+$$ \phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||) $$ 其中 $N$ 为隐藏层神经元的个数，$c_i$ 为第$i$个神经元的中心向量，$\alpha_i$为第$i$个神经元对线性输出层的权重。径向基函数通常采用高斯函数形式，即
+$$ \rho (||x-c_i||) = exp[-\beta_i ||x-c_i||^2] $$
+含有足够多的隐藏层神经元的RBF网络能以任意精度近似任意连续函数
+网络中需要确定的参数有：
+ 权重$\alpha_i$
+ 基函数中心$c_i$
+ 基函数的方差$\beta_i$
+  训练 RBF网络的训练通常采用两步法：
+step 1：选择中心向量$c_i$，几种常见的做法like：随机从样本中抽取，k均值聚类。
+step 2：训练权重系数，比如最小化预测值的MSE，也可以加入正则化项来确保光滑性。
+应用 内插 RBF网络可以用来内插函数，给定$N$个样本，每一个训练样本都作为一个径向基和中心，计算核矩阵$K_{N,N}$，则有$KW=Y$，权重向量可以直接矩阵求逆得到。
+函数近似 RBF的宽度可以固定为某个常数（正比于所选中心的最大距离）。
+当中心固定后，RBF网络具有显示的解析解，伪逆：$W=G^&#43;Y$
+梯度下降训练权重 这几个概念需要理清楚：
+ 导数（单变量函数） 偏导数（多变量函数） 导数方向（任意方向的导数） 梯度（变化最大方向的导数方向）  MATLAB仿真 下面根据上述算法进行RBF神经网络的训练
+首先生成数据，$x$为输入，$y$为目标值，也就是要训练$y=f(x)$
+1 2 3 4 5 6 7 8 9 10 11  % generate data from Logistic map % x(t&#43;1) = 4x(t)(1-x(t)) z = zeros(201,1); x = zeros(200,1); y = zeros(200,1); z(1) = 0.1; for t = 2:201 z(t) = 4*z(t-1)*(1-z(t-1)); end y = z(2:201); x = z(1:200);   假设神经元的个数、方差和基向量事先定好
+1 2 3  N = 7; % the number of neuron beta = 5; % predefine the variance of RBF function c = x(1:30:181); % random select the centers   定义RBF函数和梯度向量
+1 2 3 4 5 6  rbfoutput = @(x,a,c) a(1)*exp(-5*(x-c(1)).^2)&#43;a(2)*exp(-5*(x-c(2)).^2)&#43;... a(3)*exp(-5*(x-c(3)).^2)&#43;a(4)*exp(-5*(x-c(4)).^2)&#43;a(5)*exp(-5*(x-c(5)).^2)... &#43;a(6)*exp(-5*(x-c(6)).^2)&#43;a(7)*exp(-5*(x-c(7)).^2); rbf_grad = @(x,c) [exp(-5*(x-c(1)).^2);exp(-5*(x-c(2)).^2);exp(-5*(x-c(3)).^2);... exp(-5*(x-c(4)).^2);exp(-5*(x-c(5)).^2);exp(-5*(x-c(6)).^2);... exp(-5*(x-c(7)).^2)];   采用随机梯度下降进行线性权重的寻优，即每次从样本中随机挑选一个样本进行训练
+1 2 3 4 5  a = 0.01*ones(N,1); for i = 1:10000000 t = unidrnd(200); a = a - 0.01 * (rbfoutput(x(t),a,c)-y(t))* rbf_grad(x(t),c); end   作图比较实际数据和RBF神经网络的预测输出
+1 2 3 4 5 6 7 8  figure scatter(x,y,&amp;#39;o&amp;#39;); hold on x_test = (0:0.01:1); scatter(x_test,rbfoutput(x_test,a,c),&amp;#39;*&amp;#39;) legend(&amp;#39;true function&amp;#39;,&amp;#39;approximation&amp;#39;) xlabel(&amp;#39;x(t)&amp;#39;) ylabel(&amp;#39;x(t&#43;1)&amp;#39;)   newrb函数的使用 MATLAB也自带了RBF神经网络函数，不过它采用的隐藏层略微不同，方差多了个平方同时输出层多了个偏置项。
+$$ \phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||) &#43; bias $$
+$$ \rho (||x-c_i||) = exp[-(\beta_i ||x-c_i||^2)^2] $$
+训练则很简单了
+1  net = newrb(x&amp;#39;,y&amp;#39;,error,spread,MN,DF)   其中$x,y$为训练数据，一列为一个样本；error为期望的误差，spread为径向基函数的扩展速度，它决定了基函数围绕中心点的宽度（The larger spread is, the smoother the function approximation）其实就是控制方差，MN为神经元的最大个数，DF为两次显示之间所添加的神经元数目,默认值为25。
+训练结束后进行预测直接
+1  y_test=sim(net,x_test)  " /><meta name="keywords" content="’RBF‘, 神经网络" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0rbf%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="「机器学习」RBF神经网络" />
+<meta property="og:description" content="前言
+
+之前做的项目尝试对一个对象的增益进行拟合，采用支持向量机回归的效果不太理想，进而打算用 RBF 神经网络来试试看效果。
+
+网络介绍
+
+RBF网络是人工神经网络的一种，它采用径向基函数作为激活函数。
+网络的形式为三层：
+
+
+输入层
+
+隐藏层（RBF函数）
+
+线性输出层
+
+
+给定输入 $x\in \mathbb{R}^n$，网络的输出为
+
+$$
+\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||)
+$$
+其中 $N$ 为隐藏层神经元的个数，$c_i$ 为第$i$个神经元的中心向量，$\alpha_i$为第$i$个神经元对线性输出层的权重。径向基函数通常采用高斯函数形式，即
+
+$$
+\rho (||x-c_i||) = exp[-\beta_i ||x-c_i||^2]
+$$
+
+含有足够多的隐藏层神经元的RBF网络能以任意精度近似任意连续函数
+
+网络中需要确定的参数有：
+
+
+权重$\alpha_i$
+
+基函数中心$c_i$
+
+基函数的方差$\beta_i$
+
+
+训练
+
+RBF网络的训练通常采用两步法：
+
+step 1：选择中心向量$c_i$，几种常见的做法like：随机从样本中抽取，k均值聚类。
+
+step 2：训练权重系数，比如最小化预测值的MSE，也可以加入正则化项来确保光滑性。
+
+应用
+
+内插
+
+RBF网络可以用来内插函数，给定$N$个样本，每一个训练样本都作为一个径向基和中心，计算核矩阵$K_{N,N}$，则有$KW=Y$，权重向量可以直接矩阵求逆得到。
+
+函数近似
+
+RBF的宽度可以固定为某个常数（正比于所选中心的最大距离）。
+
+当中心固定后，RBF网络具有显示的解析解，伪逆：$W=G^&#43;Y$
+
+梯度下降训练权重
+
+这几个概念需要理清楚：
+
+
+导数（单变量函数）
+偏导数（多变量函数）
+导数方向（任意方向的导数）
+梯度（变化最大方向的导数方向）
+
+
+MATLAB仿真
+
+下面根据上述算法进行RBF神经网络的训练
+
+首先生成数据，$x$为输入，$y$为目标值，也就是要训练$y=f(x)$
+
+
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+
+
+% generate data from Logistic map
+% x(t&#43;1) = 4x(t)(1-x(t))
+z = zeros(201,1);
+x = zeros(200,1);
+y = zeros(200,1);
+z(1) = 0.1;
+for t = 2:201
+    z(t) = 4*z(t-1)*(1-z(t-1)); 
+end
+y = z(2:201);
+x = z(1:200);
+
+
+假设神经元的个数、方差和基向量事先定好
+
+
+1
+2
+3
+
+
+N = 7; % the number of neuron
+beta = 5; % predefine the variance of RBF function
+c = x(1:30:181); % random select the centers
+
+
+定义RBF函数和梯度向量
+
+
+1
+2
+3
+4
+5
+6
+
+
+rbfoutput = @(x,a,c) a(1)*exp(-5*(x-c(1)).^2)&#43;a(2)*exp(-5*(x-c(2)).^2)&#43;...
+    a(3)*exp(-5*(x-c(3)).^2)&#43;a(4)*exp(-5*(x-c(4)).^2)&#43;a(5)*exp(-5*(x-c(5)).^2)...
+    &#43;a(6)*exp(-5*(x-c(6)).^2)&#43;a(7)*exp(-5*(x-c(7)).^2);
+rbf_grad = @(x,c) [exp(-5*(x-c(1)).^2);exp(-5*(x-c(2)).^2);exp(-5*(x-c(3)).^2);...
+    exp(-5*(x-c(4)).^2);exp(-5*(x-c(5)).^2);exp(-5*(x-c(6)).^2);...
+    exp(-5*(x-c(7)).^2)];
+
+
+采用随机梯度下降进行线性权重的寻优，即每次从样本中随机挑选一个样本进行训练
+
+
+1
+2
+3
+4
+5
+
+
+a = 0.01*ones(N,1);
+for i = 1:10000000
+    t = unidrnd(200);
+    a = a - 0.01 * (rbfoutput(x(t),a,c)-y(t))* rbf_grad(x(t),c);
+end
+
+
+作图比较实际数据和RBF神经网络的预测输出
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+
+
+figure
+scatter(x,y,&#39;o&#39;);
+hold on
+x_test = (0:0.01:1);
+scatter(x_test,rbfoutput(x_test,a,c),&#39;*&#39;)
+legend(&#39;true function&#39;,&#39;approximation&#39;)
+xlabel(&#39;x(t)&#39;)
+ylabel(&#39;x(t&#43;1)&#39;)
+
+
+newrb函数的使用
+
+MATLAB也自带了RBF神经网络函数，不过它采用的隐藏层略微不同，方差多了个平方同时输出层多了个偏置项。
+
+$$
+\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||) &#43; bias
+$$
+
+$$
+\rho (||x-c_i||) = exp[-(\beta_i ||x-c_i||^2)^2]
+$$
+
+训练则很简单了
+
+
+1
+
+
+net = newrb(x&#39;,y&#39;,error,spread,MN,DF)
+
+
+其中$x,y$为训练数据，一列为一个样本；error为期望的误差，spread为径向基函数的扩展速度，它决定了基函数围绕中心点的宽度（The larger spread is, the smoother the function approximation）其实就是控制方差，MN为神经元的最大个数，DF为两次显示之间所添加的神经元数目,默认值为25。
+
+训练结束后进行预测直接
+
+
+1
+
+
+y_test=sim(net,x_test)
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0rbf%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" />
+<meta property="article:published_time" content="2020-03-26T15:20:39&#43;08:00"/>
+<meta property="article:modified_time" content="2020-03-26T15:20:39&#43;08:00"/>
+
+<meta itemprop="name" content="「机器学习」RBF神经网络">
+<meta itemprop="description" content="前言
+
+之前做的项目尝试对一个对象的增益进行拟合，采用支持向量机回归的效果不太理想，进而打算用 RBF 神经网络来试试看效果。
+
+网络介绍
+
+RBF网络是人工神经网络的一种，它采用径向基函数作为激活函数。
+网络的形式为三层：
+
+
+输入层
+
+隐藏层（RBF函数）
+
+线性输出层
+
+
+给定输入 $x\in \mathbb{R}^n$，网络的输出为
+
+$$
+\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||)
+$$
+其中 $N$ 为隐藏层神经元的个数，$c_i$ 为第$i$个神经元的中心向量，$\alpha_i$为第$i$个神经元对线性输出层的权重。径向基函数通常采用高斯函数形式，即
+
+$$
+\rho (||x-c_i||) = exp[-\beta_i ||x-c_i||^2]
+$$
+
+含有足够多的隐藏层神经元的RBF网络能以任意精度近似任意连续函数
+
+网络中需要确定的参数有：
+
+
+权重$\alpha_i$
+
+基函数中心$c_i$
+
+基函数的方差$\beta_i$
+
+
+训练
+
+RBF网络的训练通常采用两步法：
+
+step 1：选择中心向量$c_i$，几种常见的做法like：随机从样本中抽取，k均值聚类。
+
+step 2：训练权重系数，比如最小化预测值的MSE，也可以加入正则化项来确保光滑性。
+
+应用
+
+内插
+
+RBF网络可以用来内插函数，给定$N$个样本，每一个训练样本都作为一个径向基和中心，计算核矩阵$K_{N,N}$，则有$KW=Y$，权重向量可以直接矩阵求逆得到。
+
+函数近似
+
+RBF的宽度可以固定为某个常数（正比于所选中心的最大距离）。
+
+当中心固定后，RBF网络具有显示的解析解，伪逆：$W=G^&#43;Y$
+
+梯度下降训练权重
+
+这几个概念需要理清楚：
+
+
+导数（单变量函数）
+偏导数（多变量函数）
+导数方向（任意方向的导数）
+梯度（变化最大方向的导数方向）
+
+
+MATLAB仿真
+
+下面根据上述算法进行RBF神经网络的训练
+
+首先生成数据，$x$为输入，$y$为目标值，也就是要训练$y=f(x)$
+
+
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+
+
+% generate data from Logistic map
+% x(t&#43;1) = 4x(t)(1-x(t))
+z = zeros(201,1);
+x = zeros(200,1);
+y = zeros(200,1);
+z(1) = 0.1;
+for t = 2:201
+    z(t) = 4*z(t-1)*(1-z(t-1)); 
+end
+y = z(2:201);
+x = z(1:200);
+
+
+假设神经元的个数、方差和基向量事先定好
+
+
+1
+2
+3
+
+
+N = 7; % the number of neuron
+beta = 5; % predefine the variance of RBF function
+c = x(1:30:181); % random select the centers
+
+
+定义RBF函数和梯度向量
+
+
+1
+2
+3
+4
+5
+6
+
+
+rbfoutput = @(x,a,c) a(1)*exp(-5*(x-c(1)).^2)&#43;a(2)*exp(-5*(x-c(2)).^2)&#43;...
+    a(3)*exp(-5*(x-c(3)).^2)&#43;a(4)*exp(-5*(x-c(4)).^2)&#43;a(5)*exp(-5*(x-c(5)).^2)...
+    &#43;a(6)*exp(-5*(x-c(6)).^2)&#43;a(7)*exp(-5*(x-c(7)).^2);
+rbf_grad = @(x,c) [exp(-5*(x-c(1)).^2);exp(-5*(x-c(2)).^2);exp(-5*(x-c(3)).^2);...
+    exp(-5*(x-c(4)).^2);exp(-5*(x-c(5)).^2);exp(-5*(x-c(6)).^2);...
+    exp(-5*(x-c(7)).^2)];
+
+
+采用随机梯度下降进行线性权重的寻优，即每次从样本中随机挑选一个样本进行训练
+
+
+1
+2
+3
+4
+5
+
+
+a = 0.01*ones(N,1);
+for i = 1:10000000
+    t = unidrnd(200);
+    a = a - 0.01 * (rbfoutput(x(t),a,c)-y(t))* rbf_grad(x(t),c);
+end
+
+
+作图比较实际数据和RBF神经网络的预测输出
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+
+
+figure
+scatter(x,y,&#39;o&#39;);
+hold on
+x_test = (0:0.01:1);
+scatter(x_test,rbfoutput(x_test,a,c),&#39;*&#39;)
+legend(&#39;true function&#39;,&#39;approximation&#39;)
+xlabel(&#39;x(t)&#39;)
+ylabel(&#39;x(t&#43;1)&#39;)
+
+
+newrb函数的使用
+
+MATLAB也自带了RBF神经网络函数，不过它采用的隐藏层略微不同，方差多了个平方同时输出层多了个偏置项。
+
+$$
+\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||) &#43; bias
+$$
+
+$$
+\rho (||x-c_i||) = exp[-(\beta_i ||x-c_i||^2)^2]
+$$
+
+训练则很简单了
+
+
+1
+
+
+net = newrb(x&#39;,y&#39;,error,spread,MN,DF)
+
+
+其中$x,y$为训练数据，一列为一个样本；error为期望的误差，spread为径向基函数的扩展速度，它决定了基函数围绕中心点的宽度（The larger spread is, the smoother the function approximation）其实就是控制方差，MN为神经元的最大个数，DF为两次显示之间所添加的神经元数目,默认值为25。
+
+训练结束后进行预测直接
+
+
+1
+
+
+y_test=sim(net,x_test)
+
+">
+
+
+<meta itemprop="datePublished" content="2020-03-26T15:20:39&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-26T15:20:39&#43;08:00" />
+<meta itemprop="wordCount" content="1165">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="「机器学习」RBF神经网络"/>
+<meta name="twitter:description" content="前言
+
+之前做的项目尝试对一个对象的增益进行拟合，采用支持向量机回归的效果不太理想，进而打算用 RBF 神经网络来试试看效果。
+
+网络介绍
+
+RBF网络是人工神经网络的一种，它采用径向基函数作为激活函数。
+网络的形式为三层：
+
+
+输入层
+
+隐藏层（RBF函数）
+
+线性输出层
+
+
+给定输入 $x\in \mathbb{R}^n$，网络的输出为
+
+$$
+\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||)
+$$
+其中 $N$ 为隐藏层神经元的个数，$c_i$ 为第$i$个神经元的中心向量，$\alpha_i$为第$i$个神经元对线性输出层的权重。径向基函数通常采用高斯函数形式，即
+
+$$
+\rho (||x-c_i||) = exp[-\beta_i ||x-c_i||^2]
+$$
+
+含有足够多的隐藏层神经元的RBF网络能以任意精度近似任意连续函数
+
+网络中需要确定的参数有：
+
+
+权重$\alpha_i$
+
+基函数中心$c_i$
+
+基函数的方差$\beta_i$
+
+
+训练
+
+RBF网络的训练通常采用两步法：
+
+step 1：选择中心向量$c_i$，几种常见的做法like：随机从样本中抽取，k均值聚类。
+
+step 2：训练权重系数，比如最小化预测值的MSE，也可以加入正则化项来确保光滑性。
+
+应用
+
+内插
+
+RBF网络可以用来内插函数，给定$N$个样本，每一个训练样本都作为一个径向基和中心，计算核矩阵$K_{N,N}$，则有$KW=Y$，权重向量可以直接矩阵求逆得到。
+
+函数近似
+
+RBF的宽度可以固定为某个常数（正比于所选中心的最大距离）。
+
+当中心固定后，RBF网络具有显示的解析解，伪逆：$W=G^&#43;Y$
+
+梯度下降训练权重
+
+这几个概念需要理清楚：
+
+
+导数（单变量函数）
+偏导数（多变量函数）
+导数方向（任意方向的导数）
+梯度（变化最大方向的导数方向）
+
+
+MATLAB仿真
+
+下面根据上述算法进行RBF神经网络的训练
+
+首先生成数据，$x$为输入，$y$为目标值，也就是要训练$y=f(x)$
+
+
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+
+
+% generate data from Logistic map
+% x(t&#43;1) = 4x(t)(1-x(t))
+z = zeros(201,1);
+x = zeros(200,1);
+y = zeros(200,1);
+z(1) = 0.1;
+for t = 2:201
+    z(t) = 4*z(t-1)*(1-z(t-1)); 
+end
+y = z(2:201);
+x = z(1:200);
+
+
+假设神经元的个数、方差和基向量事先定好
+
+
+1
+2
+3
+
+
+N = 7; % the number of neuron
+beta = 5; % predefine the variance of RBF function
+c = x(1:30:181); % random select the centers
+
+
+定义RBF函数和梯度向量
+
+
+1
+2
+3
+4
+5
+6
+
+
+rbfoutput = @(x,a,c) a(1)*exp(-5*(x-c(1)).^2)&#43;a(2)*exp(-5*(x-c(2)).^2)&#43;...
+    a(3)*exp(-5*(x-c(3)).^2)&#43;a(4)*exp(-5*(x-c(4)).^2)&#43;a(5)*exp(-5*(x-c(5)).^2)...
+    &#43;a(6)*exp(-5*(x-c(6)).^2)&#43;a(7)*exp(-5*(x-c(7)).^2);
+rbf_grad = @(x,c) [exp(-5*(x-c(1)).^2);exp(-5*(x-c(2)).^2);exp(-5*(x-c(3)).^2);...
+    exp(-5*(x-c(4)).^2);exp(-5*(x-c(5)).^2);exp(-5*(x-c(6)).^2);...
+    exp(-5*(x-c(7)).^2)];
+
+
+采用随机梯度下降进行线性权重的寻优，即每次从样本中随机挑选一个样本进行训练
+
+
+1
+2
+3
+4
+5
+
+
+a = 0.01*ones(N,1);
+for i = 1:10000000
+    t = unidrnd(200);
+    a = a - 0.01 * (rbfoutput(x(t),a,c)-y(t))* rbf_grad(x(t),c);
+end
+
+
+作图比较实际数据和RBF神经网络的预测输出
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+
+
+figure
+scatter(x,y,&#39;o&#39;);
+hold on
+x_test = (0:0.01:1);
+scatter(x_test,rbfoutput(x_test,a,c),&#39;*&#39;)
+legend(&#39;true function&#39;,&#39;approximation&#39;)
+xlabel(&#39;x(t)&#39;)
+ylabel(&#39;x(t&#43;1)&#39;)
+
+
+newrb函数的使用
+
+MATLAB也自带了RBF神经网络函数，不过它采用的隐藏层略微不同，方差多了个平方同时输出层多了个偏置项。
+
+$$
+\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||) &#43; bias
+$$
+
+$$
+\rho (||x-c_i||) = exp[-(\beta_i ||x-c_i||^2)^2]
+$$
+
+训练则很简单了
+
+
+1
+
+
+net = newrb(x&#39;,y&#39;,error,spread,MN,DF)
+
+
+其中$x,y$为训练数据，一列为一个样本；error为期望的误差，spread为径向基函数的扩展速度，它决定了基函数围绕中心点的宽度（The larger spread is, the smoother the function approximation）其实就是控制方差，MN为神经元的最大个数，DF为两次显示之间所添加的神经元数目,默认值为25。
+
+训练结束后进行预测直接
+
+
+1
+
+
+y_test=sim(net,x_test)
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">MH&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">MH&#39;s Blog</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">「机器学习」RBF神经网络</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-03-26 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    
+    <div class="post-content">
+      <h1 id="前言">前言</h1>
+
+<p>之前做的项目尝试对一个对象的增益进行拟合，采用支持向量机回归的效果不太理想，进而打算用 RBF 神经网络来试试看效果。</p>
+
+<h1 id="网络介绍">网络介绍</h1>
+
+<p>RBF网络是人工神经网络的一种，它采用径向基函数作为激活函数。
+网络的形式为三层：</p>
+
+<ol>
+<li><p>输入层</p></li>
+
+<li><p>隐藏层（RBF函数）</p></li>
+
+<li><p>线性输出层</p></li>
+</ol>
+
+<p>给定输入 $x\in \mathbb{R}^n$，网络的输出为</p>
+
+<p>$$
+\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||)
+$$
+其中 $N$ 为隐藏层神经元的个数，$c_i$ 为第$i$个神经元的中心向量，$\alpha_i$为第$i$个神经元对线性输出层的权重。径向基函数通常采用高斯函数形式，即</p>
+
+<p>$$
+\rho (||x-c_i||) = exp[-\beta_i ||x-c_i||^2]
+$$</p>
+
+<p><strong>含有足够多的隐藏层神经元的RBF网络能以任意精度近似任意连续函数</strong></p>
+
+<p>网络中需要确定的参数有：</p>
+
+<ol>
+<li><p>权重$\alpha_i$</p></li>
+
+<li><p>基函数中心$c_i$</p></li>
+
+<li><p>基函数的方差$\beta_i$</p></li>
+</ol>
+
+<h1 id="训练">训练</h1>
+
+<p>RBF网络的训练通常采用两步法：</p>
+
+<p>step 1：选择中心向量$c_i$，几种常见的做法like：随机从样本中抽取，k均值聚类。</p>
+
+<p>step 2：训练权重系数，比如最小化预测值的MSE，也可以加入正则化项来确保光滑性。</p>
+
+<h1 id="应用">应用</h1>
+
+<h2 id="内插">内插</h2>
+
+<p>RBF网络可以用来内插函数，给定$N$个样本，每一个训练样本都作为一个径向基和中心，计算核矩阵$K_{N,N}$，则有$KW=Y$，权重向量可以直接矩阵求逆得到。</p>
+
+<h2 id="函数近似">函数近似</h2>
+
+<p>RBF的宽度可以固定为某个常数（正比于所选中心的最大距离）。</p>
+
+<p>当中心固定后，RBF网络具有显示的解析解，伪逆：$W=G^+Y$</p>
+
+<h2 id="梯度下降训练权重">梯度下降训练权重</h2>
+
+<p>这几个概念需要理清楚：</p>
+
+<ul>
+<li>导数（单变量函数）</li>
+<li>偏导数（多变量函数）</li>
+<li>导数方向（任意方向的导数）</li>
+<li>梯度（变化最大方向的导数方向）</li>
+</ul>
+
+<h1 id="matlab仿真">MATLAB仿真</h1>
+
+<p>下面根据上述算法进行RBF神经网络的训练</p>
+
+<p>首先生成数据，$x$为输入，$y$为目标值，也就是要训练$y=f(x)$</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">% generate data from Logistic map
+% x(t+1) = 4x(t)(1-x(t))
+z = zeros(201,1);
+x = zeros(200,1);
+y = zeros(200,1);
+z(1) = 0.1;
+for t = 2:201
+    z(t) = 4*z(t-1)*(1-z(t-1)); 
+end
+y = z(2:201);
+x = z(1:200);</pre></td></tr></table>
+</div>
+</div>
+<p>假设神经元的个数、方差和基向量事先定好</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">N = 7; % the number of neuron
+beta = 5; % predefine the variance of RBF function
+c = x(1:30:181); % random select the centers</pre></td></tr></table>
+</div>
+</div>
+<p>定义RBF函数和梯度向量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">rbfoutput = @(x,a,c) a(1)*exp(-5*(x-c(1)).^2)+a(2)*exp(-5*(x-c(2)).^2)+...
+    a(3)*exp(-5*(x-c(3)).^2)+a(4)*exp(-5*(x-c(4)).^2)+a(5)*exp(-5*(x-c(5)).^2)...
+    +a(6)*exp(-5*(x-c(6)).^2)+a(7)*exp(-5*(x-c(7)).^2);
+rbf_grad = @(x,c) [exp(-5*(x-c(1)).^2);exp(-5*(x-c(2)).^2);exp(-5*(x-c(3)).^2);...
+    exp(-5*(x-c(4)).^2);exp(-5*(x-c(5)).^2);exp(-5*(x-c(6)).^2);...
+    exp(-5*(x-c(7)).^2)];</pre></td></tr></table>
+</div>
+</div>
+<p>采用随机梯度下降进行线性权重的寻优，即每次从样本中随机挑选一个样本进行训练</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">a = 0.01*ones(N,1);
+for i = 1:10000000
+    t = unidrnd(200);
+    a = a - 0.01 * (rbfoutput(x(t),a,c)-y(t))* rbf_grad(x(t),c);
+end</pre></td></tr></table>
+</div>
+</div>
+<p>作图比较实际数据和RBF神经网络的预测输出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">figure
+scatter(x,y,&#39;o&#39;);
+hold on
+x_test = (0:0.01:1);
+scatter(x_test,rbfoutput(x_test,a,c),&#39;*&#39;)
+legend(&#39;true function&#39;,&#39;approximation&#39;)
+xlabel(&#39;x(t)&#39;)
+ylabel(&#39;x(t+1)&#39;)</pre></td></tr></table>
+</div>
+</div>
+<h2 id="newrb函数的使用">newrb函数的使用</h2>
+
+<p>MATLAB也自带了RBF神经网络函数，不过它采用的隐藏层略微不同，方差多了个平方同时输出层多了个偏置项。</p>
+
+<p>$$
+\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||) + bias
+$$</p>
+
+<p>$$
+\rho (||x-c_i||) = exp[-(\beta_i ||x-c_i||^2)^2]
+$$</p>
+
+<p>训练则很简单了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">net = newrb(x&#39;,y&#39;,error,spread,MN,DF)</pre></td></tr></table>
+</div>
+</div>
+<p>其中$x,y$为训练数据，一列为一个样本；error为期望的误差，spread为径向基函数的扩展速度，它决定了基函数围绕中心点的宽度（The larger spread is, the smoother the function approximation）其实就是控制方差，MN为神经元的最大个数，DF为两次显示之间所添加的神经元数目,默认值为25。</p>
+
+<p>训练结束后进行预测直接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">y_test=sim(net,x_test)</pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    
+<div class="post-reward">
+  <input type="checkbox" name="reward" id="reward" hidden />
+  <label class="reward-button" for="reward">Reward</label>
+  <div class="qr-code">
+    
+    <label class="qr-code-image" for="reward">
+        <img class="image" src="/images/wechat-qr-code.jpg">
+        <span>wechat</span>
+      </label>
+    <label class="qr-code-image" for="reward">
+        <img class="image" src="/images/alipay-qr-code.jpg">
+        <span>alipay</span>
+      </label>
+  </div>
+</div><footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5431/">
+            <span class="next-text nav-default">《新概念4》31</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mh_chen@zju.edu.cn" class="iconfont icon-email" title="email"></a>
+  <a href="https://minghaochen.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">MinghaoChen</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

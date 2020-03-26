@@ -115,47 +115,86 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/">Chol分解与SVD分解</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/">如何搭建hugo博客</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-07-25 </span>
+      <span class="post-time"> 2019-07-22 </span>
       <div class="post-category">
-          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/"> 技术贴 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>今天说说两个整天见却整天忘的矩阵分解，一个是Chol分解，一个是SVD分解</p>
+      <ol>
+<li>安装git</li>
+<li>安装brew</li>
 
-<h1 id="chol分解">Chol分解</h1>
+<li><p>安装Hugo，建立博客</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo new site myblog</pre></td></tr></table>
+</div>
+</div></li>
 
-<p>对于Chol分解，首先要知道它针对的对象是什么，也就是<strong>埃尔米特矩阵（Hermitian matrix）</strong>，听着有点难懂，其实就是共轭对称矩阵，再简单点说，我们常见的实对称矩阵就是埃尔米特矩阵的特例。</p>
+<li><p>下载主题</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">cd myblog
+git clone https://github.com/olOwOlo/hugo-theme-even themes/even</pre></td></tr></table>
+</div>
+</div></li>
 
-<p>那么这个Chol分解分解得到的是什么东西？是干嘛用的呢？
-我们先来回答第一个问题，Chol分解是将一个矩阵分解成两个矩阵的乘积，即
-$$
-A = LL^*
-$$
-其中，$L$ 是一个<strong>下三角</strong>矩阵，$L^*$ 是 $L$ 的共轭转置，如果实数那就是转置（i.e., $L^T$）</p>
+<li><p>本地启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo server -t even --buildDrafts </pre></td></tr></table>
+</div>
+</div></li>
 
-<p>分解成这个玩意干嘛用的呢？目前了解到的比较常用的两个地方</p>
+<li><p>创建一个文章</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo new post/new.md</pre></td></tr></table>
+</div>
+</div></li>
 
-<h2 id="1-解线性方程呗-比如-ax-b">1. 解线性方程呗，比如 $Ax=b$</h2>
+<li><p>部署到github</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo --theme=even --baseUrl=“https://minghaochen.github.io/“ --buildDrafts
+cd public/
+git init
+git add .
+git commit -m “first commit”
+git remote add origin https://github.com/minghaochen/minghaochen.github.io.git
+git push -u origin master</pre></td></tr></table>
+</div>
+</div></li>
 
-<p>你可能会说直接目测方程的解就是 $x = A^{-1}b$，还需要什么Chol分解？如果矩阵 $A$ 是病态的（条件数很大），那么问题就来了，我们在用计算机求解这类问题的时候出现舍入误差可能会导致所答非所问。</p>
-
-<p>如果对矩阵进行Chol分解再来求解方程呢，原方程需要两步求解</p>
-
-<p>Step1
-$$
-Ly=b
-$$
-Step2
-$$
-L^Tx=y
-$$
-打开Matlab感受一下？</p>
+<li><p>本地写完新博客后更新到github上</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><span class="lnt">1
@@ -164,91 +203,16 @@ $$
 </span><span class="lnt">4
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">A = [5,7;7,10];
-cond(A)
-L = chol(A)&#39;;
-cond(L)</pre></td></tr></table>
+<pre class="chroma">cd public/
+git add -A
+git commit -m &#34;update&#34;
+git push origin master</pre></td></tr></table>
 </div>
-</div>
-<p>可以看出分解后求解的两个方程都是良态的且只需储存矩阵的下三角部分即可咯。</p>
-
-<h2 id="2-求矩阵的行列式">2. 求矩阵的行列式</h2>
-
-<p>既然Chol分解把矩阵分解成下三角阵，那么求解原矩阵的行列式自然非常容易了</p>
-
-<div>$$
-\begin{aligned} \operatorname{det} {A} &=\prod_{i=1}^{n} {L}_{i i}^{2} \\ \log \operatorname{det} {A} &=2 \sum_{i=1}^{n} \log {L}_{i i} \end{aligned}
-$$</div>
-
-<p>其中 ${L}_{i i}$ 为矩阵的对角元素。</p>
-
-<h1 id="svd分解">SVD分解</h1>
-
-<p>要说SVD分解，首先要提到特征根分解，线代学过吧？忘记了没关系，我们再来复习一下。</p>
-
-<p>首先还是要知道特征值分解的对象是什么，答案是<strong>方阵</strong>，对于方阵 $A$，有</p>
-
-<p>$$
-Av=\lambda v
-$$</p>
-
-<p>这时，$v$ 就称为特征向量，$\lambda$ 就是与之对应的特征值。</p>
-
-<p>那么这个特征值分解分解得到的是什么东西？是干嘛用的呢？</p>
-
-<p>通过特征值分解，可以把矩阵 $A$ 分解为</p>
-
-<p>$$
-A = Q\Sigma Q^{-1}
-$$</p>
-
-<p>其中 $Q$ 就是特征向量组成的矩阵，$\Sigma$ 就是对角线为对应特征值的对角阵。</p>
-
-<p>这样分解有什么用呢？我们知道矩阵的本质就是线性变换，那么分解后我不就知道<strong>变换方向的主次</strong>了，因为我们分解得到的 $\Sigma$ 是一个对角阵且特征值从大到小排列，而特征值所对应的特征向量也就是描述矩阵的变化方向，所以 $Q$ 矩阵就是<strong>按照主要变化到次要变化进行排列</strong>。那么我们就可以根据自己的需要选择特定个数的变化方向来近似原始矩阵变化，也就是<strong>提取原始矩阵中我们期望的主要特征</strong>。</p>
-
-<p>那么这些和今天的猪脚SVD有什么联系呢？（哪有猪脚，肚肚饿）</p>
-
-<p>关系可大了，你可以粗糙地把SVD也当做是特征值分解，虽然不太准确。上面说到特征值分解针对的是<strong>方阵</strong>，可是哪来那么多的方阵啊！遇到非方阵时特征值分解不就GG了，这时候SVD出场了。</p>
-
-<p>一句话概括SVD是适用<strong>任意</strong>，是<strong>任意</strong>矩阵的一种分解方法：</p>
-
-<p><div>$$
-A_{m \times n} = U_{m \times m} \Sigma_{m \times n}V_{n \times n}^T
-$$<div></p>
-
-<p>那么奇异值和特征值是怎么对应起来的呢？由于矩阵 $A$ 不一定是方阵，我们乘以它的转置就能得到方阵，那么就能特征值分解了。</p>
-
-<p>$$
-(A^TA)v_i = \lambda_iv_i
-$$</p>
-
-<p>这样求得的 $v_i$ 就组成了SVD中的右奇异矩阵 $V$，此外</p>
-
-<p>$$
-\sigma_i=\sqrt{\lambda_i},u_i=Av_i/\sigma_i
-$$</p>
-
-<p>这里的 $\sigma_i$ 就是所谓的奇异值，它在矩阵 $\Sigma$ 中也是从大到小排列的，而且<strong>减小速度非常快！</strong>，这可是个好消息，说明我们利用<strong>很少的奇异值就能近似描述原始矩阵</strong>，相当于是<strong>空间压缩</strong>，比如我们利用 $r$ 个奇异值来近似原始矩阵（$r$ 远小于 $m$ 或 $n$）</p>
-
-<p>$$
-A_{m \times n} = U_{m \times r} \Sigma_{r \times r}V_{r \times n}^T
-$$</p>
-
-<p>所以总的来说SVD就是用来提取重要特征的一个方法。SVD或者特征值分解的具体实现都有现成的函数可以调用，感兴趣可以通过matlab分解一把再观察一下。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">[Q,Sigma1] = eig(A&#39;*A)   % matlab求特征值不一定按从小到大排序的 
-[U,Sigma2,V] = svd(A)</pre></td></tr></table>
-</div>
-</div>
-<p>观察一下 $Q$ 和 $V$ 的关系以及 $Sigma1$ 和 $Sigma2$ 的关系，可以再根据上面给出的公式人工计算一下 $U$ 矩阵，再和matlab的结果进行比较。</p>
+</div></li>
+</ol>
     </div>
     <div class="read-more">
-      <a href="/post/chol%E5%88%86%E8%A7%A3%E4%B8%8Esvd%E5%88%86%E8%A7%A3/" class="read-more-link">Read more...</a>
+      <a href="/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -256,14 +220,11 @@ $$</p>
     </section>
   
   <nav class="pagination">
-    <a class="prev" href="/page/44/">
+    <a class="prev" href="/page/47/">
         <i class="iconfont icon-left"></i>
         <span class="prev-text">Prev</span>
       </a>
-    <a class="next" href="/page/46/">
-        <span class="next-text">Next</span>
-        <i class="iconfont icon-right"></i>
-      </a>
+    
   </nav>
         </div>
         

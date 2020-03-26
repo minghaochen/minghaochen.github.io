@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-18T17:01:09&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-26T15:20:39&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,128 +115,125 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5427~28/">《新概念4》27~28</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/">「机器学习」贝叶斯优化</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-03-14 </span>
+      <span class="post-time"> 2020-03-16 </span>
       <div class="post-category">
-          <a href="/categories/english/"> English </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> ‘机器学习’ </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="the-vasa">The ‘Vasa’</h1>
+      <p>在机器学习领域很多优化问题都是黑箱优化问题，即目标函数 $f(x)$ 是一个黑箱函数（这里考虑最大化问题，Black box optimization also typically requires that all dimensions have bounds on the search space），我们可能并不知道函数的解析表达式或者不知道函数的导数信息，我们对函数值的估计只能是通过采样得到的含噪声干扰的函数值 $y_{sample}=f(x)+\epsilon$，$\epsilon$ 假设为高斯。（<strong>这里需要假设目标函数是Lipschitz-continuous</strong>），即存在 $C$，对于任意 $x_1,x_2$ 有</p>
 
-<p>From the seventeenth-century empire of Sweden, the story of a <strong>galleon</strong> that sank at the start of her <strong>maiden</strong> <strong>voyage</strong> in 1628 must be one of the strangest tales of the sea. For nearly three and a half centuries she lay at the bottom of Stockholm harbour until her discovery in 1956. This was the Vasa, royal <strong>flagship</strong> of the great imperial fleet.</p>
+<p>$$
+||f(x_1)-f(x_2)||\le C ||x_1-x_2||
+$$</p>
 
-<ul>
-<li>galleon /ˈɡæliən/ A galleon is a sailing ship with three masts. Galleons were used mainly in the fifteenth to seventeenth centuries. 大型三桅帆船</li>
-<li>maiden /&lsquo;medn/ The maiden voyage or flight of a ship or aircraft is the first official journey that it makes. (航行、飞行) 首次的</li>
-<li>voyage /&lsquo;vɔɪɪdʒ/ A voyage is a long journey on a ship or in a spacecraft. 航程</li>
-<li>flagship /&lsquo;flæɡʃɪp/ A flagship is the most important ship in a fleet of ships, especially the one on which the commander of the fleet is sailing. 旗舰</li>
-</ul>
+<p>如果函数 $f$ 便于计算我们可以通过在许多点上进行采样，比如网格搜索，随机搜索或者数值梯度估计来寻找函数的最值。但是经常遇到的问题是函数的 evaluation 是很困难的，比如深度神经网络的超参数整定。这时候贝叶斯优化就派的上用场了。贝叶斯优化考虑对函数 $f$ 的先验，并根据从 $f$ 中进行采样来得到 $f$ 的后验。用于近似目标函数的模型称为 <strong>surrogate</strong> 模型，用于指导函数向最优解方向采样的函数称为 <strong>acquisition</strong> 函数。</p>
 
-<p>King Gustavus Adolphus, &lsquo;The Northern Hurricane&rsquo;, then at the height of his military success in the Thirty Years&rsquo; War, had <strong>dictated</strong> her measurements
-and <strong>armament</strong>. Triple gun-decks mounted sixty-four bronze cannon. She was intended to play a leading role in the growing might of Sweden.</p>
+<h1 id="surrogate-model">Surrogate model</h1>
 
-<ul>
-<li>at the height of xxx 鼎盛阶段</li>
-<li>dictate /&lsquo;dɪktet/ If someone dictates to someone else, they tell them what they should do or can do. 指示; 命令</li>
-<li>armament /&lsquo;ɑrməmənt/ weaponry used by military or naval force</li>
-<li>measurement /&lsquo;mɛʒɚmənt/ 尺寸，规模</li>
-<li>mount /maʊnt/ If you mount an object on something, you fix it there firmly. 安装</li>
-<li>might /maɪt/ Might is power or strength. 力量</li>
-</ul>
+<p>一个常见的 surrogate model 就是高斯过程。</p>
 
-<p>As she was prepared for her maiden voyage on August 10, 1628, Stockholm was in a <strong>ferment</strong>. From the Skeppsbron and surrounding islands the people watched this thing of beauty begin to spread her sails and catch the wind. They had laboured for three years to produce this floating work of art; she was more richly <strong>carved</strong> and ornamented than any previous ship. The high <strong>stern</strong> castle was
-<strong>a riot of</strong> carved gods, demons, knights, kings, warriors, <strong>mermaids</strong>, <strong>cherubs</strong>; and zoomorphic animal shapes <strong>ablaze with</strong> red and gold and blue, symbols of courage, power, and cruelty, were portrayed to stir the imaginations of the superstitious sailors of the day.</p>
+<p>$$
+f(x) \sim GP(m(x),k(x,x&rsquo;))
+$$</p>
 
-<ul>
-<li>ferment /&lsquo;fə:ment/ Ferment is excitement and trouble caused by change or uncertainty. 骚动</li>
-<li>floating work of art 水上艺术品</li>
-<li>stern /stɝn/  the rear or after part of a vessel, opposite the bow or stem 船尾; 艉</li>
-<li>If you say that there is a riot of something pleasant such as colour, you mean that there is a large amount of various types of it. (颜色等) 丰富多样</li>
-<li>If a place is ablaze with lights or colours, it is very bright because of them. 光彩夺目的</li>
-</ul>
+<p>A GP is an extension of the multivariate Gaussian distribution to an infinite- dimension stochastic process for which any finite combination of dimensions will be a Gaussian distribution.</p>
 
-<p>Then the cannons of the <strong>anchored</strong> warships thundered a salute to which the Vasa fired in reply. As she emerged from her drifting cloud of gun smoke with the water churned to foam beneath her bow, her flags flying, pennants waving, sails filling in the breeze, and the red and gold of her superstructure <strong>ablaze</strong> with colour, she presented a more majestic spectacle than Stockholmers had ever seen before. All gun-ports were open and the muzzles peeped wickedly from them.</p>
+<p>均值函数常设为0，核函数可以用比如 squared exponential function</p>
 
-<ul>
-<li>anchor /&lsquo;æŋkɚ/ If a boat is at anchor, it is floating in a particular place and is prevented from moving by its anchor. 停泊</li>
-<li>warship /&lsquo;wɔrʃɪp/ A warship is a ship with guns that is used for fighting in wars. 战舰; 军舰</li>
-<li>salute /sə&rsquo;lut/ If you salute someone, you greet them or show your respect with a formal sign. Soldiers usually salute officers by raising their right hand so that their fingers touch their forehead. 向…打招呼; 向…行军礼</li>
-<li>churn /tʃɝn/ Churn up means the same as . 剧烈搅动</li>
-<li>majestic /mə&rsquo;dʒɛstɪk/ If you describe something or someone as majestic, you think they are very beautiful, dignified, and impressive. 壮丽的; 雄伟的</li>
-<li>drifting /&lsquo;driftiŋ/ 飘动的</li>
-<li>muzzle /&lsquo;mʌzl/ The muzzle of a gun is the end where the bullets come out when it is fired. 枪口</li>
-<li>peep /pip/ If you peep, or peep at something, you take a quick look at it, often secretly and quietly. 瞥一眼</li>
-<li>wicked /&lsquo;wɪkɪd/ You use wicked to describe someone or something that is very bad and deliberately harmful to people. 邪恶的</li>
-</ul>
+<p>$$
+k(x_i,x_j)=exp(-\frac{1}{2}||x_i-x_j||^2)
+$$</p>
 
-<p>As the wind freshened there came a sudden squall and the ship made a strange movement, listing to port.
-The Ordnance Officer ordered all the port cannon to be heaved to starboard to counteract the list, but the steepening angle of the decks increased. Then the sound of rumbling thunder reached the watchers on the shore, as cargo, ballast, <strong>ammunition</strong> and 400 people went sliding and crashing down to the port side of the steeply listing ship. The lower gun-ports were now below water and the <strong>inrush</strong> sealed the ship&rsquo;s fate. In that first glorious hour, the mighty Vasa, which was intended to rule the Baltic, sank with all flags flying&ndash;in the harbour of her birth.</p>
+<p>Two points that are close together can be expected to have a very large influence on each other, whereas distant points have almost none.</p>
 
-<ul>
-<li>squall /skwɔl/ A squall is a sudden strong wind which often causes a brief, violent rainstorm or snowstorm. 飑; 突起的狂风(常引起短暂暴雨或暴雪)</li>
-<li>list /lɪst/ to lean over or cause to lean over to one side (尤指船)倾侧</li>
-<li>ordnance /&lsquo;ɔrdnəns/ Ordnance refers to military supplies, especially weapons. 军需品</li>
-<li>heave /hiv/ If you heave something heavy or difficult to move somewhere, you push, pull, or lift it using a lot of effort. (用力地) 推; 拉; 举起</li>
-<li>counteract /ˌkaʊntɚ&rsquo;ækt/ To counteract something means to reduce its effect by doing something that produces an opposite effect. 对…起反作用; 抵消</li>
-<li>steepen /&lsquo;stipən/ If a slope or an angle steepens, it becomes steeper. 变得陡峭</li>
-<li>rumble /&lsquo;rʌmbl/ A rumble is a low, continuous noise. 隆隆声</li>
-<li>cargo /&lsquo;kɑrɡo/ The cargo of a ship or plane is the goods that it is carrying. 货物</li>
-<li>ammunition /ˌæmju&rsquo;nɪʃən/ Ammunition is bullets and rockets that are made to be fired from weapons. 弹药</li>
-<li>inrush /&lsquo;ɪn&rsquo;rʌʃ/ a sudden usually overwhelming inward flow or rush; influx 涌入; 流入</li>
-</ul>
+<p>预测分布为：</p>
 
-<h1 id="patients-and-doctors">Patients and doctors</h1>
+<div>
+$$
+P(f_{t+1}|D_{1:t},x_{t+1})=\mathcal{N}(u_t(x_{t+1}),\sigma_t^2(x_{t+1}))
+$$</div>
 
-<p>This is a sceptical age, but although our faith in many of the things in which our forefathers <strong>fervently</strong> believed has weakened, our confidence in the <strong>curative</strong> properties of the bottle of medicine remains the same as theirs. This modern faith in medicines is proved by the fact that the annual drug bill of the Health Services is mounting to astronomical figures and shows no signs at present of ceasing to rise.</p>
+<p>其中</p>
+
+<div>
+$$
+u_t(x_{t+1})=k^TK^{-1}f_{1:t}\\
+\sigma_t^2(x_{t+1})=k(x_{t+1},x_{t+1})-k^TK^{-1}k
+$$</div>
+
+<h1 id="acquisition-functions">Acquisition functions</h1>
+
+<p>Acquisition 函数在 exploitation 和 exploration 之间进行权衡，Exploitation 意味着向 surrogate 模型预测值更优的点进行采样， exploration 意味着向预测不确定性更高的点进行采样。
+A somewhat more satisfying alternative acquisition function would be one that takes into account not only the probability of improvement, but the magnitude of the improvement a point can potentially yield.</p>
+
+<p>通过最大化 Acquisition 函数来确定下一个采样点。</p>
+
+<p>比如目标函数 $f$ 的采样点为：</p>
+
+<div>
+$$
+x_t = \arg \max_x u(x|D_{1:t-1})
+$$</div>
+
+<p>其中 $u$ 是 acquisition 函数，$D_{1:t-1}=[(x_1,y_1),&hellip;,(x_{t-1},y_{t-1})]$ 为之前 $t-1$ 个采样值。</p>
+
+<p>常见的 acquisition 函数有 maximum probability of improvement (MPI), expected improvement (EI) 和 upper confidence bound (UCB)。</p>
+
+<h1 id="优化算法描述">优化算法描述</h1>
+
+<p>贝叶斯优化过程如下步骤，在时刻 $t=1,2,&hellip;$ 重复：</p>
 
 <ul>
-<li>curative  /&lsquo;kjʊrətɪv/ Something that has curative properties can cure people&rsquo;s illnesses. 有疗效的</li>
-<li>fervently /ˈfə..vəntlɪ/ with passionate fervor
-&ldquo;both those for and against are fervently convinced they speak for the great majority of the people&rdquo;</li>
-<li>this modern faith in xxx 现代人对xxx的依赖</li>
-<li>astronomical figures 天文数字</li>
-<li>signs of ceasing to xxx 停止xxx的迹象</li>
+<li>通过优化acquisition 函数得到下一个采样点：$x_t=\arg \max_x u(x|D_{1:t-1})$</li>
+<li>从目标函数中获得一个可能的含噪采样 $y_t = f(x_t)+\epsilon_t$</li>
+<li>将采样值加入之前的数据集 $D_{1:t}=[D_{1:t-1},(x_t,y_t)]$ 并更新高斯过程</li>
 </ul>
 
-<p>The majority of the patients attending the medical out-patients departments of our hospitals feel that they have not received adequate treatment unless they are able to carry home with them some tangible remedy in the shape of a bottle of medicine, a box of pills, or a small jar of ointment, and the doctor in charge of the department is only too ready to provide them with these requirements.</p>
+<h1 id="expected-improvement">Expected improvement</h1>
 
-<ul>
-<li>the majority of the xxx</li>
-<li>tangible /&lsquo;tændʒəbl/  If something is tangible, it is clear enough or definite enough to be easily seen, felt, or noticed. 清晰明确的</li>
-<li>ointment /&lsquo;ɔɪntmənt/ An ointment is a smooth thick substance that is put on sore skin or a wound to help it heal. 药膏</li>
-</ul>
+<p>Expected improvement 定义为</p>
 
-<p>There is no quicker method of disposing of patients than by giving them what they are asking for, and since most medical men in the Health Services are overworked and have little time for offering time-consuming and little-appreciated advice on such subjects as diet, right living, and the need for abandoning bad habits, etc., the bottle, the box, and the jar are almost always granted them.</p>
+<p>$$
+EI(x)=\mathbb{E} \max (f(x)-f(x^+),0)
+$$
+其中 $f(x^+)$ 是目前的最佳采样，$x^+$ 是最佳采样点，即 $x^+ = \arg \max_{x_i\in x_{1:t}} f(x_i)$。则 Expected improvement （通过积分）可以解析地表示为</p>
 
-<ul>
-<li>grant /ɡrænt/ If someone in authority grants you something, or if something is granted to you, you are allowed to have it. 准予</li>
-</ul>
+<div>$$
+\begin{aligned}
+\mathbb{E}(I) &= \int_{I=0}^{I=\infty} I * \frac{1}{\sqrt{2\pi} \sigma(x)}exp(-\frac{(\mu(x)-f(x^+)-I)^2}{2\sigma^2(x)}) d I\\
+&=\int_{z=-\frac{(\mu(x)-f(x^+) )}{\sigma(x)}}^{\infty} (\sigma(x) z + u(x)-f(x^+)) \frac{1}{\sqrt{2\pi} \sigma(x)} exp(-\frac{z^2}{2}) \sigma(x) d z\\
+&=  \sigma(x) \int_{z=-\frac{(\mu(x)-f(x^+) )}{\sigma(x)}}^{\infty} z   \frac{1}{\sqrt{2\pi}} exp(-\frac{z^2}{2}) d z \\
+&+ (u(x)-f(x^+))  \int_{Z=-\frac{(\mu(x)-f(x^+) )}{\sigma(x)}}^{\infty} \frac{1}{\sqrt{2\pi}} exp(-\frac{Z^2}{2}) d z\\
+&= (u(x)-f(x^+)) \Phi(\frac{\mu(x)-f(x^+)}{\sigma(x)}) + \sigma(x) \phi(\frac{\mu(x)-f(x^+)}{\sigma(x)})
+\end{aligned}
+$$</div>
 
-<p>Nor is it only the ignorant and ill-educated person who has such faith in the bottle of medicine, especially if it be wrapped in white paper and sealed with a dab of red sealing-wax by a clever chemist.</p>
+<p>ps: 对于标准正态分布有 $\phi&rsquo;(z)=-z\phi(z)$</p>
 
-<ul>
-<li>dab /dæb/ A dab of something is a small amount of it that is put onto a surface. 少量</li>
-</ul>
+<p>引入 a trade-off parameter $\xi \ge 0$ 来控制全局搜索和局部优化，则有：</p>
 
-<p>It is recounted of Thomas Carlyle that when he heard of the illness of his friend, Henry Taylor, he went off immediately to visit him, carrying with him in his pocket what remained of a bottle of medicine formerly prescribed for an indisposition of Mrs Carlyle&rsquo;s. Carlyle was entirely ignorant of what the bottle in his pocket contained, of the nature of the illness from which his friend was suffering, and of what had previously been wrong with his wife, but a medicine that had worked so well in one form of illness would surely be of equal benefit in another, and comforted by
-the thought of the help he was bringing to his friend, he hastened to Henry Taylor&rsquo;s house. History does not relate whether his friend accepted his medical help, but in all probability he did. The great advantage of taking medicine is that it makes no demands on the taker beyond that of putting up for a moment with a disgusting taste, and that is what all patients demand of their doctors&ndash; to be cured at no inconvenience to themselves.</p>
+<p>如果 $\sigma(x)&gt;0$
+<div>$$
+EI(x) = (\mu(x)-f(x^+)-\xi)\Phi(Z) + \sigma(x)\phi(Z);
+$$</div>
+如果 $\sigma(x)=0$
+$$
+EI(x)=0
+$$
+其中 $Z = \frac{\mu(x)-f(x^+)-\xi}{\sigma(x)}$ (当 $\sigma(x)&gt;0$) 或 $0$ (当 $\sigma(x)=0$)；$\mu(x),\sigma(x)$ 分别是高斯过程在 $x$ 处的后验均值的标准差，$\Phi,\phi$ 分别是标准正态分布的 CDF 和 PDF；EI 中的第一项求和项表示 exploitation 第二项求和项表示 exploration。</p>
 
-<ul>
-<li>recount /rɪ&rsquo;kaʊnt/ If you recount a story or event, you tell or describe it to people. 叙述; 描述</li>
-<li>an indisposition of xxx 小病</li>
-<li>hasten /&lsquo;hesn/ If you hasten to do something, you are quick to do it. 急忙</li>
-<li>history does not relate whether xxx历史没有记载是否xxx</li>
-<li>the great advantage of xxx is that yyy</li>
-<li>disgusting /dɪs&rsquo;ɡʌstɪŋ/ If you say that something is disgusting, you are criticizing it because it is extremely unpleasant. 令人厌恶的</li>
-</ul>
+<p>参数 $\xi$ 决定了在优化过程中 exploration 的程度，越大的 $\xi$ 意味着更多地进行 exploration，换言之，$\xi$ 越大，后验均值部分的贡献相对方差部分的贡献减小 ($\xi$ 的建议值为 $0.01$)。</p>
+
+<h1 id="参考文献">参考文献</h1>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5427~28/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E4%BC%98%E5%8C%96/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

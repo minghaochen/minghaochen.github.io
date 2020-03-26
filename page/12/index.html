@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-18T17:01:09&#43;08:00"/>
+<meta property="og:updated_time" content="2020-03-26T15:20:39&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,77 +115,457 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5418~19/">《新概念4》18~19</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E7%B3%BB%E7%BB%9F%E8%BE%A8%E8%AF%86%E5%86%8D%E5%9B%9E%E9%A6%96/">「系统辨识」再回首</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-28 </span>
+      <span class="post-time"> 2020-03-01 </span>
       <div class="post-category">
-          <a href="/categories/english/"> English </a>
+          <a href="/categories/%E7%A7%91%E7%A0%94/"> 科研 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="porpoises">Porpoises</h1>
+      <p>上一次学系统辨识已经两年多了，一直也都有在用，但是很多细节概念已经有些遗忘，现在再整体梳理一遍，方便自己也便于一些想入门系统辨识的小伙伴可以参考。</p>
 
-<p>There has long been a <strong>superstition</strong> among <strong>mariners</strong> that <strong>porpoises</strong> will save <strong>drowning</strong> men by pushing them to the surface, or protect them from sharks by surrounding them in defensive formation. Marine Studio biologists have pointed out that, however intelligent they may be, it is probably a mistake to credit dolphins with any motive of life-saving. On the occasions when they have pushed to shore an unconscious human being they have much more likely done it out of curiosity or for sport, as in riding the bow waves of a ship. In 1928 some porpoises were photographed working like <strong>beavers</strong> to push ashore a waterlogged <strong>mattress</strong>. If, as has been reported, they have protected humans from sharks, it may have been because curiosity attracted them and because the scent of a possible meal attracted the sharks. Porpoises and sharks are natural enemies. It is possible that upon such an occasion a battle ensued, with the sharks being driven away or killed.
-Whether it be bird, fish or beast, the porpoise is <strong>intrigued</strong> with anything that is alive. They are constantly after the <strong>turtles</strong>, the Ferdinands of marine life, who peacefully submit to all sorts of <strong>indignities</strong>. One young <strong>calf</strong> especially enjoyed raising a <strong>turtle</strong> to the surface with his <strong>snout</strong> and then <strong>shoving</strong> him across the tank like an <strong>aquaplane</strong>. Almost any day a young porpoise may be seen trying to turn a 300-pound sea turtle over by sticking his snout under the edge of his shell and pushing up for dear life. This is not easy, and may require two porpoises working together. In another game, as the turtle swims across the oceanarium, the first porpoise swoops down from above and <strong>butts</strong> his shell with his belly. This knocks the turtle down several feet. He no sooner recovers his equilibrium than the next porpoise comes along and hits him another <strong>crack</strong>. Eventually the turtle has been butted all the way down to the floor of the tank. He is now satisfied merely to try to stand up, but as soon as he does so a porpoise knocks him flat. The turtle at last gives up by pulling his feet under his shell and the game
-is over.</p>
+<h1 id="系统辨识三要素">系统辨识三要素</h1>
+
+<ol>
+<li>数据</li>
+<li>模型集（线性 or 非线性，连续 or 离散 等）：灰箱模型即结构已知（from physical law）参数带估计；黑箱模型即模型结构需要自己选择且参数没有物理意义</li>
+<li>准则：用于确定什么样的模型才是best的</li>
+</ol>
+
+<h1 id="模型验证">模型验证</h1>
+
+<ol>
+<li>根据先验知识判断是否符合系统的物理特性，比如增益方向，时间常数等；</li>
+<li>根据未用于训练的实验数据进行验证，比较模型的仿真输出和实际观测输出。</li>
+</ol>
+
+<h1 id="线性系统">线性系统</h1>
+
+<h2 id="线性回归">线性回归</h2>
+
+<p>系统以线性回归表示为</p>
+
+<p>$$
+y(k)=\phi^T(k)\theta
+$$
+其中 $\theta$ 为参数向量，$\phi(k)$ 为回归向量（通常包含过去时刻的输入输出值）。</p>
+
+<p>等价于</p>
+
+<div>$$
+y(k)=G(q)u(k),G(q)=\frac{b_0+b_1q^{-1}+...+b_{nb}q^{-nb}}{1+a_1q^{-1}+...+a_{na}q^{-na}}
+$$</div>
+
+<p>非线性系统也可以表示成线性回归的形式，比如在回归向量里包含 $y^2(k-1);u(k)y(k-1)$ 等。</p>
+
+<h2 id="最小二乘估计">最小二乘估计</h2>
+
+<p>定义残差（residuals）为 $\epsilon(k,\theta)=y(k)-\hat{y}(k,\theta)=y(k)-\phi^T(k)\theta$</p>
+
+<p>最小二乘估计即：</p>
+
+<div>
+    $$
+    \hat{\theta}_{LS}=\arg \min_{\theta} \sum_{k=1}^{N} \epsilon^2(k,\theta)=\arg \min_{\theta} ||Y-\Phi \theta||^2
+    $$
+</div>
+
+<p>对 $\theta$ 求导，利用极值条件可以得到</p>
+
+<div>
+    $$
+    \hat{\theta}_{LS}=(\Phi^T\Phi)^{-1}Y=(\sum_{k=1}^N \phi(k)\phi^T(k))^{-1} \sum_{k=1}^N \phi(k)y(k)
+    $$
+</div>
+
+<p>在 Matlab 里的实现就是</p>
+
+<div>
+    $$
+    \hat{\theta}{LS} = \Phi \backslash Y
+    $$
+</div>
+
+<p>观察可以知道</p>
+
+<div>
+    $$
+    \Phi^T \Phi \hat{\theta}_{LS} = \Phi^T Y
+    $$
+</div>
+
+<p>利用 Cholesky 分解 $\Phi^T \Phi = LL^T$，其中 $L$ 是下三角矩阵，matlab代码 $L=chol(\Phi^T\Phi,&lsquo;lower&rsquo;)$</p>
+
+<p>因此最小二乘估计的解为：</p>
+
+<ol>
+<li>通过 forward substitution 求解 $Lz=\Phi^T Y$</li>
+<li>通过 backward substitution 求解 $L^T\hat{\theta}_{LS}=z$</li>
+</ol>
+
+<p>利用 QR 分解 $\Phi = QR=Q_1R_1$，其中 $Q=[Q_1,Q_2],R=[R_1,0]^T$，$Q_1^TQ=I$，$R_1$ 为上三角且当 $\Phi$ 满秩时 $R_1$ 对角线元素 $r_{ii}$ 大于0。matlab代码 $qr(\Phi)$。代入可得</p>
+
+<div>
+    $$
+    \hat{\theta}_{LS}=(\Phi^T\Phi)^{-1}\Phi^TY=((Q_1R_1)^T(Q_1R_1))^{-1}(R_1^TQ_1^TY)=R_1^{-1}Q_1^TY
+    $$
+</div>
+
+<p>因此最小二乘估计的解为：</p>
+
+<p>通过 backward substitution 求解
+$R_1\hat{\theta}_{LS} = Q_1^TY$</p>
+
+<h2 id="recursive-线性最小二乘">Recursive 线性最小二乘</h2>
+
+<p>可以对 $k-1$ 时刻的参数估计 $\hat{\theta}_{LS}(k-1)$ 进行更新得到 $\hat{\theta}_{LS}(k)$。</p>
+
+<p>定义 $P(k)=(\sum_{l=1}^k\phi(l)\phi^T(l))^{-1}$，满足 $P(k)^{-1}=P(k-1)^{-1}+\phi(k)\phi^T(k)$ 。</p>
+
+<p>强推一波公式，记住思路就是利用误差进行修正：</p>
+
+<div>
+    \begin{aligned}
+    \hat{\theta}_{LS}(k)&=P(k)(\sum_{l=1}^{k-1}\phi(l)y(l) + \phi(k)y(k))\\
+    &=P(k)(P^{-1}(k-1)\hat{\theta}_{LS}(k-1)+\phi(k)y(k))\\
+    &=P(k)P^{-1}(k-1)\hat{\theta}_{LS}(k-1)+P(k)\phi(k)y(k)\\
+    &=P(k)(P(k)^{-1}-\phi(k)\phi^T(k))\hat{\theta}_{LS}(k-1)+P(k)\phi(k)y(k)\\
+    &=\hat{\theta}_{LS}(k-1) - P(k)\phi(k)\phi^T(k)\hat{\theta}_{LS}(k-1) +P(k)\phi(k)y(k)\\
+    &=\hat{\theta}_{LS}(k-1) + P(k)\phi(k)(y(k)-\phi^T(k)\hat{\theta}_{LS}(k-1))\\
+    &=\hat{\theta}_{LS}(k-1) + K(k)\epsilon(k)
+    \end{aligned}
+</div>
+
+<p>其中 $K(k)=P(k)\phi(k)$ 可以看做是增益，$\epsilon(k)=y(k)-\phi^T(k)\hat{\theta}_{LS}(k-1)$ 看着是预测误差。</p>
+
+<p>因此 Recursive 线性最小二乘总结为：</p>
+
+<div>
+    \begin{aligned}
+    \hat{\theta}_{LS}(k) &= \hat{\theta}_{LS}(k-1) + P(k)\phi(k)(y(k)-\phi^T(k)\hat{\theta}_{LS}(k-1))\\
+    P(k)^{-1}&=P(k-1)^{-1}+\phi(k)\phi^T(k)
+    \end{aligned}
+</div>
+
+<p>由于矩阵涉及求逆费事，可以将 $P(k)^{-1}$ 转换为</p>
+
+<div>
+    $$
+    P(k)=P(k-1)+\frac{P(k-1)\phi(k)\phi^T(k)P(k-1)}{1+\phi^T(k)P(k-1)\phi(k)}
+    $$
+</div>
+
+<h2 id="带遗忘因子的-recursive-线性最小二乘">带遗忘因子的 Recursive 线性最小二乘</h2>
+
+<p>在目标函数引入遗忘因子 $0&lt; \lambda \le 1$，即</p>
+
+<div>
+    $$
+    \hat{\theta}=\arg \min_{\theta} \sum_{l=1}^k \lambda^{k-l}(y(l)-\phi^T(l)\theta)^2
+    $$
+</div>
+
+<p>$\lambda$ 越小对过去信息忘得越多。同理可以得到递推公式：</p>
+
+<div>
+    \begin{aligned}
+    \hat{\theta}_{LS}(k) &= \hat{\theta}_{LS}(k-1) + P(k)\phi(k)(y(k)-\phi^T(k)\hat{\theta}_{LS}(k-1))\\
+    P(k)&=\frac{1}{\lambda} \left[ P(k-1)+\frac{P(k-1)\phi(k)\phi^T(k)P(k-1)}{\lambda+\phi^T(k)P(k-1)\phi(k)}\right]
+    \end{aligned}
+</div>
+
+<h2 id="有限脉冲响应模型估计">有限脉冲响应模型估计</h2>
+
+<p>利用 FIR 模型来描述系统的动态：</p>
+
+<p>$$
+\hat{y}(k,g) = \sum_{l=0}^M g(l)u(k-l) = \phi^T(k)g
+$$
+其中 $\phi(k)=[u(k),u(k-1),&hellip;,u(k-M)]^T,g=[g(0),&hellip;,g(M)]^T$</p>
+
+<ol>
+<li>如果 $M$ 足够大且系统 BIBO 稳定，FIR 模型能够很好近似原系统</li>
+<li>需要数据量 $N &gt;&gt; M$</li>
+</ol>
+
+<p>最小二乘估计为 $\hat{g}=(\Phi^T\Phi)^{-1}\Phi^TY$</p>
+
+<p>假设真实系统可以被描述为</p>
+
+<p>$$
+y(k)=\sum_{l=0}^M g_0(l)u(k-l)+v_0(k)=\phi^T(k
+)g_0+v_0(k)
+$$
+其中 $v_0(k)$ 是零均值且与输入 $u$ 独立的准平稳噪声。</p>
+
+<p>一致性：</p>
+
+<div>
+    \begin{aligned}
+    \hat{g} &= \left(\frac{1}{N}\sum_{l=1}^N \phi(k)\phi^T(k)\right)^{-1}\frac{1}{N}\sum_{k=1}^N\phi(k)y(k)\\
+    &=g_0 + \left(\frac{1}{N}\sum_{l=1}^N \phi(k)\phi^T(k)\right)^{-1}  \frac{1}{N}\sum_{l=1}^N \phi(k) v_0(k)\\
+    &=g_0 + R^*E[\phi(k)v_0(k)]\\
+    &=g_0
+    \end{aligned}
+</div>
+
+<p>其中 $R$ 中每一项代表的是自相关或互相关函数的估计，$E[\phi(k)v_0(k)]=E[\phi(k)]\times 0=0$。</p>
+
+<h2 id="arx-模型估计">ARX 模型估计</h2>
+
+<p>模型结构为</p>
+
+<div>
+    $$
+    y(k)=\frac{B(q)}{A(q)}u(k)+\frac{1}{A(q)}e(k)
+    $$
+</div>
+
+<p>输入输出关系为：</p>
+
+<div>
+    $$
+    y(k)=-a_1y(k-1)-...-a_{n_a}y(k-n_a)+b_1u(k-1)+...+b_{n_b}u(k-n_b) + e(k)
+    $$
+</div>
+
+<p>同样可以写成线性回归的形式 $y(k)=\phi^T(k)\theta + e(k)$，同理得到最小二乘估计 $\hat{\theta}_{LS}=(\Phi^T\Phi)^{-1}\Phi^TY$。</p>
+
+<p>假设真实系统为 $y(k)=\phi^T(k)\theta_0+e(k)$，一致性检验可以得到 $lim_{N \rightarrow \infty} \hat{\theta}_{LS}=\theta_0 $</p>
+
+<h2 id="线性参变-arx-模型估计">线性参变 ARX 模型估计</h2>
+
+<p>模型描述</p>
+
+<div>
+    $$
+    y(k)=G(q^{-1},p(k))u(k)+v(k)
+    $$
+</div>
+
+<p>等价于</p>
+
+<div>
+    $$
+    A(q^{-1},p(k))y(k)=B(q^{-1},p(k))u(k)+e(k)
+    $$
+</div>
+
+<p>其中 $p$ 为调度变量。</p>
+
+<p>通常对回归向量的系数进行相应的参数化，比如多项式</p>
+
+<div>
+    \begin{aligned}
+    A(q^{-1},p(k))=1+\sum_{i=1}^{n_a}a_i(p(k))q^{-i}\\
+    a_i(p(k))=a_{i,0}+\sum_{l=1}^{n_l}a_{i,l}p^{l}(k)
+    \end{aligned}
+</div>
+
+<p>例子：</p>
+
+<div>
+    $$
+    y(k)=-[a_{1,0}+a_{1,1}p(k)]y(k-1)+[b_{1,0}+b_{1,1}p(k)]u(k-1)+e(k)
+    $$
+</div>
+
+<p>此时有 $\phi^T(k)=[-y(k-1),-p(k)y(k-1),u(k-1),p(k)u(k-1)], \theta=[a<em>{1,0},a</em>{1,1},b<em>{1,0},b</em>{1,1}]^T$，同理还是利用最小二乘进行估计。当 $e(t)$ 为白噪声时，一致性能够得到保证。</p>
+
+<h2 id="输出误差模型的不一致性">输出误差模型的不一致性</h2>
+
+<p>模型结构</p>
+
+<div>
+    $$
+    y(k)=G(q)u(k)+H(q)e(k),H(q)=1
+    $$
+</div>
+
+<p>对应的输入输出关系</p>
+
+<div>
+    $$
+    y_0(k)=-a_1y_0(k-1)-...-a_{n_a}y_0(k-n_a)+b_1u(k-1)+...+b_{n_b}u(k-n_b)\\
+    y(k)=y_0+e(k)
+    $$
+</div>
+
+<p>OE 模型则表示为</p>
+
+<div>
+    \begin{aligned}
+    y(k)&=\phi^T(k)\theta + e(k)+a_1e(k-1)+...a_{n_a}e(k-n_a)\\
+    y(k)&=\phi^T(k)\theta + v(k)
+    \end{aligned}
+</div>
+
+<p>注意！这里 $v(k)$ 不是白噪声了！</p>
+
+<p>一致性：</p>
+
+<div>
+    \begin{aligned}
+    \hat{\theta}_{LS}&=(\Phi^T\Phi)^{-1}\Phi^TY=\left(\frac{1}{N}\sum_{k=1}^N\phi(k)\phi^T(k) \right)^{-1}\frac{1}{N}\sum_{k=1}^N \phi(k)y(k)\\
+    &=\left(\frac{1}{N}\sum_{k=1}^N\phi(k)\phi^T(k) \right)^{-1}\frac{1}{N}\sum_{k=1}^N \phi(k) (\phi^T(k)\theta_0 + v(k)) \\
+    &=\theta_0 + \left(\frac{1}{N}\sum_{k=1}^N\phi(k)\phi^T(k) \right)^{-1}\frac{1}{N}\sum_{k=1}^N \phi(k) v(k)
+    \end{aligned}
+</div>
+
+<p>由于 $\phi(k)$ 和 $v(k)$ 相关，所以 $lim_{N \rightarrow \infty} \frac{1}{N} \sum_{k=1}^N \phi(k)v(k) \neq 0$。</p>
+
+<h2 id="辅助变量法">辅助变量法</h2>
+
+<p>给定模型结构 $A(q^{-1}y(k))=B(q^{-1})u(k)+v(k)$，只有当 $v(k)$ 和回归向量不相关时，一致性才能得到保证。</p>
+
+<p>选择与回归向量 $\phi(k)$ 维度相同的辅助变量 $z(k)$ 使得</p>
+
+<p>$$
+E[z(k)v(K)]=0
+$$</p>
+
+<p>修正最小二乘估计为</p>
+
+<div>
+    $$
+    \hat{\theta}_{IV}=(Z^T\Phi)^{-1}Z^TY=\left(\sum_{k=1}^N z(k)\phi^T(k) \right)^{-1}\sum_{k=1}^N z(k)y(k)
+    $$
+</div>
+
+<p>一致性：</p>
+
+<div>
+    $$
+    \hat{\theta}_{IV}=\theta_0 + \left(\frac{1}{N}\sum_{k=1}^Nz(k)\phi^T(k) \right)^{-1}\frac{1}{N}\sum_{k=1}^N z(k) v(k)
+    $$
+</div>
+
+<p>因此 $z(k)$ 应该和 $\phi(k)$ 相关否则 $R(N)$ 会收敛到零矩阵。</p>
+
+<p>辅助变量的选择</p>
+
+<div>
+    $$
+    z(k)=[-y_0(k-1),...,-y_0(k-n_a),u(k-1),...,u(k-n_b)]^T
+    $$
+</div>
+
+<p>也就是说，$z(k)$ 应该尽可能和无噪的回归向量相关，但是和 $v(k)$ 无关。</p>
+
+<p>辅助变量法总结为：</p>
+
+<ol>
+<li>最小二乘估计 $\hat{\theta}$ （biased）</li>
+<li>开环仿真
+$$
+\hat{y}(k)=[-\hat{y}(k-1),&hellip;,-\hat{y}(k-n_a),u(k-1),&hellip;,u(k-n_b)]^T\hat{\theta}
+$$</li>
+<li>构造辅助变量
+$$
+z(k)=[-\hat{y}(k-1),&hellip;,-\hat{y}(k-n_a),u(k-1),&hellip;,u(k-n_b)]^T
+$$</li>
+<li>通过 IV 估计 $\hat{\theta}$ （consistent）</li>
+<li>从第2步重复直到收敛</li>
+</ol>
+
+<h1 id="预报误差法-pem">预报误差法 PEM</h1>
+
+<p>线性预报器</p>
+
+<div>
+    $$
+    \hat{y}(k|k-1;\theta) = L_y(q^{-1},\theta)y(k) + L_u(q^{-1},\theta) u(k); L_y(0,\theta)=0, L_u(0,\theta)=0  
+    $$
+</div>
+
+<p>只由过去的输入输出数据决定。</p>
+
+<p>预报误差为</p>
+
+<p>$$
+\epsilon (k,\theta) = y(k)-\hat{y}(k|k-1,\theta)
+$$</p>
+
+<p>待估计的参数应该使得预报误差尽可能小。</p>
 
 <ul>
-<li>porpoise / ˈpɔːpəs /  A porpoise is a sea animal that looks like a dolphin.</li>
-<li>superstition / ˌsuːpəˈstɪʃən / Superstition is belief in things that are not real or possible, for example magic. 迷信</li>
-<li>mariner / ˈmærɪnə /   A mariner is a sailor. 海员; 水手</li>
-<li>drowning / draʊn / If you say that a person or thing is drowning in something, you are emphasizing that they have a very large amount of it, or are completely covered in it. 淹没于</li>
-<li>beaver / ˈbiːvə /  A beaver is a furry animal with a big flat tail and large teeth. Beavers use their teeth to cut wood and build dams in rivers. 海狸</li>
-<li>ashore / əˈʃɔː / Someone or something that comes ashore comes from the sea onto the shore. 到岸上地</li>
-<li>mattress / ˈmætrɪs / A mattress is the large, flat object which is put on a bed to make it comfortable to sleep on. 床垫</li>
-<li>the scent of xxx</li>
-<li>intrigued / ɪˈntriːgd /   If you are intrigued by something, especially something strange, it interests you and you want to know more about it. 感兴趣的</li>
-<li>turtle / ˈtɜːtəl /  A turtle is any reptile that has a thick shell around its body, for example a tortoise or terrapin, and can pull its whole body into its shell. 龟</li>
-<li>indignity / ɪnˈdɪɡnɪtɪ / If you talk about the indignity of doing something, you mean that it makes you feel embarrassed or unimportant. 侮辱</li>
-<li>snout / snaʊt / he snout of an animal such as a pig is its long nose. (动物的)长鼻子</li>
-<li>shove / ʃʌv /  If you shove someone or something, you push them with a quick, violent movement. 猛推</li>
-<li>aquaplane / ˈækwəˌpleɪn /  a single board on which a person stands and is towed by a motorboat at high speed, as in water skiing (由快艇牵引的)滑水板</li>
-<li>oceanarium  / ˌəʊʃəˈnɛərɪəm / a large saltwater aquarium for marine life 大型水族馆</li>
-<li>swoop / swuːp / If police or soldiers swoop on a place, they go there suddenly and quickly, usually in order to arrest someone or to attack the place. 突袭</li>
-
-<li><p>butt / bʌt / If a person or animal butts you, they hit you with the top of their head. 用头撞</p></li>
-
-<li><p>there has long been xxx</p></li>
-
-<li><p>xxx have pointed out that xxxx</p></li>
-
-<li><p>xxx for dear life</p></li>
+<li>模型结构，对 $G(q,\theta),H(q,\theta)$ 的参数化；</li>
+<li>预报器，定义 $L_y,L_u$；</li>
+<li>准则，预报误差的 scalar 函数 $V_N(\theta)$；</li>
+<li>估计 $\hat{\theta}=\arg \min_{\theta} V_N(\theta)$</li>
 </ul>
 
-<h1 id="the-stuff-of-dreams">The stuff of dreams</h1>
-
-<p>It is fairly clear that the sleeping period must have some function, and because there is so much of it the function would seem to be important. Speculations
-about its nature have been going on for literally thousands of years, and one odd finding that makes the problem puzzling is that it looks very much as if sleeping is not simply a matter of giving the body a rest.&rsquo; Rest &lsquo;, in terms of muscle relaxation and so on, can be achieved by a brief period lying, or even sitting down. The body&rsquo;s tissues are self-repairing and self-restoring to a degree, and function best when more or less continuously active. In fact a basic amount of movement occurs during sleep which is specifically concerned with preventing muscle inactivity.
-If it is not a question of resting the body, then perhaps it is the brain that needs resting? This might be a <strong>plausible</strong> <strong>hypothesis</strong> were it not for two factors. First the electroencephalograph (which is simply a device for recording the electrical activity of the brain by attaching electrodes to the <strong>scalp</strong>) shows that while there is a change in the pattern of activity during sleep, there is no evidence that the total amount of activity is any less. The second factor is more interesting and more fundamental. In l960 an American psychiatrist named William Dement published experiments dealing with the recording of eye-movements during sleep. He showed that the average individual&rsquo;s sleep cycle is <strong>punctuated</strong> with <strong>peculiar</strong> <strong>bursts</strong> of eye-movements, some <strong>drifting</strong> and slow, others jerky and rapid. People woken during these periods of eye-movements generally reported that they had been dreaming. When woken at other times they reported no dreams. If one group of people were disturbed from their eye-movement sleep for several nights on end, and another group were disturbed for an equal period of time but when they were not exhibiting eye-movements, the first group began to show some personality disorders while the others seemed more or less unaffected. The implications of all this were that it was not the disturbance of sleep that mattered, but the disturbance of dreaming.</p>
+<h2 id="单变量模型结构">单变量模型结构</h2>
 
 <ul>
-<li>plausible / ˈplɔːzəbəl / An explanation or statement that is plausible seems likely to be true or valid. (解释或叙述) 看似合理的</li>
-<li>hypothesis  / haɪˈpɒθɪsɪs / A hypothesis is an idea which is suggested as a possible explanation for a particular situation or condition, but which has not yet been proved to be correct. 假设</li>
-<li>scalp / skælp / Your scalp is the skin under the hair on your head. 头皮</li>
-<li>punctuate / ˈpʌŋktjʊˌeɪt / If an activity or situation is punctuated by particular things, it is interrupted by them at intervals. 不时打断</li>
-<li>peculiar  / pɪˈkjuːlɪə / If you describe someone or something as peculiar, you think that they are strange or unusual, sometimes in an unpleasant way. 不寻常的; 古怪的</li>
-<li>bursts  / bɜːst / A burst of something is a sudden short period of it. (突然的) 一阵</li>
+<li>ARX
+$$y(k)=\frac{B(q,\theta)}{A(q,\theta)}u(k)+\frac{1}{A(q,\theta)}e(k)$$</li>
+<li>ARMAX
+$$y(k)=\frac{B(q,\theta)}{A(q,\theta)}u(k)+\frac{C(q,\theta)}{A(q,\theta)}e(k)$$</li>
+<li>OE
+$$y(k)=\frac{B(q,\theta)}{A(q,\theta)}u(k)+e(k)$$</li>
+<li>BJ
+$$y(k)=\frac{B(q,\theta)}{A(q,\theta)}u(k)+\frac{C(q,\theta)}{D(q,\theta)}e(k)$$</li>
+</ul>
 
-<li><p>jerky / ˈdʒɜːkɪ / Jerky movements are very sudden and quick, and do not flow smoothly. 急促而不流畅的</p></li>
+<h2 id="预报滤波器">预报滤波器</h2>
 
-<li><p>the stuff of xxx</p></li>
+<p>应该选择滤波器 $L_y,L_u$ 使得预报误差的方差最小。</p>
 
-<li><p>it is fairly clear that xxx</p></li>
+<div>
+\begin{aligned}
+y(k)&=Gu(k)+He(k)=Gu(k)+(H-I)e(k)+e(k)\\
+    &=Gu(k)+(H-I)H^{-1}[y(k)-Gu(k)]+e(k)\\
+    &=[(I-H^{-1})y(k)+H^{-1}Gu(k)]+e(k)\\
+    &=z(k)+e(k)
+\end{aligned}
+</div>
 
-<li><p>not simply a matter of</p></li>
+<p>注意 $z(k),e(k)$ 不相关。</p>
 
-<li><p>it was not the xxx that mattered，but the xxx</p></li>
+<p>假设 $y^*(k)$ 为 $y(k)$ 的任意预测，$z(k)$ 的最优性：</p>
+
+<div>
+    \begin{aligned}
+    E[(y-y^*)(y-y^*)^T]&=E[(z+e-y^*)(z+e-y^*)^T]\\
+    &=E[(z-y^*)(z-y^*)^T]+E[ee^T] \ge \Lambda_e
+    \end{aligned}
+</div>
+
+<p>因此 $z(k)$ 是最优预报，$e(k)$ 是最优预报误差。</p>
+
+<div>
+    \begin{aligned}
+    \hat{y}(k|k-1,\theta)&=\left(I-H^{-1}(q^{-1},\theta)\right)y(k)+H^{-1}(q^{-1},\theta)G(q^{-1},\theta)u(k)\\
+    \epsilon (k,\theta)&=e(k)=H^{-1}(q^{-1},\theta)\left(y(k)-G(q^{-1},\theta)u(k)\right)
+    \end{aligned}
+</div>
+
+<h2 id="最小化准则">最小化准则</h2>
+
+<p>采样协方差矩阵</p>
+
+<div>
+    $$
+    R_N(\theta)=\frac{1}{N}\sum_{k=1}^N \epsilon(k,\theta)\epsilon^T(k,\theta)
+    $$
+</div>
+
+<ul>
+<li>如果 $y$ 是标量，$R_N(\theta)$ 可以直接作为 $V_N(\theta)$ 用于最小化。</li>
+<li>如果是多变量，我们可以最小化
+$$
+V_N(\theta)=h(R_N(\theta))
+$$
+其中，$h$ 为定义在正半定矩阵集合上的连续的单调递增函数满足 $h(Q+\Delta Q)\ge h(Q),\forall Q,\Delta Q \ge 0$，比如矩阵的迹 $V_N(\theta)=h(R_N(\theta))=tr(R_N(\theta))$。</li>
 </ul>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5418~19/" class="read-more-link">Read more...</a>
+      <a href="/post/%E7%B3%BB%E7%BB%9F%E8%BE%A8%E8%AF%86%E5%86%8D%E5%9B%9E%E9%A6%96/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

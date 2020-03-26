@@ -10,24 +10,37 @@
   
   <url>
     <loc>https://minghaochen.github.io/categories/</loc>
-    <lastmod>2020-03-18T17:01:09+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://minghaochen.github.io/categories/english/</loc>
-    <lastmod>2020-03-18T17:01:09+08:00</lastmod>
+    <lastmod>2020-03-26T15:20:39+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/</loc>
-    <lastmod>2020-03-18T17:01:09+08:00</lastmod>
+    <lastmod>2020-03-26T15:20:39+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://minghaochen.github.io/post/</loc>
+    <lastmod>2020-03-26T15:20:39+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0rbf%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2020-03-26T15:20:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2020-03-26T15:20:39+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://minghaochen.github.io/categories/english/</loc>
     <lastmod>2020-03-18T17:01:09+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -63,12 +76,6 @@
     <lastmod>2020-03-16T09:28:21+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://minghaochen.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2020-03-16T09:28:21+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
