@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-26T15:20:39&#43;08:00"/>
+<meta property="og:updated_time" content="2020-05-10T09:17:54&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,89 +115,181 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%96%B0%E6%A6%82%E5%BF%B541~3/">《新概念4》1~3</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0mcmc/">「机器学习」MCMC</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-20 </span>
+      <span class="post-time"> 2020-02-23 </span>
       <div class="post-category">
-          <a href="/categories/english/"> English </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="finding-fossil-man">Finding Fossil man</h1>
+      <p>参考资料：
+1. 刘建平的博客
+2. LDA数学八卦</p>
 
-<p>We can <strong>read of</strong> things that happened 5,000 years ago in the Near East, where people first learned to write. But there are some parts of the world where even now people cannot write. The only way that they can preserve their history is to <strong>recount</strong> it as sagas&ndash;legends <strong>handed down</strong> from one generation of story-tellers to another. These legends are useful because they can tell us something about migrations of people who lived long ago, but none could write down what they did. <strong>Anthropologists</strong> wondered where the remote ancestors of the Polynesian (波利尼西亚人) peoples now living in the Pacific Islands (太平洋群岛) came from. The sagas of these people explain that some of them came from Indonesia (印度尼西亚) about 2,000 years ago.</p>
+<h1 id="随机模拟">随机模拟</h1>
 
-<p>But the first people who were like ourselves lived so long ago that even their sagas, if they had any, are forgotten. So <strong>archaeologists</strong> have neither history nor legends to help them to find out where the first &lsquo;modern men&rsquo; came from. Fortunately, however, ancient men made tools of stone, especially <strong>flint</strong>, because this is easier to shape than other kinds. They may also have used wood and skins, but these have <strong>rotted away</strong>. Stone does not decay, and so the tools of long ago have remained when even the bones of the men who made them have disappeared without trace.</p>
+<p>统计中有个常遇到的问题是给定一个概率分布$p(x)$，如何在计算机中生成它的样本。一般而言均匀分布 Uniform(0,1) 的样本相对容易生成。通过线性同余发生器可以生成伪随机数，而常见的概率分布都可以基于均匀分布的样本生成，例如正态分布可以通过 Box-Muller 变换得到。这些基础的概率分布的样本生成这里不再赘述，我们现在关注的是如何对一个复杂形式的概率分布函数$p(x)$（比如有积分无法显式计算，或者高维的分布）进行采样。此时就需要更加复杂的随机模拟方法来生成样本，比如现代贝叶斯分析中被广泛使用的马尔科夫链蒙特卡洛（MCMC）。</p>
 
-<p><strong>词汇</strong></p>
+<h1 id="马氏链及其平稳分布">马氏链及其平稳分布</h1>
+
+<p>马氏链的定义很简单</p>
+
+<div>
+$$
+P(X_{t+1}=x|X_t,X_{t-1},...)=P(X_{t+1}=x|X_t)
+$$</div>
+
+<p>也就是状态转移的概率<strong>只依赖于前一个状态</strong>。</p>
+
+<p>假设有转移概率矩阵$P$，以及初始概率分布向量 $\pi_0=[\pi_0(1),\pi_0(2),\pi_0(3)]$，经过$n$次传递后，$\pi_n=\pi_0P^n$。当状态转移概率矩阵满足一定性质时，不论初始概率分布向量是多少，最终这个分布都会收敛。</p>
+
+<p><strong>定理</strong>：如果一个非周期马氏链具有转移概率矩阵$P$，且它的任意两个状态是连通的，那么有</p>
+
+<div>$$\lim_{n\rightarrow \infty}P_{ij}^n = \pi(j)$$</div>
+
+<ol>
+<li>矩阵$P^n$的极限收敛到一个稳定分布，即矩阵的每一行都相等。</li>
+<li>$\pi(j)=\sum_{i=0}^{\infty}\pi(i)P_{ij}$</li>
+<li>$\pi$ 是方程$\pi P= \pi$的唯一非负解，其中$\pi=[\pi(1),&hellip;,\pi(j),&hellip;]$称为马氏链的平稳分布。</li>
+</ol>
+
+<p>从初始概率分布$\pi_0$出发，记$X_i$的概率分布为$\pi_i$，则有</p>
+
+<div>$$
+\begin{aligned}
+X_0\sim \pi_0(x)\\
+X_1\sim \pi_1(x)\\
+...\\
+X_n\sim \pi_n(x)=\pi(x)\\
+X_{n+1}\sim \pi(x)\\
+...
+\end{aligned}
+$$</div>
+
+<p>所以 $X_n,X_{n+1},&hellip;\sim \pi(x)$ 都是同分布的独立随机变量。如果我们从一个具体的初始状态$x_0$开始，得到一个转移序列 $x_0,x_1,&hellip;,x_n,x_{n+1},&hellip;$，那么 $x_n,x_{n+1},&hellip;$ 都将是平稳分布 $\pi(x)$ 的样本。</p>
+
+<h1 id="mcmc">MCMC</h1>
+
+<p>如果我们能够构造一个转移矩阵为 $P$ 的马氏链，使得该马氏链的平稳分布正好是我们想要采样的复杂概率分布 $p(x)$，那么从任何一个初始状态出发沿着马氏链转移，如果马氏链在第 $n$ 步已经收敛，我们就能够得到 $\pi(x)$ 的样本$x_n,x_{n+1},&hellip;$</p>
+
+<h2 id="metropolis-hastings算法">Metropolis-Hastings算法</h2>
+
+<p>我们已经知道了马氏链的收敛性质是由转移矩阵 $P$ 决定，所以现在的关键在于如何构造转移矩阵 $P$，使得平稳分布恰好是我们想要采样的分布 $p(x)$。这里需要使用的就是下面这个定理：</p>
+
+<p><strong>定理</strong>：（细致平稳条件）如果非周期马氏链的转移矩阵 $P$ 和分布 $\pi(x)$ 满足</p>
+
+<p>$$
+\pi(i)P_{ij}=\pi(j)P_{ji},\quad for \quad all\quad i,j
+$$
+则 $\pi(x)$ 是马氏链的平稳分布。从物理意义理解：对于任意两个状态 $i,j$，从 $i$ 转移出去到 $j$ 而丢失的概率质量，恰好会被从 $j$ 转移回到$i$的概率质量补充回来。</p>
+
+<p>假设我们已经有一个转移矩阵为$Q$的马氏链（$q(i,j)$表示状态$i$转移到状态$j$的概率，也可以写成$q(j|i)$或者$q(i\rightarrow j)$）通常情况下</p>
+
+<p>$$
+p(i)q(i,j)\neq p(j)q(j,i)
+$$</p>
+
+<p>也就是细致平稳条件不成立，所以 $p(x)$ 不太可能是这个马氏链的平稳分布，所以我们对上式进行改造，引入 $\alpha(i,j)$</p>
+
+<p>$$
+p(i)q(i,j)\alpha(i,j) = p(j)q(j,i)\alpha(j,i)
+$$</p>
+
+<p>取什么样的 $\alpha(i,j)$ 才能使上式成立呢，最简单的就是按照对称性取</p>
+
+<p>$$
+\alpha(i,j)=p(j)q(j,i), \alpha(j,i)=p(i)q(i,j)
+$$</p>
+
+<p>令$Q&rsquo;(i,j)=q(i,j)\alpha(i,j),Q&rsquo;(j,i)=q(j,i)\alpha(j,i)$，所以有$Q&rsquo;$满足细致平稳条件，且其平稳分布就是 $p(x)$。从物理意义的角度理解就是在原来的马氏链$Q$上，从状态 $i$ 以 $q(i,j)$ 的概率转移到状态 $j$ 时，我们以 $\alpha(i,j)$ 的概率接受这个转移。</p>
+
+<p>但是这样的MCMC算法有个小问题就是接受率可能偏小，我们可以把细致平稳条件中的 $\alpha(i,j),\alpha(j,i)$ 同比例放大，使最大的一个放大到1，即</p>
+
+<p>$$
+\alpha(i,j) = min(\frac{p(j)q(j,i)}{p(i)q(i,j)},1)
+$$</p>
+
+<p>这样就得到了M-H算法了。</p>
+
+<h1 id="gibbs-sampling">Gibbs Sampling</h1>
+
+<p>对于高维的情况，由于接受率小于1，M-H采样的效率还是不够高，因此想要找一个转移矩阵 $Q$ 使得接受率为1。</p>
+
+<p>看个二维的情况，假设有一个概率分布 $p(x,y)$，考察 $x$ 坐标相同的两个点$A(x_1,y_1),B(x_1,y_2)$，我们发现</p>
+
+<div>
+$$
+\begin{aligned}
+p(x_1,y_1)p(y_2|x_1) = p(x_1)p(y_1|x_1)p(y_2|x_1)\\
+p(x_1,y_2)p(y_1|x_1) = p(x_1)p(y_2|x_1)p(y_1|x_1)
+\end{aligned}
+$$
+</div>
+
+<p>可以得到</p>
+
+<p>$$
+p(x_1,y_1)p(y_2|x_1) = p(x_1,y_2)p(y_1|x_1)
+$$</p>
+
+<p>即</p>
+
+<p>$$
+P(A)p(y_2|x_1) = p(B)p(y_1|x_1)
+$$</p>
+
+<p>我们发现，在$x=x_1$这条平行于 $y$ 轴的直线上，如果使用条件分布 $p(y|x_1)$ 作为任何两点之间的转移概率，那么任何两点之间的转移满足细致平稳条件。同样取$A(x_1,y_1),B(x_2,y_1)$，也有</p>
+
+<p>$$
+P(A)p(x_2|y_1) = p(B)p(x_1|y_1)
+$$</p>
+
+<p>于是我们可以构造平面上任意两点之间的转移概率矩阵$Q$</p>
+
+<div>
+$$
+\begin{aligned}
+Q(A -> B)&=p(y_B|x_1),\quad if\quad x_A=x_B=x_1\\
+Q(A -> C)&=p(x_C|y_1),\quad if\quad y_A=y_C=y_1\\
+Q(A -> D)&=0,\quad others
+\end{aligned}
+$$</div>
+
+<p>这样对于平面上任意两点$X,Y$满足细致平稳条件</p>
+
+<p>$$
+p(X)Q(X-&gt;Y)=P(Y)Q(Y-&gt;X)
+$$</p>
+
+<p><strong>算法描述</strong></p>
+
+<ol>
+<li><p>随机初始化 $x_i,i=1,&hellip;,n$</p></li>
+
+<li><p>对 $t=0,1,2,&hellip;$，循环采样</p>
 
 <ul>
-<li>recount: /rɪˈkaʊnt/ to tell someone about (something that happened).</li>
-<li>saga: /ˈsɑːgə/ a long and complicated story with many details.</li>
-<li>hand down: to pass (something) from a person who is older (such as a parent) to a person who is younger (such as a child).</li>
-<li>anthropologist: /ˌænθrəˈpɑːləʤi/ the study of human races, origins, societies, and cultures.</li>
-<li>archaeologist: /ˌɑɚkiˈɑːləʤi/  a science that deals with past human life and activities by studying the bones, tools, etc., of ancient people.</li>
-<li>flint: /ˈflɪnt/ a hard type of rock that produces a small piece of burning material.</li>
-</ul>
+<li>$x_1^{t+1}\sim p(x_1|x_2^{t},x_3^t&hellip;,x_n^{t})$</li>
+<li>$x_2^{t+1}\sim p(x_2|x_1^{t+1},x_3^t&hellip;,x_n^{t})$</li>
+<li>&hellip;</li>
+<li>$x_n^{t+1}\sim p(x_n|x_1^{t+1},x_2^{t+1}&hellip;,x_{n-1}^{t+1})$</li>
+</ul></li>
+</ol>
 
-<p><strong>句型</strong></p>
+<h2 id="举例说明">举例说明</h2>
 
-<ul>
-<li>The only way that &hellip; is</li>
-<li>These &hellip; are useful because &hellip;</li>
-<li>sth explain that &hellip;</li>
-</ul>
+<p>假设我们要对一个二维分布 $p(x_1,x_2)$ 进行采样，直接采样不可行，对应的 Gibbs Sampler 就是交替地从条件概率 $p(x_1|x_2)$ 和 $p(x_2|x_1)$ 中进行采样。</p>
 
-<h1 id="spare-that-spider">Spare that spider</h1>
+<h1 id="总结">总结</h1>
 
-<p>Why, you may wonder, should spiders be our friends ? Because they destroy so many insects, and insects include some of the greatest enemies of the human race. Insects would make it impossible for us to live in the world; they would <strong>devour</strong> all our crops and kill our flocks and herds, if it were not for the protection we get from insect-eating animals. We owe a lot to the birds and beasts who eat insects but all of them put together kill only <strong>a fraction of</strong> the number destroyed by spiders. Moreover, unlike some of the other insect eaters, spiders never do the least harm to us or our belongings.</p>
-
-<p>Spiders are not insects, as many people think, nor even nearly related to them. One can tell the difference almost at a glance for a spider always has eight legs and an insect never more than six.</p>
-
-<p>How many spiders <strong>are engaged in</strong> this work on our behalf ? One authority on spiders made a census of the spiders in a grass field in the south of England, and he estimated that there were more than 2,250,000 in one <strong>acre</strong>, that is something like 6,000,000 spiders of different kinds on a football <strong>pitch</strong>. Spiders are busy for at least half the year in killing insects. It is impossible to make more than the wildest guess at how many they kill, but they are hungry creatures, not content with only three meals a day. It has been estimated that the weight of all the insects destroyed by spiders in Britain in one year would be greater than the total weight of all the human beings in the country.</p>
-
-<p><strong>词汇</strong></p>
-
-<ul>
-<li>spare: /ˈspeɚ/ to not destroy or harm.</li>
-<li>devour: /dɪˈvawɚ/  to destroy (something) completely.</li>
-<li>a fraction of</li>
-<li>be engaged in</li>
-<li>pitch: /ˈpɪtʃ/ an area that is used for playing sports.</li>
-</ul>
-
-<p><strong>句型</strong></p>
-
-<ul>
-<li>It has been estimated that</li>
-</ul>
-
-<h1 id="matterhorn-马特洪峰-man">Matterhorn (马特洪峰) man</h1>
-
-<p>Modern <strong>alpinists</strong> try to climb mountains by a route which will give them good sport, and the more difficult it is, the more highly it is regarded. In the pioneering days, however, this was not the case at all. The early climbers were looking for the easiest way to the top because the summit was the prize they sought, especially if it had never been attained before. It is true that during their explorations they often faced difficulties and dangers of the most perilous nature, equipped in a manner which would make a modern climber <strong>shudder</strong> at the thought, but they did not go out of their way to court such excitement. They had a single aim, a solitary goal&ndash;the top!</p>
-
-<p>It is hard for us to realize nowadays how difficult it was for the pioneers. <strong>Except for</strong> one or two places such as Zermatt (策马特) and Chamonix (夏蒙尼), which had rapidly become popular, Alpine (阿尔卑斯山的) villages tended to be <strong>impoverished settlements</strong> cut off from civilization by the high mountains. Such <strong>inns</strong> as there were were generally dirty and <strong>flea-ridden</strong>; the food simply local cheese accompanied by bread often twelve months old, all washed down with coarse wine. Often a valley boasted no inn at all, and climbers found shelter wherever they could&ndash;sometimes with the local priest (who was usually as poor as his parishioners), sometimes with shepherds or cheesemakers. Invariably the background was the same: dirt and poverty, and very uncomfortable. For men accustomed to eating seven-course dinners and sleeping between fine <strong>linen</strong> sheets at home, the change to the Alps must have been very hard indeed.</p>
-
-<p><strong>词汇</strong></p>
-
-<ul>
-<li>alpinist</li>
-<li>shudder: /ˈʃʌdɚ/ to shake because of fear, cold, etc.</li>
-<li>except for</li>
-<li>impoverish: /ɪmˈpɑːvərɪʃ/ poor.</li>
-<li>settlement: /ˈsɛtl̟mənt/ a place where people have come to live and where few or no people lived before.</li>
-<li>cut off + from: to be separate or alone: They are cut off from (contact with) the outside world.</li>
-<li>flea: /ˈfliː/ a very small insect.</li>
-<li>ridden: /ˈrɪdn̩/ filled with or containing something unpleasant or unwanted.</li>
-<li>boast: /ˈboʊst/ to have (something that is impressive)</li>
-<li>linen: /ˈlɪnən/ a smooth, strong cloth made from flax.</li>
-</ul>
+<p>一般来说 MCMC 现在指的都是吉布斯采样（Gibbs Sampling），通过每次<strong>只采样一维变量固定其他维变量</strong>（把联合概率转换为从条件概率进行采样）来满足细致平稳条件，因此只要经过一定次数的迭代后，马氏链收敛，采样得到的也就是目标采样值（从联合分布中的采样）。</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%96%B0%E6%A6%82%E5%BF%B541~3/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0mcmc/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

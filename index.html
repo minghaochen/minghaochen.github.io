@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-26T15:20:39&#43;08:00"/>
+<meta property="og:updated_time" content="2020-05-10T09:17:54&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,228 +115,447 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0rbf%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">「机器学习」RBF神经网络</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B/">「强化学习」从零开始</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-03-26 </span>
+      <span class="post-time"> 2020-05-10 </span>
       <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          <a href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/"> ‘强化学习’ </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="前言">前言</h1>
+      <h1 id="模型基础">模型基础</h1>
 
-<p>之前做的项目尝试对一个对象的增益进行拟合，采用支持向量机回归的效果不太理想，进而打算用 RBF 神经网络来试试看效果。</p>
-
-<h1 id="网络介绍">网络介绍</h1>
-
-<p>RBF网络是人工神经网络的一种，它采用径向基函数作为激活函数。
-网络的形式为三层：</p>
+<h2 id="强化学习和监督学习-非监督学习">强化学习和监督学习，非监督学习</h2>
 
 <ol>
-<li><p>输入层</p></li>
-
-<li><p>隐藏层（RBF函数）</p></li>
-
-<li><p>线性输出层</p></li>
+<li>强化学习只有奖励值，但是这个奖励值和监督学习的输出值不一样，它不是事先给出的，而是延后给出的。</li>
+<li>强化学习的每一步与时间顺序前后关系紧密。而监督学习的训练数据之间一般都是独立的，没有这种前后的依赖关系。</li>
+<li>非监督学习是没有输出值也没有奖励值的，它只有数据特征。同时和监督学习一样，数据之间也都是独立的，没有强化学习这样的前后依赖关系。</li>
 </ol>
 
-<p>给定输入 $x\in \mathbb{R}^n$，网络的输出为</p>
-
-<p>$$
-\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||)
-$$
-其中 $N$ 为隐藏层神经元的个数，$c_i$ 为第$i$个神经元的中心向量，$\alpha_i$为第$i$个神经元对线性输出层的权重。径向基函数通常采用高斯函数形式，即</p>
-
-<p>$$
-\rho (||x-c_i||) = exp[-\beta_i ||x-c_i||^2]
-$$</p>
-
-<p><strong>含有足够多的隐藏层神经元的RBF网络能以任意精度近似任意连续函数</strong></p>
-
-<p>网络中需要确定的参数有：</p>
-
-<ol>
-<li><p>权重$\alpha_i$</p></li>
-
-<li><p>基函数中心$c_i$</p></li>
-
-<li><p>基函数的方差$\beta_i$</p></li>
-</ol>
-
-<h1 id="训练">训练</h1>
-
-<p>RBF网络的训练通常采用两步法：</p>
-
-<p>step 1：选择中心向量$c_i$，几种常见的做法like：随机从样本中抽取，k均值聚类。</p>
-
-<p>step 2：训练权重系数，比如最小化预测值的MSE，也可以加入正则化项来确保光滑性。</p>
-
-<h1 id="应用">应用</h1>
-
-<h2 id="内插">内插</h2>
-
-<p>RBF网络可以用来内插函数，给定$N$个样本，每一个训练样本都作为一个径向基和中心，计算核矩阵$K_{N,N}$，则有$KW=Y$，权重向量可以直接矩阵求逆得到。</p>
-
-<h2 id="函数近似">函数近似</h2>
-
-<p>RBF的宽度可以固定为某个常数（正比于所选中心的最大距离）。</p>
-
-<p>当中心固定后，RBF网络具有显示的解析解，伪逆：$W=G^+Y$</p>
-
-<h2 id="梯度下降训练权重">梯度下降训练权重</h2>
-
-<p>这几个概念需要理清楚：</p>
+<h2 id="强化学习基本要素">强化学习基本要素</h2>
 
 <ul>
-<li>导数（单变量函数）</li>
-<li>偏导数（多变量函数）</li>
-<li>导数方向（任意方向的导数）</li>
-<li>梯度（变化最大方向的导数方向）</li>
+<li>环境的状态 $S$，$t$ 时刻的状态为 $S_t$</li>
+<li>个体的动作 $A$，$t$ 时刻采取的动作为 $A_t$</li>
+<li>环境的奖励 $R$，$t$ 时刻在状态 $S_t$ 采取的动作  $A_t$ 对应的奖励 $R_{t+1}$ 会在 $t+1$ 时刻得到</li>
+<li>个体的策略 (policy) $\pi$ 代表个体采取动作的依据，即个体会根据策略来选择动作。常见的策略表达方式是一个条件概率分布 $\pi(a|s)$ 表示在状态 $s$ 采取动作 $a$ 的概率，即 $\pi(a|s)=P(A_t=a|S_t=s)$，此时概率大的动作可能就被采取</li>
+<li>个体在策略 $\pi$ 和状态 $s$ 时，采取动作后的价值(value) $v_{\pi}(s)$，这个价值一般是一个期望函数。需要综合考虑当前的延时奖励和后续的延时奖励</li>
 </ul>
 
-<h1 id="matlab仿真">MATLAB仿真</h1>
+<div>
+$$
+v_{\pi}(s) = E_{\pi}(R_{t+1}+\gamma R_{t+2} + \gamma^2 R_{t+3} + ... | S_t=s)
+$$</div>
 
-<p>下面根据上述算法进行RBF神经网络的训练</p>
+<ul>
+<li>$\gamma$ 是衰减因子，如果是 $0$，则是贪婪法，只关注当前延时奖励；如果是 $1$，则后续所有奖励和当前一直同仁。通常选择一个 $0$ 到 $1$ 之间的数使得当前延时奖励的权重比后续奖励要大。</li>
+<li>环境的状态转化模型，即在状态 $s$ 下采取动作 $a$ 转到下一状态 $s&rsquo;$ 的概率，记为 $P_{s s&rsquo;}^a$</li>
+<li>探索率 $\epsilon$ 表示我们在训练最优动作时有一定概率不选择当前迭代价值最大的动作，而选择其他的动作，避免错过一些较好但是没有被执行过的动作。</li>
+</ul>
 
-<p>首先生成数据，$x$为输入，$y$为目标值，也就是要训练$y=f(x)$</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">% generate data from Logistic map
-% x(t+1) = 4x(t)(1-x(t))
-z = zeros(201,1);
-x = zeros(200,1);
-y = zeros(200,1);
-z(1) = 0.1;
-for t = 2:201
-    z(t) = 4*z(t-1)*(1-z(t-1)); 
-end
-y = z(2:201);
-x = z(1:200);</pre></td></tr></table>
-</div>
-</div>
-<p>假设神经元的个数、方差和基向量事先定好</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">N = 7; % the number of neuron
-beta = 5; % predefine the variance of RBF function
-c = x(1:30:181); % random select the centers</pre></td></tr></table>
-</div>
-</div>
-<p>定义RBF函数和梯度向量</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">rbfoutput = @(x,a,c) a(1)*exp(-5*(x-c(1)).^2)+a(2)*exp(-5*(x-c(2)).^2)+...
-    a(3)*exp(-5*(x-c(3)).^2)+a(4)*exp(-5*(x-c(4)).^2)+a(5)*exp(-5*(x-c(5)).^2)...
-    +a(6)*exp(-5*(x-c(6)).^2)+a(7)*exp(-5*(x-c(7)).^2);
-rbf_grad = @(x,c) [exp(-5*(x-c(1)).^2);exp(-5*(x-c(2)).^2);exp(-5*(x-c(3)).^2);...
-    exp(-5*(x-c(4)).^2);exp(-5*(x-c(5)).^2);exp(-5*(x-c(6)).^2);...
-    exp(-5*(x-c(7)).^2)];</pre></td></tr></table>
-</div>
-</div>
-<p>采用随机梯度下降进行线性权重的寻优，即每次从样本中随机挑选一个样本进行训练</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">a = 0.01*ones(N,1);
-for i = 1:10000000
-    t = unidrnd(200);
-    a = a - 0.01 * (rbfoutput(x(t),a,c)-y(t))* rbf_grad(x(t),c);
-end</pre></td></tr></table>
-</div>
-</div>
-<p>作图比较实际数据和RBF神经网络的预测输出</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">figure
-scatter(x,y,&#39;o&#39;);
-hold on
-x_test = (0:0.01:1);
-scatter(x_test,rbfoutput(x_test,a,c),&#39;*&#39;)
-legend(&#39;true function&#39;,&#39;approximation&#39;)
-xlabel(&#39;x(t)&#39;)
-ylabel(&#39;x(t+1)&#39;)</pre></td></tr></table>
-</div>
-</div>
-<h2 id="newrb函数的使用">newrb函数的使用</h2>
+<h1 id="马尔可夫决策过程-mdp">马尔可夫决策过程 (MDP)</h1>
 
-<p>MATLAB也自带了RBF神经网络函数，不过它采用的隐藏层略微不同，方差多了个平方同时输出层多了个偏置项。</p>
+<h2 id="why">Why</h2>
+
+<p>环境的状态转化模型既与上一个状态有关，还与上上个状态，以及上上上个状态有关，这样会导致环境转化模型过于复杂难以建模。因此需要简化！简化的方法就是假设状态转化的马尔科夫性，也就是假设转化到下一个状态 $s&rsquo;$ 的概率仅与上一个状态 $s$ 有关，与之前的状态无关。</p>
+
+<div>
+$$
+P_{ss'}^a = E(S_{t+1}=s'|S_t=s,A_t=a)
+$$</div>
+
+<p>除了对于环境的状态转化模型这个因素做马尔科夫假设外，我们还对强化学习第四个要素个体的策略 (policy) $\pi$ 也做了马尔科夫假设。即在状态 $s$ 时采取动作 $a$ 的概率仅与当前状态 $s$ 有关，与其他的要素无关。</p>
 
 <p>$$
-\phi(x)=\sum_{1}^N \alpha_i \rho (||x-c_i||) + bias
+\pi(a|s) = P(A_t=a|S_t=s)
 $$</p>
+
+<p>同时，价值函数也仅依赖于当前的状态</p>
+
+<div>
+$$
+v_{\pi}(s) = E_{\pi}(G_t|S_t=s) = E_{\pi}(R_{t+1}+\gamma R_{t+2} + ... |S_t = s)
+$$</div>
+
+<p>其中 $G_t$ 代表收获，是一个MDP从某一个状态开始采样直到终止状态时所有衰减奖励之和。</p>
+
+<h2 id="mdp的价值函数和贝尔曼方程">MDP的价值函数和贝尔曼方程</h2>
+
+<p>先前的价值函数没有考虑到所采用的动作 $a$ 带来的价值影响，因此引入了动作价值函数 $q_{\pi}(s,a)$，即</p>
+
+<div>
+$$
+q_{\pi}(s,a) = E_{\pi}(G_t|S_t=s, A_t=a)
+$$</div>
+
+<p>根据价值函数的表达式，可以推到出价值函数基于状态的递推关系</p>
+
+<div>
+\begin{align}
+v_{\pi}(s) &= E_{\pi}(R_{t+1} + \gamma R_{t+2} + ...|S_t=s)\\
+&= E_{\pi}(R_{t+1} +\gamma(R_{t+2}+ \gamma R_{t+3}...)|S_t=s)\\
+&= E_{\pi}(R_{t+1}+\gamma G_{t+1}|S_t=t)\\
+&= E_{\pi}(R_{t+1} + \gamma v_{\pi}(S_{t+1})|S_t=s)
+\end{align}
+</div>
+
+<p>也就是说 $t$ 时刻的状态 和 $t+1$ 时刻的状态是满足递推关系的，这个递推式子也称为贝尔曼方程。<strong>一个状态的价值由该状态的奖励以及后续状态价值按一定的衰减比例联合组成。</strong></p>
+
+<p>同理也可以得到动作价值函数的贝尔曼方程。</p>
+
+<div>
+$$
+q_{\pi}(s,a) = E_{\pi}(R_{t+1} + \gamma q_{\pi}(S_{t+1},A_{t+1})|S_t=s, A_t=a)
+$$</div>
+
+<h2 id="状态价值函数与动作价值函数的递推关系">状态价值函数与动作价值函数的递推关系</h2>
+
+<p>根据定义可以得到</p>
+
+<div>
+$$
+v_{\pi}(s) = \sum_{a\in A}\pi(a|s)q_{\pi}(s,a)
+$$</div>
+
+<p>也就是说，<strong>状态价值函数是所有动作价值函数基于策略 $\pi$ 的期望。</strong>通俗说就是某状态下所有状态动作价值乘以该动作出现的概率，最后求和，就得到了对应的状态价值。</p>
+
+<p>利用贝尔曼方程，可以得到从状态价值函数表示动作价值函数</p>
+
+<div>
+$$
+q_{\pi}(s,a) = R_{s}^a + \gamma \sum_{s' \in S} P_{ss'}^a v_{\pi}(s')
+$$</div>
+
+<p>通俗说就是状态动作价值有两部分相加组成，<strong>第一部分是即时奖励，第二部分是环境所有可能出现的下一个状态的概率乘以该下一状态的状态价值，最后求和，并加上衰减。</strong></p>
+
+<p>把上面两个式子结合起来可以得到</p>
+
+<div>
+$$
+v_{\pi}(s) = \sum_{a \in A} \pi(a|s) (R_s^a + \gamma \sum_{s' \in S}P_{ss'}^a v_{\pi}(s'))\\
+q_{\pi}(s,a) = R_s^a + \gamma \sum_{s' \in S} P_{ss'}^a \sum_{a' \in A} \pi(a'|s') q_{\pi}(s',a')
+$$</div>
+
+<h2 id="最优价值函数">最优价值函数</h2>
+
+<p><strong>解决强化学习问题意味着要寻找一个最优策略让个体在与环境交互过程中获得始终比其它策略都要多的收获</strong></p>
+
+<p>如何比较策略的优劣呢？一般是通过对应的价值函数来比较的</p>
+
+<div>
+$$
+v_*(s) = \max_{\pi} v_{\pi}(s)
+$$</div>
+
+<p>也可以定义最优动作价值函数是所有策略下产生的众多动作状态价值函数中的最大者</p>
+
+<div>
+$$
+q_*(s,a) = \max_{\pi} q_{\pi}(s,a)
+$$</div>
+
+<p>对于最优的策略，基于动作价值函数我们可以定义为</p>
+
+<div>
+$$
+\pi_*(a|s) = 1, \quad if \quad a = \arg \max_{a\in A} q_*(s,a)
+$$</div>
+
+<p>只要我们找到了最大的状态价值函数或者动作价值函数，对应的策略就是强化学习的解。且最大的状态价值函数和最大的动作价值函数满足</p>
+
+<div>
+$$
+v_*(s) = \max_a q_*(s,a)\\
+q_*(s,a) = R_s^a + \gamma \sum_{s' \in S} P_{ss'}^a v_*(s')
+$$</div>
+
+<h1 id="动态规划求解强化学习">动态规划求解强化学习</h1>
+
+<h2 id="dp-和-rl-的关系">DP 和 RL 的关系</h2>
+
+<p>动态规划的关键点有两个：</p>
+
+<ol>
+<li>问题的最优解可以由若干小问题的最优解构成，即通过寻找子问题的最优解来得到问题的最优解。</li>
+<li>可以找到子问题状态之间的递推关系，通过较小的子问题状态递推出较大的子问题的状态。</li>
+</ol>
+
+<p>而强化学习的问题恰好是满足这两个条件的。</p>
+
+<p>RL 两个基本问题</p>
+
+<ul>
+<li>预测：给定策略求解该策略下的状态价值函数</li>
+<li>控制：求解最优的价值函数和策略</li>
+</ul>
+
+<h2 id="策略评估求解预测问题">策略评估求解预测问题</h2>
+
+<p>求解给定策略的状态价值函数通常叫做策略评估 (Policy Evaluation)。假设我们在第k轮迭代已经计算出了所有的状态的状态价值，那么在第 $k+1$ 轮我们可以利用第k轮计算出的状态价值计算出第 $k+1$ 轮的状态价值。这是通过贝尔曼方程来完成的，即：</p>
+
+<div>
+$$
+v_{k+1}(s) = \sum_{a\in A}\pi(a|s) (R_s^a + \gamma \sum_{s'\in S} P_{ss'}^a v_k(s'))
+$$</div>
+
+<p>每一轮可以对计算得到的新的状态价值函数再次进行迭代，直至状态价值的值改变很小(收敛)，那么我们就得出了预测问题的解，即给定策略的状态价值函数。</p>
+
+<h2 id="策略迭代求解控制问题">策略迭代求解控制问题</h2>
+
+<p>一种可行的方法就是根据我们之前基于任意一个给定策略评估得到的状态价值来及时调整我们的动作策略，这个方法我们叫做策略迭代 (Policy Iteration)。</p>
+
+<p>最简单的方法就是贪婪法。考虑一种如下的贪婪策略：个体在某个状态下<strong>选择的行为是其能够到达后续所有可能的状态中状态价值最大的那个状态</strong>。在策略迭代过程中，我们循环进行两部分工作:</p>
+
+<p>Step 1. 是使用当前策略 $\pi_{opt}$ 评估计算当前策略的最终状态价值 $v_{opt}$，</p>
+
+<p>Step 2. 根据状态价值 $v_{opt}$ 根据一定的方法（比如贪婪法）更新策略 $\pi_{opt}$，接着回到第一步，一直迭代下去，最终得到收敛的策略 $\pi_{opt}$ 和状态价值 $v_{opt}$。</p>
+
+<h2 id="价值迭代求解控制问题">价值迭代求解控制问题</h2>
+
+<p>每次等待状态价值收敛再去更新策略是不必要的，可以随着状态价值的迭代及时调整策略，这样可以大大减少迭代次数。</p>
+
+<div>
+$$
+v_{k+1}(s) = \max_{a\in A} (R_s^a + \gamma \sum_{s' \in S}P_{ss'}^a v_k(s'))
+$$</div>
+
+<p>现在价值每次更新倾向于贪婪法选择的最优策略对应的后续状态价值，这样收敛更快。</p>
+
+<h2 id="动态规划求解强化学习问题小结">动态规划求解强化学习问题小结</h2>
+
+<p>主要就是利用贝尔曼方程来迭代更新状态价值，用贪婪法之类的方法迭代更新最优策略。但是当问题规模很大的时候，动态规划算法将会因贝尔曼维度灾难而无法使用。</p>
+
+<h1 id="蒙特卡罗法-mc-求解-强化学习">蒙特卡罗法 (MC) 求解 强化学习</h1>
+
+<p>由于动态规划法需要在每一次回溯更新某一个状态的价值时，回溯到该状态的所有可能的后续状态。导致对于复杂问题计算量很大。同时很多时候，我们连环境的状态转化模型 $P$ 都无法知道，这时动态规划法根本没法使用。</p>
+
+<h2 id="不基于模型的强化学习问题定义">不基于模型的强化学习问题定义</h2>
+
+<p>当模型状态转化概率矩阵 $P$ 始终是已知的，即 MDP 已知，对于这样的强化学习问题，我们一般称为基于模型的强化学习问题。
+不过有很多强化学习问题，我们没有办法事先得到模型状态转化概率矩阵 $P$，这时如果仍然需要我们求解强化学习问题，那么这就是不基于模型的强化学习问题了。</p>
+
+<h2 id="蒙特卡罗法">蒙特卡罗法</h2>
+
+<p>蒙特卡罗法通过采样若干<strong>经历完整</strong> (这个序列必须是达到终点的) 的状态序列 (episode) 来估计状态的真实价值。和动态规划比，它不需要依赖于模型状态转化概率。二是它从经历过的完整序列学习，完整的经历越多，学习效果越好。</p>
+
+<h2 id="蒙特卡罗法求解强化学习预测问题">蒙特卡罗法求解强化学习预测问题</h2>
+
+<p>一个给定策略 $\pi$ 的完整状态序列如下：</p>
 
 <p>$$
-\rho (||x-c_i||) = exp[-(\beta_i ||x-c_i||^2)^2]
+S_1,A_1,R_2,S_2,A_2,&hellip;,R_T,S_T
 $$</p>
 
-<p>训练则很简单了</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">net = newrb(x&#39;,y&#39;,error,spread,MN,DF)</pre></td></tr></table>
-</div>
-</div>
-<p>其中$x,y$为训练数据，一列为一个样本；error为期望的误差，spread为径向基函数的扩展速度，它决定了基函数围绕中心点的宽度（The larger spread is, the smoother the function approximation）其实就是控制方差，MN为神经元的最大个数，DF为两次显示之间所添加的神经元数目,默认值为25。</p>
+<p>根据价值函数的定义可以看出每个状态的价值函数等于所有该状态收获的期望，同时这个收获是通过后续的奖励与对应的衰减乘积求和得到。那么对于蒙特卡罗法来说，如果要求某一个状态的状态价值，只需要求出所有的完整序列中<strong>该状态出现时候的收获再取平均值</strong>即可近似求解。</p>
 
-<p>训练结束后进行预测直接</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">y_test=sim(net,x_test)</pre></td></tr></table>
+<div>
+$$
+G_t = R_{t+1} + \gamma R_{t+2} +... \gamma ^{T-t-1} R_T\\
+v_{\pi}(s) = average(G_t),\quad s.t. S_t =s 
+$$</div>
+
+<p>有几个点可以优化考虑:</p>
+
+<ul>
+<li>同样一个状态可能在一个完整的状态序列中重复出现:首次访问 (first visit) 和每次访问 (every visit) 蒙特卡罗法</li>
+<li>累进更新平均值（incremental mean) 避免保存所有该状态的收获值。因为上面预测问题的求解里有一个 average 公式，意味着要保存所有该状态的收获值之和最后求平均。一个较好的方式是在迭代计算收获均值，即每次保存上一轮迭代得到的收获均值和次数。</li>
+</ul>
+
+<div>$$
+\mu_k = \frac{1}{k} (x_k + \sum_{j=1}^{k-1}x_j)  = \mu_{k-1} + \frac{1}{k}(x_k - \mu_{k-1})
+$$</div>
+
+<h2 id="蒙特卡罗法求解强化学习控制问题">蒙特卡罗法求解强化学习控制问题</h2>
+
+<p>和动态规划比，蒙特卡罗法不同之处体现在三点：</p>
+
+<ol>
+<li>预测问题策略评估的方法不同。</li>
+<li>蒙特卡罗法一般是优化最优动作价值函数 $q_{opt}$，而不是状态价值函数 $v_{opt}$。</li>
+<li>动态规划一般基于贪婪法更新策略。而蒙特卡罗法一般采用 $\epsilon$−贪婪法更新。为了使算法可以收敛，一般 $\epsilon$ 会随着算法的迭代过程逐渐减小，并趋于0。这样<strong>在迭代前期，我们鼓励探索</strong>，而在<strong>后期</strong>，由于我们有了足够的探索量，开始<strong>趋于保守</strong>，以贪婪为主，使算法可以稳定收敛。</li>
+</ol>
+
+<p><strong>算法流程</strong>
+输入： 状态集 $S$，动作集 $A$，即时奖励 $R$，衰减因子 $\gamma$，探索率 $\epsilon$</p>
+
+<p>输出：最优的动作价值函数 和 最优策略</p>
+
+<p>Step 1. 初始化所有动作价值 $Q(s,a)=0$，状态次数 $N(s,a)=0$，采样次数 $k=0$，随机初始化一个策略 $\pi$
+Step 2. $k=k+1$，基于策略 $\pi$ 进行第 $k$ 次蒙特卡洛采样，得到一个完整的状态序列：
+$$
+S_1,A_1,R_2,A_2,&hellip;,R_T,S_T
+$$
+Step 3. 对于该状态序列里出现的每一状态行为对 $(S_t,A_t)$ 计算其收获 $G_t$，更新其计数 $N(s,a)$ 和行为价值函数 $Q(s,a)$</p>
+
+<div>
+$$
+G_t = R_{t+1} + \gamma R_{t+2} + ... \gamma^{T-t-1}R_T\\
+N(S_t,A_t)=N(S_t,A_t)+1\\
+Q(S_t,A_t) = Q(S_t,A_t) + \frac{1}{N(S_t,A_t)}(G_t - Q(S_t,A_t))
+$$</div>
+
+<p>Step 4. 基于新计算出的动作价值，更新当前的 $\epsilon$ 贪婪策略:
+$$
+\epsilon = \frac{1}{k}
+$$
+且</p>
+
+<div>
+\begin{equation}
+\pi(a | s)=\left\{\begin{array}{ll}\epsilon / m+1-\epsilon & \text { if } a^{*}=\arg \max _{a \in A} Q(s, a) \\ \epsilon / m & \text { else }\end{array}\right.
+\end{equation}
 </div>
-</div>
+
+<p>其中 $m$ 为可选行为的个数。</p>
+
+<p>Step 5. 如果所有的 $Q(s,a)$ 收敛则达到最优，否则返回第二步。</p>
+
+<h2 id="小结">小结</h2>
+
+<p>蒙特卡罗法是不基于模型的强化问题求解方法。它可以避免动态规划求解过于复杂，同时还可以不事先知道环境转化模型，因此可以用于海量数据和复杂模型。但是它也有自己的缺点，这就是它每次采样都需要一个完整的状态序列。如果我们没有完整的状态序列，或者很难拿到较多的完整的状态序列，这时候蒙特卡罗法就不太好用了。</p>
+
+<h1 id="用时序差分法-td-求解强化学习">用时序差分法（TD）求解强化学习</h1>
+
+<h2 id="时序差分简介">时序差分简介</h2>
+
+<p>时序差分法和蒙特卡罗法类似，都是不基于模型的强化学习问题求解方法。并且它<strong>不需要使用完整状态序列求解强化学习问题。</strong></p>
+
+<p>由于我们没有完整的状态序列，需要近似求出某个状态的收获。根据贝尔曼方程</p>
+
+<div>
+$$
+v_{\pi}(s)=E_{\pi}(R_{t+1}+\gamma v_{\pi}(S_{t+1})|S_t = s)
+$$</div>
+
+<p>我们可以用 $R_{t+1}+\gamma v_{\pi}(S_{t+1})$ 来近似收获 $G_t$。一般我们把它称作 TD 目标值。</p>
+
+<h2 id="时序差分-td-的预测问题求解">时序差分 TD 的预测问题求解</h2>
+
+<p>时序差分的预测问题和蒙特卡罗法相似，主要有两点不同：</p>
+
+<ul>
+<li>收获 $G_t$ 的表达式不同</li>
+</ul>
+
+<div>
+$$
+G(t)=R_{t+1} + \gamma V(S_{t+1})
+$$</div>
+
+<ul>
+<li>迭代的系数不同（没有完整的序列，因此没有对应的次数$N(S_t)$）</li>
+</ul>
+
+<div>
+$$
+V(S_t) = V(S_t) + \alpha (G_t - V(S_t))\\
+Q(S_t,A_t) = Q(S_t,A_t) + \alpha (G_t - Q(S_t,A_t))
+$$</div>
+
+<p>时序差分法在知道结果之前就可以学习，而蒙特卡罗则需要等到最后结果才能学习；时序差分是基于即时奖励和下一状态的预估价值来代替当前状态在状态序列结束时可能得到的收获，是当前状态价值的有偏估计（蒙特卡罗是无偏估计），但是方差比蒙特卡罗要低。现在主流的强化学习求解方法都是基于时序差分的。</p>
+
+<h2 id="n-步时序差分">n 步时序差分</h2>
+
+<p>我们也可以使用多步近似收获 $G_t$</p>
+
+<div>$$
+G_{t}^{(n)} = R_{t+1} + \gamma R_{t+2} + ... \gamma^n V(S_{t+n})
+$$</div>
+
+<p>当 $n$ 越来越大也就是说趋于使用完整的状态序列，就等价于蒙特卡罗法了。</p>
+
+<h2 id="时序差分的控制问题">时序差分的控制问题</h2>
+
+<p>时序差分的在线控制 (on-policy) 算法最常见的是 SARSA 算法，离线控制 (off-policy) 最常见的是 Q-Learning 算法。</p>
+
+<h3 id="sarsa-算法概述">SARSA 算法概述</h3>
+
+<p>作为SARSA算法的名字本身来说，它实际上是由S,A,R,S,A几个字母组成的。而S,A,R分别代表状态，动作，奖励。在迭代的时候，我们首先基于 $\epsilon$−贪婪法在当前状态 $S$ 选择一个动作 $A$，这样系统会转到一个新的状态 $S&rsquo;$, 同时给我们一个即时奖励 R, 在新的状态 $S&rsquo;$，我们会基于 $\epsilon$−贪婪法在状态 $S&rsquo;$ 选择一个动作 $A&rsquo;$，但是注意这时候我们并不执行这个动作 $A&rsquo;$，只是用来更新的我们的价值函数，价值函数的更新公式是：</p>
+
+<div>$$
+Q(S,A)= Q(S,A) + \alpha(R+\gamma Q(S',A') - Q(S,A))
+$$</div>
+
+<p>这里和蒙特卡罗法求解在线控制问题的迭代公式的区别主要是，收获 $G_t$ 的表达式不同。</p>
+
+<p><strong>算法流程</strong></p>
+
+<p>算法输入：迭代轮数 $T$，状态集 $S$, 动作集 $A$, 步长 $\alpha$，衰减因子 $\gamma$, 探索率$\epsilon$</p>
+
+<p>输出：所有的状态和动作对应的价值 $Q$</p>
+
+<p>Step 1. 随机初始化所有的状态和动作对应的价值 $Q$，对于终止状态其 $Q$ 值初始化为0.</p>
+
+<p>Step 2. for i from 1 to T，进行迭代。</p>
+
+<p>　　a) 初始化 $S$ 为当前状态序列的第一个状态。设置 $A$ 为 $\epsilon$−贪婪法在当前状态 $S$ 选择的动作。</p>
+
+<p>　　b) 在状态 $S$ 执行当前动作 $A$, 得到新状态 $S&rsquo;$ 和奖励 $R$</p>
+
+<p>　　c) 用 $\epsilon$−贪婪法在状态 $S&rsquo;$ 选择新的动作 $A&rsquo;$</p>
+
+<p>　　d) 更新价值函数 $𝑄(𝑆,𝐴)$:</p>
+
+<div>$$
+Q(S,A)= Q(S,A) + \alpha(R+\gamma Q(S',A') - Q(S,A))
+$$</div>
+
+<p>　　e) $𝑆=𝑆′, 𝐴=𝐴′$</p>
+
+<p>　　f) 如果 $S&rsquo;$ 是终止状态，当前轮迭代完毕，否则转到步骤b)</p>
+
+<p>这里有一个要注意的是，步长 $\alpha$ 一般需要随着迭代的进行逐渐变小，这样才能保证动作价值函数 $Q$ 可以收敛。</p>
+
+<h3 id="q-learning-算法概述">Q-Learning 算法概述</h3>
+
+<p>时序差分法的控制问题，可以分为两类，一类是在线控制，即一直使用一个策略来更新价值函数和选择新的动作，比如 SARSA, 而另一类是离线控制，会使用两个控制策略，一个策略用于选择新的动作，另一个策略用于更新价值函数。这一类的经典算法就是Q-Learning。</p>
+
+<p>对于Q-Learning，我们会使用 $\epsilon$−贪婪法来选择新的动作，这部分和SARSA完全相同。但是对于价值函数的更新，Q-Learning使用的是贪婪法，而不是SARSA的 $\epsilon$−贪婪法。这一点就是 SARSA 和 Q-Learning 本质的区别。</p>
+
+<p>基于状态 $S$，用 $\epsilon$−贪婪法选择到动作$A$, 然后执行动作 $A$，得到奖励 $R$，并进入状态 $S&rsquo;$，此时，如果是SARSA，会继续基于状态 $S&rsquo;$，用 $\epsilon$−贪婪法选择 $A&rsquo;$, 然后来更新价值函数。但是Q-Learning则不同, 它基于状态 $S&rsquo;$，没有使用 $\epsilon$−贪婪法选择 $A&rsquo;$，而是使用贪婪法选择 $A&rsquo;$，也就是说，选择使 $𝑄(𝑆′,𝑎)$ 最大的 $a$ 作为 $A&rsquo;$ 来更新价值函数。此时选择的动作只会参与价值函数的更新，不会真正的执行。价值函数更新后，新的执行动作需要基于状态 $S&rsquo;$，用 $\epsilon$−贪婪法重新选择得到。这一点也和SARSA稍有不同。对于SARSA，价值函数更新使用的 $A&rsquo;$ 会作为下一阶段开始时候的执行动作。</p>
+
+<p><strong>算法流程</strong></p>
+
+<p>算法输入：迭代轮数 $𝑇$，状态集$𝑆$, 动作集$𝐴$, 步长$\alpha$，衰减因子$\gamma$, 探索率$\epsilon$,</p>
+
+<p>输出：所有的状态和动作对应的价值 $Q$</p>
+
+<p>Step 1. 随机初始化所有的状态和动作对应的价值$𝑄$. 对于终止状态其$𝑄$值初始化为0.</p>
+
+<p>Step 2. for i from 1 to T，进行迭代。</p>
+
+<p>　　a) 初始化 $S$ 为当前状态序列的第一个状态。</p>
+
+<p>　　b) 用 $\epsilon$−贪婪法在当前状态$S$选择出动作$A$</p>
+
+<p>　　c) 在状态𝑆执行当前动作 $A$, 得到新状态 $S&rsquo;$ 和奖励 $R$</p>
+
+<p>　　d)  更新价值函数 $𝑄(𝑆,𝐴)$:</p>
+
+<div>$$
+Q(S,A) = Q(S,A) + \alpha (R + \gamma \max_a Q(S',a) - Q(S,A))
+$$</div>
+
+<p>　　e) $𝑆=𝑆′$</p>
+
+<p>　　f) 如果 $𝑆′$ 是终止状态，当前轮迭代完毕，否则转到步骤b)</p>
+
+<h2 id="小结-1">小结</h2>
+
+<ul>
+<li><p>Q-Learning直接学习的是最优策略，而SARSA在学习最优策略的同时还在做探索。这导致我们在学习最优策略的时候，如果用SARSA，为了保证收敛，需要制定一个策略，使 $\epsilon$−贪婪法的超参数 $\epsilon$ 在迭代的过程中逐渐变小。Q-Learning没有这个烦恼。</p></li>
+
+<li><p>另外一个就是Q-Learning直接学习最优策略，但是最优策略会依赖于训练中产生的一系列数据，所以受样本数据的影响较大，因此受到训练数据方差的影响很大，甚至会影响Q函数的收敛。Q-Learning的深度强化学习版Deep Q-Learning也有这个问题。</p></li>
+
+<li><p>在学习过程中，SARSA在收敛的过程中鼓励探索，这样学习过程会比较平滑，不至于过于激进，导致出现像Q-Learning可能遇到一些特殊的最优“陷阱”。比如经典的强化学习问题&rdquo;Cliff Walk&rdquo;。</p></li>
+</ul>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0rbf%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="read-more-link">Read more...</a>
+      <a href="/post/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

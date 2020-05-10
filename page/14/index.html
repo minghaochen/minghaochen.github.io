@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-26T15:20:39&#43;08:00"/>
+<meta property="og:updated_time" content="2020-05-10T09:17:54&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,65 +115,457 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5416~17/">《新概念4》16~17</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E7%B3%BB%E7%BB%9F%E8%BE%A8%E8%AF%86%E5%86%8D%E5%9B%9E%E9%A6%96/">「系统辨识」再回首</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-27 </span>
+      <span class="post-time"> 2020-03-01 </span>
       <div class="post-category">
-          <a href="/categories/english/"> English </a>
+          <a href="/categories/%E7%A7%91%E7%A0%94/"> 科研 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="the-modern-city">The modern city</h1>
+      <p>上一次学系统辨识已经两年多了，一直也都有在用，但是很多细节概念已经有些遗忘，现在再整体梳理一遍，方便自己也便于一些想入门系统辨识的小伙伴可以参考。</p>
 
-<p>In the organization of industrial life the influence of the factory upon the physiological and mental state of the workers has been completely neglected. Modern industry is based on the conception of the maximum production at lowest cost, in order that an individual or a group of individuals may earn as much money as possible. It has expanded without any idea of the true nature of the human beings who run the machines, and without giving any consideration to the effects produced on the individuals and on their descendants by the artificial mode of existence imposed by the factory. The great cities have been built with no regard for us. The shape and dimensions of the skyscrapers depend entirely on the necessity of obtaining the maximum income per square foot of ground, and of offering to the tenants offices and apartments that please them. This caused the construction of gigantic buildings where too large masses of human beings are crowded together. Civilized men like such a way of living. While they enjoy the comfort and *<strong><em>banal</em></strong>* luxury of their dwelling, they do not realize that they are deprived of the necessities of life. The modern city consists of <strong>monstrous</strong> <strong>edifices</strong> and of dark, narrow streets full of petrol <strong>fumes</strong>, coal dust, and toxic gases, <strong>torn</strong> by the noise of the taxi-cabs, lorries and buses, and <strong>thronged</strong> ceaselessly by great crowds. Obviously, it has no been planned for the good of its inhabitants.</p>
+<h1 id="系统辨识三要素">系统辨识三要素</h1>
+
+<ol>
+<li>数据</li>
+<li>模型集（线性 or 非线性，连续 or 离散 等）：灰箱模型即结构已知（from physical law）参数带估计；黑箱模型即模型结构需要自己选择且参数没有物理意义</li>
+<li>准则：用于确定什么样的模型才是best的</li>
+</ol>
+
+<h1 id="模型验证">模型验证</h1>
+
+<ol>
+<li>根据先验知识判断是否符合系统的物理特性，比如增益方向，时间常数等；</li>
+<li>根据未用于训练的实验数据进行验证，比较模型的仿真输出和实际观测输出。</li>
+</ol>
+
+<h1 id="线性系统">线性系统</h1>
+
+<h2 id="线性回归">线性回归</h2>
+
+<p>系统以线性回归表示为</p>
+
+<p>$$
+y(k)=\phi^T(k)\theta
+$$
+其中 $\theta$ 为参数向量，$\phi(k)$ 为回归向量（通常包含过去时刻的输入输出值）。</p>
+
+<p>等价于</p>
+
+<div>$$
+y(k)=G(q)u(k),G(q)=\frac{b_0+b_1q^{-1}+...+b_{nb}q^{-nb}}{1+a_1q^{-1}+...+a_{na}q^{-na}}
+$$</div>
+
+<p>非线性系统也可以表示成线性回归的形式，比如在回归向量里包含 $y^2(k-1);u(k)y(k-1)$ 等。</p>
+
+<h2 id="最小二乘估计">最小二乘估计</h2>
+
+<p>定义残差（residuals）为 $\epsilon(k,\theta)=y(k)-\hat{y}(k,\theta)=y(k)-\phi^T(k)\theta$</p>
+
+<p>最小二乘估计即：</p>
+
+<div>
+    $$
+    \hat{\theta}_{LS}=\arg \min_{\theta} \sum_{k=1}^{N} \epsilon^2(k,\theta)=\arg \min_{\theta} ||Y-\Phi \theta||^2
+    $$
+</div>
+
+<p>对 $\theta$ 求导，利用极值条件可以得到</p>
+
+<div>
+    $$
+    \hat{\theta}_{LS}=(\Phi^T\Phi)^{-1}Y=(\sum_{k=1}^N \phi(k)\phi^T(k))^{-1} \sum_{k=1}^N \phi(k)y(k)
+    $$
+</div>
+
+<p>在 Matlab 里的实现就是</p>
+
+<div>
+    $$
+    \hat{\theta}{LS} = \Phi \backslash Y
+    $$
+</div>
+
+<p>观察可以知道</p>
+
+<div>
+    $$
+    \Phi^T \Phi \hat{\theta}_{LS} = \Phi^T Y
+    $$
+</div>
+
+<p>利用 Cholesky 分解 $\Phi^T \Phi = LL^T$，其中 $L$ 是下三角矩阵，matlab代码 $L=chol(\Phi^T\Phi,&lsquo;lower&rsquo;)$</p>
+
+<p>因此最小二乘估计的解为：</p>
+
+<ol>
+<li>通过 forward substitution 求解 $Lz=\Phi^T Y$</li>
+<li>通过 backward substitution 求解 $L^T\hat{\theta}_{LS}=z$</li>
+</ol>
+
+<p>利用 QR 分解 $\Phi = QR=Q_1R_1$，其中 $Q=[Q_1,Q_2],R=[R_1,0]^T$，$Q_1^TQ=I$，$R_1$ 为上三角且当 $\Phi$ 满秩时 $R_1$ 对角线元素 $r_{ii}$ 大于0。matlab代码 $qr(\Phi)$。代入可得</p>
+
+<div>
+    $$
+    \hat{\theta}_{LS}=(\Phi^T\Phi)^{-1}\Phi^TY=((Q_1R_1)^T(Q_1R_1))^{-1}(R_1^TQ_1^TY)=R_1^{-1}Q_1^TY
+    $$
+</div>
+
+<p>因此最小二乘估计的解为：</p>
+
+<p>通过 backward substitution 求解
+$R_1\hat{\theta}_{LS} = Q_1^TY$</p>
+
+<h2 id="recursive-线性最小二乘">Recursive 线性最小二乘</h2>
+
+<p>可以对 $k-1$ 时刻的参数估计 $\hat{\theta}_{LS}(k-1)$ 进行更新得到 $\hat{\theta}_{LS}(k)$。</p>
+
+<p>定义 $P(k)=(\sum_{l=1}^k\phi(l)\phi^T(l))^{-1}$，满足 $P(k)^{-1}=P(k-1)^{-1}+\phi(k)\phi^T(k)$ 。</p>
+
+<p>强推一波公式，记住思路就是利用误差进行修正：</p>
+
+<div>
+    \begin{aligned}
+    \hat{\theta}_{LS}(k)&=P(k)(\sum_{l=1}^{k-1}\phi(l)y(l) + \phi(k)y(k))\\
+    &=P(k)(P^{-1}(k-1)\hat{\theta}_{LS}(k-1)+\phi(k)y(k))\\
+    &=P(k)P^{-1}(k-1)\hat{\theta}_{LS}(k-1)+P(k)\phi(k)y(k)\\
+    &=P(k)(P(k)^{-1}-\phi(k)\phi^T(k))\hat{\theta}_{LS}(k-1)+P(k)\phi(k)y(k)\\
+    &=\hat{\theta}_{LS}(k-1) - P(k)\phi(k)\phi^T(k)\hat{\theta}_{LS}(k-1) +P(k)\phi(k)y(k)\\
+    &=\hat{\theta}_{LS}(k-1) + P(k)\phi(k)(y(k)-\phi^T(k)\hat{\theta}_{LS}(k-1))\\
+    &=\hat{\theta}_{LS}(k-1) + K(k)\epsilon(k)
+    \end{aligned}
+</div>
+
+<p>其中 $K(k)=P(k)\phi(k)$ 可以看做是增益，$\epsilon(k)=y(k)-\phi^T(k)\hat{\theta}_{LS}(k-1)$ 看着是预测误差。</p>
+
+<p>因此 Recursive 线性最小二乘总结为：</p>
+
+<div>
+    \begin{aligned}
+    \hat{\theta}_{LS}(k) &= \hat{\theta}_{LS}(k-1) + P(k)\phi(k)(y(k)-\phi^T(k)\hat{\theta}_{LS}(k-1))\\
+    P(k)^{-1}&=P(k-1)^{-1}+\phi(k)\phi^T(k)
+    \end{aligned}
+</div>
+
+<p>由于矩阵涉及求逆费事，可以将 $P(k)^{-1}$ 转换为</p>
+
+<div>
+    $$
+    P(k)=P(k-1)+\frac{P(k-1)\phi(k)\phi^T(k)P(k-1)}{1+\phi^T(k)P(k-1)\phi(k)}
+    $$
+</div>
+
+<h2 id="带遗忘因子的-recursive-线性最小二乘">带遗忘因子的 Recursive 线性最小二乘</h2>
+
+<p>在目标函数引入遗忘因子 $0&lt; \lambda \le 1$，即</p>
+
+<div>
+    $$
+    \hat{\theta}=\arg \min_{\theta} \sum_{l=1}^k \lambda^{k-l}(y(l)-\phi^T(l)\theta)^2
+    $$
+</div>
+
+<p>$\lambda$ 越小对过去信息忘得越多。同理可以得到递推公式：</p>
+
+<div>
+    \begin{aligned}
+    \hat{\theta}_{LS}(k) &= \hat{\theta}_{LS}(k-1) + P(k)\phi(k)(y(k)-\phi^T(k)\hat{\theta}_{LS}(k-1))\\
+    P(k)&=\frac{1}{\lambda} \left[ P(k-1)+\frac{P(k-1)\phi(k)\phi^T(k)P(k-1)}{\lambda+\phi^T(k)P(k-1)\phi(k)}\right]
+    \end{aligned}
+</div>
+
+<h2 id="有限脉冲响应模型估计">有限脉冲响应模型估计</h2>
+
+<p>利用 FIR 模型来描述系统的动态：</p>
+
+<p>$$
+\hat{y}(k,g) = \sum_{l=0}^M g(l)u(k-l) = \phi^T(k)g
+$$
+其中 $\phi(k)=[u(k),u(k-1),&hellip;,u(k-M)]^T,g=[g(0),&hellip;,g(M)]^T$</p>
+
+<ol>
+<li>如果 $M$ 足够大且系统 BIBO 稳定，FIR 模型能够很好近似原系统</li>
+<li>需要数据量 $N &gt;&gt; M$</li>
+</ol>
+
+<p>最小二乘估计为 $\hat{g}=(\Phi^T\Phi)^{-1}\Phi^TY$</p>
+
+<p>假设真实系统可以被描述为</p>
+
+<p>$$
+y(k)=\sum_{l=0}^M g_0(l)u(k-l)+v_0(k)=\phi^T(k
+)g_0+v_0(k)
+$$
+其中 $v_0(k)$ 是零均值且与输入 $u$ 独立的准平稳噪声。</p>
+
+<p>一致性：</p>
+
+<div>
+    \begin{aligned}
+    \hat{g} &= \left(\frac{1}{N}\sum_{l=1}^N \phi(k)\phi^T(k)\right)^{-1}\frac{1}{N}\sum_{k=1}^N\phi(k)y(k)\\
+    &=g_0 + \left(\frac{1}{N}\sum_{l=1}^N \phi(k)\phi^T(k)\right)^{-1}  \frac{1}{N}\sum_{l=1}^N \phi(k) v_0(k)\\
+    &=g_0 + R^*E[\phi(k)v_0(k)]\\
+    &=g_0
+    \end{aligned}
+</div>
+
+<p>其中 $R$ 中每一项代表的是自相关或互相关函数的估计，$E[\phi(k)v_0(k)]=E[\phi(k)]\times 0=0$。</p>
+
+<h2 id="arx-模型估计">ARX 模型估计</h2>
+
+<p>模型结构为</p>
+
+<div>
+    $$
+    y(k)=\frac{B(q)}{A(q)}u(k)+\frac{1}{A(q)}e(k)
+    $$
+</div>
+
+<p>输入输出关系为：</p>
+
+<div>
+    $$
+    y(k)=-a_1y(k-1)-...-a_{n_a}y(k-n_a)+b_1u(k-1)+...+b_{n_b}u(k-n_b) + e(k)
+    $$
+</div>
+
+<p>同样可以写成线性回归的形式 $y(k)=\phi^T(k)\theta + e(k)$，同理得到最小二乘估计 $\hat{\theta}_{LS}=(\Phi^T\Phi)^{-1}\Phi^TY$。</p>
+
+<p>假设真实系统为 $y(k)=\phi^T(k)\theta_0+e(k)$，一致性检验可以得到 $lim_{N \rightarrow \infty} \hat{\theta}_{LS}=\theta_0 $</p>
+
+<h2 id="线性参变-arx-模型估计">线性参变 ARX 模型估计</h2>
+
+<p>模型描述</p>
+
+<div>
+    $$
+    y(k)=G(q^{-1},p(k))u(k)+v(k)
+    $$
+</div>
+
+<p>等价于</p>
+
+<div>
+    $$
+    A(q^{-1},p(k))y(k)=B(q^{-1},p(k))u(k)+e(k)
+    $$
+</div>
+
+<p>其中 $p$ 为调度变量。</p>
+
+<p>通常对回归向量的系数进行相应的参数化，比如多项式</p>
+
+<div>
+    \begin{aligned}
+    A(q^{-1},p(k))=1+\sum_{i=1}^{n_a}a_i(p(k))q^{-i}\\
+    a_i(p(k))=a_{i,0}+\sum_{l=1}^{n_l}a_{i,l}p^{l}(k)
+    \end{aligned}
+</div>
+
+<p>例子：</p>
+
+<div>
+    $$
+    y(k)=-[a_{1,0}+a_{1,1}p(k)]y(k-1)+[b_{1,0}+b_{1,1}p(k)]u(k-1)+e(k)
+    $$
+</div>
+
+<p>此时有 $\phi^T(k)=[-y(k-1),-p(k)y(k-1),u(k-1),p(k)u(k-1)], \theta=[a<em>{1,0},a</em>{1,1},b<em>{1,0},b</em>{1,1}]^T$，同理还是利用最小二乘进行估计。当 $e(t)$ 为白噪声时，一致性能够得到保证。</p>
+
+<h2 id="输出误差模型的不一致性">输出误差模型的不一致性</h2>
+
+<p>模型结构</p>
+
+<div>
+    $$
+    y(k)=G(q)u(k)+H(q)e(k),H(q)=1
+    $$
+</div>
+
+<p>对应的输入输出关系</p>
+
+<div>
+    $$
+    y_0(k)=-a_1y_0(k-1)-...-a_{n_a}y_0(k-n_a)+b_1u(k-1)+...+b_{n_b}u(k-n_b)\\
+    y(k)=y_0+e(k)
+    $$
+</div>
+
+<p>OE 模型则表示为</p>
+
+<div>
+    \begin{aligned}
+    y(k)&=\phi^T(k)\theta + e(k)+a_1e(k-1)+...a_{n_a}e(k-n_a)\\
+    y(k)&=\phi^T(k)\theta + v(k)
+    \end{aligned}
+</div>
+
+<p>注意！这里 $v(k)$ 不是白噪声了！</p>
+
+<p>一致性：</p>
+
+<div>
+    \begin{aligned}
+    \hat{\theta}_{LS}&=(\Phi^T\Phi)^{-1}\Phi^TY=\left(\frac{1}{N}\sum_{k=1}^N\phi(k)\phi^T(k) \right)^{-1}\frac{1}{N}\sum_{k=1}^N \phi(k)y(k)\\
+    &=\left(\frac{1}{N}\sum_{k=1}^N\phi(k)\phi^T(k) \right)^{-1}\frac{1}{N}\sum_{k=1}^N \phi(k) (\phi^T(k)\theta_0 + v(k)) \\
+    &=\theta_0 + \left(\frac{1}{N}\sum_{k=1}^N\phi(k)\phi^T(k) \right)^{-1}\frac{1}{N}\sum_{k=1}^N \phi(k) v(k)
+    \end{aligned}
+</div>
+
+<p>由于 $\phi(k)$ 和 $v(k)$ 相关，所以 $lim_{N \rightarrow \infty} \frac{1}{N} \sum_{k=1}^N \phi(k)v(k) \neq 0$。</p>
+
+<h2 id="辅助变量法">辅助变量法</h2>
+
+<p>给定模型结构 $A(q^{-1}y(k))=B(q^{-1})u(k)+v(k)$，只有当 $v(k)$ 和回归向量不相关时，一致性才能得到保证。</p>
+
+<p>选择与回归向量 $\phi(k)$ 维度相同的辅助变量 $z(k)$ 使得</p>
+
+<p>$$
+E[z(k)v(K)]=0
+$$</p>
+
+<p>修正最小二乘估计为</p>
+
+<div>
+    $$
+    \hat{\theta}_{IV}=(Z^T\Phi)^{-1}Z^TY=\left(\sum_{k=1}^N z(k)\phi^T(k) \right)^{-1}\sum_{k=1}^N z(k)y(k)
+    $$
+</div>
+
+<p>一致性：</p>
+
+<div>
+    $$
+    \hat{\theta}_{IV}=\theta_0 + \left(\frac{1}{N}\sum_{k=1}^Nz(k)\phi^T(k) \right)^{-1}\frac{1}{N}\sum_{k=1}^N z(k) v(k)
+    $$
+</div>
+
+<p>因此 $z(k)$ 应该和 $\phi(k)$ 相关否则 $R(N)$ 会收敛到零矩阵。</p>
+
+<p>辅助变量的选择</p>
+
+<div>
+    $$
+    z(k)=[-y_0(k-1),...,-y_0(k-n_a),u(k-1),...,u(k-n_b)]^T
+    $$
+</div>
+
+<p>也就是说，$z(k)$ 应该尽可能和无噪的回归向量相关，但是和 $v(k)$ 无关。</p>
+
+<p>辅助变量法总结为：</p>
+
+<ol>
+<li>最小二乘估计 $\hat{\theta}$ （biased）</li>
+<li>开环仿真
+$$
+\hat{y}(k)=[-\hat{y}(k-1),&hellip;,-\hat{y}(k-n_a),u(k-1),&hellip;,u(k-n_b)]^T\hat{\theta}
+$$</li>
+<li>构造辅助变量
+$$
+z(k)=[-\hat{y}(k-1),&hellip;,-\hat{y}(k-n_a),u(k-1),&hellip;,u(k-n_b)]^T
+$$</li>
+<li>通过 IV 估计 $\hat{\theta}$ （consistent）</li>
+<li>从第2步重复直到收敛</li>
+</ol>
+
+<h1 id="预报误差法-pem">预报误差法 PEM</h1>
+
+<p>线性预报器</p>
+
+<div>
+    $$
+    \hat{y}(k|k-1;\theta) = L_y(q^{-1},\theta)y(k) + L_u(q^{-1},\theta) u(k); L_y(0,\theta)=0, L_u(0,\theta)=0  
+    $$
+</div>
+
+<p>只由过去的输入输出数据决定。</p>
+
+<p>预报误差为</p>
+
+<p>$$
+\epsilon (k,\theta) = y(k)-\hat{y}(k|k-1,\theta)
+$$</p>
+
+<p>待估计的参数应该使得预报误差尽可能小。</p>
 
 <ul>
-<li>xxx is based on the conception of yyy</li>
-<li>zzz, in order that xxx</li>
-<li>without any idea of the xxx</li>
-<li>without giving any consideration to xxx</li>
-<li>depend entirely on</li>
-<li>this caused xxx</li>
-<li>banal / bəˈnɑːl, -ˈnæl /  If you describe something as banal, you do not like it because you think it is so ordinary that it is not at all effective or interesting. 平庸乏味的</li>
-<li>monstrous / ˈmɒnstrəs / If you describe an unpleasant thing as monstrous, you mean that it is extremely large in size or extent. (令人不悦的事物) 巨大的</li>
-<li>edifice / ˈɛdɪfɪs /   An edifice is a large and impressive building. 大厦</li>
-<li>fume / fjuːm / Fumes are the unpleasant and often unhealthy smoke and gases that are produced by fires or by things such as chemicals, fuel, or cooking. (难闻且常有害的) 烟气</li>
-<li>lorry  / ˈlɒrɪ / A lorry is a large vehicle that is used to transport goods by road. 卡车</li>
-<li>throng  / θrɒŋ /  When people throng somewhere, they go there in great numbers. (人群) 涌向</li>
-<li>ceaselessly 不停地</li>
-<li>the good of xxx</li>
+<li>模型结构，对 $G(q,\theta),H(q,\theta)$ 的参数化；</li>
+<li>预报器，定义 $L_y,L_u$；</li>
+<li>准则，预报误差的 scalar 函数 $V_N(\theta)$；</li>
+<li>估计 $\hat{\theta}=\arg \min_{\theta} V_N(\theta)$</li>
 </ul>
 
-<h1 id="a-man-made-disease">A man-made disease</h1>
-
-<p>In the early days of the settlement of Australia, enterprising settlers unwisely introduced the European rabbit. This rabbit had no natural enemies in the <strong>Antipodes</strong>, so that it multiplied with that <strong>promiscuous</strong> abandon characteristic of rabbits. It overran a whole continent. It caused devastation by <strong>burrowing</strong> and by devouring the <strong>herbage</strong> which might have maintained millions of sheep and cattle. Scientists discovered that this particular variety of rabbit (and apparently no other animal) was susceptible to a fatal virus disease, <strong>myxomatosis</strong>. By infecting animals and letting them loose in the burrows, local epidemics of this disease could be created. Later it was found that there was a type of mosquito which acted as the carrier of this disease and passed it on to the rabbits. So while the rest of the world was trying to get rid of mosquitoes, Australia was encouraging this one. It effectively spread the disease all over the continent and drastically reduced the rabbit population. lt later became apparent that rabbits were developing a degree of resistance to this disease, so that the rabbit population was unlikely to be completely exterminated. There were hopes, however, that the problem of the rabbit would become manageable.</p>
-
-<p><strong>Ironically</strong>, Europe, which had <strong>bequeathed</strong> the rabbit as a pest to Australia acquired this man-made disease as a <strong>pestilence</strong>. A French physician decided to get rid of the wild rabbits on his own estate and introduced <strong>myxomatosis</strong>. It did not, however, remain within the confines of his estate. It spread through France where wild rabbits are not generally regarded as a pest but as a sport and a useful food supply, and it spread to Britain where wild rabbits are regarded as a pest but where domesticated rabbits, equally susceptible to the disease, are the basis of a profitable fur industry. The question became one of whether Man could control the disease he had invented.</p>
+<h2 id="单变量模型结构">单变量模型结构</h2>
 
 <ul>
-<li>it overran xx 蔓延</li>
-<li>enterprising  / ˈɛntəˌpraɪzɪŋ /  An enterprising person is willing to try out new, unusual ways of doing or achieving something. 有开拓精神的; 有创新精神的</li>
-<li>settler / ˈsɛtlə, ˈsɛtəl- / Settlers are people who go to live in a new country. 移民者</li>
-<li>promiscuous / prəˈmɪskjʊəs /  Someone who is promiscuous has sex with many different people. 淫乱的</li>
-<li>burrow  / ˈbʌrəʊ / If an animal burrows into the ground or into a surface, it moves through it by making a tunnel or hole. 掘地洞</li>
-<li>exterminate / ɪkˈstɜːmɪˌneɪt / To exterminate a group of people or animals means to kill all of them. 消灭</li>
-<li>herbage / ˈhɜːbɪdʒ /  草本的总称</li>
-<li>xxx discovered that xxx</li>
-<li>later it was found that xxx</li>
-<li>it effectively 动词 xxxx</li>
-<li>it is unlikely to xxx</li>
-<li>Ironically / aɪˈrɒnɪkəlɪ /  You use ironically to draw attention to a situation that is odd or amusing because it involves a contrast. 具有讽刺意味的是</li>
-<li>bequeath / bɪˈkwiːð / If you bequeath your money or property to someone, you legally state that they should have it when you die. 遗赠</li>
-<li>pestilence  / ˈpɛstɪləns /  Pestilence is any disease that spreads quickly and kills large numbers of people. 瘟疫</li>
-<li>physician / fɪˈzɪʃən / A physician is a medical doctor. 内科医生</li>
-<li>domesticate  / dəˈmɛstɪˌkeɪt / When people domesticate wild animals or plants, they bring them under control and use them to produce food or as pets. 驯养; 引种驯化</li>
+<li>ARX
+$$y(k)=\frac{B(q,\theta)}{A(q,\theta)}u(k)+\frac{1}{A(q,\theta)}e(k)$$</li>
+<li>ARMAX
+$$y(k)=\frac{B(q,\theta)}{A(q,\theta)}u(k)+\frac{C(q,\theta)}{A(q,\theta)}e(k)$$</li>
+<li>OE
+$$y(k)=\frac{B(q,\theta)}{A(q,\theta)}u(k)+e(k)$$</li>
+<li>BJ
+$$y(k)=\frac{B(q,\theta)}{A(q,\theta)}u(k)+\frac{C(q,\theta)}{D(q,\theta)}e(k)$$</li>
+</ul>
+
+<h2 id="预报滤波器">预报滤波器</h2>
+
+<p>应该选择滤波器 $L_y,L_u$ 使得预报误差的方差最小。</p>
+
+<div>
+\begin{aligned}
+y(k)&=Gu(k)+He(k)=Gu(k)+(H-I)e(k)+e(k)\\
+    &=Gu(k)+(H-I)H^{-1}[y(k)-Gu(k)]+e(k)\\
+    &=[(I-H^{-1})y(k)+H^{-1}Gu(k)]+e(k)\\
+    &=z(k)+e(k)
+\end{aligned}
+</div>
+
+<p>注意 $z(k),e(k)$ 不相关。</p>
+
+<p>假设 $y^*(k)$ 为 $y(k)$ 的任意预测，$z(k)$ 的最优性：</p>
+
+<div>
+    \begin{aligned}
+    E[(y-y^*)(y-y^*)^T]&=E[(z+e-y^*)(z+e-y^*)^T]\\
+    &=E[(z-y^*)(z-y^*)^T]+E[ee^T] \ge \Lambda_e
+    \end{aligned}
+</div>
+
+<p>因此 $z(k)$ 是最优预报，$e(k)$ 是最优预报误差。</p>
+
+<div>
+    \begin{aligned}
+    \hat{y}(k|k-1,\theta)&=\left(I-H^{-1}(q^{-1},\theta)\right)y(k)+H^{-1}(q^{-1},\theta)G(q^{-1},\theta)u(k)\\
+    \epsilon (k,\theta)&=e(k)=H^{-1}(q^{-1},\theta)\left(y(k)-G(q^{-1},\theta)u(k)\right)
+    \end{aligned}
+</div>
+
+<h2 id="最小化准则">最小化准则</h2>
+
+<p>采样协方差矩阵</p>
+
+<div>
+    $$
+    R_N(\theta)=\frac{1}{N}\sum_{k=1}^N \epsilon(k,\theta)\epsilon^T(k,\theta)
+    $$
+</div>
+
+<ul>
+<li>如果 $y$ 是标量，$R_N(\theta)$ 可以直接作为 $V_N(\theta)$ 用于最小化。</li>
+<li>如果是多变量，我们可以最小化
+$$
+V_N(\theta)=h(R_N(\theta))
+$$
+其中，$h$ 为定义在正半定矩阵集合上的连续的单调递增函数满足 $h(Q+\Delta Q)\ge h(Q),\forall Q,\Delta Q \ge 0$，比如矩阵的迹 $V_N(\theta)=h(R_N(\theta))=tr(R_N(\theta))$。</li>
 </ul>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5416~17/" class="read-more-link">Read more...</a>
+      <a href="/post/%E7%B3%BB%E7%BB%9F%E8%BE%A8%E8%AF%86%E5%86%8D%E5%9B%9E%E9%A6%96/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

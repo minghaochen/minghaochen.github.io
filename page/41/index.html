@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-26T15:20:39&#43;08:00"/>
+<meta property="og:updated_time" content="2020-05-10T09:17:54&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,9 +115,9 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/">「机器学习」主成分分析PCA</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/">「机器学习」支持向量机SVM</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-09 </span>
+      <span class="post-time"> 2019-08-14 </span>
       <div class="post-category">
           <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
@@ -126,200 +126,188 @@
   
   <div class="post-content">
     <div class="post-summary">
-      <h1 id="为什么要降维">为什么要降维</h1>
+      <p>SVM（Support Vector Machine）又称为支持向量机，是一种用于机器学习的算法，不仅支持线性分类，结合核方法还可以用于非线性分类。其思想主要为<strong>最大间隔</strong>，推导依赖于<strong>对偶理论</strong>，因此可以将SVM归结于：间隔、对偶、核方法。</p>
 
-<p>要说到降维的目的，主要是用来解决过拟合这一问题的，降维的方式主要有三种</p>
+<h2 id="间隔">间隔</h2>
 
-<ul>
-<li>直接降维—特征选择</li>
-<li>线性降维—PCA(今日份猪脚)，MDS多维尺度法</li>
-<li>非线性降维—流形学习ISOMAP，LLE(Locally Linear Embedding)</li>
-</ul>
-
-<h1 id="数据矩阵描述">数据矩阵描述</h1>
-
-<p>数据：$X=(x_1,x_2,&hellip;,x_N)^T_{N \times P }, x_i \in \mathbb{R}^P $，为了便于后续推导我们将均值和方差表示为矩阵形式，思路就是<strong>把连加符号改写成矩阵乘积的形式</strong>。</p>
-
-<p>采样均值为：
-$$
-\bar{x} = \frac{1}{N}\sum_{i=1}^N x_i = \frac{1}{N}(x_1,x_2,&hellip;,x_N)\mathbb{1}_{N} = \frac{1}{N}X^T\mathbb{1}_N
-$$
-采样方差为
-$$
-S = \frac{1}{N}\sum_{i=1}^N (x_i-\bar{x}) (x_i-\bar{x})^T = \frac{1}{N}X^THH^TX =  \frac{1}{N}X^THX
-$$
-其中 $H = I_N - \frac{1}{N}\mathbb{1}_N\mathbb{1}_N^T$ 为中心矩阵，作用可以理解为<strong>去均值</strong>，这里可以中心均镇的转置等于本身，中心矩阵的平方 $HH^T$ 等于中心矩阵 $H$ 本身。</p>
-
-<h1 id="pca的主要思想">PCA的主要思想</h1>
-
-<ul>
-<li>一个中心：原始特征空间的重构</li>
-<li>两个基本点： 1. 最大投影方差 2. 最小重构代价</li>
-</ul>
-
-<p>首先将数据进行中心化，即 $x_i - \bar{x}$</p>
-
-<h2 id="最大投影方差角度">最大投影方差角度</h2>
-
-<p>假设有单位投影向量 $u_1,||u_1||_2 = 1$，向量 $x_i - \bar{x}$ 在 $u_1$ 上的投影为 $(x_i - \bar{x})^Tu_1$ 且均值为0，那么目标函数最大化投影方差可以直接表示为
-$$
-\max J=\frac{1}{N} \sum_{i=1}^N((x_i - \bar{x})^Tu_1)^2 = u_1^T\cdot S\cdot u_1  \quad s.t. u_1^Tu_1 = 1
-$$
-这是一个等式约束的最优化问题，直接拉格朗日乘子法写开</p>
+<p>简单举例一个二分类问题，假设有线性可分的两堆点</p>
 
 <div>$$
-\begin{array}{l} \mathcal{L}\left(u_{1}, \lambda\right)=u_{1}^{T} S u_{1}+\lambda\left(1-u_{1}^{T} u\right)\\ {\frac{\partial \mathcal{L}}{\partial u_{1}}=2 S \cdot u_{1}-\lambda \cdot 2 u_{1}=0}\end{array}
+\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1}^{N}， x_{i} \in \mathbb{R}^{p}, y_{j} \in\{-1,1\}
 $$</div>
 
-<p>即
-$$
-Su_1 = \lambda u_1
-$$
-转化成<strong>特征值分解</strong>的问题，所谓的主成分也就是特征向量矩阵，用最大的 $q$ 个特征值对应的特征向量来重构数据矩阵就是特征空间的重构。</p>
+<p>要将它们分开的超平面有很多种，<strong>SVM做的相当于要寻找一个最优的超平面 $w^Tx+b=0$ 来分开不同类别的样本点</strong>，因此首先需要定义什么样的超平面是最优的，<strong>也就是所有样本点到超平面的最短距离是最大的</strong>，假设两个类别中距离分隔超平面最近的点所在的超平面分别为 $w^Tx + b =1$ 和 $w^Tx+b = -1$(这里的 $1,-1$ 只是为了方便推导，不影响优化的结果，因为你总是可以对超平面乘以一个系数然后做变量替换得到$w^Tx + b =1$ 和 $w^Tx+b = -1$)，SVM要最大化的间隔就是<strong>这两个平面之间的距离</strong>。</p>
 
-<h2 id="最小重构代价角度">最小重构代价角度</h2>
+<p>你可能要问两个平面的距离怎么求？回忆下高中的两条平行直线的距离公式，对于直线 $ax+by+c_1 = 0$ 和 $ax + by +c_2 = 0$，距离公式为
+$$d = \frac{|c_1-c_2|}{\sqrt{a^2+b^2}}$$</p>
 
-<p>何谓重构代价？我们先来看下在重构空间中原始数据的表示为
+<p>(莫名的亲切感有没有)那平面的距离公式类比下就可以得到：
 $$
-x_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_p)\cdot u_p = \sum_{k=1}^p (x_i^T\cdot u_k) \cdot u_k
-$$
-$x_i^Tu_k$ 可以理解成各个投影，$u_k$ 为投影方向。
-如果将特征进行压缩，用 $q$ 个特征来表示原始特征空间，则
-$$
-\hat{x}_i = (x_i^Tu_1)\cdot u_1 + (x_i^Tu_2)\cdot u_2 + &hellip; + (x_i^Tu_q)\cdot u_q = \sum_{k=1}^q (x_i^T\cdot u_k) \cdot u_k
-$$
-上面两个式子均假设 $x_i$ 中心化过了。那么重构代价很直观的理解就是 $x_i - \hat{x}_i$，目标函数就能表示为
-$$
-\min J = \sum_{i=1}^N ||x_i - \hat{x}_i ||^2=\sum_{k=q+1}^p u_k^T \cdot S \cdot u_k \quad s.t. u_k^T\cdot u_k =1
-$$
-由于 $u_k$ 之间是无关的，所以这个优化问题可以拆成单个的优化问题逐一求解。也就转化成<strong>特征值求解</strong>问题，即求得最小 $p-q$ 个特征值所对应的特征向量。</p>
+\text{margin} = \frac{1 - (-1)}{\sqrt{w_1^2+w_2^2+ &hellip; + w_p^2}} = \frac{2}{||w||}
+$$</p>
 
-<h2 id="svd角度">SVD角度</h2>
+<p>$w$ 的维度为 $p$, $w_i$ 表示 $w$ 的第 $i$ 个元素。SVM的目标就是最大化这个margin，那需要满足什么约束呢？首先分类要准确吧这可是分类器的初衷，即</p>
 
-<p>前面的两个基本点相当于都是从<strong>方差矩阵 $S$ 进行特征值分解</strong>来获得主成分的。下面来看看如果直接对数据矩阵进行奇异值分解，两者之间会有什么样的联系。</p>
+<div>$$
+\begin{aligned}
+w^Tx_i+b \ge +1 &\text{ if } y_i= +1\\
+w^Tx_i+b \le -1 &\text{ if } y_i= -1\\
+\end{aligned}
+$$</div>
 
-<p>对中心化后的数据进行SVD分解：
+<p>上面两个式子的直观解释就是样本点在超平面 $w^Tx + b \ge +1$ 和 $w^Tx +b \le -1$ 的两侧。可以进一步合并为
 $$
-HX = U \Sigma V^T
-$$
-原来的方差矩阵可以表示为
-$$
-S = X^THX=X^TH^THX = V\Sigma U^TU\Sigma V^T=V\Sigma^2V^T
-$$
-也就是说<strong>对 $HX$ 进行奇异值分解得到的 $V$ 矩阵就是对方差矩阵进行特征值分解得到的特征矩阵，奇异值分解得到到奇异值矩阵的平方就是特征值分解得到的特征值矩阵。</strong></p>
+y_i(w^Tx_i+b) \ge +1, \forall i = 1,&hellip;,N
+$$</p>
 
-<p>构造矩阵
-$$T =HXX^TH=U\Sigma V^TV\Sigma U^T=U\Sigma^2U^T$$
-可以看出 $T$ 和 $S$ 具有<strong>相同的特征值。</strong>
-要获得重构空间的坐标有两个思路：</p>
+<p>那么我们要求解相当于是一个目标函数为最大化间隔且满足分类约束的优化命题：</p>
+
+<div>$$
+\begin{array}{ll}{\text { max }} & {J(w)= \frac{2}{||w||} }\\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
+$$</div>
+
+<p>等价于最小化问题(目标函数取倒数)</p>
+
+<div>$$
+\begin{array}{ll}{\text { min }} & {\Phi(w)= \frac{1}{2} w^{T} w} \\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 ,\forall i=1, \ldots, N}\end{array}
+$$</div>
+
+<h2 id="对偶">对偶</h2>
+
+<p>我们已经将SVM的思想表达为优化命题的形式，接下来考虑如何对其进行求解，对于一个含约束的优化命题可以通过拉格朗日乘子法转化为无约束问题，然后通过求解对偶问题来间接求解原问题。</p>
+
+<p>对于上述SVM的最小化问题，构造拉格朗日函数</p>
+
+<div>$$
+L(w, b, \alpha)=\frac{1}{2} w^{T} w-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1\right]
+$$</div>
+
+<p>原问题的拉格朗日形式为：</p>
+
+<div>$$
+\min_{w,b}\max_{\alpha_i \ge 0 }L(w,b,\alpha)
+$$</div>
+
+<p>对偶问题为</p>
+
+<div>$$
+\max_{\alpha_i \ge 0 }\min_{w,b}L(w,b,\alpha)
+$$</div>
+
+<p>先看对偶问题的内层 $\min_{w,b}L(w,b,\alpha)$，对于这个无约束最小化问题，直接求导</p>
+
+<div>
+$$
+\begin{array}{l}{\frac{\partial L(w, b, \alpha)}{\partial w}=0 \Rightarrow w(\alpha)=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial L(w, b, \alpha)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0}\end{array}
+$$
+</div>
+
+<p>再将求导得到的结果带入拉格朗日函数 $L(w,b,\alpha)$ 得到外层的最大化问题为：</p>
+
+<div>
+$$
+\begin{aligned}
+\max_{\alpha} &\sum_{i=1}^{N} \alpha_{i}-\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j} x_{i}^T x_{j}\\
+\text{s.t. }& \sum_{i=1}^{N} \alpha_{i} y_{i}=0 \\
+& \alpha_i \ge 0, \forall i= 1,...,N
+\end{aligned}
+$$
+</div>
+
+<p>这样得到的是一个二次规划问题，很多求解器可以完美解决，但如果样本数过多，则计算量过大。序列最小最优化SMO算法是高效求解这个问题的算法代表。SMO算法的思想与坐标上升算法的思想类似。坐标上升算法每次通过更新多元函数中的一维，经过多次迭代直到收敛来达到优化函数的目的，SMO则是每次选择尽量少的变量来优化，不断迭代直到函数收敛到最优值。</p>
+
+<p>在求解得到 $\alpha^*$ 后，如何求解原问题的 $w^*,b^*$ 呢？</p>
+
+<p>对于 $w$，直接带入求解对偶问题内层最小化问题的极值条件：</p>
+
+<div>$$
+w^*=\sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}
+$$</div>
+
+<p><strong>可以看出 $w$ 仅由 $\alpha_i^*$ 大于0 的元素对应的 $x_i$ 构成，这些 $x_i$ 也称为支持向量。</strong></p>
+
+<p>对于 $b$，找到 $\alpha_t^* &gt; 0$ 的点，然后根据KKT条件中的松弛互补条件</p>
+
+<div>$$
+\alpha_{t}^{*}\left(y_{t}\left(w^{* T} x_{t}+b^{*}\right)-1\right)=0
+$$</div>
+
+<p>可以得到 $x_t$ 在margin上且</p>
+
+<p>$$
+{w^*}^Tx_t + b^* = y_t
+$$</p>
+
+<p>所以</p>
+
+<div>$$
+b^* = y_t - {w^*}^Tx_t = y_t - \sum_{i=1}^{N} \alpha_{i}^* y_{i} x_{i}^T x_t
+$$</div>
+
+<p>这样就得到了用于分类的超平面了，对于测试样本，只需要带入超平面检验其正负(在超平面的哪一侧)就能进行分类。</p>
+
+<p>总结一下SVM的套路：<strong>首先根据最大间隔(max问题)的思想确定目标函数(min问题)，将原问题(带约束)表示为拉格朗日函数的形式(minmax问题，无约束)，转换为对偶问题(maxmin问题)，对于内层无约束min问题，求导并将极值条件代入拉格朗日函数，可以得到外层max问题是一个二次规划，求解得到拉格朗日乘子的最优解 $\alpha^*$ 后反求超平面参数 $w^*,b^*$，其中 $b^*$ 需要利用KKT松弛互补条件求解。</strong></p>
+
+<h2 id="核方法">核方法</h2>
+
+<p>对于线性不可分的样本，我们可以对原始样本 $x_i \in \mathbb{R}^p$ 进行非线性变换 $\phi(x_i) \in \mathbb{R}^q$ (通常 $q&gt;p$) 得到高维特征空间，在特征空间中寻找一个超平面 $w^T\phi(x) + b = 0$ 来划分不同类别的样本点。推导思路与上面一致，只是原来 $x_i$ 的位置需要用 $\phi(x_i)$ 替代，并且 $\phi(x_i)^T\phi(x_j)$ 可以用核函数表示为 $\kappa(x_i,x_j)$。</p>
+
+<h2 id="soft-margin-svm">Soft Margin SVM</h2>
+
+<p>上面讲述的Hard Margin SVM可能出现两个问题：</p>
 
 <ol>
-<li><p>内积求投影：$HX\cdot V$</p></li>
+<li><p>投影到高维空间仍然不可分</p></li>
 
-<li><p>对矩阵 $T$ 进行特征分解：
-$$
-TU\Sigma = U\Sigma^2U^TU\Sigma= U\Sigma^3 = \Sigma^2\cdot U\Sigma
-$$
-$$
-HX \cdot V=U \Sigma V^T V= U \Sigma
-$$</p></li>
+<li><p>过拟合</p></li>
 </ol>
 
-<p><strong>因此在遇到原始数据特征空间较高时($P$ 大于 $N$)，可以采用 $T$ 矩阵进行特征分解直接获得坐标，也称为主坐标分解(PCoA)</strong></p>
+<p>改进方法：<strong>加入软约束</strong>，原来我们要求分类必须准确，即</p>
 
-<h2 id="概率主成分分析-p-pca">概率主成分分析(P-PCA)</h2>
+<p>$$
+y_i(w^Tx_i +b) \ge 1, \forall i=1,&hellip;,N
+$$</p>
 
-<p>从概率的角度来看则是将观测数据 $x \in \mathcal{R}^p$ 作为观测变量(observed variable)，重构特征空间 $z \in \mathcal{R}^q$ 作为隐变量(latent variable)，我们降维的过程则相当于从观测变量去求得隐变量的过程
-<strong>假设</strong></p>
+<p>现在我们允许一些异常点的出现，也就是说异常点不一定需要满足分类约束(异常点可以在超平面 $w^Tx+b = 1$ 和 $w^Tx + b =-1$ 之间)，与超平面的距离假设为 $\epsilon_i$，同时我们需要对 $\epsilon_i$ 进行惩罚，这样才能确保分类的准确性。可以理解为我们期望正常情况下 $\epsilon_i$ 都为 0，只有在异常点出现时 $\epsilon_i$ 才是个大于零的实数。对应的优化命题可以改写为</p>
 
 <div>$$
-\begin{equation}
-\begin{aligned}
-z &\in \mathcal{N}(0,I_q)\\
-x &= Wz + \mu + \epsilon\\
-\epsilon &\in \mathcal{N}(0,\sigma^2 I_p)
-\end{aligned}
-\end{equation}
+\begin{array}{ll}{\text { min }} & {\Phi(w,\epsilon)= \frac{1}{2} w^{T} w} + C \sum_{i=1}^N \epsilon_i \\ {\text { s. t. }} & {y_{i}\left(w^{T} x_{i}+b\right) \geq 1 - \epsilon_i,\forall i=1, \ldots, N} \\
+&\epsilon_i \ge 0
+\end{array}
 $$</div>
 
-<p>且 $z$ 和 $\epsilon$ 相互独立。这是一个线性高斯模型，相当于我们有了 $z, x|z, x$ 要求 $z|x$。</p>
+<p>其中 $C\ge 0$ 是可调参数，表示对异常点的惩罚程度，$\epsilon_i$ 表示软约束。</p>
 
-<p>第一步就是Inference求后验 $z|x$ (通过构造 $x,z$ 的联合概率求条件概率)</p>
+<p>相比于原来hard margin的SVM，这一优化命题多了 $N$ 条关于 $\epsilon_i$ 的不等式约束，还是跟先前一样的套路，写成拉格朗日函数</p>
 
-<p>第二步就是Learning参数 $W, \mu, \sigma$（比如采用EM算法）</p>
+<div>$$
+L(w,b,\epsilon,\alpha,\beta) = \frac{1}{2} w^{T} w+C \sum_{i=1}^{N} \epsilon_{i}-\sum_{i=1}^{N} \alpha_{i}\left[y_{i}\left(w^{T} x_{i}+b\right)-1+\epsilon_{i}\right]-\sum_{i=1}^{N} \beta_{i} \epsilon_{i}
+$$</div>
 
-<p><strong>P-PCA与GMM的区别</strong>：P-PCA的隐变量是连续的，而GMM的隐变量是离散的。</p>
+<p>转化为对偶问题，内层的最小化问题求导得到极值条件</p>
 
-<h2 id="matlab-实现">Matlab 实现</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">% Data 两个特征线性关系加点噪声
-X1 = [1,2,3,4,5,6]&#39;;
-X2 = [X1] + rand(6,1);
-X = [X1,X2];
-plot(X1,X2)
-N = size(X,1);
+<div>$$
+\begin{array}{l}{\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial w}=0 \Rightarrow w=\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial b}=0 \Rightarrow \sum_{i=1}^{N} \alpha_{i} y_{i}=0} \\ {\frac{\partial J(w, b, \epsilon, \alpha, \beta)}{\partial \epsilon_i}=0 \Rightarrow C-\alpha_{i}-\beta_{i}=0 \Rightarrow\left\{\begin{array}{l}{\alpha_{i}=C-\beta_{i}} \\ {\beta_{i}=C-\alpha_{i}}\end{array} \Rightarrow 0 \leq \alpha_{i}, \beta_{i} \leq C\right.}\end{array}
+$$</div>
 
-% 矩阵描述
-x_bar = 1/N*X&#39;*ones(N,1);
-H = eye(N) - 1/N*ones(N,1)*ones(N,1)&#39;;
-S = 1/N*X&#39;*H*X;
+<p>然后代入 $L(w,b,\epsilon,\alpha,\beta)$ 并求解外层max问题，最后来根据KKT条件求解超平面参数。</p>
 
-% 根据采样方差特征值分解
-[G,K] = eig(S);
+<h2 id="多类别问题">多类别问题</h2>
 
-% 根据中心化的数据进行奇异值分解
-[U,Sigma,V] = svd(H*X);
+<p>两种策略(假设共有K个类别)</p>
 
-% 方差矩阵的特征值与奇异值分解的奇异值的关系
-Sigma.^2/N
-K
-% 观察V矩阵和G矩阵的关系
-G
-V
+<ol>
+<li><p>一对一 (one-against-one)：所有类别两两之间进行分类得到 $C_K^2$ 个超平面，对于测试数据代入所有超平面进行判断，然后采用<strong>投票表决</strong>进行分类。</p></li>
 
-% 主坐标分析
-T = H*X*X&#39;*H&#39;;
-[G2,K2] = eig(T);
-% 观察非零特征值对应特征向量也就是主坐标与HXV的关系
-H*X*V</pre></td></tr></table>
-</div>
-</div>
+<li><p>一对所有 (one-against-all)：针对一个类别和剩下所有类别进行分类得到 $K-1$ 个超平面，对于测试数据，代入超平面方程，选择结果最大的那个超平面对应的类别作为分类结果。</p></li>
+</ol>
+
+<div>$$
+k^{*}=\underset{k}{\arg \max }\left(w_{k}^{T} x+b\right)
+$$</div>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90pca/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BAsvm/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

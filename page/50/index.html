@@ -115,9 +115,9 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/twincat3-with-matlab-simulink/">TwinCAT3 with Matlab-simulink 配置及使用</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/">如何搭建hugo博客</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-07-23 </span>
+      <span class="post-time"> 2019-07-22 </span>
       <div class="post-category">
           <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/"> 技术贴 </a>
           </div>
@@ -126,10 +126,93 @@
   
   <div class="post-content">
     <div class="post-summary">
-      这几天忙项目的事，需要用到TwinCAT3这个平台，这是倍福（backoff）公司的一个产品，基于PC的控制软件，并且可以用来编译matla
+      <ol>
+<li>安装git</li>
+<li>安装brew</li>
+
+<li><p>安装Hugo，建立博客</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo new site myblog</pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>下载主题</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">cd myblog
+git clone https://github.com/olOwOlo/hugo-theme-even themes/even</pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>本地启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo server -t even --buildDrafts </pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>创建一个文章</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo new post/new.md</pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>部署到github</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">hugo --theme=even --baseUrl=“https://minghaochen.github.io/“ --buildDrafts
+cd public/
+git init
+git add .
+git commit -m “first commit”
+git remote add origin https://github.com/minghaochen/minghaochen.github.io.git
+git push -u origin master</pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>本地写完新博客后更新到github上</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">cd public/
+git add -A
+git commit -m &#34;update&#34;
+git push origin master</pre></td></tr></table>
+</div>
+</div></li>
+</ol>
     </div>
     <div class="read-more">
-      <a href="/post/twincat3-with-matlab-simulink/" class="read-more-link">Read more...</a>
+      <a href="/post/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BAhugo%E5%8D%9A%E5%AE%A2/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
@@ -137,14 +220,11 @@
     </section>
   
   <nav class="pagination">
-    <a class="prev" href="/page/47/">
+    <a class="prev" href="/page/49/">
         <i class="iconfont icon-left"></i>
         <span class="prev-text">Prev</span>
       </a>
-    <a class="next" href="/page/49/">
-        <span class="next-text">Next</span>
-        <i class="iconfont icon-right"></i>
-      </a>
+    
   </nav>
         </div>
         

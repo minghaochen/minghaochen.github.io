@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-26T15:20:39&#43;08:00"/>
+<meta property="og:updated_time" content="2020-05-10T09:17:54&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,181 +115,82 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0mcmc/">「机器学习」MCMC</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5410~12/">《新概念4》10~12</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2020-02-23 </span>
+      <span class="post-time"> 2020-02-25 </span>
       <div class="post-category">
-          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+          <a href="/categories/english/"> English </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>参考资料：
-1. 刘建平的博客
-2. LDA数学八卦</p>
+      <h1 id="silicon-valley">Silicon valley</h1>
 
-<h1 id="随机模拟">随机模拟</h1>
+<p>Technology trends may push Silicon Valley <strong>back</strong> to the future. Carver Mead, a pioneer in integrated circuits and a professor of computer science at the California Institute of Technology, notes there are now workstations that enable engineers to design, test and produce chips right on their desks, <strong>much the way</strong> an editor creates a newsletter on a Macintosh. As the time and cost of making a chip <strong>drop</strong> to a few days and a few hundred dollars, engineers may soon be free to let their imaginations soar without being penalized by expensive failures. Mead predicts that inventors will be able to perfect powerful customized chips over a weekend at the office—spawning a new generation of garage start-ups and <strong>giving</strong> the U.S. <strong>a jump on its</strong> foreign rivals in <strong>getting</strong> new products <strong>to</strong> market fast. ‘We’ve got more garages with smart people,’ Mead observes. ‘We really <strong>thrive</strong> on <strong>anarchy</strong>.’</p>
 
-<p>统计中有个常遇到的问题是给定一个概率分布$p(x)$，如何在计算机中生成它的样本。一般而言均匀分布 Uniform(0,1) 的样本相对容易生成。通过线性同余发生器可以生成伪随机数，而常见的概率分布都可以基于均匀分布的样本生成，例如正态分布可以通过 Box-Muller 变换得到。这些基础的概率分布的样本生成这里不再赘述，我们现在关注的是如何对一个复杂形式的概率分布函数$p(x)$（比如有积分无法显式计算，或者高维的分布）进行采样。此时就需要更加复杂的随机模拟方法来生成样本，比如现代贝叶斯分析中被广泛使用的马尔科夫链蒙特卡洛（MCMC）。</p>
+<p>And on Asians. Already, orientals and Asian Americans <strong>constitute</strong> the majority of the engineering staffs at many Valley firms. And Chinese, Korean, Filipino and Indian engineers are graduating in <strong>droves</strong> from California’s colleges. As <strong>the heads of</strong> next-generation start-ups, these Asian innovators can <strong>draw on</strong> customs and languages to <strong>forge</strong> tighter links with crucial Pacific <strong>Rim</strong> market. For instance, Alex Au, a Stanford Ph.D. from Hong Kong, has set up a Taiwan factory to challenge Japan’s near <strong>lock on</strong> the memory-chip market. India-born N. Damodar Reddy’s tiny California company reopened an AT&amp;T chip plant in Kansas City last spring with financing from the state of Missouri. Before it becomes a retirement village, Silicon Valley may <strong>prove</strong> a classroom for building a global business.</p>
 
-<h1 id="马氏链及其平稳分布">马氏链及其平稳分布</h1>
-
-<p>马氏链的定义很简单</p>
-
-<div>
-$$
-P(X_{t+1}=x|X_t,X_{t-1},...)=P(X_{t+1}=x|X_t)
-$$</div>
-
-<p>也就是状态转移的概率<strong>只依赖于前一个状态</strong>。</p>
-
-<p>假设有转移概率矩阵$P$，以及初始概率分布向量 $\pi_0=[\pi_0(1),\pi_0(2),\pi_0(3)]$，经过$n$次传递后，$\pi_n=\pi_0P^n$。当状态转移概率矩阵满足一定性质时，不论初始概率分布向量是多少，最终这个分布都会收敛。</p>
-
-<p><strong>定理</strong>：如果一个非周期马氏链具有转移概率矩阵$P$，且它的任意两个状态是连通的，那么有</p>
-
-<div>$$\lim_{n\rightarrow \infty}P_{ij}^n = \pi(j)$$</div>
-
-<ol>
-<li>矩阵$P^n$的极限收敛到一个稳定分布，即矩阵的每一行都相等。</li>
-<li>$\pi(j)=\sum_{i=0}^{\infty}\pi(i)P_{ij}$</li>
-<li>$\pi$ 是方程$\pi P= \pi$的唯一非负解，其中$\pi=[\pi(1),&hellip;,\pi(j),&hellip;]$称为马氏链的平稳分布。</li>
-</ol>
-
-<p>从初始概率分布$\pi_0$出发，记$X_i$的概率分布为$\pi_i$，则有</p>
-
-<div>$$
-\begin{aligned}
-X_0\sim \pi_0(x)\\
-X_1\sim \pi_1(x)\\
-...\\
-X_n\sim \pi_n(x)=\pi(x)\\
-X_{n+1}\sim \pi(x)\\
-...
-\end{aligned}
-$$</div>
-
-<p>所以 $X_n,X_{n+1},&hellip;\sim \pi(x)$ 都是同分布的独立随机变量。如果我们从一个具体的初始状态$x_0$开始，得到一个转移序列 $x_0,x_1,&hellip;,x_n,x_{n+1},&hellip;$，那么 $x_n,x_{n+1},&hellip;$ 都将是平稳分布 $\pi(x)$ 的样本。</p>
-
-<h1 id="mcmc">MCMC</h1>
-
-<p>如果我们能够构造一个转移矩阵为 $P$ 的马氏链，使得该马氏链的平稳分布正好是我们想要采样的复杂概率分布 $p(x)$，那么从任何一个初始状态出发沿着马氏链转移，如果马氏链在第 $n$ 步已经收敛，我们就能够得到 $\pi(x)$ 的样本$x_n,x_{n+1},&hellip;$</p>
-
-<h2 id="metropolis-hastings算法">Metropolis-Hastings算法</h2>
-
-<p>我们已经知道了马氏链的收敛性质是由转移矩阵 $P$ 决定，所以现在的关键在于如何构造转移矩阵 $P$，使得平稳分布恰好是我们想要采样的分布 $p(x)$。这里需要使用的就是下面这个定理：</p>
-
-<p><strong>定理</strong>：（细致平稳条件）如果非周期马氏链的转移矩阵 $P$ 和分布 $\pi(x)$ 满足</p>
-
-<p>$$
-\pi(i)P_{ij}=\pi(j)P_{ji},\quad for \quad all\quad i,j
-$$
-则 $\pi(x)$ 是马氏链的平稳分布。从物理意义理解：对于任意两个状态 $i,j$，从 $i$ 转移出去到 $j$ 而丢失的概率质量，恰好会被从 $j$ 转移回到$i$的概率质量补充回来。</p>
-
-<p>假设我们已经有一个转移矩阵为$Q$的马氏链（$q(i,j)$表示状态$i$转移到状态$j$的概率，也可以写成$q(j|i)$或者$q(i\rightarrow j)$）通常情况下</p>
-
-<p>$$
-p(i)q(i,j)\neq p(j)q(j,i)
-$$</p>
-
-<p>也就是细致平稳条件不成立，所以 $p(x)$ 不太可能是这个马氏链的平稳分布，所以我们对上式进行改造，引入 $\alpha(i,j)$</p>
-
-<p>$$
-p(i)q(i,j)\alpha(i,j) = p(j)q(j,i)\alpha(j,i)
-$$</p>
-
-<p>取什么样的 $\alpha(i,j)$ 才能使上式成立呢，最简单的就是按照对称性取</p>
-
-<p>$$
-\alpha(i,j)=p(j)q(j,i), \alpha(j,i)=p(i)q(i,j)
-$$</p>
-
-<p>令$Q&rsquo;(i,j)=q(i,j)\alpha(i,j),Q&rsquo;(j,i)=q(j,i)\alpha(j,i)$，所以有$Q&rsquo;$满足细致平稳条件，且其平稳分布就是 $p(x)$。从物理意义的角度理解就是在原来的马氏链$Q$上，从状态 $i$ 以 $q(i,j)$ 的概率转移到状态 $j$ 时，我们以 $\alpha(i,j)$ 的概率接受这个转移。</p>
-
-<p>但是这样的MCMC算法有个小问题就是接受率可能偏小，我们可以把细致平稳条件中的 $\alpha(i,j),\alpha(j,i)$ 同比例放大，使最大的一个放大到1，即</p>
-
-<p>$$
-\alpha(i,j) = min(\frac{p(j)q(j,i)}{p(i)q(i,j)},1)
-$$</p>
-
-<p>这样就得到了M-H算法了。</p>
-
-<h1 id="gibbs-sampling">Gibbs Sampling</h1>
-
-<p>对于高维的情况，由于接受率小于1，M-H采样的效率还是不够高，因此想要找一个转移矩阵 $Q$ 使得接受率为1。</p>
-
-<p>看个二维的情况，假设有一个概率分布 $p(x,y)$，考察 $x$ 坐标相同的两个点$A(x_1,y_1),B(x_1,y_2)$，我们发现</p>
-
-<div>
-$$
-\begin{aligned}
-p(x_1,y_1)p(y_2|x_1) = p(x_1)p(y_1|x_1)p(y_2|x_1)\\
-p(x_1,y_2)p(y_1|x_1) = p(x_1)p(y_2|x_1)p(y_1|x_1)
-\end{aligned}
-$$
-</div>
-
-<p>可以得到</p>
-
-<p>$$
-p(x_1,y_1)p(y_2|x_1) = p(x_1,y_2)p(y_1|x_1)
-$$</p>
-
-<p>即</p>
-
-<p>$$
-P(A)p(y_2|x_1) = p(B)p(y_1|x_1)
-$$</p>
-
-<p>我们发现，在$x=x_1$这条平行于 $y$ 轴的直线上，如果使用条件分布 $p(y|x_1)$ 作为任何两点之间的转移概率，那么任何两点之间的转移满足细致平稳条件。同样取$A(x_1,y_1),B(x_2,y_1)$，也有</p>
-
-<p>$$
-P(A)p(x_2|y_1) = p(B)p(x_1|y_1)
-$$</p>
-
-<p>于是我们可以构造平面上任意两点之间的转移概率矩阵$Q$</p>
-
-<div>
-$$
-\begin{aligned}
-Q(A -> B)&=p(y_B|x_1),\quad if\quad x_A=x_B=x_1\\
-Q(A -> C)&=p(x_C|y_1),\quad if\quad y_A=y_C=y_1\\
-Q(A -> D)&=0,\quad others
-\end{aligned}
-$$</div>
-
-<p>这样对于平面上任意两点$X,Y$满足细致平稳条件</p>
-
-<p>$$
-p(X)Q(X-&gt;Y)=P(Y)Q(Y-&gt;X)
-$$</p>
-
-<p><strong>算法描述</strong></p>
-
-<ol>
-<li><p>随机初始化 $x_i,i=1,&hellip;,n$</p></li>
-
-<li><p>对 $t=0,1,2,&hellip;$，循环采样</p>
+<p><strong>词汇</strong></p>
 
 <ul>
-<li>$x_1^{t+1}\sim p(x_1|x_2^{t},x_3^t&hellip;,x_n^{t})$</li>
-<li>$x_2^{t+1}\sim p(x_2|x_1^{t+1},x_3^t&hellip;,x_n^{t})$</li>
-<li>&hellip;</li>
-<li>$x_n^{t+1}\sim p(x_n|x_1^{t+1},x_2^{t+1}&hellip;,x_{n-1}^{t+1})$</li>
-</ul></li>
-</ol>
+<li>much the way</li>
+<li>drop / drɒp / If a level or amount drops or if someone or something drops it, it quickly becomes less. 使迅速下降; 迅速下降</li>
+<li>thrive  / θraɪv / If you say that someone thrives on a particular situation, you mean that they enjoy it or that they can deal with it very well, especially when other people find it unpleasant or difficult. 喜欢; 从容应对 (尤指别人不喜欢或认为困难的事)</li>
+<li>anarchy / ˈænəkɪ /  If you describe a situation as anarchy, you mean that nobody seems to be paying any attention to rules or laws. 无政府状态</li>
+<li>constitute / ˈkɒnstɪˌtjuːt / If something constitutes a particular thing, it can be regarded as being that thing. 构成</li>
+<li>drove  / drəʊv / a herd of livestock being driven together (被驱赶着一起前进的)畜群</li>
+<li>draw on If you draw on or draw upon something such as your skill or experience, you make use of it in order to do something. 利用</li>
+<li>forge / fɔːdʒ /  If one person or institution forges an agreement or relationship with another, they create it with a lot of hard work, hoping that it will be strong or lasting. 努力地缔造</li>
+<li>Rim  / rɪm / The rim of a circular object is its outside edge.</li>
+<li>lock on</li>
+<li>prove  / pruːv / If something proves to be true or to have a particular quality, it becomes clear after a period of time that it is true or has that quality. 证明是</li>
+</ul>
 
-<h2 id="举例说明">举例说明</h2>
+<h1 id="how-to-grow-old">How to grow old</h1>
 
-<p>假设我们要对一个二维分布 $p(x_1,x_2)$ 进行采样，直接采样不可行，对应的 Gibbs Sampler 就是交替地从条件概率 $p(x_1|x_2)$ 和 $p(x_2|x_1)$ 中进行采样。</p>
+<p>Some old people are <strong>oppressed</strong> by the fear of death. In the young there is a justification for this feeling. Young men who have reason to fear that they will be killed in battle may <strong>justifiably</strong> feel bitter in the thought that they have been cheated of the best things that life has to offer. But in an old man who has known human joys and sorrows, and has achieved whatever work it was in him to do, the fear of death is somewhat <strong>abject</strong> and ignoble. The best way to overcome it-so at least it seems to me&mdash;-is to make your interests gradually wider and more <strong>impersonal</strong>, until bit by bit the walls of the <strong>ego</strong> recede, and your life becomes increasingly merged in the universal life. An individual human <strong>existence</strong> should be like a river&ndash;small at first, narrowly contained within its banks, and rushing passionately past <strong>boulders</strong> and over waterfalls. Gradually the river grows wider, the banks recede, the waters flow more quietly, and in the end, without any visible break, they become merged in the sea, and painlessly lose their individual being. The man who, in old age, can see his life in this way, will not suffer from the fear of death, since the things he cares for will continue. And it, with the decay of <strong>vitality</strong>, <strong>weariness</strong> increases, the thought of rest will be not unwelcome. I should wish to die while still at work, knowing that others will carry on what I can no longer do, and content in the thought that what was possible has been done.</p>
 
-<h1 id="总结">总结</h1>
+<p><strong>词汇</strong></p>
 
-<p>一般来说 MCMC 现在指的都是吉布斯采样（Gibbs Sampling），通过每次<strong>只采样一维变量固定其他维变量</strong>（把联合概率转换为从条件概率进行采样）来满足细致平稳条件，因此只要经过一定次数的迭代后，马氏链收敛，采样得到的也就是目标采样值（从联合分布中的采样）。</p>
+<ul>
+<li>grow old</li>
+<li>oppress / əˈprɛs / To oppress people means to treat them cruelly, or to prevent them from having the same opportunities, freedom, and benefits as others. 压迫</li>
+<li>justification / ˌdʒʌstɪfɪˈkeɪʃən / A justification for something is an acceptable reason or explanation for it. 正当的理由</li>
+<li>abject  / ˈæbdʒɛkt /  You use abject to emphasize that a situation or quality is extremely bad. 糟糕透顶的 [强调]</li>
+<li>impersonal  / ɪmˈpɜːsənəl /  If you describe someone&rsquo;s behaviour as impersonal, you mean that they do not show any emotion about the person they are dealing with. 不受个人感情影响的</li>
+<li>ego  / ˈiːɡəʊ, ˈɛgəʊ / Someone&rsquo;s ego is their sense of their own worth. For example, if someone has a large ego, they think they are very important and valuable. 自我价值感</li>
+<li>vitality / vaɪˈtælɪtɪ /   If you say that someone or something has vitality, you mean that they have great energy and liveliness. 活力</li>
+<li>weariness /&lsquo;wɪrɪnɪs/ temporary loss of strength and energy resulting from hard physical or mental work</li>
+<li>boulder  / ˈbəʊldə /  A boulder is a large rounded rock. 圆形巨石</li>
+<li>content / ˈkɒntɛnt / If you are content, you are fairly happy or satisfied. 满意的</li>
+</ul>
+
+<h1 id="banks-and-their-customers">Banks and their customers</h1>
+
+<p>When anyone opens a current account at a bank, he is lending the bank money, repayment of which he may demand at any time, either in cash or by <strong>drawing a cheque</strong> in favour of another person. Primarily, the banker-customer relationship is that of debtor and creditor&ndash;who is which depending on whether the customer&rsquo;s account is <strong>in credit</strong> or is overdrawn. But, in addition to that basically simple concept, the bank and its customer owe a large number of obligations to one another. Many of these obligations can give rise to problems and complications but a bank customer, unlike, say, a buyer of goods, cannot complain that the law is <strong>loaded against</strong> him.</p>
+
+<p>The bank must obey its customer&rsquo;s instructions, and not those of anyone else. When, for example, a customer first opens an account, he instructs the bank to debit his account only in respect of cheques drawn by himself. He gives the bank <strong>specimens</strong> of his signature, and there is a very firm rule that the bank has no right or authority to pay out a customer&rsquo;s money on a cheque on which its customer&rsquo;s signature has been forged. It makes no difference that the <strong>forgery</strong> may have been a very skilful one: the bank must recognize its customer&rsquo;s signature.</p>
+
+<p>For this reason there is no risk to the customer in the modern practice, adopted by some banks, of printing the customer&rsquo;s name on his cheques. If this facilitates forgery it is the bank which will lose, not the customer.</p>
+
+<ul>
+<li>repayment  / rɪˈpeɪmənt / The repayment of money is the act or process of paying it back to the person you owe it to. 偿还</li>
+<li>in favour of 受益人</li>
+<li>primarily / ˈpraɪmərəlɪ / You use primarily to say what is mainly true in a particular situation. 主要地</li>
+<li>in credit</li>
+<li>debit  / ˈdɛbɪt / A debit is a record of the money taken from your bank account, for example, when you write a cheque. 借方</li>
+<li>loaded / ˈləʊdɪd / If you say that something is loaded in favour of someone, you mean it works unfairly to their advantage. If you say it is loaded against them, you mean it works unfairly to their disadvantage. 有偏向的 [表不满]</li>
+<li>in respect of concerning</li>
+<li>specimen / ˈspɛsɪmɪn / A specimen of something is an example of it which gives an idea of what the whole of it is like. 样本</li>
+<li>forge / fɔːdʒ / If someone forges something such as paper money, a document, or a painting, they copy it or make it so that it looks genuine, in order to deceive people. 伪造 (纸币、文件或画作等)</li>
+<li>in the practice of</li>
+<li>complication  / ˌkɒmplɪˈkeɪʃən / A complication is a problem or difficulty that makes a situation harder to deal with. 使情况复杂化的因素</li>
+</ul>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0mcmc/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%96%B0%E6%A6%82%E5%BF%B5410~12/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>

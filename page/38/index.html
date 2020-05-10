@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://minghaochen.github.io/" />
 
-<meta property="og:updated_time" content="2020-03-26T15:20:39&#43;08:00"/>
+<meta property="og:updated_time" content="2020-05-10T09:17:54&#43;08:00"/>
 
 <meta itemprop="name" content="MH&#39;s Blog">
 <meta itemprop="description" content="">
@@ -115,133 +115,330 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/">核函数与再生核希尔伯特空间</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/">「机器学习」EM算法</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2019-08-15 </span>
+      <span class="post-time"> 2019-08-22 </span>
       <div class="post-category">
-          <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/"> 数学基础 </a>
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <p>说到核方法，很多人第一反应就是SVM，其实不然，其应用很广，但核心思想均是<strong>用在原始空间计算核函数的值来避免直接求解高维特征空间的内积</strong>；说到核函数往往还会带上一个吓人的概念“再生核希尔伯特空间”，先揭秘一下什么是希尔伯特空间，希尔伯特空间其实就是<strong>函数空间</strong>(或者可以把函数理解为无限维的向量)，函数空间里任意一个元素都表示一个函数，而再加上“再生核”这个限定词相当于就是特定的函数空间，就是具有再生性的函数空间，那什么是再生性听我慢慢道来。</p>
+      <p>期望最大(EM)算法的大名想必大家都听过，说来惭愧，大概两年前就学过用过这个算法，但是到后来只记得EM这个名字，把算法的原理都给忘光光了，这几天重新捡起来，总结一下，也希望对想了解这个算法的人有点启发。</p>
 
-<p>假设有原始空间样本 $x_i \in \mathbb{R}^p, i=1,&hellip;,N$，通常为了<strong>在高维空间寻找线性关系</strong>我们会将其通过函数映射 $\phi(\cdot)$ 到高维空间 $\phi(x_i) \in \mathbb{R}^n$，但是这样也意味着如果原始空间求内积 $&lt;x_i,x_j&gt;$ 对应到特征空间为 $&lt;\phi(x_i),\phi(x_j)&gt;$，直接求解高维空间的内积计算量是很大的，同时我们可能并不知道这个映射函数 $\phi(\cdot)$ 怎么选择才是合适的。核函数则提供了另一种求解的思路。</p>
+<p>对我EM算法我总结为三点：<strong>为什么</strong>、<strong>是什么</strong>、<strong>怎么用</strong>。</p>
 
-<p><strong>核函数的定义</strong></p>
+<h2 id="为什么要用em算法">为什么要用EM算法？</h2>
 
-<p>$$
-\kappa(\cdot,\cdot):\mathbb{R}^p \times \mathbb{R}^p \rightarrow \mathbb{R}
-$$</p>
+<p>会看到这篇博客的大家想必都知道，EM算法是用来<strong>估计参数</strong>的，并且是以<strong>迭代</strong>的方式进行。看到估计参数这个字眼，你脑子里首先会想到什么方法？毫无疑问就是极大似然法吧，再帮大家回忆一下极大似然法的思想：<strong>什么参数对应的事件发生的概率最大，我们就认为这个参数就是未知参数的估计值</strong>。通俗一点讲就是你知道了事件的观测值 $y_1,&hellip;,y_N$，然后要寻找能够让事件发生的可能性 $p(y_1,&hellip;,y_N|\theta)$ 最大的参数 $\hat{\theta}$，也就是</p>
 
-<p>则特征空间的内积可以表示为</p>
+<div>$$
+\hat{\theta}=\arg\max_{\theta} p(y_1,...,y_N|\theta)
+$$</div>
 
-<p>$$
-&lt;\phi(x_i),\phi(x_j)&gt; = \kappa(x_i,x_j)
-$$</p>
+<p>或者通常为了计算方便采用对数的形式</p>
 
-<p>此外，特征空间的距离和角度也可以用核函数来表示。</p>
+<div>$$
+\hat{\theta}=\arg\max_{\theta} \log p(y_1,...,y_N|\theta)
+$$</div>
 
-<p>同时有 Mercer 定理告诉我们怎么样的函数能称为核函数</p>
+<p>其中 $\log p(y_1,&hellip;,y_N|\theta)$ 就称为对数似然函数，常常假设事件之间相互独立，那也就能进一步把联合概率写成独立概率乘积的形式：</p>
 
-<blockquote>
-<p>任何正半定函数均可以作为核函数，即由 $\kappa(\cdot,\cdot)$ 构成的核矩阵 $K$ 是正半定的：$a^TKa\ge 0$，其中 $K_{ij} = \kappa(x_i,x_j)$</p>
-</blockquote>
+<div>$$
+\hat{\theta}=\arg\max_{\theta} \log \prod_{i=1}^N p(y_i|\theta)
+$$</div>
 
-<p><strong>这也就说明了只要我们构造出一个正定核(往往是应用现成的)，那么就不需要显式地定义特征空间和映射函数，并且能够利用已有的线性方法来解决非线性问题</strong>。<strong>同时，核函数还可以理解为用来衡量两个向量的相似度(因为内积可以一定程度反应两个样本之间的相似度)</strong></p>
+<p>这样一个无约束的优化问题利用极值条件(导数为0)也就能得到待估计参数的解析解了。</p>
 
-<p>因为核函数可以总结为：<strong>映射、内积、相似度</strong></p>
+<p>回到我们的问题<strong>为什么要用EM算法</strong>，那肯定是因为极大似然法不管用了呗，也就是当有<strong>隐变量(latent variable)</strong>存在的时候，原来的对数似然函数变为</p>
 
-<p><strong>再生核希尔伯特空间的定义</strong></p>
+<div>$$
+\log p(Y|\theta) = \log \sum_{Z} p(Y|Z,\theta)p(Z,\theta)
+$$</div>
 
-<p>有了核函数，那么就会至少有一个与之对应的再生核希尔伯特空间 $\mathcal{H}$，它满足</p>
+<p>相当于求完全数据 $Y,Z$ 的联合分布 $p(Y,Z|\theta)$ (把隐变量积分掉)的和，但是由于里面包含隐变量，直接用极大似然求解是不行滴。但是如果能够估计出隐变量 $Z$，那这个问题又回到了原来的极大似然估计。这样也就自然地与EM算法的思想挂上勾了：<strong>估计隐变量(E步)，再估计参数(M步)，不断迭代</strong>。</p>
 
-<ol>
-<li><p>固定任意 $x_0$，则 $\kappa(\cdot,x_0):\mathbb{R^p} \rightarrow \mathbb{R}$ (这是个函数！) 属于 $\mathcal{H}$ (这是个函数空间！)</p></li>
+<p>现在可以回答第一个问题了：为什么要用EM算法？<strong>EM算法是用来解决含有隐变量的参数估计问题的。</strong></p>
 
-<li><p>再生性：</p></li>
-</ol>
+<h2 id="什么是em算法">什么是EM算法？</h2>
+
+<p>那么这个所谓的迭代算法是怎么迭代的呢？我们还是先回到对数似然函数，可以将其表示为</p>
 
 <div>$$
 \begin{aligned}
-<\kappa(\cdot,x),f> &= f(x),f \in \mathcal{H} \\
-<\kappa(\cdot,x),\kappa(\cdot,z)> &= \kappa(x,z) = \kappa(z,x)
+\log p(Y|\theta) &= \log p(Y,Z|\theta) - \log p(Z|Y,\theta)\\
+&=\log \frac{p(Y,Z|\theta)}{q(Z)}-\log \frac{p(Z|Y,\theta)}{q(Z)}
 \end{aligned}
 $$</div>
 
-<p>给定核函数如何确定映射以及对应的希尔伯特空间？</p>
+<p>第一行公式(完整数据减去后验)根据条件概率公式可得，第二行公式相当于减去一个 $\log q(Z)$ 再加上一个 $\log q(Z)$ 恒等变换。这里假设 $q(Z)$ 是 $Z$ 的一个概率分布 ($\int_Z q(Z) dZ = 1$)。</p>
 
-<p>定义再生核map $\Phi:\mathbb{R}^p \rightarrow \mathbb{R}^{\mathbb{R}^p}$ 且 $\Phi(z)=\kappa(\cdot,z)$，相当于将 $z\in \mathbb{R}^p$ 映射成一个函数 $\kappa(\cdot,z):\mathbb{R}^p \rightarrow \mathbb{R}$，则</p>
+<p>然后<strong>同时对两侧对$q(Z)$求期望</strong></p>
 
-<p>$$
-\kappa(x,z) = &lt;\kappa(\cdot,x),\kappa(\cdot,z)&gt;=&lt;\Phi(x),\Phi(z)&gt;
-$$</p>
+<p>左边积分还是它本身：</p>
 
-<p>即通过核函数可以找到对应的映射，而对应的希尔伯特空间可以表示为由 $\Phi(\cdot)$ 组成的向量空间。</p>
+<div>$$
+\int_Z q(Z) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z q(Z) dZ = \log p(Y|\theta)
+$$</div>
 
-<p>给定映射关系如何确定核函数？</p>
+<p>右边积分则是</p>
 
-<p>直接令 $\kappa(x,z) = &lt;\Phi(x),\Phi(z)&gt;$，然后验证 Mercer 定理即可。</p>
+<div>$$
+\int_z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ - \int_Z q(Z) \log \frac{p(Z|Y,\theta)}{q(Z)}
+$$</div>
 
-<h2 id="各种空间的定义补充">各种空间的定义补充</h2>
+<p>左边等于右边即</p>
 
-<p>各种空间之间的关系其实有点<strong>从抽象到具体的过程</strong>。我们给空间<strong>赋予一些属性或者制定一些规则</strong>就能得到特定的空间。</p>
-
-<p>比如大家熟悉的<strong>向量空间</strong>，那就是满足加减法和数乘的空间，很好理解，空间内任意元素都可以用一组基通过加减和数乘(线性组合)表示。</p>
-
-<p>比如赋予距离的空间称为<strong>度量空间</strong>，定义距离时需要遵守三条公理：</p>
-
-<ol>
-<li><p>非负性，同一性：距离都是非负的，自己到自己的距离当然是 0 了</p></li>
-
-<li><p>对称性：你走向我的距离等于我走向你的距离</p></li>
-
-<li><p>三角不等式：你从 A 走到 B 在走到 C 的距离肯定大于等于直接从 A 到 C 的距离</p></li>
-</ol>
-
-<p>比如赋予范数的空间称为<strong>赋范空间</strong>，范数可以理解为一个元素到 0 的距离，同时它比距离的定义<strong>更具体了一步</strong>，因为它还需要额外满足</p>
-
-<p>$$
-||ax|| = |a| \times||x||
-$$</p>
-
-<p>那么我们在定义了范数后自然能用范数来定义距离了，比如 $d(x,y) = ||x-y||$，但是不能用距离来定义范数哦，因为<strong>波霸奶茶是奶茶，但不是所有奶茶都叫波霸奶茶</strong></p>
-
-<p>有了范数来定义距离了有时候还不够，我们有时候会需要<strong>角度</strong>信息，这时候就<strong>再给波霸奶茶加点料</strong>，于是赋予了内积的向量空间称为<strong>内积空间</strong>，定义内积需要遵守三条公理：</p>
-
-<ol>
-<li><p>对称性</p></li>
-
-<li><p>第一元素线性：
-$$&lt;ax,y&gt;=a&lt;x,y&gt;,&lt;x+y,z&gt;=&lt;x,z&gt;+&lt;y,z&gt;$$ 这不就是向量空间的数乘和加减运算嘛</p></li>
-
-<li><p>正定性</p></li>
-</ol>
-
-<p>那么定义了内积后自然也能用<strong>加了仙草的波霸奶茶来定义波霸奶茶</strong>(用内积来定义范数)，比如</p>
-
-<p>$$||x||=\sqrt{&lt;x,x&gt;}$$</p>
-
-<p>还有个比较难以描述的<strong>完备空间</strong>，可以理解为极限操作不会跑出自己的空间就称为完备的，<strong>奶茶只要三分糖，太甜了就超出能承受的甜度极限了呗</strong>。</p>
-
-<p>有了这么一步步的具体化后，<strong>希尔伯特空间</strong>就可以出来了，它就是<strong>一杯三分糖的加了仙草的波霸奶茶</strong>，呸，它就是<strong>一个完备的内积空间</strong></p>
+<div>$$
+\log p(Y|\theta) = \text{ELBO} + \text{KL}(q(Z)||p(Z|Y,\theta))
+$$</div>
 
 <blockquote>
-<p>总结来说：</p>
+<p>KL divergence的概念</p>
 
-<ol>
-<li><p>赋范线性空间就是赋予了范数的向量空间，也是度量空间（具有线性结构的度量空间）</p></li>
+<div>$$
+D_{\mathrm{KL}}(P \| Q)=-\sum_{i} P(i) \ln \frac{Q(i)}{P(i)} \ge 0
+$$</div>
 
-<li><p>内积空间是赋范线性空间</p></li>
-
-<li><p>希尔伯特空间就是完备的内积空间，同时需要注意的是希尔伯特空间中的元素一般是函数，一个函数可以视为一个无穷维的向量。如果大家熟悉傅里叶变换或者泰勒展开，便能自然的想到这个空间的基底是什么。没错，也是一组无限多的函数。</p></li>
-</ol>
+<p>由吉布斯不等式可知，当且仅当 $P = Q$ 时 $D_{KL}(P||Q)$为零。</p>
 </blockquote>
+
+<p><strong>因为相对熵大于等于0的性质，所以 ELBO 为 $\log p(Y|\theta)$ 提供了下界，所以EM算法的想法就是想让ELBO不断变大从而让对数似然变大</strong>，并且只有当 $q(Z) = p(Z|Y,\theta^{(t)})$ 时ELBO等于对数似然， 即</p>
+
+<div>$$
+\begin{aligned}
+\theta^{(t+1)} = \hat{\theta} &= \arg \max_{\theta} \text{ELBO}\\
+&= \arg \max_{\theta} \int_Z q(Z) \log \frac{p(Y,Z|\theta)}{q(Z)} dZ\\
+&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Y,Z|\theta)}{p(Z|Y,\theta^{(t)})} dZ\\
+&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) [\log p(Y,Z|\theta) - \log p(Z|Y,\theta^{(t)})] dZ\\
+&= \arg \max_{\theta} \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)  dZ
+\end{aligned}
+$$</div>
+
+<p>这也就解释了EM算法是怎么来的啦，<strong>当 $q(Z)$ 等于后验 $p(Z|Y,\theta^{{t}})$ 时，ELBO 等于log likelihood，先固定 $\theta^{(t)}$ 得到后验，然后求 ELBO (关于后验的期望)，滑动 $\theta$ 得到期望的最大值，最大期望对应的 $\theta$ 就是 $\theta^{(t+1)}$</strong></p>
+
+<p>从思路上是能说通了，你可能会疑惑为什么这么迭代求解就能得到最优解呢？或者说 $\theta_{t}$ 到最后会收敛吗？我们回到最初的目标最大化对数似然 $\log p(Y|\theta)$，那如果我们每次迭代求解都能使得对应的对数似然函数的值增加，最后是不是也就说明能向似然函数的最大值靠近了呢，也就是我们希望看到的结果是</p>
+
+<div>
+    $$
+    \log p(Y|\theta^{(t)}) \le \log p(Y|\theta^{(t+1)})
+    $$
+</div>
+
+<p>事实也说明了这是成立的，我们再回到对数似然函数的表达式</p>
+
+<div>
+$$
+\log p(Y|\theta) = \log p(Y,Z|\theta) - \log p(Z|Y,\theta)
+$$
+</div>
+
+<p>两边求关于后验 $p(Z|Y,\theta^{(t)})$ 的期望，也就是求积分</p>
+
+<p>左边积分还是它本身：</p>
+
+<div>$$
+\int_Z p(Z|Y,\theta^{(t)}) \log p(Y|\theta) dZ = \log p(Y|\theta) \int_Z p(Z|Y,\theta^{(t)}) dZ=\log p(Y|\theta) 
+$$</div>
+
+<p>右边积分则是：</p>
+
+<div>
+    $$
+    Q(\theta,\theta^{(t)}) - H(\theta,\theta^{(t)})
+    $$
+</div>
+
+<p>其中，$Q(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta) dZ, H(\theta,\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log p(Z|Y,\theta) dZ$</p>
+
+<p>那要使得迭代收敛需要满足的条件就变为了</p>
+
+<div>
+    $$
+    Q(\theta^{(t)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t+1)},\theta^{(t)})
+    $$
+</div>
+
+<p>因为 $Q(\theta,\theta^{(t)})$ 对应的就是EM的迭代公式，那根据最大化问题可以得到 $Q(\theta,\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那也就有 $Q(\theta^{(t)},\theta^{(t)}) \le Q(\theta^{(t+1)}\theta^{(t)})$，那再根据<strong>放缩</strong>的思想，只要我们能证明 $H(\theta^{(t)},\theta^{(t)}) \ge H(\theta^{(t+1)},\theta^{(t)})$，那一切就都顺理成章了。</p>
+
+<p>直接对这两项作差</p>
+
+<div>
+    $$
+    H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) = \int_Z p(Z|Y,\theta^{(t)}) \log \frac{p(Z|Y,\theta^{(t+1)})}{p(Z|Y,\theta^{(t)})} dZ
+    $$
+</div>
+
+<p>看出点什么没有，不然再回到上面 KL 散度的定义看看，这结果不就是 $-D_{\text{KL}}(p(Z|Y,\theta^{(t)})||p(Z|Y,\theta^{(t+1)}))$，根据散度大于等于0的性质，可以得到 $H(\theta^{(t+1)},\theta^{(t)}) - H(\theta^{(t)},\theta^{(t)}) \le 0$，这也就得证了<strong>EM迭代求解每次得到的似然函数值总是非减的( $\theta^{(t)}$ 会逐渐收敛)，那最终也就会取到最大似然咯，需要注意这并不能保证找到全局最优解的。</strong></p>
+
+<h2 id="怎么用em算法">怎么用EM算法？</h2>
+
+<p>看到这里的话想必你对算法的原理也有了大概的认识，但是大家最关心的应该是在认识原理后如何去应用，这里根据李航老师的《统计学习方法》里的例子介绍一下算法的应用和实现。</p>
+
+<p>三硬币模型：有A，B，C三枚硬币，它们正面向上的概率分别为 $a,b,c$，进行如下试验：先掷硬币 A，如果正面则再掷 B，如果反面则掷 C，掷硬币的结果正面记为1反面为0，独立重复10次试验，结果为1，1，0，1，0，0，1，0，1，1。我们只知道最终掷硬币的结果并不能观测掷硬币的过程，那么如何估计三枚硬币正面向上的概率呢？</p>
+
+<p>这个例子里观测变量 $y_i$ 也就是掷硬币的结果0或1，要估计的参数为概率 $\theta=(a,b,c)$，由于我们不知道掷A的结果导致这一问题不能直接采用极大似然来估计，因此我们引入隐变量 $z$ 来表示掷 A的结果。</p>
+
+<p>观测数据 $y_1,&hellip;,y_N$
+由以下模型生成</p>
+
+<div>
+    $$
+    p(y|\theta) = ab^{y}(1-b)^{(1-{y})} + (1-a)c^{y}(1-c)^{(1-{y})}
+    $$
+</div>
+
+<p>隐变量 $z_i = 1$ 表示第 $i$ 个观测来自掷硬币B的结果，$z_i = 0$ 表示第 $i$ 个观测来自掷硬币C的结果。</p>
+
+<p>于是可以写出完全数据的似然函数：</p>
+
+<div>$$
+    \begin{aligned}
+p(Y,Z|\theta) &= \prod_{i=1}^N p(y_i,z_i
+|\theta)\\
+&=\prod_{i=1}^N [ab^{y_i}(1-b)^{(1-{y_i})}]^{z_i} \cdot [(1-a)c^{y_i}(1-c)^{(1-{y_i})}]^{1-z_i}
+\end{aligned}
+$$</div>
+
+<p>那么，完全数据的对数似然函数为</p>
+
+<div>$$
+\log p(Y,Z|\theta) = \sum_{i=1}^N  z_i (\log a + y_i \log b + (1-y_i) \log(1-b)) + (1-z_i) (\log(1-a) + y_i \log c + (1-y_i) \log(1-c)) 
+$$</div>
+
+<p>按照我上面说的<strong>先固定 $\theta^{(t)}$ 计算后验：</strong></p>
+
+<div>
+    $$
+    \begin{aligned}
+    p(z_i=1|y_i,\theta^{(t)}) &= \frac{p(z=1,y_i|\theta^{(t)})}{p(z_i=1,y_i|\theta^{(t)}) + p(z_i=0,y_i|\theta^{(t)})}\\
+    &=\frac{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)})}{p(y_i|z=1,\theta^{(t)}) p(z=1|\theta^{(t)}) + p(y_i|z=0,\theta^{(t)}) p(z=0|\theta^{(t)})}\\
+    &=\frac{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)}}{a^{(t)}(b^{(t)})^{y_i}(1-b^{(t)})^{(1-y_i)} + (1-a^{(t)})(c^{(t)})^{y_i}(1-c^{(t)})^{(1-y_i)}}\\
+    p(z_i=0|y_i,\theta^{(t)}) &= 1- p(z_i=1|y_i,\theta^{(t)}) 
+    \end{aligned}
+    $$
+</div>
+
+<p><strong>有了隐变量的后验分布后，在对完全数据的对数似然函数求最大期望</strong></p>
+
+<div>
+    $$
+    \begin{aligned}
+    \theta^{(t+1)} &= \arg \max_{\theta} Q(\theta)\\ 
+    &= \arg \max_{\theta} \sum_{Z} p(Z|Y,\theta^{(t)}) \log p(Y,Z|\theta)\\
+    &= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \log p(y_i,z_i=1|\theta) + p(z_i=0|y_i,\theta^{(t)}) \log p(y_i,z_i=0|\theta)\\
+    &= \arg \max_{\theta} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) [\log a + y_i \log b + (1-y_i)\log (1-b)] \\ & + p(z_i=0|y_i,\theta^{(t)})[ \log (1-a) + y_i \log c + (1-y_i) \log (1-c)]
+    \end{aligned}
+    $$
+</div>
+
+<p>又回到这个极大似然的问题，现在相当于隐变量已知咯，那直接按照传统的套路利用极值条件求导获得待参数的解析解。</p>
+
+<p>对于参数 $a$，令 $\partial Q(\theta)/ \partial a = 0$</p>
+
+<div>$$
+\frac{\partial L}{\partial a} = \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) \frac{1}{a} - p(z_i=0|y_i,\theta^{(t)}) (-\frac{1}{1-a})=0
+$$</div>
+
+<p>可得</p>
+
+<div>
+    $$
+    a^{(t+1)} = \frac{1}{N} \sum_{i=1}^{10} p(z_i=1|y_i,\theta^{(t)}) 
+    $$
+</div>
+
+<p>同理可得</p>
+
+<div>$$
+b^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=1|y_i,\theta^{(t)}) }}
+$$</div>
+
+<div>$$
+c^{(t+1)} = \frac{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) y_i}}{\sum_{i=1}^{10}{p(z_i=0|y_i,\theta^{(t)}) }}
+$$</div>
+
+<h3 id="matlab-实现em算法">matlab 实现EM算法</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">% 给定观测结果
+y = [1;1;0;1;0;0;1;0;1;1];
+N = length(y);
+% 先随便假设个初始参数 
+a_old = 0.4;
+b_old = 0.6;
+c_old = 0.7;
+theta0 = [a_old;b_old;c_old];
+% 隐变量z=1的后验概率的初始值
+p_z  = zeros(N,1);
+% 用于存储更新后的参数
+a_new = 0.0;
+b_new = 0.0;
+c_new = 0.0;
+theta = [a_new;b_new;c_new];
+% 给EM算法的迭代设置个终止条件
+epsilon = 0.01;
+% 迭代更新参数
+while norm(theta - theta0) &gt; epsilon
+% E步，计算隐变量的后验
+	for i = 1:N
+		p_z(i) = (a_old*b_old^y(i)*(1-b_old)^(1-y(i)))/((a_old*(b_old)^y(i)*(1-b_old)^(1-y(i))) + ((1-a_old)*c_old^y(i)*(1-c_old)^(1-y(i))));
+	end
+	theta0 = [a_old;b_old;c_old];
+% M步，极大似然更新待估计参数 
+	a_new = 1/N*sum(p_z);
+	b_new = p_z&#39;*y/sum(p_z);
+	c_new = (1-p_z)&#39;*y/sum(1-p_z);
+	theta = [a_new;b_new;c_new];
+	a_old = a_new;
+	b_old = b_new;
+	c_old = c_new;
+end</pre></td></tr></table>
+</div>
+</div>
+<h2 id="本文小结">本文小结</h2>
+
+<p>首先从为什么需要用EM算法说起：<strong>含有隐变量的参数估计问题</strong>，然后从<strong>最大化ELBO的角度</strong>推导了EM算法迭代公式的由来并证明了算法的收敛性，最后以三硬币模型为例介绍了EM算法的使用以及matlab实现。</p>
     </div>
     <div class="read-more">
-      <a href="/post/%E6%A0%B8%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%8D%E7%94%9F%E6%A0%B8%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4/" class="read-more-link">Read more...</a>
+      <a href="/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0em%E7%AE%97%E6%B3%95/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
