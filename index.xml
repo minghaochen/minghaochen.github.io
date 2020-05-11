@@ -461,7 +461,198 @@ $$&lt;/div&gt;
       <pubDate>Sun, 10 May 2020 09:16:56 +0800</pubDate>
       
       <guid>https://minghaochen.github.io/post/%E6%A8%A1%E5%9E%8B%E9%A2%84%E6%B5%8B%E6%8E%A7%E5%88%B6%E7%AE%80%E8%A6%81%E6%A6%82%E5%BF%B5/</guid>
-      <description></description>
+      <description>&lt;h1 id=&#34;基本概念&#34;&gt;基本概念&lt;/h1&gt;
+
+&lt;p&gt;为什么采用MPC？&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;处理多变量耦合&lt;/li&gt;
+&lt;li&gt;处理输入状态约束&lt;/li&gt;
+&lt;li&gt;卡边控制 (意味着更高的经济效益)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;应用：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;尿素装置合成段的控制&lt;/li&gt;
+&lt;li&gt;在各种石化和化工厂中&lt;/li&gt;
+&lt;li&gt;食品加工&lt;/li&gt;
+&lt;li&gt;机电系统&lt;/li&gt;
+&lt;li&gt;暖通空调系统(楼宇控制)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;MPC的种类：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;线性模型：$x(k+1)=Ax(k)+Bu(k)$，一般为凸优化问题。由于线性MPC包含约束的处理，因此是一种非线性控制策略。&lt;/li&gt;
+&lt;li&gt;非线性模型：$x(k+1)=f(x(k),u(k))$，一般为非凸优化问题&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;线性MPC优化命题：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;目标函数：状态跟踪 $x_{ref}$，输入跟踪 $u_{ref}$&lt;/li&gt;
+&lt;li&gt;约束：模型、输入约束、状态约束&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;MPC算法：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;读取当前状态 $x(k)$&lt;/li&gt;
+&lt;li&gt;计算最优控制序列&lt;/li&gt;
+&lt;li&gt;实施序列的第一个元素（多变量是向量）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;LQR和MPC：当预测时域趋于无穷且忽略约束时，MPC等价于LQR。&lt;/p&gt;
+
+&lt;p&gt;常规的MPC优化命题可以写为一个LCQP（线性约束二次规划），优化变量可以是$N*(n_x+n_u)$个（模型当作约束）或者$N*n_u$个（状态用输入和模型表示）。&lt;/p&gt;
+
+&lt;p&gt;带有 terminal cost 的MPC：
+目标函数中多加入对 $x(k+N)$ 的惩罚，用于保证稳定性。&lt;/p&gt;
+
+&lt;p&gt;可以通过求解离散时间Riccati方程来得到终端代价矩阵：&lt;/p&gt;
+
+&lt;p&gt;$$
+A^TSA-S-(A^TSB)(B^TSB+R)^{-1}(B^TSA)+Q=0
+$$
+其中 $u(k)=-Kx(k)$为稳定控制率，$K=(B^TSB+R)^{-1}(B^TSA)$&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;[K,S]=dlqr(A,B,Q,R)&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;MPC的历史&lt;/p&gt;
+
+&lt;p&gt;1st  generation MPC：IDCOM (Richalet et al., 1976) 、 DMC (Shell, 1973)&lt;/p&gt;
+
+&lt;p&gt;2nd  generation MPC：QDMC (Shell, 1983)&lt;/p&gt;
+
+&lt;p&gt;3rd  generation MPC：IDCOM-M (Setpoint, 1988), SMOC (Shell, late 80’s)&lt;/p&gt;
+
+&lt;p&gt;4th  generation MPC： DMC-Plus (Honeywell Hi-Spec, ‘95), RMPCT (Aspen Tech, ‘96)&lt;/p&gt;
+
+&lt;p&gt;3种不同的formulation：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;无穷时域、无约束、显式解&lt;/li&gt;
+&lt;li&gt;有限时域、有约束、无显式解&lt;/li&gt;
+&lt;li&gt;无限时域、有约束、输入参数化（显式解）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;开环控制与闭环控制：MPC是优化开环有限时域控制问题，但是在每个采样时刻有状态反馈来补偿未建模动态和扰动。因此是闭环控制框架。&lt;/p&gt;
+
+&lt;p&gt;MPC设计的选择：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;预测模型&lt;/li&gt;
+&lt;li&gt;代价函数：范数、时域、终端代价&lt;/li&gt;
+&lt;li&gt;约束：输入、状态约束、终端约束&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;软约束：用于克服不可行问题，在代价函数中惩罚约束违法，采用1范数或者无穷范数。通常用在不重要的约束，或者优先级排序。&lt;/p&gt;
+
+&lt;h1 id=&#34;稳定性&#34;&gt;稳定性&lt;/h1&gt;
+
+&lt;p&gt;稳定性的证明为两步法：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;递归可行性（Recursive feasibility）controller well-defined for all k&lt;/li&gt;
+&lt;li&gt;构造李雅普诺夫函数（trajectories converge to equilibrium）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;局限性：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;only for ‘stabilization’ problems&lt;/li&gt;
+&lt;li&gt;no general stability framework for ‘tracking’ problems&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Step1：recursive feasibility (terminal constraint)
+假设没有模型失配！因此reusing the overlapping part of the input sequence will also result in an identical state sequence。&lt;/p&gt;
+
+&lt;p&gt;三个条件：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;$X_N \subseteq X$ 保证移位后的倒数第二个状态满足状态约束&lt;/li&gt;
+&lt;li&gt;$u(k+N|k+1)\in U$&lt;/li&gt;
+&lt;li&gt;$x(k+N+1|k+1)\in X_N$ 终端不变集&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Step2：Lyapunov stability (terminal cost)&lt;/p&gt;
+
+&lt;p&gt;如果存在 $V(x)$ 使得在0附近区域 $X_f$ 有 $V(x_{next})&amp;lt;V(x), V(0)=0$，则所有从$X_f$ 出发的轨迹能够渐进收敛到原点。&lt;/p&gt;
+
+&lt;p&gt;在MPC框架下，$X_f$ 为可行域，$V(x)$为最优目标函数值。即&lt;/p&gt;
+
+&lt;p&gt;$$
+J(x(k+1),x_N^0(k+1),u_N^0(k+1))&amp;lt;J(x(k),x_N^0(k),u_N^0(k))
+$$
+条件4 (Lyapunov inequality)：
+$$
+F_N(x)-F_N(x,\kappa_N(x))\ge l(x,\kappa_N(x))
+$$&lt;/p&gt;
+
+&lt;p&gt;不变集：给定自治动态系统，如果当前状态在集合内，未来状态也都会在该集合内，则集合为正不变集。&lt;/p&gt;
+
+&lt;p&gt;线性时不变系统的不变集：
+给定 $x_{k+1}=\phi x_k,A_xx_k \le b_x$，则最大不变集可以通过&lt;/p&gt;
+
+&lt;p&gt;$$
+S = {x|A_xx\le b_x, A_x\phi x\le b_x,&amp;hellip;,A_x\phi^nx\le b_x }
+$$
+其中 $n$ 为一个有限的整数。$S$ 称为maximal admissible set。&lt;/p&gt;
+
+&lt;p&gt;参考：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Set invariance in control. Automatica, 1999&lt;/li&gt;
+&lt;li&gt;Constrained model predictive control: Stability and optimality. Automatica, 2000&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&#34;鲁棒性&#34;&gt;鲁棒性&lt;/h1&gt;
+
+&lt;p&gt;目的：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;保证递归可行性（考虑模型误差、扰动）&lt;/li&gt;
+&lt;li&gt;保证渐近稳定性（在没有扰动的情况下）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;需要知道：
+1. 模型不确定性的形式
+2. 扰动的形式&lt;/p&gt;
+
+&lt;h2 id=&#34;不确定性模型&#34;&gt;不确定性模型&lt;/h2&gt;
+
+&lt;p&gt;线性参数变化模型&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;多胞不确定描述&lt;/li&gt;
+&lt;li&gt;norm-bounded 不确定性描述&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;有界扰动&#34;&gt;有界扰动&lt;/h2&gt;
+
+&lt;p&gt;通常为多面体（$W \in X$）：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;$W=Co\{w_1,&amp;hellip;,w_n\}$&lt;/li&gt;
+&lt;li&gt;$W=\{w|A_ww \le 1_v\}$&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;鲁棒MPC
+需要进行的改造：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;不确定性预测&lt;/li&gt;
+&lt;li&gt;终端代价需要满足 multiple Lyap. Ineq.&lt;/li&gt;
+&lt;li&gt;终端约束需要是 a robust invariant set&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;对状态预测树的所有节点添加约束&lt;/p&gt;</description>
     </item>
     
     <item>
